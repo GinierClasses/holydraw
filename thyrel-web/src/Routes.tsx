@@ -6,11 +6,11 @@ export default function Routes() {
   return (
     <Router>
       <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/home" component={Home} />
-        <Route path="/lobby" component={Lobby} />
         {/* `:lobbyId` is params for the Lobby (https://reactrouter.com/web/example/url-params) */}
         <Route path="/lobby/:lobbyId" component={Lobby} />
+        <Route path="/lobby" component={Lobby} />
+        <Route path="/home" component={Home} />
+        <Route path="/" component={Home} />
       </Switch>
     </Router>
   );
