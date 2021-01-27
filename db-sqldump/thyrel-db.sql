@@ -11,6 +11,15 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+DROP DATABASE if exists thyrel_db;
+
+-- Création d'un nouvelle base de donnée
+
+CREATE DATABASE IF NOT EXISTS thyrel_db;
+
+-- Utilisation de cette base de donnée
+
+USE thyrel_db;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
