@@ -1,4 +1,5 @@
 import Routes from './Routes';
+// import style for `rsuite`
 
 /*
  * Entry point for our App
