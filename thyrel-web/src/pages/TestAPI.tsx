@@ -1,11 +1,7 @@
 import { css } from '@emotion/css';
-import styled from '@emotion/styled';
 import React from 'react';
 import { Button, Input } from 'rsuite';
 
-const StyledButton = styled(Button)({
-  fontSize: 18,
-});
 export default function TestAPI() {
   const [data, setData] = React.useState<any>();
   const [testedValue, setTestedValue] = React.useState<string>('');
