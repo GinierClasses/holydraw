@@ -9,7 +9,8 @@ services:
       MYSQL_PASSWORD: user
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: default_schema
-
+    volumes:
+      - ./db-sqldump:/docker-entrypoint-initdb.d
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: dev_pma
@@ -19,4 +20,4 @@ services:
       PMA_HOST: mysql
     restart: always
     ports:
-      - 8888:80
+      - 8080:80
