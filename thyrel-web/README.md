@@ -15,8 +15,8 @@ npm run start
 
 ## Style
 
-We use [rsuits](https://rsuitejs.com) for UI styles.
-Please use this component for Button, Input and all element given for us.
+We use [rsuits](https://rsuitejs.com) for UI styles. Please use this component
+for Button, Input and all element given for us.
 
 To style a `div` or `p` :
 
@@ -31,9 +31,9 @@ const MyCustomDiv = styled.div(
   },
   // style depent on props with function
   // give the props
-  (props) => ({
+  props => ({
     backgroundColor: props.color,
-  })
+  }),
 );
 
 function Test() {
@@ -60,8 +60,7 @@ function Test() {
       className={css({
         display: 'flex',
         alignItems: 'center',
-      })}
-    >
+      })}>
       <p>My element</p>
     </div>
   );

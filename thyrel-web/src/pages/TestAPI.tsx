@@ -8,7 +8,7 @@ export default function TestAPI() {
 
   function getTestData() {
     fetch('https://localhost:5001/api/test')
-      .then((data) => data.json())
+      .then(data => data.json())
       .then(setData, () => setData('ERROR: api could not be called'));
   }
 
@@ -20,7 +20,7 @@ export default function TestAPI() {
         'Content-Type': 'application/json',
       },
     })
-      .then((data) => data.json())
+      .then(data => data.json())
       .then(setData, () => setData('ERROR: api could not be called'));
   }
 
@@ -28,15 +28,13 @@ export default function TestAPI() {
     <div
       className={css({
         margin: 16,
-      })}
-    >
+      })}>
       <Button onClick={getTestData}>Get data from API:</Button>
       <p
         className={css({
           margin: 8,
           fontSize: 16,
-        })}
-      >
+        })}>
         {data ? JSON.stringify(data) : 'no data yet'}
       </p>
 
@@ -44,15 +42,16 @@ export default function TestAPI() {
         className={css({
           width: 500,
           display: 'flex',
-        })}
-      >
+        })}>
         <Input
           className={css({ marginBottom: 16 })}
           value={testedValue}
-          onChange={(value) => setTestedValue(value)}
+          onChange={value => setTestedValue(value)}
         />
         <div>
-          <Button onClick={sendPostRequest}>Send post request with value</Button>
+          <Button onClick={sendPostRequest}>
+            Send post request with value
+          </Button>
         </div>
       </div>
     </div>

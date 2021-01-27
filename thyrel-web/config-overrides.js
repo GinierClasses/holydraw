@@ -7,5 +7,5 @@ module.exports = override(
       javascriptEnabled: true,
       modifyVars: {},
     },
-  })
+  }),
 );
