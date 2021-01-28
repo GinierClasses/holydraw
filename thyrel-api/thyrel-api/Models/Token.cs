@@ -5,7 +5,7 @@ namespace thyrel_api.Models
 {
     public class Token
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string TokenText { get; set; }
         public DateTime DiscardAt { get; set; }
         public DateTime CreatedAt { get; set; }

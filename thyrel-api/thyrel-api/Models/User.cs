@@ -5,7 +5,7 @@ namespace thyrel_api.Models
 {
     public class User
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Username { get; set; }
         public string AvatarUrl { get; set; }
         public bool IsOwner { get; set; }
