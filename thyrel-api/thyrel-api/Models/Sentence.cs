@@ -15,5 +15,7 @@ namespace thyrel_api.Models
 
         [ForeignKey("CreatorUserID")]
         public virtual User CreatorUser { get; set; }
+
+        public Sentence() { }
     }
 }

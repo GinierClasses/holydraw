@@ -13,5 +13,6 @@ namespace thyrel_api.Models
 
         [ForeignKey("UserID")]
         public virtual User User { get; set; }
+        public Token() { }
     }
 }

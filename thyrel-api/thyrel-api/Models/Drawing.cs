@@ -4,7 +4,7 @@ namespace thyrel_api.Models
 {
     public class Drawing
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         //TODO public string ImagePath { get; set; }
         public int Step { get; set; }
         public int OwnerUserID { get; set; }
@@ -15,5 +15,9 @@ namespace thyrel_api.Models
 
         [ForeignKey("CreatorUserID")]
         public virtual User CreatorUser { get; set; }
+
+        public Drawing()
+        {
+        }
     }
 }
