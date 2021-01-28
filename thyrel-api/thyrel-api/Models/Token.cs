@@ -9,9 +9,9 @@ namespace thyrel_api.Models
         public string TokenText { get; set; }
         public DateTime DiscardAt { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int UserID { get; set; }
+        public int UserId { get; set; }
 
-        [ForeignKey("UserID")]
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
         public Token() { }
     }
