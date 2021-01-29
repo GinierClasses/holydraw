@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using thyrel_api.Models;
+using System;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace thyrel_api
 {
@@ -31,6 +35,18 @@ namespace thyrel_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<TestContext>(
+               dbContextOptions => dbContextOptions
+                   .UseMySql(
+                       // Replace with your connection string.
+                       "server=localhost;port=8080;user=root;password=root;database=test",
+                       // Replace with your server version and type.
+                       // For common usages, see pull request #1233.
+                       new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
+                       mySqlOptions => mySqlOptions
+                           .CharSetBehavior(CharSetBehavior.NeverAppend))
+                   .EnableDetailedErrors()
+                   .EnableSensitiveDataLogging());
 
             // allow controlled to be used as injected props
             services.AddMvcCore().AddControllersAsServices();

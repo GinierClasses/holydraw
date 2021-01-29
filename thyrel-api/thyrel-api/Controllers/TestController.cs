@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using thyrel_api.Models;
 
 namespace thyrel_api.Controllers
 {
@@ -11,6 +12,11 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
+        private TestContext _context;
+        public TestController(TestContext context)
+        {
+            _context = context;
+        }
         // GET: api/Test
         [HttpGet]
         public IEnumerable<string> Get()
@@ -22,6 +28,8 @@ namespace thyrel_api.Controllers
         [HttpPost]
         public IEnumerable<string> Post([FromBody] string value)
         {
+            _context.TestItems.Add(new Test(2, "jean miche pute"));
+            _context.SaveChanges();
             return new String[] { "Here is you're value", value };
         }
     }
