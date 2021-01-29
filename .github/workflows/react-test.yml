@@ -9,15 +9,15 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-      - name: Change directory
-        run: |
-          ls -lisa
-          cd thyrel-web
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Change directory
+        run: |
+          ls -lisa
+          cd thyrel-web
       - name: Install
         run: |
           npm i
@@ -34,14 +34,14 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-      - name: Change directory
-        run: cd ./thyrel-web
       # checkout to the repository
       - uses: actions/checkout@v1
       # install nodejs
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - name: Change directory
+        run: cd ./thyrel-web
       - name: Install
         run: npm i
         env:
