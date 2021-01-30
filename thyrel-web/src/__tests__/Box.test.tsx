@@ -3,11 +3,11 @@ import Box from '../components/styles/Box';
 
 /*
  * test of Flex
-  <Box flexDirection="column" margin={2} padding={4}>
-    <span>1</span>  
-    <span>2</span>  
-  </Box>
-*/
+ * <Box flexDirection="column" margin={2} padding={4}>
+ *   <span>1</span>
+ *   <span>2</span>
+ * </Box>
+ */
 describe('Box', () => {
   test('Flex is a default props', () => {
     render(<Box>BOXID</Box>);
