@@ -3,13 +3,17 @@ namespace thyrel_api.Models
 {
     public class Test
     {
+        public Test()
+        {
+        }
+
         public Test(int id, string name)
         {
-            Id = id;
+            ID = id;
             Name = name;
         }
 
-        public int Id { get; set; }//Entity framework automatically identify ID as primary key
+        public int ID { get; set; }//Entity framework automatically identify ID as primary key
         public string Name { get; set; }
     }
 }

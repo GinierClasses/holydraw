@@ -39,7 +39,7 @@ namespace thyrel_api
                dbContextOptions => dbContextOptions
                    .UseMySql(
                        // Replace with your connection string.
-                       "server=localhost;port=8080;user=root;password=root;database=test",
+                       "server=0.0.0.0;port=8080;user=root;password=root;database=test",
                        // Replace with your server version and type.
                        // For common usages, see pull request #1233.
                        new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
