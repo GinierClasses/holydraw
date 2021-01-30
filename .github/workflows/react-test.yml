@@ -5,8 +5,6 @@ on: [pull_request]
 jobs:
   react-test:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./thyrel-web
     strategy:
       matrix:
         node-version: [14.x]
@@ -17,15 +15,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install
-        run: npm i
-        # follow https://github.community/t/use-working-directory-for-entire-job/16747/2
-        working-directory: ${{env.working-directory}}
+        run: cd thyrel-web && npm i
         env:
           CI: true
       - name: Test
         run: |
-          npm test --verbose --maxWorkers=2
-        working-directory: ${{env.working-directory}}
+          cd thyrel-web && npm test --verbose --maxWorkers=2
         env:
           CI: true
   eslint-linter:
@@ -41,12 +36,12 @@ jobs:
         with:
           node-version: 12
       - name: Install
-        run: npm i
+        run: cd thyrel-web && npm i
         working-directory: ${{env.working-directory}}
         env:
           CI: true
       - name: Run linter
-        run: npm run gh:linter
+        run: cd thyrel-web npm run gh:linter
         working-directory: ${{env.working-directory}}
         env:
           CI: true
