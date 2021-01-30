@@ -29,12 +29,11 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-      # checkout to the repository
       - uses: actions/checkout@v1
-      # install nodejs
-      - uses: actions/setup-node@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: ${{ matrix.node-version }}
       - name: Install
         run: cd thyrel-web && npm i
         env:

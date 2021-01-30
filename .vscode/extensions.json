@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint", // important to passe test
+    "esbenp.prettier-vscode",
+    "formulahendry.auto-rename-tag",
+    "VisualStudioExptTeam.vscodeintellicode"
+  ]
+}
