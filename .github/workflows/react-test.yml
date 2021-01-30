@@ -37,11 +37,9 @@ jobs:
           node-version: 12
       - name: Install
         run: cd thyrel-web && npm i
-        working-directory: ${{env.working-directory}}
         env:
           CI: true
       - name: Run linter
-        run: cd thyrel-web npm run gh:linter
-        working-directory: ${{env.working-directory}}
+        run: cd thyrel-web && npm run gh:linter
         env:
           CI: true

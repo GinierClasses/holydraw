@@ -37,7 +37,7 @@ describe('Box', () => {
       </Box>,
     );
     const box = screen.getByText('BOXID');
-    console.log(box.style.justifyContent);
+
     expect(box).toHaveStyle(`justify-content: ${test.justifyContent}`);
     expect(box).toHaveStyle(`align-items: ${test.alignItems}`);
   });
