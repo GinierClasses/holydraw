@@ -1,13 +1,15 @@
+import { css } from '@emotion/css';
 import React from 'react';
+import { Button, Input } from 'rsuite';
 
 export default function TestAPI() {
-  const [data, setData] = React.useState();
+  const [data, setData] = React.useState<any>();
   const [testedValue, setTestedValue] = React.useState<string>('');
 
   function getTestData() {
     fetch('https://localhost:5001/api/test')
-      .then((data) => data.json())
-      .then(setData);
+      .then(data => data.json())
+      .then(setData, () => setData('ERROR: api could not be called'));
   }
 
   function sendPostRequest() {
@@ -18,21 +20,39 @@ export default function TestAPI() {
         'Content-Type': 'application/json',
       },
     })
-      .then((data) => data.json())
-      .then(setData);
+      .then(data => data.json())
+      .then(setData, () => setData('ERROR: api could not be called'));
   }
 
   return (
-    <div>
-      <button onClick={getTestData}>Get data from API:</button>
-      <p>{data ? JSON.stringify(data) : 'no data yet'}</p>
+    <div
+      className={css({
+        margin: 16,
+      })}>
+      <Button onClick={getTestData}>Get data from API:</Button>
+      <p
+        className={css({
+          margin: 8,
+          fontSize: 16,
+        })}>
+        {data ? JSON.stringify(data) : 'no data yet'}
+      </p>
 
-      <div>
-        <input
+      <div
+        className={css({
+          width: 500,
+          display: 'flex',
+        })}>
+        <Input
+          className={css({ marginBottom: 16 })}
           value={testedValue}
-          onChange={(e) => setTestedValue(e.target.value)}
+          onChange={value => setTestedValue(value)}
         />
-        <button onClick={sendPostRequest}>Send post request with value</button>
+        <div>
+          <Button onClick={sendPostRequest}>
+            Send post request with value
+          </Button>
+        </div>
       </div>
     </div>
   );

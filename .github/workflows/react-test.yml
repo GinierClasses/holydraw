@@ -1,0 +1,44 @@
+name: React test validation
+
+on: [pull_request]
+
+jobs:
+  react-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: cd thyrel-web && npm i
+        env:
+          CI: true
+      - name: Test
+        run: |
+          cd thyrel-web && npm test --verbose --maxWorkers=2
+        env:
+          CI: true
+  eslint-linter:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: cd thyrel-web && npm i
+        env:
+          CI: true
+      - name: Run linter
+        run: cd thyrel-web && npm run gh:linter
+        env:
+          CI: true

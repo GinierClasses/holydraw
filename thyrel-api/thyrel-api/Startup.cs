@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using thyrel_api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace thyrel_api
 {
@@ -31,6 +33,16 @@ namespace thyrel_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DrawingContext>(opt =>
+                                               opt.UseInMemoryDatabase("DrawingList"));
+            services.AddDbContext<SentenceContext>(opt =>
+                                               opt.UseInMemoryDatabase("SentenceList"));
+            services.AddDbContext<UserContext>(opt =>
+                                               opt.UseInMemoryDatabase("UserList"));
+            services.AddDbContext<TokenContext>(opt =>
+                                               opt.UseInMemoryDatabase("TokenList"));
+            services.AddDbContext<GameSessionContext>(opt =>
+                                               opt.UseInMemoryDatabase("GameSessionList"));
 
             // allow controlled to be used as injected props
             services.AddMvcCore().AddControllersAsServices();
