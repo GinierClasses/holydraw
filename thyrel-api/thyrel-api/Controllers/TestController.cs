@@ -12,15 +12,18 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        private TestContext _context;
-        public TestController(TestContext context)
+        public TestController()
         {
-            _context = context;
         }
         // GET: api/Test
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            using (var context = new TestContext())
+            {
+                var x = context.Test.ToList();
+                
+            }
             yield return "API is happy to see you";
         }
 
@@ -28,9 +31,7 @@ namespace thyrel_api.Controllers
         [HttpPost]
         public IEnumerable<string> Post([FromBody] string value)
         {
-            _context.TestItems.Add(new Test(2, "jean miche pute"));
-            _context.SaveChanges();
-            return new String[] { "Here is you're value", value };
+            return new[] { "Here is you're value", value };
         }
     }
 }

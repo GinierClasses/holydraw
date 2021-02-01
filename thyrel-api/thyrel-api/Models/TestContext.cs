@@ -1,34 +1,35 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 
 namespace thyrel_api.Models
 {
-    public class LibraryContext : DbContext
+    public class TestContext : DbContext
     {
-        public DbSet<Book> Book { get; set; }
+        public TestContext()
+        {
+        }
 
-        public DbSet<Publisher> Publisher { get; set; }
+        public TestContext(DbContextOptions options) : base(options)
+        {
+        }
+
+
+        public DbSet<Test> Test { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=library;user=user;password=password");
+            optionsBuilder.UseMySQL("server=localhost,3306;database=test;user=root;password=root");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Publisher>(entity =>
+            modelBuilder.Entity<Test>(entity =>
             {
+                entity.ToTable("test");
                 entity.HasKey(e => e.ID);
                 entity.Property(e => e.Name).IsRequired();
-            });
-
-            modelBuilder.Entity<Book>(entity =>
-            {
-                entity.HasKey(e => e.ISBN);
-                entity.Property(e => e.Title).IsRequired();
-                entity.HasOne(d => d.Publisher)
-                  .WithMany(p => p.Books);
             });
         }
     }

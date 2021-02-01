@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using thyrel_api.Models;
 using System;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace thyrel_api
 {
@@ -35,21 +34,9 @@ namespace thyrel_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<TestContext>(
-               dbContextOptions => dbContextOptions
-                   .UseMySql(
-                       // Replace with your connection string.
-                       "server=0.0.0.0;port=8080;user=root;password=root;database=test",
-                       // Replace with your server version and type.
-                       // For common usages, see pull request #1233.
-                       new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
-                       mySqlOptions => mySqlOptions
-                           .CharSetBehavior(CharSetBehavior.NeverAppend))
-                   .EnableDetailedErrors()
-                   .EnableSensitiveDataLogging());
-
+            //services.AddDbContext<TestContext>(options => options.UseMySQL("server=localhost,3306;database=test;user=root;password=root"));
             // allow controlled to be used as injected props
-            services.AddMvcCore().AddControllersAsServices();
+            //services.AddMvcCore().AddControllersAsServices();
             // add controller in application
             services.AddControllers();
             // add cors to alows web server to get informations
@@ -57,7 +44,6 @@ namespace thyrel_api
             {
                 options.AddPolicy("AllowAllOrigins", GenerateCorsPolicy());
             });
-
 
             services.AddSwaggerGen(c =>
             {
