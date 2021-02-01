@@ -5,23 +5,23 @@ namespace thyrel_api.Models
 {
     public class HolyDrawDbContext : DbContext
     {
-        // delete after
-        public DbSet<Test> Test { get; set; }
+        public DbSet<Token> Token { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost,3306;database=test;user=root;password=root");
+            optionsBuilder.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Test>(entity =>
+            modelBuilder.Entity<Token>(entity =>
             {
-                entity.ToTable("test");
+                entity.ToTable("Token");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Name).IsRequired();
+                entity.Property(e => e.TokenKey).IsRequired();
+                entity.HasOne(e => e.Player).WithMany(e => e.Tokens);
             });
         }
     }
