@@ -3,19 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace thyrel_api.Models
 {
-    public class TestContext : DbContext
+    public class HolyDrawDbContext : DbContext
     {
-        public TestContext()
-        {
-        }
-
-        public TestContext(DbContextOptions options) : base(options)
-        {
-        }
-
-
+        // delete after
         public DbSet<Test> Test { get; set; }
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySQL("server=localhost,3306;database=test;user=root;password=root");
@@ -28,7 +20,7 @@ namespace thyrel_api.Models
             modelBuilder.Entity<Test>(entity =>
             {
                 entity.ToTable("test");
-                entity.HasKey(e => e.ID);
+                entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired();
             });
         }
