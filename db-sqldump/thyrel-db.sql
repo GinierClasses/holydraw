@@ -98,7 +98,6 @@ CREATE TABLE `Sentence` (
 
 CREATE TABLE `Session` (
   `Id` int NOT NULL,
-  `Identifier` text NOT NULL,
   `FinishAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL
