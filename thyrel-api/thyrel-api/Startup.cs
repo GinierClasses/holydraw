@@ -3,49 +3,37 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using thyrel_api.Models;
-using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace thyrel_api
 {
     public class Startup
     {
-        public CorsPolicy GenerateCorsPolicy()
-        {
-            var corsBuilder = new CorsPolicyBuilder();
-            corsBuilder.AllowAnyHeader();
-            corsBuilder.AllowAnyMethod();
-            corsBuilder.AllowAnyOrigin(); // For anyone access.
-                                          //corsBuilder.WithOrigins("http://localhost:56573"); // for a specific url. Don't add a forward slash on the end!
-            return corsBuilder.Build();
-        }
-
+        public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private CorsPolicy GenerateCorsPolicy()
+        {
+            var corsBuilder = new CorsPolicyBuilder();
+            corsBuilder.AllowAnyHeader();
+            corsBuilder.AllowAnyMethod();
+            corsBuilder.AllowAnyOrigin(); // For anyone access.
+                                          // corsBuilder.WithOrigins("http://localhost:56573"); // for a specific url. Don't add a forward slash on the end!
+            return corsBuilder.Build();
+        }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DrawingContext>(opt =>
-                                               opt.UseInMemoryDatabase("DrawingList"));
-            services.AddDbContext<SentenceContext>(opt =>
-                                               opt.UseInMemoryDatabase("SentenceList"));
-            services.AddDbContext<UserContext>(opt =>
-                                               opt.UseInMemoryDatabase("UserList"));
-            services.AddDbContext<TokenContext>(opt =>
-                                               opt.UseInMemoryDatabase("TokenList"));
-            services.AddDbContext<GameSessionContext>(opt =>
-                                               opt.UseInMemoryDatabase("GameSessionList"));
-
             // allow controlled to be used as injected props
-            services.AddMvcCore().AddControllersAsServices();
+            // services.AddMvcCore().AddControllersAsServices();
             // add controller in application
             services.AddControllers();
             // add cors to alows web server to get informations
@@ -53,7 +41,6 @@ namespace thyrel_api
             {
                 options.AddPolicy("AllowAllOrigins", GenerateCorsPolicy());
             });
-
 
             services.AddSwaggerGen(c =>
             {

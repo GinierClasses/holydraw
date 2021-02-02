@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using thyrel_api.Models;
 
 namespace thyrel_api.Controllers
 {
@@ -11,6 +9,9 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
+        public TestController()
+        {
+        }
         // GET: api/Test
         [HttpGet]
         public IEnumerable<string> Get()
@@ -22,7 +23,7 @@ namespace thyrel_api.Controllers
         [HttpPost]
         public IEnumerable<string> Post([FromBody] string value)
         {
-            return new String[] { "Here is you're value", value };
+            return new[] { "Here is you're value", value };
         }
     }
 }
