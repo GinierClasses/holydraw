@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Jan 27, 2021 at 10:36 AM
+-- Generation Time: Feb 02, 2021 at 06:13 PM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.13
 
@@ -27,7 +27,7 @@ USE thyrel_db;
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `thyrel-db`
+-- Database: `thyrel_db`
 --
 
 -- --------------------------------------------------------
@@ -37,24 +37,41 @@ USE thyrel_db;
 --
 
 CREATE TABLE `Drawing` (
-  `id` int NOT NULL,
-  `step` int NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `owner_id` int NOT NULL,
-  `creator_id` int NOT NULL
+  `Id` int NOT NULL,
+  `Step` int NOT NULL,
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `OwnerId` int NOT NULL,
+  `InitiatorId` int NOT NULL,
+  `SessionId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `GameSession`
+-- Table structure for table `Player`
 --
 
-CREATE TABLE `GameSession` (
-  `id` int NOT NULL,
-  `identifier` text NOT NULL,
-  `finish_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE `Player` (
+  `Id` int NOT NULL,
+  `Username` varchar(255) NOT NULL,
+  `AvatarUrl` text NOT NULL,
+  `IsOwner` tinyint(1) NOT NULL,
+  `DisableAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `RoomId` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Room`
+--
+
+CREATE TABLE `Room` (
+  `Id` int NOT NULL,
+  `Identifier` text NOT NULL,
+  `FinishAt` datetime NOT NULL,
+  `CreatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -64,12 +81,27 @@ CREATE TABLE `GameSession` (
 --
 
 CREATE TABLE `Sentence` (
-  `id` int NOT NULL,
-  `text` text NOT NULL,
-  `step` int NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `owner_id` int NOT NULL,
-  `creator_id` int NOT NULL
+  `Id` int NOT NULL,
+  `Text` text NOT NULL,
+  `Step` int NOT NULL,
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `OwnerId` int NOT NULL,
+  `InitiatorId` int NOT NULL,
+  `SessionId` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Session`
+--
+
+CREATE TABLE `Session` (
+  `Id` int NOT NULL,
+  `Identifier` text NOT NULL,
+  `FinishAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `RoomId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -79,27 +111,11 @@ CREATE TABLE `Sentence` (
 --
 
 CREATE TABLE `Token` (
-  `id` int NOT NULL,
-  `token` text NOT NULL,
-  `discard_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `User`
---
-
-CREATE TABLE `User` (
-  `id` int NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `avatar_url` text NOT NULL,
-  `is_owner` tinyint(1) NOT NULL,
-  `disable_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `gamesession_id` int NOT NULL
+  `Id` int NOT NULL,
+  `Token` text NOT NULL,
+  `DiscardAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `PlayerId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -110,37 +126,46 @@ CREATE TABLE `User` (
 -- Indexes for table `Drawing`
 --
 ALTER TABLE `Drawing`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_owner_id_2` (`owner_id`),
-  ADD KEY `fk_creator_id_2` (`creator_id`);
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `fk_ownerid_2` (`OwnerId`),
+  ADD KEY `fk_initiatorid_2` (`InitiatorId`),
+  ADD KEY `fk_sessionid2` (`SessionId`);
 
 --
--- Indexes for table `GameSession`
+-- Indexes for table `Player`
 --
-ALTER TABLE `GameSession`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `Player`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `fk_roomid2` (`RoomId`);
+
+--
+-- Indexes for table `Room`
+--
+ALTER TABLE `Room`
+  ADD PRIMARY KEY (`Id`);
 
 --
 -- Indexes for table `Sentence`
 --
 ALTER TABLE `Sentence`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_owner_id` (`owner_id`),
-  ADD KEY `fk_creator_id` (`creator_id`);
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `fk_ownerid` (`OwnerId`),
+  ADD KEY `fk_initiatorid` (`InitiatorId`),
+  ADD KEY `fk_sessionid` (`SessionId`);
+
+--
+-- Indexes for table `Session`
+--
+ALTER TABLE `Session`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `fk_roomid` (`RoomId`);
 
 --
 -- Indexes for table `Token`
 --
 ALTER TABLE `Token`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_user_id` (`user_id`);
-
---
--- Indexes for table `User`
---
-ALTER TABLE `User`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_gamesession_id` (`gamesession_id`);
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `fk_playerid` (`PlayerId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -150,31 +175,37 @@ ALTER TABLE `User`
 -- AUTO_INCREMENT for table `Drawing`
 --
 ALTER TABLE `Drawing`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `GameSession`
+-- AUTO_INCREMENT for table `Player`
 --
-ALTER TABLE `GameSession`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `Player`
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Room`
+--
+ALTER TABLE `Room`
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Sentence`
 --
 ALTER TABLE `Sentence`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Session`
+--
+ALTER TABLE `Session`
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Token`
 --
 ALTER TABLE `Token`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `User`
---
-ALTER TABLE `User`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -184,27 +215,35 @@ ALTER TABLE `User`
 -- Constraints for table `Drawing`
 --
 ALTER TABLE `Drawing`
-  ADD CONSTRAINT `fk_creator_id_2` FOREIGN KEY (`creator_id`) REFERENCES `User` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fk_owner_id_2` FOREIGN KEY (`owner_id`) REFERENCES `User` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `fk_initiatorid_2` FOREIGN KEY (`InitiatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_ownerid_2` FOREIGN KEY (`OwnerId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_sessionid2` FOREIGN KEY (`SessionId`) REFERENCES `Session` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `Player`
+--
+ALTER TABLE `Player`
+  ADD CONSTRAINT `fk_roomid2` FOREIGN KEY (`RoomId`) REFERENCES `Room` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `Sentence`
 --
 ALTER TABLE `Sentence`
-  ADD CONSTRAINT `fk_creator_id` FOREIGN KEY (`creator_id`) REFERENCES `User` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fk_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `User` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `fk_initiatorid` FOREIGN KEY (`InitiatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_ownerid` FOREIGN KEY (`OwnerId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_sessionid` FOREIGN KEY (`SessionId`) REFERENCES `Session` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `Session`
+--
+ALTER TABLE `Session`
+  ADD CONSTRAINT `fk_roomid` FOREIGN KEY (`RoomId`) REFERENCES `Room` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `Token`
 --
 ALTER TABLE `Token`
-  ADD CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
---
--- Constraints for table `User`
---
-ALTER TABLE `User`
-  ADD CONSTRAINT `fk_gamesession_id` FOREIGN KEY (`gamesession_id`) REFERENCES `GameSession` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `fk_playerid` FOREIGN KEY (`PlayerId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
