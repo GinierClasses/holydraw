@@ -6,6 +6,11 @@ namespace thyrel_api.Models
     public class HolyDrawDbContext : DbContext
     {
         public DbSet<Token> Token { get; set; }
+        public DbSet<Session> Session { get; set; }
+        public DbSet<Sentence> Sentence { get; set; }
+        public DbSet<Room> Room { get; set; }
+        public DbSet<Player> Player { get; set; }
+        public DbSet<Drawing> Drawing { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
