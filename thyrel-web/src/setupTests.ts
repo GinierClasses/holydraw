@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { server } from './__tests__/config/server';
+import { server } from './test/server';
 
 // before all test, I turn on the server
 beforeAll(() => server.listen());

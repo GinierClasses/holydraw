@@ -1,5 +1,5 @@
 import { client } from '../api/client';
-import clientData from './config/data/client.json';
+import clientData from '../test/data/client.json';
 
 describe('client', () => {
   test('no option (get)', async () => {

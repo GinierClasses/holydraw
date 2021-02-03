@@ -1,4 +1,4 @@
-import { testApiUrl } from '../__tests__/config/data';
+import { testApiUrl } from '../test/data';
 
 const apiURL = process.env.REACT_APP_API_URL || testApiUrl;
 
