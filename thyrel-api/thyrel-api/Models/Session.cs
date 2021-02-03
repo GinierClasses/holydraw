@@ -6,13 +6,12 @@ namespace thyrel_api.Models
     {
         public Session() { }
 
-        public Session(int? id, DateTime? finishAt, DateTime createdAt, int roomId, Room room)
+        public Session(int? id, DateTime? finishAt, DateTime createdAt, int roomId)
         {
             Id = id;
             FinishAt = finishAt;
             CreatedAt = createdAt;
             RoomId = roomId;
-            Room = room;
         }
 
         public int? Id { get; set; }

@@ -7,17 +7,14 @@ namespace thyrel_api.Models
     {
         public Drawing() { }
 
-        public Drawing(int? id, int step, DateTime createdAt, int ownerId, Player ownerPlayer, int initiatorId, Player initiatorPlayer, int sessionId, Session session)
+        public Drawing(int? id, int step, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
         {
             Id = id;
             Step = step;
             CreatedAt = createdAt;
-            OwnerId = ownerId;
-            OwnerPlayer = ownerPlayer;
+            CreatorId = creatorId;
             InitiatorId = initiatorId;
-            InitiatorPlayer = initiatorPlayer;
             SessionId = sessionId;
-            Session = session;
         }
 
         //TODO public string ImagePath { get; set; }
@@ -25,11 +22,11 @@ namespace thyrel_api.Models
         public int Step { get; set; }
         public DateTime CreatedAt { get; set; }
         
-        public int OwnerId { get; set; }
-        public virtual Player OwnerPlayer { get; set; }
+        public int CreatorId { get; set; }
+        public virtual Player Creator { get; set; }
 
         public int InitiatorId { get; set; }
-        public virtual Player InitiatorPlayer { get; set; }
+        public virtual Player Initiator { get; set; }
 
         public int SessionId { get; set; }
         public virtual Session Session { get; set; }

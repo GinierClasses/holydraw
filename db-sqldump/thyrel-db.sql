@@ -40,7 +40,7 @@ CREATE TABLE `Drawing` (
   `Id` int NOT NULL,
   `Step` int NOT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `OwnerId` int NOT NULL,
+  `CreatorId` int NOT NULL,
   `InitiatorId` int NOT NULL,
   `SessionId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -56,7 +56,7 @@ CREATE TABLE `Player` (
   `Username` varchar(255) NOT NULL,
   `AvatarUrl` text NOT NULL,
   `IsOwner` tinyint(1) NOT NULL,
-  `DisableAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DisableAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -70,8 +70,8 @@ CREATE TABLE `Player` (
 CREATE TABLE `Room` (
   `Id` int NOT NULL,
   `Identifier` text NOT NULL,
-  `FinishAt` datetime NOT NULL,
-  `CreatedAt` datetime NOT NULL
+  `FinishAt` datetime DEFAULT NULL,
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -85,7 +85,7 @@ CREATE TABLE `Sentence` (
   `Text` text NOT NULL,
   `Step` int NOT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `OwnerId` int NOT NULL,
+  `CreatorId` int NOT NULL,
   `InitiatorId` int NOT NULL,
   `SessionId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -98,7 +98,7 @@ CREATE TABLE `Sentence` (
 
 CREATE TABLE `Session` (
   `Id` int NOT NULL,
-  `FinishAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `FinishAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -112,7 +112,7 @@ CREATE TABLE `Session` (
 CREATE TABLE `Token` (
   `Id` int NOT NULL,
   `Token` text NOT NULL,
-  `DiscardAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DiscardAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PlayerId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -126,7 +126,7 @@ CREATE TABLE `Token` (
 --
 ALTER TABLE `Drawing`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `fk_ownerid_2` (`OwnerId`),
+  ADD KEY `fk_creatorid_2` (`CreatorId`),
   ADD KEY `fk_initiatorid_2` (`InitiatorId`),
   ADD KEY `fk_sessionid2` (`SessionId`);
 
@@ -148,7 +148,7 @@ ALTER TABLE `Room`
 --
 ALTER TABLE `Sentence`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `fk_ownerid` (`OwnerId`),
+  ADD KEY `fk_creatorid` (`CreatorId`),
   ADD KEY `fk_initiatorid` (`InitiatorId`),
   ADD KEY `fk_sessionid` (`SessionId`);
 
@@ -214,8 +214,8 @@ ALTER TABLE `Token`
 -- Constraints for table `Drawing`
 --
 ALTER TABLE `Drawing`
+  ADD CONSTRAINT `fk_creatorid_2` FOREIGN KEY (`CreatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fk_initiatorid_2` FOREIGN KEY (`InitiatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fk_ownerid_2` FOREIGN KEY (`OwnerId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fk_sessionid2` FOREIGN KEY (`SessionId`) REFERENCES `Session` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
@@ -228,8 +228,8 @@ ALTER TABLE `Player`
 -- Constraints for table `Sentence`
 --
 ALTER TABLE `Sentence`
+  ADD CONSTRAINT `fk_creatorid` FOREIGN KEY (`CreatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fk_initiatorid` FOREIGN KEY (`InitiatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fk_ownerid` FOREIGN KEY (`OwnerId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fk_sessionid` FOREIGN KEY (`SessionId`) REFERENCES `Session` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --

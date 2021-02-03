@@ -7,18 +7,15 @@ namespace thyrel_api.Models
     {
         public Sentence() { }
 
-        public Sentence(int? id, string text, int step, DateTime createdAt, int ownerId, Player ownerPlayer, int initiatorId, Player initiatorPlayer, int sessionId, Session session)
+        public Sentence(int? id, string text, int step, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
         {
             Id = id;
             Text = text;
             Step = step;
             CreatedAt = createdAt;
-            OwnerId = ownerId;
-            OwnerPlayer = ownerPlayer;
+            CreatorId = creatorId;
             InitiatorId = initiatorId;
-            InitiatorPlayer = initiatorPlayer;
             SessionId = sessionId;
-            Session = session;
         }
 
         public int? Id { get; set; }
@@ -26,11 +23,11 @@ namespace thyrel_api.Models
         public int Step { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public int OwnerId { get; set; }
-        public virtual Player OwnerPlayer { get; set; }
+        public int CreatorId { get; set; }
+        public virtual Player Creator { get; set; }
 
         public int InitiatorId { get; set; }
-        public virtual Player InitiatorPlayer { get; set; }
+        public virtual Player Initiator { get; set; }
 
         public int SessionId { get; set; }
         public virtual Session Session { get; set; }
