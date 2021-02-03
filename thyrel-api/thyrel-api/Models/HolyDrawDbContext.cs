@@ -23,6 +23,48 @@ namespace thyrel_api.Models
                 entity.Property(e => e.TokenKey).IsRequired();
                 entity.HasOne(e => e.Player).WithMany(e => e.Tokens);
             });
+
+            modelBuilder.Entity<Session>(entity =>
+            {
+                entity.ToTable("Session");
+                entity.HasKey(e => e.Id);
+                entity.HasOne(e => e.Room).WithMany(e => e.Sessions);
+            });
+
+            modelBuilder.Entity<Sentence>(entity =>
+            {
+                entity.ToTable("Sentence");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Text).IsRequired();
+                entity.HasOne(e => e.Session).WithMany(e => e.Sentences);
+                entity.HasOne(e => e.Creator).WithMany(e => e.Sentences);
+                entity.HasOne(e => e.Initiator).WithMany(e => e.Sentences);
+            });
+
+            modelBuilder.Entity<Room>(entity =>
+            {
+                entity.ToTable("Room");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Identifier).IsRequired();
+            });
+
+            modelBuilder.Entity<Player>(entity =>
+            {
+                entity.ToTable("Player");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Username).IsRequired();
+                entity.Property(e => e.AvatarUrl).IsRequired();
+                entity.HasOne(e => e.Room).WithMany(e => e.Players);
+            });
+
+            modelBuilder.Entity<Drawing>(entity =>
+            {
+                entity.ToTable("Drawing");
+                entity.HasKey(e => e.Id);
+                entity.HasOne(e => e.Session).WithMany(e => e.Drawings);
+                entity.HasOne(e => e.Creator).WithMany(e => e.Drawings);
+                entity.HasOne(e => e.Initiator).WithMany(e => e.Drawings);
+            });
         }
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Feb 02, 2021 at 06:13 PM
+-- Generation Time: Feb 03, 2021 at 09:41 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.13
 
@@ -45,6 +45,13 @@ CREATE TABLE `Drawing` (
   `SessionId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `Drawing`
+--
+
+INSERT INTO `Drawing` (`Id`, `Step`, `CreatedAt`, `CreatorId`, `InitiatorId`, `SessionId`) VALUES
+(1, 2, '2021-02-03 09:36:09', 1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -55,11 +62,18 @@ CREATE TABLE `Player` (
   `Id` int NOT NULL,
   `Username` varchar(255) NOT NULL,
   `AvatarUrl` text NOT NULL,
-  `IsOwner` tinyint(1) NOT NULL,
+  `IsOwner` tinyint(1) NOT NULL DEFAULT '0',
   `DisableAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Player`
+--
+
+INSERT INTO `Player` (`Id`, `Username`, `AvatarUrl`, `IsOwner`, `DisableAt`, `CreatedAt`, `RoomId`) VALUES
+(1, 'LapouilleLafripouille', 'Https://www.urldeouf.com', 0, NULL, '2021-02-03 09:32:54', 1);
 
 -- --------------------------------------------------------
 
@@ -73,6 +87,13 @@ CREATE TABLE `Room` (
   `FinishAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Room`
+--
+
+INSERT INTO `Room` (`Id`, `Identifier`, `FinishAt`, `CreatedAt`) VALUES
+(1, 'AJSHAIAIO290392JIJSOAjJ\"*\"*', NULL, '2021-02-03 09:31:26');
 
 -- --------------------------------------------------------
 
@@ -90,6 +111,13 @@ CREATE TABLE `Sentence` (
   `SessionId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `Sentence`
+--
+
+INSERT INTO `Sentence` (`Id`, `Text`, `Step`, `CreatedAt`, `CreatorId`, `InitiatorId`, `SessionId`) VALUES
+(1, 'Un singe qui fait le singe', 1, '2021-02-03 09:35:43', 1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -102,6 +130,13 @@ CREATE TABLE `Session` (
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Session`
+--
+
+INSERT INTO `Session` (`Id`, `FinishAt`, `CreatedAt`, `RoomId`) VALUES
+(1, NULL, '2021-02-03 09:33:35', 1);
 
 -- --------------------------------------------------------
 
@@ -116,6 +151,13 @@ CREATE TABLE `Token` (
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PlayerId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Token`
+--
+
+INSERT INTO `Token` (`Id`, `Token`, `DiscardAt`, `CreatedAt`, `PlayerId`) VALUES
+(1, 'TOK::AJ323NANJ::AJJAJ', NULL, '2021-02-03 09:34:52', 1);
 
 --
 -- Indexes for dumped tables
@@ -174,37 +216,37 @@ ALTER TABLE `Token`
 -- AUTO_INCREMENT for table `Drawing`
 --
 ALTER TABLE `Drawing`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Player`
 --
 ALTER TABLE `Player`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Room`
 --
 ALTER TABLE `Room`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Sentence`
 --
 ALTER TABLE `Sentence`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Session`
 --
 ALTER TABLE `Session`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Token`
 --
 ALTER TABLE `Token`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

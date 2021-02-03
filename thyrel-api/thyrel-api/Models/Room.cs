@@ -20,5 +20,8 @@ namespace thyrel_api.Models
         public string Identifier { get; set; }
         public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public List<Session> Sessions { get; set; }
+        public List<Player> Players { get; set; }
     }
 }

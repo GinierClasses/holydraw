@@ -16,6 +16,14 @@ namespace thyrel_api.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            using (var context = new HolyDrawDbContext())
+            {
+                var tokens = context.Token.ToList();
+                context.Token.Add(new Token(null, "blabla", 1));
+                context.SaveChanges();
+                var tokens2 = context.Token.ToList();
+            }
+
             yield return "API is happy to see you";
         }
 
