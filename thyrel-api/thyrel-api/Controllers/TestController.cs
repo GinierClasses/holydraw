@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.Models;
+using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
 {
@@ -9,21 +12,28 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        public TestController()
+        private IWebsocketHandler _websocketHandler;
+
+        public TestController(IWebsocketHandler websocketHandler)
         {
-        }
-        // GET: api/Test
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            yield return "API is happy to see you";
+            _websocketHandler = websocketHandler;
         }
 
+        // GET: api/Test
+        [HttpGet]
+        public async IAsyncEnumerable<string> Get()
+        {
+            await _websocketHandler.SendMessageToSockets("Je suis en fou rire", null);
+            yield return "API is happy to see you";
+        }
+        
         // POST: api/Test
         [HttpPost]
         public IEnumerable<string> Post([FromBody] string value)
         {
-            return new[] { "Here is you're value", value };
+            var isInt = int.TryParse(value, out var intValue);
+            _websocketHandler.SendMessageToSockets("YOYO here", isInt ? intValue : null);
+            return new[] { "Here is you're value", value};
         }
     }
 }

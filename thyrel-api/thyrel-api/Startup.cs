@@ -8,6 +8,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using thyrel_api.Models;
 using System;
+using System.Net.WebSockets;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using thyrel_api.Websocket;
 
 namespace thyrel_api
 {
@@ -32,6 +37,8 @@ namespace thyrel_api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
+            
             // allow controlled to be used as injected props
             // services.AddMvcCore().AddControllersAsServices();
             // add controller in application
@@ -57,19 +64,66 @@ namespace thyrel_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "thyrel_api v1"));
             }
+            
+            var webSocketOptions = new WebSocketOptions() 
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
+            };
 
+            app.UseWebSockets(webSocketOptions);
+            
+            /*app.Use(async (context, next) =>
+            {
+                if (context.Request.Path == "/ws")
+                {
+                    if (context.WebSockets.IsWebSocketRequest)
+                    {
+                        using (WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync())
+                        {
+                            await Echo(context, webSocket);
+                        }
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = 400;
+                    }
+                }
+                else
+                {
+                    await next();
+                }
+
+            });*/
+            
+            app.UseFileServer();
             app.UseHttpsRedirection();
-
             app.UseRouting();
             // allow cors of all origins
             app.UseCors("AllowAllOrigins");
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private async Task Echo(HttpContext context, WebSocket webSocket)
+        {
+            var buffer = new byte[1024 * 4];
+            WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            while (!result.CloseStatus.HasValue)
+            {
+                //await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+
+                var response = string.Format("Hello! Time {0}", DateTime.Now);
+                var bytes = System.Text.Encoding.UTF8.GetBytes(response);
+
+                await webSocket.SendAsync(new System.ArraySegment<byte>(bytes),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+
+                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            }
+            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
         }
     }
 }
