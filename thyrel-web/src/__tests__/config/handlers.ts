@@ -1,7 +1,8 @@
 import { rest } from 'msw';
+import { testApiUrl } from './data';
 import clientData from './data/client.json';
 
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = process.env.REACT_APP_API_URL || testApiUrl;
 
 // handlers if fake api endpoint for test
 // when using `window.fetch` with this endpoint, this handlers will be called
