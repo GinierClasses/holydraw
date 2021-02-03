@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import Box from '../components/styles/Box';
+import Box from '../styles/Box';
+import { baseColor } from '../styles/colors';
 
 /*
  * test of Flex
@@ -71,9 +72,9 @@ describe('Box', () => {
   });
 
   test('flexWrap and flexDirection', () => {
-    const test = { flexWrap: 'nowrap', flexDirection: 'column' };
+    const test: any = { flexWrap: 'nowrap', flexDirection: 'column' };
     render(
-      <Box flexWrap="nowrap" flexDirection="column">
+      <Box flexWrap={test.flexWrap} flexDirection={test.flexDirection}>
         BOXID
       </Box>,
     );
@@ -81,5 +82,37 @@ describe('Box', () => {
 
     expect(box).toHaveStyle(`flex-wrap: ${test.flexWrap}`);
     expect(box).toHaveStyle(`flex-direction: ${test.flexDirection}`);
+  });
+
+  test('border', () => {
+    const test = { borderWidth: 3 };
+    render(<Box borderWidth={test.borderWidth}>BOXID</Box>);
+    const box = screen.getByText('BOXID');
+
+    expect(box).toHaveStyle(`border: ${test.borderWidth}px solid ${baseColor}`);
+  });
+
+  test('border', () => {
+    const test = { border: '1px solid red' };
+    render(<Box border={test.border}>BOXID</Box>);
+    const box = screen.getByText('BOXID');
+
+    expect(box).toHaveStyle(`border: ${test.border}`);
+  });
+
+  test('background', () => {
+    const test = { bg: 'red' };
+    render(<Box bg={test.bg}>BOXID</Box>);
+    const box = screen.getByText('BOXID');
+
+    expect(box).toHaveStyle(`background: ${test.bg}`);
+  });
+
+  test('className', () => {
+    const className = 'testclassname';
+    render(<Box className={className}>BOXID</Box>);
+    const box = screen.getByText('BOXID');
+
+    expect(box).toHaveClass(className);
   });
 });
