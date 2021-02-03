@@ -4,6 +4,11 @@ import { baseColor } from './colors';
 // TODO : add multi
 // const multi: number = 8;
 
+/* 
+Flex component
+All CSS props can be applicate to this component.
+List is below.
+*/
 type BoxType = {
   display?: 'flex';
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
@@ -12,6 +17,7 @@ type BoxType = {
   height?: number | string;
   borderColor?: string | 'baseColor';
   className?: string;
+  bg?: string;
   borderRadius?: number;
   borderWidth?: number;
   border?: string;
@@ -63,90 +69,85 @@ type BoxType = {
   mr?: number | string;
   padding?: number | string;
   p?: number | string;
+  // padding-bottom
   pb?: number | string;
+  // padding-left
   pl?: number | string;
+  // padding-top
   pt?: number | string;
+  // padding-right
   pr?: number | string;
 };
 
 const Box = styled.div<BoxType>(
-  ({ display, width, height }) => ({
-    display: display || 'flex',
-    width: width || 'auto',
-    height: height || 'auto',
-  }),
-  ({ alignContent }) =>
-    alignContent && {
-      alignContent: alignContent,
-    },
-  ({ alignItems }) =>
-    alignItems && {
-      alignItems: alignItems,
-    },
-  ({ justifyContent }) =>
-    justifyContent && {
-      justifyContent: justifyContent,
-    },
-  ({ flexWrap }) =>
-    flexWrap && {
-      flexWrap: flexWrap,
-    },
-  ({ flexDirection }) =>
-    flexDirection && {
-      flexDirection: flexDirection,
-    },
-  ({ margin, m }) =>
-    (margin || m) && {
-      margin: margin || m || 0,
-    },
-  ({ padding, p }) =>
-    (padding || p) && {
-      padding: padding || p || 0,
-    },
-  ({ pl }) =>
-    pl && {
-      paddingLeft: pl,
-    },
-  ({ pr }) =>
-    pr && {
-      paddingRight: pr,
-    },
-  ({ pt }) =>
-    pt && {
-      paddingTop: pt,
-    },
-  ({ pb }) =>
-    pb && {
-      paddingBottom: pb,
-    },
-  ({ ml }) =>
-    ml && {
-      marginLeft: ml,
-    },
-  ({ mb }) =>
-    mb && {
-      marginBottom: mb,
-    },
-  ({ mt }) =>
-    mt && {
+  ({
+    margin,
+    m,
+    mb,
+    ml,
+    mt,
+    mr,
+    padding,
+    p,
+    pb,
+    pl,
+    pt,
+    pr,
+    display,
+    flexDirection,
+    flexWrap,
+    width,
+    height,
+    borderColor,
+    bg,
+    borderRadius,
+    borderWidth,
+    border,
+    alignContent,
+    alignItems,
+    justifyContent,
+  }) => {
+    const styles: any = {
+      alignContent,
+      alignItems,
+      justifyContent,
+      flexWrap,
+      flexDirection,
+      width,
+      height,
+      background: bg,
+      borderRadius,
       marginTop: mt,
-    },
-  ({ borderRadius }) =>
-    borderRadius && {
-      borderRadius: `${borderRadius}px`,
-    },
-  ({ border, borderWidth, borderColor }) =>
-    border
-      ? {
-          border,
-        }
-      : (borderWidth || borderColor) && {
-          border: `${borderWidth || 1}px solid ${borderColor || baseColor}`,
-        },
-  ({ mr }) =>
-    mr && {
+      marginBottom: mb,
       marginRight: mr,
-    },
+      marginLeft: ml,
+      paddingLeft: pl,
+      paddingRight: pr,
+      paddingTop: pt,
+      paddingBottom: pb,
+    };
+
+    // margin styles
+    if (margin || m) styles.margin = margin || m;
+
+    if (padding || p) styles.padding = padding || p;
+
+    // border styles
+    if (border) {
+      styles.border = border;
+    } else {
+      if (borderWidth || borderColor) {
+        styles.border = `${borderWidth || 1}px solid ${
+          borderColor || baseColor
+        }`;
+      }
+    }
+
+    // display style
+    styles.display = display || 'flex';
+
+    return styles;
+  },
 );
 
 export default Box;
