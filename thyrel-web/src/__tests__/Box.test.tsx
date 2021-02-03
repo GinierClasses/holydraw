@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Box from '../components/styles/Box';
+import Box from '../styles/Box';
 
 /*
  * test of Flex

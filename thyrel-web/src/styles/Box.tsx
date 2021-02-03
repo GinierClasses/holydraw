@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { baseColor } from './colors';
 
 // TODO : add multi
 // const multi: number = 8;
@@ -9,6 +10,11 @@ type BoxType = {
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   width?: number | string;
   height?: number | string;
+  borderColor?: string | 'baseColor';
+  className?: string;
+  borderRadius?: number;
+  borderWidth?: number;
+  border?: string;
   justifyContent?:
     | 'flex-start'
     | 'flex-end'
@@ -125,6 +131,18 @@ const Box = styled.div<BoxType>(
     mt && {
       marginTop: mt,
     },
+  ({ borderRadius }) =>
+    borderRadius && {
+      borderRadius: `${borderRadius}px`,
+    },
+  ({ border, borderWidth, borderColor }) =>
+    border
+      ? {
+          border,
+        }
+      : (borderWidth || borderColor) && {
+          border: `${borderWidth || 1}px solid ${borderColor || baseColor}`,
+        },
   ({ mr }) =>
     mr && {
       marginRight: mr,
