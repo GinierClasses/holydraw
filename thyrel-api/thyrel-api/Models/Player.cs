@@ -30,7 +30,10 @@ namespace thyrel_api.Models
         public virtual Room Room { get; set; }
 
         public List<Token> Tokens { get; set; }
-        public List<Sentence> Sentences { get; set; }
-        public List<Drawing> Drawings { get; set; }
+        
+        public List<Sentence> AlbumSentences { get; set; }
+        public List<Sentence> CreatedSentences { get; set; }
+        public List<Drawing> AlbumDrawings { get; set; }
+        public List<Drawing> CreatedDrawings { get; set; }
     }
 }

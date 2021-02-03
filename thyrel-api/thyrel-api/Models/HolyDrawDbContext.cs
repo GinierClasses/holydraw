@@ -21,14 +21,16 @@ namespace thyrel_api.Models
                 entity.ToTable("Token");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.TokenKey).IsRequired();
-                entity.HasOne(e => e.Player).WithMany(e => e.Tokens);
+                entity.HasOne(e => e.Player)
+                    .WithMany(e => e.Tokens);
             });
 
             modelBuilder.Entity<Session>(entity =>
             {
                 entity.ToTable("Session");
                 entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.Room).WithMany(e => e.Sessions);
+                entity.HasOne(e => e.Room)
+                    .WithMany(e => e.Sessions);
             });
 
             modelBuilder.Entity<Sentence>(entity =>
@@ -36,11 +38,21 @@ namespace thyrel_api.Models
                 entity.ToTable("Sentence");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Text).IsRequired();
-                entity.HasOne(e => e.Session).WithMany(e => e.Sentences);
-                entity.HasOne(e => e.Creator).WithMany(e => e.Sentences);
-                entity.HasOne(e => e.Initiator).WithMany(e => e.Sentences);
+                
+                entity.HasOne(e => e.Session)
+                    .WithMany(e => e.Sentences);
+                
+                entity.HasOne(e => e.Creator)
+                    .WithMany(e => e.CreatedSentences)
+                    .HasForeignKey(e => e.CreatorId)
+                    .HasPrincipalKey(e => e.Id);
+                
+                entity.HasOne(e => e.Initiator)
+                    .WithMany(e => e.AlbumSentences)
+                    .HasForeignKey(e => e.InitiatorId)
+                    .HasPrincipalKey(e => e.Id);
             });
-
+            
             modelBuilder.Entity<Room>(entity =>
             {
                 entity.ToTable("Room");
@@ -54,16 +66,27 @@ namespace thyrel_api.Models
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Username).IsRequired();
                 entity.Property(e => e.AvatarUrl).IsRequired();
-                entity.HasOne(e => e.Room).WithMany(e => e.Players);
+                entity.HasOne(e => e.Room)
+                    .WithMany(e => e.Players);
             });
 
             modelBuilder.Entity<Drawing>(entity =>
             {
                 entity.ToTable("Drawing");
                 entity.HasKey(e => e.Id);
-                entity.HasOne(e => e.Session).WithMany(e => e.Drawings);
-                entity.HasOne(e => e.Creator).WithMany(e => e.Drawings);
-                entity.HasOne(e => e.Initiator).WithMany(e => e.Drawings);
+
+                entity.HasOne(e => e.Session)
+                    .WithMany(e => e.Drawings);
+
+                entity.HasOne(e => e.Initiator)
+                    .WithMany(e => e.AlbumDrawings)
+                    .HasForeignKey(e => e.InitiatorId)
+                    .HasPrincipalKey(e => e.Id);
+                
+                entity.HasOne(e => e.Creator)
+                    .WithMany(e => e.CreatedDrawings)
+                    .HasForeignKey(e => e.CreatorId)
+                    .HasPrincipalKey(e => e.Id);
             });
         }
     }
