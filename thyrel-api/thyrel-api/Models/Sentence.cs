@@ -1,21 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace thyrel_api.Models
 {
     public class Sentence
     {
-        public int Id { get; set; }
+        public Sentence() { }
+
+        public Sentence(int? id, string text, int step, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
+        {
+            Id = id;
+            Text = text;
+            Step = step;
+            CreatedAt = createdAt;
+            CreatorId = creatorId;
+            InitiatorId = initiatorId;
+            SessionId = sessionId;
+        }
+
+        public int? Id { get; set; }
         public string Text { get; set; }
         public int Step { get; set; }
-        public int OwnerUserId { get; set; }
-        public int CreatorUserId { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        [ForeignKey("OwnerUserId")]
-        public virtual User OwnerUser { get; set; }
+        public int CreatorId { get; set; }
+        public virtual Player Creator { get; set; }
 
-        [ForeignKey("CreatorUserId")]
-        public virtual User CreatorUser { get; set; }
+        public int InitiatorId { get; set; }
+        public virtual Player Initiator { get; set; }
 
-        public Sentence() { }
+        public int SessionId { get; set; }
+        public virtual Session Session { get; set; }
     }
 }
