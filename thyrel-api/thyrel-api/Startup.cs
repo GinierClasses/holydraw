@@ -72,29 +72,6 @@ namespace thyrel_api
 
             app.UseWebSockets(webSocketOptions);
             
-            /*app.Use(async (context, next) =>
-            {
-                if (context.Request.Path == "/ws")
-                {
-                    if (context.WebSockets.IsWebSocketRequest)
-                    {
-                        using (WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync())
-                        {
-                            await Echo(context, webSocket);
-                        }
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = 400;
-                    }
-                }
-                else
-                {
-                    await next();
-                }
-
-            });*/
-            
             app.UseFileServer();
             app.UseHttpsRedirection();
             app.UseRouting();
@@ -105,25 +82,6 @@ namespace thyrel_api
             {
                 endpoints.MapControllers();
             });
-        }
-
-        private async Task Echo(HttpContext context, WebSocket webSocket)
-        {
-            var buffer = new byte[1024 * 4];
-            WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            while (!result.CloseStatus.HasValue)
-            {
-                //await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
-
-                var response = string.Format("Hello! Time {0}", DateTime.Now);
-                var bytes = System.Text.Encoding.UTF8.GetBytes(response);
-
-                await webSocket.SendAsync(new System.ArraySegment<byte>(bytes),
-                    WebSocketMessageType.Text, true, CancellationToken.None);
-
-                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            }
-            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
         }
     }
 }

@@ -32,7 +32,6 @@ namespace thyrel_api.Websocket
 
             while (webSocket.State == WebSocketState.Open)
             {
-                
                 var message = await ReceiveMessage(id, webSocket);
                 if (message != null)
                 {
