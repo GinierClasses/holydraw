@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace thyrel_api.Models
 {
@@ -6,14 +7,29 @@ namespace thyrel_api.Models
     {
         public Sentence() { }
 
-        public int Id { get; set; }
+        public Sentence(int? id, string text, int step, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
+        {
+            Id = id;
+            Text = text;
+            Step = step;
+            CreatedAt = createdAt;
+            CreatorId = creatorId;
+            InitiatorId = initiatorId;
+            SessionId = sessionId;
+        }
+
+        public int? Id { get; set; }
         public string Text { get; set; }
         public int Step { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        public int OwnerUserId { get; set; }
-        public virtual Player OwnerPlayer { get; set; }
+        public int CreatorId { get; set; }
+        public virtual Player Creator { get; set; }
 
-        public int CreatorUserId { get; set; }
-        public virtual Player CreatorPlayer { get; set; }
+        public int InitiatorId { get; set; }
+        public virtual Player Initiator { get; set; }
+
+        public int SessionId { get; set; }
+        public virtual Session Session { get; set; }
     }
 }
