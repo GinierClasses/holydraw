@@ -1,6 +1,3 @@
-// src/components/UserCard.tsx
-
-// Imports of components
 import { Avatar } from 'rsuite';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
@@ -22,7 +19,6 @@ const StyledAvatar = styled(Avatar)({
   height: '48px',
 });
 
-// The component itself
 export default function UserCard({
   id,
   name,
