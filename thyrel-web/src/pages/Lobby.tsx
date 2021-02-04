@@ -1,4 +1,4 @@
 // component when we are in a Lobby (in waiting of game start)
 export default function Lobby() {
-  return <div>You're in Lobby</div>;
+  return <p>this is the lobby</p>;
 }
