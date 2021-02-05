@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace thyrel_api.Models
 {
@@ -20,5 +21,8 @@ namespace thyrel_api.Models
 
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
+
+        public virtual List<Sentence> Sentences { get; set; }
+        public virtual List<Drawing> Drawings { get; set; }
     }
 }
