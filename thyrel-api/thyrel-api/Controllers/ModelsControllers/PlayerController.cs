@@ -80,12 +80,12 @@ namespace thyrel_api.Controllers.ModelsControllers
             }
         }
 
-        public void SetIsPlaying(Player player)
+        public void SetIsPlaying(Player player, bool isPlaying)
         {
             var dbPlayer = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == player.Id);
             if (dbPlayer == null)
                 return;
-            player.IsPlaying = true;
+            player.IsPlaying = isPlaying;
             try
             {
                 _holyDrawDbContext.Player.Attach(player);
