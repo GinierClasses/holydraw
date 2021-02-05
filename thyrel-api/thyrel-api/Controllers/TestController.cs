@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,14 @@ namespace thyrel_api.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            using (var context = new HolyDrawDbContext())
+            {
+                var rooms = context.Room.ToList();
+                context.Room.Add(new Room(null, "ID:LOLMDRDULOL:45", null, DateTime.Now));
+                context.SaveChanges();
+                var rooms2 = context.Room.ToList();
+            }
+
             yield return "API is happy to see you";
         }
 

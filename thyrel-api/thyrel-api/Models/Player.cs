@@ -23,6 +23,7 @@ namespace thyrel_api.Models
         public string Username { get; set; }
         public string AvatarUrl { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsPlaying { get; set; }
         public DateTime? DisableAt { get; set; }
         public DateTime CreatedAt { get; set; }
         
@@ -30,5 +31,10 @@ namespace thyrel_api.Models
         public virtual Room Room { get; set; }
 
         public List<Token> Tokens { get; set; }
+        
+        public List<Sentence> AlbumSentences { get; set; }
+        public List<Sentence> CreatedSentences { get; set; }
+        public List<Drawing> AlbumDrawings { get; set; }
+        public List<Drawing> CreatedDrawings { get; set; }
     }
 }
