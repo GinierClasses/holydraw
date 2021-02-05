@@ -19,11 +19,11 @@ namespace thyrel_api.Controllers.ModelsControllers
         {
             const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";
             var random = new Random();
-            var Identifier = new string(
+            var givenIdentifier = new string(
                 Enumerable.Repeat(allChar, 8)
                     .Select(identifier => identifier[random.Next(identifier.Length)]).ToArray());
 
-            Room roomToAdd = new Room(null, Identifier, null, DateTime.Now);
+            Room roomToAdd = new Room(null, givenIdentifier, null, DateTime.Now);
 
             _holyDrawDbContext.Room.Add(roomToAdd);
             SaveChanges();
@@ -33,16 +33,26 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Room GetRoom(int id)
+        public Room GetRoomById(int id)
         {
             var room = _holyDrawDbContext.Room.SingleOrDefault(p => p.Id == id);
+            return room;
+        }
+        /// <summary>
+        /// To get a Room by it's Identifier
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
+        public Room GetRoomByIdentifier(string identifier)
+        {
+            var room = _holyDrawDbContext.Room.SingleOrDefault(p => p.Identifier == identifier);
             return room;
         }
         /// <summary>
         /// To end a Room ( set the discard date to now)
         /// </summary>
         /// <param name="room"></param>
-        public void End(Room room)
+        public void Finish(Room room)
         {
             var dbRoom = _holyDrawDbContext.Room.SingleOrDefault(p => p.Id == room.Id);
             if (dbRoom == null)
