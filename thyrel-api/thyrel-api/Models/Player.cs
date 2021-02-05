@@ -23,6 +23,7 @@ namespace thyrel_api.Models
         public string Username { get; set; }
         public string AvatarUrl { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsPlaying { get; set; }
         public DateTime? DisableAt { get; set; }
         public DateTime CreatedAt { get; set; }
         
