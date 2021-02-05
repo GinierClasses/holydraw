@@ -79,6 +79,24 @@ namespace thyrel_api.Controllers.ModelsControllers
                 Console.WriteLine(e);
             }
         }
+
+        public void SetIsPlaying(Player player)
+        {
+            var dbPlayer = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == player.Id);
+            if (dbPlayer == null)
+                return;
+            player.IsPlaying = true;
+            try
+            {
+                _holyDrawDbContext.Player.Attach(player);
+                _holyDrawDbContext.Entry(dbPlayer).State = EntityState.Modified;
+                SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private void SaveChanges()
         {
             _holyDrawDbContext.SaveChangesAsync();
