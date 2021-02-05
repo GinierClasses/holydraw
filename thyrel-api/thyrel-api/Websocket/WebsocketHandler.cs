@@ -65,6 +65,12 @@ namespace thyrel_api.Websocket
             return null;
         }
 
+        /// <summary>
+        /// Send a message to websocket matching with the RoomId
+        /// </summary>
+        /// <param name="message">Message to send, stringify if Json</param>
+        /// <param name="roomId">Id of the room to send</param>
+        /// <returns></returns>
         public async Task SendMessageToSockets(string message, int? roomId = null)
         {
             IEnumerable<SocketConnection> toSentTo;
@@ -106,7 +112,7 @@ namespace thyrel_api.Websocket
 
                     foreach (var closedWebsocketConnection in closedSockets)
                     {
-                        await SendMessageToSockets($"User with id <b>{closedWebsocketConnection.Id}</b> has left the chat");
+                        await SendMessageToSockets($"{closedWebsocketConnection.Id} disc");
                     }
                     
                     await Task.Delay(5000);
@@ -121,7 +127,8 @@ namespace thyrel_api.Websocket
     {
         public Guid Id { get; set; }
         public WebSocket WebSocket { get; set; }
-        public int? RoomId { get; set; } 
+        public int? RoomId { get; set; }
+        public int? PlayerId { get; set; }
     }
 
     public class RoomSocketJson
