@@ -1,15 +1,17 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { getToken } from '../api/player-provider';
+import { testApiUrl } from '../test/data';
+
+const apiURL = process.env.REACT_APP_API_URL || testApiUrl;
+const domainRegExp = /\b(?:(?:https?|ftp):\/\/)?([^/\n]+)\/?/;
 
 type RoomSocketContextProps = {
-  websocket?: WebSocket,
+  websocket?: WebSocket;
   connect?: () => void;
-}
-
+};
 const RoomSocketContext = React.createContext<RoomSocketContextProps>({});
 
-enum WsStates {
+export enum WsStates {
   IDLE = 'IDLE TIME',
   CONNECTING = 'CONNECTION STARTED',
   CONNECTED = 'CONNECTION SUCCESSFUL',
@@ -19,38 +21,48 @@ enum WsStates {
 
 type RoomSocketContextProviderProps = {
   children: React.ReactElement;
+  onMessage?: (message: string) => void;
 };
 
 export function RoomSocketContextProvider({
   children,
+  onMessage,
 }: RoomSocketContextProviderProps) {
   const [websocket, setWebsocket] = React.useState<WebSocket>();
   const [wsState, setWsState] = React.useState<WsStates>(WsStates.IDLE);
-  const history = useHistory();
 
-
-  function connect() {
-    const url = `${'wss'}://${'api'}/stream`;
+  const connect = React.useCallback(() => {
+    const url = `${'wss'}://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
     const socket = new WebSocket(url);
 
     setWsState(WsStates.CONNECTING);
     setWebsocket(socket);
 
-    socket.onopen = function (event) {
-      socket.send(JSON.stringify({ PlayerIdentifier: getToken() }));
-
+    socket.onopen = function () {
+      // identifie the request
+      socket.send(JSON.stringify({ PlayerToken: getToken() }));
       setWsState(WsStates.CONNECTED);
     };
 
-    socket.onmessage = function (event) {};
-
-    socket.onclose = function (event) {
+    socket.onclose = function () {
       setWsState(WsStates.CLOSED);
     };
-  }
+  }, []);
 
-  const values = { websocket, connect };
-  
+  React.useEffect(() => {
+    connect();
+  }, [connect]);
+
+  React.useEffect(() => {
+    if (websocket) {
+      websocket.onmessage = function (event) {
+        onMessage?.(event.data);
+      };
+    }
+    return () => websocket?.close();
+  }, [onMessage, websocket]);
+
+  const values = { websocket, wsState };
 
   return (
     <RoomSocketContext.Provider value={values}>

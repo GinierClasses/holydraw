@@ -2,8 +2,13 @@ using thyrel_api.Models;
 
 namespace thyrel_api.Websocket
 {
-    public abstract class RoomSocketJson
+    public class RoomSocketJson
     {
+        public RoomSocketJson(string playerToken)
+        {
+            PlayerToken = playerToken;
+        }
+
         public string PlayerToken { get; set; }
     }
 
