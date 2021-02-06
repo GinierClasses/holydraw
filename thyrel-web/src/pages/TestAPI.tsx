@@ -1,15 +1,18 @@
 import { css } from '@emotion/css';
 import React from 'react';
 import { Button, Input } from 'rsuite';
+import { client } from '../api/client';
+import { setToken } from '../api/player-provider';
+import Player from '../types/Player.type';
 
 export default function TestAPI() {
   const [data, setData] = React.useState<any>();
   const [testedValue, setTestedValue] = React.useState<string>('');
 
   function getTestData() {
-    fetch('https://localhost:5001/api/test')
-      .then(data => data.json())
-      .then(setData, () => setData('ERROR: api could not be called'));
+    client<Player>("test").then((player: Player) => {
+      setToken(player.token.tokenKey)
+    })
   }
 
   function sendPostRequest() {

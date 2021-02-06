@@ -1,7 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { getToken } from '../api/player-provider';
 
-const RoomSocketContext = React.createContext({});
+type RoomSocketContextProps = {
+  websocket?: WebSocket,
+  connect?: () => void;
+}
+
+const RoomSocketContext = React.createContext<RoomSocketContextProps>({});
 
 enum WsStates {
   IDLE = 'IDLE TIME',
@@ -22,14 +28,16 @@ export function RoomSocketContextProvider({
   const [wsState, setWsState] = React.useState<WsStates>(WsStates.IDLE);
   const history = useHistory();
 
-  const values = { websocket };
 
   function connect() {
     const url = `${'wss'}://${'api'}/stream`;
     const socket = new WebSocket(url);
 
+    setWsState(WsStates.CONNECTING);
+    setWebsocket(socket);
+
     socket.onopen = function (event) {
-      socket.send(JSON.stringify({ PlayerId: 12 }));
+      socket.send(JSON.stringify({ PlayerIdentifier: getToken() }));
 
       setWsState(WsStates.CONNECTED);
     };
@@ -39,9 +47,10 @@ export function RoomSocketContextProvider({
     socket.onclose = function (event) {
       setWsState(WsStates.CLOSED);
     };
-    setWsState(WsStates.CONNECTING);
-    setWebsocket(socket);
   }
+
+  const values = { websocket, connect };
+  
 
   return (
     <RoomSocketContext.Provider value={values}>
