@@ -7,25 +7,26 @@ namespace thyrel_api.Controllers.ModelsControllers
 {
     public class PlayerController
     {
-        private HolyDrawDbContext _holyDrawDbContext { get; set; }
+        private readonly HolyDrawDbContext _holyDrawDbContext;
         public PlayerController()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }
+
         /// <summary>
         /// To add a new Player
         /// </summary>
         /// <param name="username"></param>
         /// <param name="avatarUrl"></param>
         /// <param name="isOwner"></param>
-        /// <param name="createdAt"></param>
-        public void Add(string username, string avatarUrl, bool isOwner, int roomId)
+        /// <param name="roomId"></param>
+        public Player Add(string username, string avatarUrl, bool isOwner, int roomId)
         {
+            var playerToAdd = new Player(null, username, avatarUrl, isOwner, null, DateTime.Now, roomId);
 
-            Player playerToAdd = new Player(null, username, avatarUrl, isOwner, null, DateTime.Now, roomId);
-
-            _holyDrawDbContext.Player.Add(playerToAdd);
+            var entity = _holyDrawDbContext.Player.Add(playerToAdd);
             SaveChanges();
+            return entity.Entity;
         }
         /// <summary>
         /// To get a Player by it's ID
@@ -38,7 +39,7 @@ namespace thyrel_api.Controllers.ModelsControllers
             return player;
         }
         /// <summary>
-        /// To disable a Player ( set the discard date to now)
+        /// To disable a Player (set the discard date to now)
         /// </summary>
         /// <param name="player"></param>
         public void Disable(Player player)
@@ -47,16 +48,7 @@ namespace thyrel_api.Controllers.ModelsControllers
             if (dbPlayer == null)
                 return;
             player.DisableAt = DateTime.Now;
-            try
-            {
-                _holyDrawDbContext.Player.Attach(player);
-                _holyDrawDbContext.Entry(dbPlayer).State = EntityState.Modified;
-                SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            UpdatePlayer(dbPlayer, player);
         }
         /// <summary>
         /// Set the Player as Owner
@@ -68,16 +60,7 @@ namespace thyrel_api.Controllers.ModelsControllers
             if (dbPlayer == null)
                 return;
             player.IsOwner = true;
-            try
-            {
-                _holyDrawDbContext.Player.Attach(player);
-                _holyDrawDbContext.Entry(dbPlayer).State = EntityState.Modified;
-                SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            UpdatePlayer(dbPlayer, player);
         }
 
         public void SetIsPlaying(Player player, bool isPlaying)
@@ -86,6 +69,11 @@ namespace thyrel_api.Controllers.ModelsControllers
             if (dbPlayer == null)
                 return;
             player.IsPlaying = isPlaying;
+            UpdatePlayer(dbPlayer, player);
+        }
+
+        private void UpdatePlayer(Player dbPlayer, Player player)
+        {
             try
             {
                 _holyDrawDbContext.Player.Attach(player);

@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using thyrel_api.Controllers.ModelsControllers;
 using thyrel_api.Models;
 
 namespace thyrel_api.Controllers
@@ -15,17 +15,10 @@ namespace thyrel_api.Controllers
         }
         // GET: api/Test
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<Room>> Get()
         {
-            using (var context = new HolyDrawDbContext())
-            {
-                var rooms = context.Room.ToList();
-                context.Room.Add(new Room(null, "ID:LOLMDRDULOL:45", null, DateTime.Now));
-                context.SaveChanges();
-                var rooms2 = context.Room.ToList();
-            }
-
-            yield return "API is happy to see you";
+            var tc = new RoomController();
+            return tc.GetRoom(1);
         }
 
         // POST: api/Test

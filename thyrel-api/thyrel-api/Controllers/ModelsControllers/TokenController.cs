@@ -1,15 +1,13 @@
 using System;
 using System.Linq;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using thyrel_api.Models;
 
 namespace thyrel_api.Controllers.ModelsControllers
 {
     public class TokenController
     {
-        private HolyDrawDbContext _holyDrawDbContext { get; set; }
+        public readonly HolyDrawDbContext _holyDrawDbContext;
         public TokenController()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
@@ -19,7 +17,7 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// Create a new Token autogenerate
         /// </summary>
         /// <param name="playerId">Id of player's token</param>
-        public void Add(int playerId)
+        public Token Add(int playerId)
         {
             const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";  
             var random = new Random();  
@@ -27,8 +25,10 @@ namespace thyrel_api.Controllers.ModelsControllers
                 Enumerable.Repeat(allChar , 8)  
                     .Select(token => token[random.Next(token.Length)]).ToArray());   
    
-            _holyDrawDbContext.Token.Add(new Token(null, resultToken, playerId));
+            var entry = _holyDrawDbContext.Token.Add(new Token(null, resultToken, playerId));
             SaveChanges();
+            
+            return entry.Entity;
         }
 
         /// <summary>
@@ -60,8 +60,9 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// <returns>Return the Player with associated key if player exist or null</returns>
         public Player FindPlayer(string key)
         {
-            var token = _holyDrawDbContext.Token.SingleOrDefault(t => t.TokenKey == key);
-            return token?.Player;
+            var token = _holyDrawDbContext.Token
+                .Where(t => t.TokenKey == key && t.DiscardAt != null);
+            return token.Last()?.Player;
         } 
 
         private void SaveChanges()
