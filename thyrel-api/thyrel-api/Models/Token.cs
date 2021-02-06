@@ -14,21 +14,18 @@ namespace thyrel_api.Models
         /// <param name="id">id</param>
         /// <param name="tokenKey">key</param>
         /// <param name="playerId">playerId</param>
-        public Token(int? id, string tokenKey, int playerId)
+        public Token(int? id, string tokenKey)
         {
             Id = id;
             TokenKey = tokenKey;
             CreatedAt = DateTime.Now;
-            PlayerId = playerId;
         }
 
         public int? Id { get; set; }
         public string TokenKey { get; set; }
         public DateTime? DiscardAt { get; set; }
         public DateTime CreatedAt { get; set; }
-
-        public int PlayerId { get; set; }
-        [ForeignKey("PlayerId")]
-        public virtual Player Player{ get; set; }
+        
+        public List<Player> Players { get; set; }
     }
 }

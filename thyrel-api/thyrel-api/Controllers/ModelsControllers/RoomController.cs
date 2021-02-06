@@ -17,10 +17,10 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// </summary>
         public Room Add()
         {
-            const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";
+            const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
             var random = new Random();
             var givenIdentifier = new string(
-                Enumerable.Repeat(allChar, 8)
+                Enumerable.Repeat(allChar, 12)
                     .Select(identifier => identifier[random.Next(identifier.Length)]).ToArray());
 
             var roomToAdd = new Room(null, givenIdentifier, null, DateTime.Now);

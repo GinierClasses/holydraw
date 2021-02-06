@@ -16,8 +16,7 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// <summary>
         /// Create a new Token autogenerate
         /// </summary>
-        /// <param name="playerId">Id of player's token</param>
-        public Token Add(int playerId)
+        public Token Add()
         {
             const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";  
             var random = new Random();  
@@ -25,9 +24,9 @@ namespace thyrel_api.Controllers.ModelsControllers
                 Enumerable.Repeat(allChar , 16)  
                     .Select(token => token[random.Next(token.Length)]).ToArray());   
    
-            var entry = _holyDrawDbContext.Token.Add(new Token(null, resultToken, playerId));
+            var entry = _holyDrawDbContext.Token.Add(new Token(null, resultToken));
             SaveChanges();
-            
+
             return entry.Entity;
         }
 
@@ -62,7 +61,7 @@ namespace thyrel_api.Controllers.ModelsControllers
         {
             var token = _holyDrawDbContext.Token
                 .Where(t => t.TokenKey == key && t.DiscardAt != null);
-            return token.Last()?.Player;
+            return token.Last()?.Players.First();
         } 
 
         private void SaveChanges()

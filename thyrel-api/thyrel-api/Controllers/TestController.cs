@@ -20,10 +20,17 @@ namespace thyrel_api.Controllers
 
         // GET: api/Test
         [HttpGet]
-        public async Task<ActionResult<Room>> Get()
+        public async Task<ActionResult<Player>> Get()
         {
-            var tc = new RoomController();
-            return tc.GetRoom(1);
+            var rc = new RoomController();
+            var pc = new PlayerController();
+            var tc = new TokenController();
+
+            var room = rc.Add();
+            var token = tc.Add();
+            var player = pc.Add("jean", "didier", true, room.Id ?? 1, token.Id ?? 1);
+            
+            return pc.GetPlayer(player.Id ?? 1);
         }
         
         // POST: api/Test

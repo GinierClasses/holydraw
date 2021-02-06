@@ -8,7 +8,8 @@ namespace thyrel_api.Models
     {
         public Player() { }
 
-        public Player(int? id, string username, string avatarUrl, bool isOwner, DateTime? disableAt, DateTime createdAt, int roomId)
+        public Player(int? id, string username, string avatarUrl, bool isOwner, DateTime? disableAt, DateTime createdAt,
+            int roomId, int tokenId)
         {
             Id = id;
             Username = username;
@@ -17,6 +18,7 @@ namespace thyrel_api.Models
             DisableAt = disableAt;
             CreatedAt = createdAt;
             RoomId = roomId;
+            TokenId = tokenId;
         }
 
         public int? Id { get; set; }
@@ -30,7 +32,8 @@ namespace thyrel_api.Models
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
 
-        public List<Token> Tokens { get; set; }
+        public int TokenId { get; set; }
+        public Token Token { get; set; }
         
         public virtual List<Sentence> AlbumSentences { get; set; }
         public virtual List<Sentence> CreatedSentences { get; set; }

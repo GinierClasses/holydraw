@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using thyrel_api.Controllers.ModelsControllers;
+using thyrel_api.Models;
 
 namespace thyrel_api.Websocket
 {
@@ -28,8 +30,6 @@ namespace thyrel_api.Websocket
                 });
             }
 
-            await SendMessageToSockets($"User with id <b>{id}</b> has joined the chat");
-
             while (webSocket.State == WebSocketState.Open)
             {
                 var message = await ReceiveMessage(id, webSocket);
@@ -39,15 +39,22 @@ namespace thyrel_api.Websocket
                     {
                         AllowTrailingCommas = true
                     };
-                    var calledConnection = websocketConnections.Find(w => w.Id == id);
+                    var connection = websocketConnections.Find(w => w.Id == id);
 
-                    if (calledConnection != null && calledConnection.RoomId == null)
+                    if (connection != null && connection.RoomId == null)
                     {
                         var socketJson =  JsonSerializer.Deserialize<RoomSocketJson>(message, options);
-                        if (socketJson != null) calledConnection.RoomId = socketJson.RoomId;
+                        var playerToken = socketJson?.PlayerToken;
+                        if (playerToken != null)
+                        {
+                            var player = new PlayerController().GetPlayerByToken(playerToken);
+                            if (player == null) continue;
+                            connection.RoomId = player.RoomId;
+                            await SendMessageToSockets(
+                                JsonSerializer.Serialize(
+                                    new EventJson(WebsocketEvent.NEW_PLAYER_JOIN)));
+                        }
                     }
-                    
-                    await SendMessageToSockets(message);
                 }
 
             }
@@ -117,10 +124,8 @@ namespace thyrel_api.Websocket
                     
                     await Task.Delay(5000);
                 }
-                    
             });
         }
-
     }
 
     public class SocketConnection
@@ -129,11 +134,5 @@ namespace thyrel_api.Websocket
         public WebSocket WebSocket { get; set; }
         public int? RoomId { get; set; }
         public int? PlayerId { get; set; }
-    }
-
-    public class RoomSocketJson
-    {
-        public int PlayerId { get; set; }
-        public int? RoomId { get; set; }
     }
 }
