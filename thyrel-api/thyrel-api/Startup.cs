@@ -3,16 +3,10 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using thyrel_api.Models;
-using System;
-using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using thyrel_api.Websocket;
+using System;
 
 namespace thyrel_api
 {
@@ -39,6 +33,12 @@ namespace thyrel_api
         {
             services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
             
+            // it's a config for stop infinite looping
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+
             // allow controlled to be used as injected props
             // services.AddMvcCore().AddControllersAsServices();
             // add controller in application

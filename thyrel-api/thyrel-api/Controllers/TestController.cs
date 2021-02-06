@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.Controllers.ModelsControllers;
 using thyrel_api.Models;
@@ -22,11 +20,10 @@ namespace thyrel_api.Controllers
 
         // GET: api/Test
         [HttpGet]
-        public async IAsyncEnumerable<string> Get()
+        public async Task<ActionResult<Room>> Get()
         {
-            new TokenController().Add(1);
-            await _websocketHandler.SendMessageToSockets("Je suis en fou rire", null);
-            yield return "API is happy to see you";
+            var tc = new RoomController();
+            return tc.GetRoom(1);
         }
         
         // POST: api/Test

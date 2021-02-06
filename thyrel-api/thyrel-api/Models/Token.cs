@@ -28,6 +28,7 @@ namespace thyrel_api.Models
         public DateTime CreatedAt { get; set; }
 
         public int PlayerId { get; set; }
+        [ForeignKey("PlayerId")]
         public virtual Player Player{ get; set; }
     }
 }
