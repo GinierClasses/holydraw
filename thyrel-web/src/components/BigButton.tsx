@@ -47,7 +47,7 @@ export default function BigButton({
         ) : null}
         <span
           className={css({
-            marginLeft: 16,
+            marginLeft: icon ? 16 : undefined,
             fontWeight: 'bold',
             width: '100%',
           })}>
