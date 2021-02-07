@@ -13,8 +13,8 @@ type BigButtonProps = {
 };
 
 const StyledButton = styled(Button)(({ size }) => ({
-  height: size === 'md' ? 32 : size === 'lg' ? 58 : undefined,
-  fontSize: size === 'md' ? 16 : size === 'lg' ? 32 : undefined,
+  height: size === 'md' ? 42 : size === 'lg' ? 58 : undefined,
+  fontSize: size === 'md' ? 24 : size === 'lg' ? 32 : undefined,
   padding: '8px 16px',
   minWidth: 196,
   boxShadow: '0px 8px 1px rgba(0, 0, 0, 0.5)',
@@ -28,7 +28,7 @@ const StyledButton = styled(Button)(({ size }) => ({
 export default function BigButton({
   children,
   icon,
-  size,
+  size = 'md',
   onClick,
 }: BigButtonProps) {
   return (
@@ -38,10 +38,16 @@ export default function BigButton({
       bg={baseColor}
       size={size}>
       <Box alignItems="center">
-        {icon ? <Icon icon={icon} size={size === 'md' ? '2x' : '3x'} /> : null}
+        {icon ? (
+          <Icon
+            icon={icon}
+            size={size === 'md' ? '2x' : '3x'}
+            data-testid="bigbutton-icon"
+          />
+        ) : null}
         <span
           className={css({
-            marginLeft: 8,
+            marginLeft: 16,
             fontWeight: 'bold',
             width: '100%',
           })}>
