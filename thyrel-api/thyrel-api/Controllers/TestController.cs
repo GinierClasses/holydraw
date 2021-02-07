@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,24 +11,23 @@ namespace thyrel_api.Controllers
   [ApiController]
   public class TestController : ControllerBase
   {
-    public TestController()
-    {
-    }
-    // GET: api/Test
-    [HttpGet]
-    public async Task<ActionResult<Player>> Get()
-    {
-      new TokenController().Add(1);
-      HolyDrawDbContext holyDrawDbContext = new HolyDrawDbContext();
-      var player = holyDrawDbContext.Player.OrderBy(b => b.CreatedAt).Last();
-      return player;
-    }
+        public TestController()
+        {
+        }
 
-    // POST: api/Test
-    [HttpPost]
-    public IEnumerable<string> Post([FromBody] string value)
-    {
-      return new[] { "Here is you're value", value };
+        // GET: api/Test
+        [HttpGet]
+        public async Task<ActionResult<Room>> Get()
+        {
+            var tc = new RoomController();
+            return tc.GetRoom(1);
+        }
+
+        // POST: api/Test
+        [HttpPost]
+        public IEnumerable<string> Post([FromBody] string value)
+        {
+          return new[] { "Here is you're value", value };
+        }
     }
-  }
 }
