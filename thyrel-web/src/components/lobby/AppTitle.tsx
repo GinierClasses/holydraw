@@ -4,14 +4,15 @@ import { baseColor } from '../../styles/colors';
 export default function UserCard() {
   return (
     <div>
-      <p
+      <h1
         className={css({
           fontFamily: 'Modak',
           fontSize: 50,
+          fontWeight: 'normal',
+          color: '#FFFFFF',
         })}>
-        <span className={css({ color: '#FFFFFF' })}>Holy</span>
-        <span className={css({ color: baseColor })}>Draw</span>
-      </p>
+        Holy<span className={css({ color: baseColor })}>Draw</span>
+      </h1>
     </div>
   );
 }
