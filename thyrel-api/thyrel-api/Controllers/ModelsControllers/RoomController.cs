@@ -7,7 +7,7 @@ namespace thyrel_api.Controllers.ModelsControllers
 {
     public class RoomController
     {
-        private HolyDrawDbContext _holyDrawDbContext { get; set; }
+        private readonly HolyDrawDbContext _holyDrawDbContext;
         public RoomController()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
@@ -15,7 +15,7 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// <summary>
         /// Add a new room
         /// </summary>
-        public void Add()
+        public Room Add()
         {
             const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";
             var random = new Random();
@@ -23,19 +23,22 @@ namespace thyrel_api.Controllers.ModelsControllers
                 Enumerable.Repeat(allChar, 8)
                     .Select(identifier => identifier[random.Next(identifier.Length)]).ToArray());
 
-            Room roomToAdd = new Room(null, givenIdentifier, null, DateTime.Now);
+            var roomToAdd = new Room(null, givenIdentifier, null, DateTime.Now);
 
-            _holyDrawDbContext.Room.Add(roomToAdd);
+            var entity = _holyDrawDbContext.Room.Add(roomToAdd);
             SaveChanges();
+            return entity.Entity;
         }
         /// <summary>
         /// To get a Room by it's ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Room GetRoomById(int id)
+        public Room GetRoom(int id)
         {
-            var room = _holyDrawDbContext.Room.SingleOrDefault(p => p.Id == id);
+            var room = _holyDrawDbContext.Room
+                .Include(r => r.Players)
+                .SingleOrDefault(p => p.Id == id);
             return room;
         }
         /// <summary>
@@ -43,9 +46,11 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// </summary>
         /// <param name="identifier"></param>
         /// <returns></returns>
-        public Room GetRoomByIdentifier(string identifier)
+        public Room GetRoom(string identifier)
         {
-            var room = _holyDrawDbContext.Room.SingleOrDefault(p => p.Identifier == identifier);
+            var room = _holyDrawDbContext.Room
+                .Include(r => r.Players)
+                .SingleOrDefault(p => p.Identifier == identifier);
             return room;
         }
         /// <summary>
@@ -54,7 +59,8 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// <param name="room"></param>
         public void Finish(Room room)
         {
-            var dbRoom = _holyDrawDbContext.Room.SingleOrDefault(p => p.Id == room.Id);
+            var dbRoom = _holyDrawDbContext.Room
+                .SingleOrDefault(p => p.Id == room.Id);
             if (dbRoom == null)
                 return;
             dbRoom.FinishAt = DateTime.Now;
