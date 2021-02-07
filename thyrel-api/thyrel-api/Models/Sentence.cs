@@ -25,11 +25,11 @@ namespace thyrel_api.Models
 
         public int CreatorId { get; set; }
         [ForeignKey("CreatorId")]
-        public Player Creator { get; set; }
+        public virtual Player Creator { get; set; }
 
         public int InitiatorId { get; set; }
         [ForeignKey("InitiatorId")]
-        public Player Initiator { get; set; }
+        public virtual Player Initiator { get; set; }
 
         public int SessionId { get; set; }
         public virtual Session Session { get; set; }
