@@ -3,12 +3,12 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
-namespace thyrel_api.Controllers.ModelsControllers
+namespace thyrel_api.Controllers
 {
-    public class TokenController
+    public class MTokenController
     {
-        public readonly HolyDrawDbContext _holyDrawDbContext;
-        public TokenController()
+        private readonly HolyDrawDbContext _holyDrawDbContext;
+        public MTokenController()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }

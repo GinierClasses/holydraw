@@ -49,17 +49,21 @@ namespace thyrel_api.Websocket
                         // if no Token we send a invalid message
                         if (playerToken == null)
                         {
-                            await SendMessageToSockets(
+                            await SendMessageToSocket(
+                                connection,
                                 JsonSerializer.Serialize(
                                     new EventJson(WebsocketEvent.Invalid)));
+                            continue;
                         }
-                        var player = new PlayerController().GetPlayerByToken(playerToken);
+                        var player = new MPlayerController().GetPlayerByToken(playerToken);
                         // if no matching token, we send a invalid message
                         if (player == null)
                         {
-                            await SendMessageToSockets(
+                            await SendMessageToSocket(
+                                connection,
                                 JsonSerializer.Serialize(
                                     new EventJson(WebsocketEvent.Invalid)));
+                            continue;
                         }
                         connection.RoomId = player?.RoomId;
                         await SendMessageToSockets(
@@ -102,13 +106,18 @@ namespace thyrel_api.Websocket
 
             var tasks = toSentTo.Select(async websocketConnection =>
             {
-                if (websocketConnection.WebSocket.State == WebSocketState.Open) { 
-                   var bytes = Encoding.Default.GetBytes(message);
-                   var arraySegment = new ArraySegment<byte>(bytes);
-                   await websocketConnection.WebSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
-                }
+                await SendMessageToSocket(websocketConnection, message);
             });
             await Task.WhenAll(tasks);
+        }
+
+        private async Task SendMessageToSocket(SocketConnection socketConnection, string message) 
+        {
+            if (socketConnection.WebSocket.State == WebSocketState.Open) { 
+                var bytes = Encoding.Default.GetBytes(message);
+                var arraySegment = new ArraySegment<byte>(bytes);
+                await socketConnection.WebSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
+            }
         }
 
         private void SetupCleanUpTask()

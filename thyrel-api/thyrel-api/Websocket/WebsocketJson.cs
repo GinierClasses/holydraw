@@ -14,11 +14,11 @@ namespace thyrel_api.Websocket
 
     public class EventJson
     {
-        public WebsocketEvent WebsocketEvent { get; }
+        public WebsocketEvent websocketEvent { get; }
 
         public EventJson(WebsocketEvent websocketEvent)
         {
-            WebsocketEvent = websocketEvent;
+            this.websocketEvent = websocketEvent;
         }
     }
 }

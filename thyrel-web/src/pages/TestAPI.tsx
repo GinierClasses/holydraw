@@ -1,5 +1,6 @@
 import { css } from '@emotion/css';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, Input } from 'rsuite';
 import { client } from '../api/client';
 import { setToken } from '../api/player-provider';
@@ -8,10 +9,12 @@ import Player from '../types/Player.type';
 export default function TestAPI() {
   const [data, setData] = React.useState<any>();
   const [testedValue, setTestedValue] = React.useState<string>('');
+  const history = useHistory()
 
   function getTestData() {
     client<Player>("test").then((player: Player) => {
       setToken(player.token.tokenKey)
+      history.push("/r")
     })
   }
 

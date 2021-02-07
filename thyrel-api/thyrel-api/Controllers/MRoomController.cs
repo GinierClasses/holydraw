@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
-namespace thyrel_api.Controllers.ModelsControllers
+namespace thyrel_api.Controllers
 {
-    public class RoomController
+    public class MRoomController
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
-        public RoomController()
+        public MRoomController()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }

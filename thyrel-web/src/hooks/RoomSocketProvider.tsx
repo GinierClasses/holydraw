@@ -5,12 +5,6 @@ import { testApiUrl } from '../test/data';
 const apiURL = process.env.REACT_APP_API_URL || testApiUrl;
 const domainRegExp = /\b(?:(?:https?|ftp):\/\/)?([^/\n]+)\/?/;
 
-type RoomSocketContextProps = {
-  websocket?: WebSocket;
-  connect?: () => void;
-};
-const RoomSocketContext = React.createContext<RoomSocketContextProps>({});
-
 export enum WsStates {
   IDLE = 'IDLE TIME',
   CONNECTING = 'CONNECTION STARTED',
@@ -19,15 +13,16 @@ export enum WsStates {
   CLOSED = 'CONNECTION IS CLOSE',
 }
 
-type RoomSocketContextProviderProps = {
-  children: React.ReactElement;
-  onMessage?: (message: string) => void;
+export enum WebsocketEvent {
+  Invalid = -1,
+  NewPlayerJoin = 0,
+}
+
+export type WebsocketMessage = {
+  websocketEvent: WebsocketEvent;
 };
 
-export function RoomSocketContextProvider({
-  children,
-  onMessage,
-}: RoomSocketContextProviderProps) {
+export default function useWebsocket(onMessage?: (data: string) => void) {
   const [websocket, setWebsocket] = React.useState<WebSocket>();
   const [wsState, setWsState] = React.useState<WsStates>(WsStates.IDLE);
 
@@ -62,20 +57,5 @@ export function RoomSocketContextProvider({
     return () => websocket?.close();
   }, [onMessage, websocket]);
 
-  const values = { websocket, wsState };
-
-  return (
-    <RoomSocketContext.Provider value={values}>
-      {children}
-    </RoomSocketContext.Provider>
-  );
-}
-
-export function useWebsocket() {
-  const context = React.useContext(RoomSocketContext);
-  if (!context)
-    throw new Error(
-      'useWebsocket should be used within a RoomSocketContextProvider',
-    );
-  return context;
+  return { wsState };
 }

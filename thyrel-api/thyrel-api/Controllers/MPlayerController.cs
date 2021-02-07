@@ -5,10 +5,10 @@ using thyrel_api.Models;
 
 namespace thyrel_api.Controllers.ModelsControllers
 {
-    public class PlayerController
+    public class MPlayerController
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
-        public PlayerController()
+        public MPlayerController()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }
