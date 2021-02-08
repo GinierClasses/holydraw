@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using thyrel_api.Controllers.ModelsControllers;
+using thyrel_api.Controllers;
 using thyrel_api.Models;
 
 namespace thyrel_api.Websocket

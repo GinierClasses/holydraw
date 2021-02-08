@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using thyrel_api.Controllers.ModelsControllers;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
 
@@ -30,7 +29,7 @@ namespace thyrel_api.Controllers
         public ActionResult<Player> Post([FromBody] PostBody body)
         {
             if (body.Username == null || body.AvatarUrl == null)
-                return NotFound();
+                return NotFound(); // 404 : most of api error
             var roomController = new MRoomController();
             var playerController = new MPlayerController();
             var tokenController = new MTokenController();

@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
-namespace thyrel_api.Controllers.ModelsControllers
+namespace thyrel_api.Controllers
 {
     public class MPlayerController
     {
@@ -33,7 +33,7 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// To get a Player by it's ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>The player</returns>
         public Player GetPlayer(int id)
         {
             var player = _holyDrawDbContext.Player

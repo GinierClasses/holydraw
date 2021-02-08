@@ -13,6 +13,7 @@ type RoomSocketContextProps = {
   room?: Room;
   wsState: WsStates;
 };
+
 const RoomContext = React.createContext<RoomSocketContextProps>({
   wsState: WsStates.IDLE,
 });
