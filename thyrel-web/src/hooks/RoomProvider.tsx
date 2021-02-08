@@ -7,7 +7,7 @@ import useWebsocket, {
   WebsocketMessage,
   WebsocketEvent,
   WsStates,
-} from './RoomSocketProvider';
+} from './useWebsocket';
 
 type RoomSocketContextProps = {
   room?: Room;

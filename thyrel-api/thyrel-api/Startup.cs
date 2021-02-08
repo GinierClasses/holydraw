@@ -72,7 +72,6 @@ namespace thyrel_api
 
             app.UseWebSockets(webSocketOptions);
             
-            app.UseFileServer();
             app.UseHttpsRedirection();
             app.UseRouting();
             // allow cors of all origins

@@ -13,6 +13,7 @@ export default function Routes() {
   return (
     <Router>
       <Switch>
+        <Route path="/r/:identifier" component={Lobby} />
         <Route path="/r" component={RoomRoutes} />
         <Route path="/home" component={Home} />
         {/* Page to test the API 
@@ -36,7 +37,6 @@ function RoomRoutes() {
         <Route path="/r/book" component={Book} />
 
         <Route path="/r/lobby" component={Lobby} />
-        <Route path="/r/:identifier" component={Lobby} />
         <Route path="/r" component={Lobby} />
       </Switch>
     </RoomContextProvider>

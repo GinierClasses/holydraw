@@ -28,6 +28,7 @@ namespace thyrel_api.Controllers
         [HttpPost]
         public ActionResult<Player> Post([FromBody] PostBody body)
         {
+            
             if (body.Username == null || body.AvatarUrl == null)
                 return NotFound(); // 404 : most of api error
             var roomController = new MRoomController();
