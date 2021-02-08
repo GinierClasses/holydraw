@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using thyrel_api.Controllers.ModelsControllers;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
 
@@ -21,10 +20,9 @@ namespace thyrel_api.Controllers
 
         // GET: api/Test
         [HttpGet]
-        public async Task<ActionResult<Room>> Get()
+        public async Task<ActionResult<Player>> Get()
         {
-            var tc = new RoomController();
-            return tc.GetRoom(1);
+            return null;
         }
         
         // POST: api/Test

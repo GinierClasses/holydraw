@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using thyrel_api.Controllers;
+using thyrel_api.Models;
 
 namespace thyrel_api.Websocket
 {
@@ -28,8 +30,6 @@ namespace thyrel_api.Websocket
                 });
             }
 
-            await SendMessageToSockets($"User with id <b>{id}</b> has joined the chat");
-
             while (webSocket.State == WebSocketState.Open)
             {
                 var message = await ReceiveMessage(id, webSocket);
@@ -39,15 +39,37 @@ namespace thyrel_api.Websocket
                     {
                         AllowTrailingCommas = true
                     };
-                    var calledConnection = websocketConnections.Find(w => w.Id == id);
+                    var connection = websocketConnections.Find(w => w.Id == id);
 
-                    if (calledConnection != null && calledConnection.RoomId == null)
+                    if (connection != null && connection.RoomId == null)
                     {
+                        // deseralize message from Player
                         var socketJson =  JsonSerializer.Deserialize<RoomSocketJson>(message, options);
-                        if (socketJson != null) calledConnection.RoomId = socketJson.RoomId;
+                        var playerToken = socketJson?.PlayerToken;
+                        // if no Token we send a invalid message
+                        if (playerToken == null)
+                        {
+                            await SendMessageToSocket(
+                                connection,
+                                JsonSerializer.Serialize(
+                                    new EventJson(WebsocketEvent.Invalid)));
+                            continue;
+                        }
+                        var player = new MPlayerController().GetPlayerByToken(playerToken);
+                        // if no matching token, we send a invalid message
+                        if (player == null)
+                        {
+                            await SendMessageToSocket(
+                                connection,
+                                JsonSerializer.Serialize(
+                                    new EventJson(WebsocketEvent.Invalid)));
+                            continue;
+                        }
+                        connection.RoomId = player?.RoomId;
+                        await SendMessageToSockets(
+                            JsonSerializer.Serialize(
+                                new EventJson(WebsocketEvent.NewPlayerJoin)), player?.RoomId);
                     }
-                    
-                    await SendMessageToSockets(message);
                 }
 
             }
@@ -84,13 +106,18 @@ namespace thyrel_api.Websocket
 
             var tasks = toSentTo.Select(async websocketConnection =>
             {
-                if (websocketConnection.WebSocket.State == WebSocketState.Open) { 
-                   var bytes = Encoding.Default.GetBytes(message);
-                   var arraySegment = new ArraySegment<byte>(bytes);
-                   await websocketConnection.WebSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
-                }
+                await SendMessageToSocket(websocketConnection, message);
             });
             await Task.WhenAll(tasks);
+        }
+
+        private async Task SendMessageToSocket(SocketConnection socketConnection, string message) 
+        {
+            if (socketConnection.WebSocket.State == WebSocketState.Open) { 
+                var bytes = Encoding.Default.GetBytes(message);
+                var arraySegment = new ArraySegment<byte>(bytes);
+                await socketConnection.WebSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
+            }
         }
 
         private void SetupCleanUpTask()
@@ -112,28 +139,19 @@ namespace thyrel_api.Websocket
 
                     foreach (var closedWebsocketConnection in closedSockets)
                     {
-                        await SendMessageToSockets($"{closedWebsocketConnection.Id} disc");
+                        await SendMessageToSockets($"{closedWebsocketConnection.Id} left", closedWebsocketConnection.RoomId);
                     }
                     
                     await Task.Delay(5000);
                 }
-                    
             });
         }
-
     }
 
     public class SocketConnection
     {
         public Guid Id { get; set; }
         public WebSocket WebSocket { get; set; }
-        public int? RoomId { get; set; }
-        public int? PlayerId { get; set; }
-    }
-
-    public class RoomSocketJson
-    {
-        public int PlayerId { get; set; }
         public int? RoomId { get; set; }
     }
 }

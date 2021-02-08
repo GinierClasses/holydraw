@@ -26,8 +26,6 @@ namespace thyrel_api.Models
                 entity.ToTable("Token");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.TokenKey).IsRequired();
-                entity.HasOne(e => e.Player)
-                    .WithMany(e => e.Tokens);
             });
 
             modelBuilder.Entity<Session>(entity =>
@@ -72,6 +70,8 @@ namespace thyrel_api.Models
                 entity.Property(e => e.Username).IsRequired();
                 entity.Property(e => e.AvatarUrl).IsRequired();
                 entity.HasOne(e => e.Room)
+                    .WithMany(e => e.Players);
+                entity.HasOne(e => e.Token)
                     .WithMany(e => e.Players);
             });
 
