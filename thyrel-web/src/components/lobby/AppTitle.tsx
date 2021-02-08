@@ -1,7 +1,7 @@
 import { css } from '@emotion/css';
 import { baseColor } from '../../styles/colors';
 
-export default function UserCard() {
+export default function AppTitle() {
   return (
     <div>
       <h1
