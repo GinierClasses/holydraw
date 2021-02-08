@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap');
 
 body {
+  --base-color: #880061;
   margin: 0;
   background-color: #0f131a;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,4 +14,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* impossible to override those style with `emotion` */
+.rsuit-input-group__override {
+  height: 48;
+  border-color: var(--base-color) !important;
 }
