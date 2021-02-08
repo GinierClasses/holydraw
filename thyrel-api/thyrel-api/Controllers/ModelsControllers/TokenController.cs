@@ -22,7 +22,7 @@ namespace thyrel_api.Controllers.ModelsControllers
             const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";  
             var random = new Random();  
             var resultToken = new string(  
-                Enumerable.Repeat(allChar , 8)  
+                Enumerable.Repeat(allChar , 16)  
                     .Select(token => token[random.Next(token.Length)]).ToArray());   
    
             var entry = _holyDrawDbContext.Token.Add(new Token(null, resultToken, playerId));

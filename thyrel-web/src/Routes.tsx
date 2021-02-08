@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Lobby from './pages/Lobby';
 import TestAPI from './pages/TestAPI';
+import TestWebsocket from './pages/TestWebsocket';
 
 export default function Routes() {
   return (
@@ -14,6 +15,8 @@ export default function Routes() {
         {/* Page to test the API 
         TODO : delete it */}
         <Route path="/test" component={TestAPI} />
+        {/* to test the websocket */}
+        <Route path="/testws" component={TestWebsocket} />
         <Route path="/" component={Home} />
       </Switch>
     </Router>
