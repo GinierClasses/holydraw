@@ -1,7 +1,5 @@
 Small description or specification about your job
 
-RESOLVE#
-
 <details>
 <summary>
 Check List
@@ -12,5 +10,6 @@ Check List
 - [ ] I move my Issue to `Review in progress`
 - [ ] I have added a small description for the app
 - [ ] I had test if is necessary.
+- [ ] Go to Discord to share Link of the PR
 
 </details>
