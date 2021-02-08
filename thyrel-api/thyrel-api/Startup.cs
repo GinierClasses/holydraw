@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using thyrel_api.Websocket;
+using System;
 
 namespace thyrel_api
 {
@@ -29,6 +31,8 @@ namespace thyrel_api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
+            
             // it's a config for stop infinite looping
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
@@ -60,15 +64,19 @@ namespace thyrel_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "thyrel_api v1"));
             }
+            
+            var webSocketOptions = new WebSocketOptions() 
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
+            };
 
+            app.UseWebSockets(webSocketOptions);
+            
             app.UseHttpsRedirection();
-
             app.UseRouting();
             // allow cors of all origins
             app.UseCors("AllowAllOrigins");
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
