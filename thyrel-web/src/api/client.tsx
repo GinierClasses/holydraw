@@ -32,10 +32,10 @@ type config = {
 
   You can see exemple in `client.test.tsx`
 */
-async function client(
+async function client<T>(
   endpoint: string,
   { data, method, token, headers: customHeaders, customConfig }: config = {},
-): Promise<any> {
+): Promise<T> {
   const config: RequestInit = {
     method: method || (data ? 'POST' : 'GET'),
     body: data ? JSON.stringify(data) : null,

@@ -1,19 +1,34 @@
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { Button, Notification } from 'rsuite';
+import { client } from '../api/client';
+import { setToken } from '../api/player-provider';
+import Player from '../types/Player.type';
 
 // component when we aren't in a Lobby
 export default function Home() {
+  const history = useHistory();
+
+  function onStart() {
+    client<Player>('room', {
+      data: { username: 'todo', avatarUrl: 'todo' },
+    }).then((player: Player) => {
+      if (player.token.tokenKey) {
+        Notification['success']({
+          title: 'Room successfully created.',
+          description: 'Invite your friends.',
+        });
+        setToken(player.token.tokenKey);
+        // to redirect to an other page
+        history.push('/r/lobby');
+      }
+    });
+  }
+
   return (
     <div style={{ margin: 16 }}>
-      You're in Home
-      <div
-        style={{
-          width: 400,
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}>
-        <Link to="/lobby">Go lobby</Link>
-        <Link to="/home">Go home</Link>
-        <Link to="/test">Go Test the API</Link>
+      HolyDraw - Home
+      <div>
+        <Button onClick={onStart}>Start game</Button>
       </div>
     </div>
   );
