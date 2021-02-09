@@ -30,7 +30,7 @@ export function RoomContextProvider({
   const history = useHistory();
 
   const getRoom = React.useCallback(() => {
-    // todo : set the room
+    // todo : set the room with api values
     setRoom(undefined);
   }, []);
 
@@ -48,7 +48,10 @@ export function RoomContextProvider({
             });
             history.push('/home');
             break;
-          case WebsocketEvent.NewPlayerJoin:
+          case WebsocketEvent.PlayerJoin:
+            getRoom();
+            break;
+          case WebsocketEvent.PlayerLeft:
             getRoom();
             break;
         }

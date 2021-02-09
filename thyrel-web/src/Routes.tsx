@@ -13,7 +13,7 @@ export default function Routes() {
   return (
     <Router>
       <Switch>
-        <Route path="/r/:identifier" component={Lobby} />
+        <Route path="/join/:identifier" component={Lobby} />
         <Route path="/r" component={RoomRoutes} />
         <Route path="/home" component={Home} />
         {/* Page to test the API 

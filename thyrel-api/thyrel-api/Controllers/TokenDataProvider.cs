@@ -5,10 +5,11 @@ using thyrel_api.Models;
 
 namespace thyrel_api.Controllers
 {
-    public class MTokenController
+    public class TokenDataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
-        public MTokenController()
+
+        public TokenDataProvider()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }
@@ -18,12 +19,12 @@ namespace thyrel_api.Controllers
         /// </summary>
         public Token Add()
         {
-            const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";  
-            var random = new Random();  
-            var resultToken = new string(  
-                Enumerable.Repeat(allChar , 16)  
-                    .Select(token => token[random.Next(token.Length)]).ToArray());   
-   
+            const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";
+            var random = new Random();
+            var resultToken = new string(
+                Enumerable.Repeat(allChar, 16)
+                    .Select(token => token[random.Next(token.Length)]).ToArray());
+
             var entry = _holyDrawDbContext.Token.Add(new Token(null, resultToken));
             SaveChanges();
 
@@ -48,7 +49,7 @@ namespace thyrel_api.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);  
+                Console.WriteLine(e);
             }
         }
 
@@ -62,7 +63,7 @@ namespace thyrel_api.Controllers
             var token = _holyDrawDbContext.Token
                 .Where(t => t.TokenKey == key && t.DiscardAt != null);
             return token.Last()?.Players.First();
-        } 
+        }
 
         private void SaveChanges()
         {
