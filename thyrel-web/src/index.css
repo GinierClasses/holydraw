@@ -16,8 +16,6 @@ code {
     monospace;
 }
 
-/* impossible to override those style with `emotion` */
-.rsuit-input-group__override {
-  height: 48;
-  border-color: var(--base-color) !important;
+*:focus {
+  outline: none;
 }
