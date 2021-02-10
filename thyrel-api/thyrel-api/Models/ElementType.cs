@@ -1,10 +1,9 @@
 ﻿using System;
 namespace thyrel_api.Models
 {
-    public class ElementType
+    public enum ElementType
     {
-        public ElementType()
-        {
-        }
+        Sentence = 0,
+        Drawing = 1
     }
 }

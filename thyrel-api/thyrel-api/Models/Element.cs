@@ -3,25 +3,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace thyrel_api.Models
 {
-    public class Drawing
+    public class Element
     {
-        public Drawing() { }
+        public Element() { }
 
-        public Drawing(int? id, int step, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
+        public Element(int? id, int step, ElementType type, string text, int? drawingId, DateTime? finishAt, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
         {
             Id = id;
             Step = step;
+            Type = type;
+            Text = text;
+            DrawingId = drawingId;
+            FinishAt = finishAt;
             CreatedAt = createdAt;
             CreatorId = creatorId;
             InitiatorId = initiatorId;
             SessionId = sessionId;
         }
 
-        //TODO public string ImagePath { get; set; }
         public int? Id { get; set; }
         public int Step { get; set; }
+        public ElementType Type { get; set; }
+        public string? Text { get; set; }
+        public int? DrawingId { get; set; }
+        public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
-        
+
+
         public int CreatorId { get; set; }
         public virtual Player Creator { get; set; }
 

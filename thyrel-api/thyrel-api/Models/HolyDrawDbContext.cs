@@ -7,10 +7,9 @@ namespace thyrel_api.Models
     {
         public DbSet<Token> Token { get; set; }
         public DbSet<Session> Session { get; set; }
-        public DbSet<Sentence> Sentence { get; set; }
+        public DbSet<Element> Element { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<Player> Player { get; set; }
-        public DbSet<Drawing> Drawing { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -36,22 +35,21 @@ namespace thyrel_api.Models
                     .WithMany(e => e.Sessions);
             });
 
-            modelBuilder.Entity<Sentence>(entity =>
+            modelBuilder.Entity<Element>(entity =>
             {
-                entity.ToTable("Sentence");
+                entity.ToTable("Element");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Text).IsRequired();
                 
                 entity.HasOne(e => e.Session)
-                    .WithMany(e => e.Sentences);
+                    .WithMany(e => e.Elements);
                 
                 entity.HasOne(e => e.Creator)
-                    .WithMany(e => e.CreatedSentences)
+                    .WithMany(e => e.CreatedElements)
                     .HasForeignKey(e => e.CreatorId)
                     .HasPrincipalKey(e => e.Id);
                 
                 entity.HasOne(e => e.Initiator)
-                    .WithMany(e => e.AlbumSentences)
+                    .WithMany(e => e.AlbumElements)
                     .HasForeignKey(e => e.InitiatorId)
                     .HasPrincipalKey(e => e.Id);
             });
@@ -73,25 +71,6 @@ namespace thyrel_api.Models
                     .WithMany(e => e.Players);
                 entity.HasOne(e => e.Token)
                     .WithMany(e => e.Players);
-            });
-
-            modelBuilder.Entity<Drawing>(entity =>
-            {
-                entity.ToTable("Drawing");
-                entity.HasKey(e => e.Id);
-
-                entity.HasOne(e => e.Session)
-                    .WithMany(e => e.Drawings);
-
-                entity.HasOne(e => e.Initiator)
-                    .WithMany(e => e.AlbumDrawings)
-                    .HasForeignKey(e => e.InitiatorId)
-                    .HasPrincipalKey(e => e.Id);
-                
-                entity.HasOne(e => e.Creator)
-                    .WithMany(e => e.CreatedDrawings)
-                    .HasForeignKey(e => e.CreatorId)
-                    .HasPrincipalKey(e => e.Id);
             });
         }
     }
