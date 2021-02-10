@@ -17,12 +17,13 @@ namespace thyrel_api.Models
 
         public int? Id { get; set; }
         public DateTime? FinishAt { get; set; }
+        public DateTime? StepFinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int ActualStep { get; set; }
 
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
 
-        public virtual List<Sentence> Sentences { get; set; }
-        public virtual List<Drawing> Drawings { get; set; }
+        public virtual List<Element> Elements { get; set; }
     }
 }
