@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
-import { IconProps } from 'rsuite';
+import { Icon, IconProps } from 'rsuite';
 import { baseColor, bgColor } from '../../styles/colors';
 
 type BigInputProps = {
@@ -17,11 +17,14 @@ const Container = styled.div<{ focus: boolean }>(
     height: 48,
     borderRadius: 4,
     padding: 8,
-    '&:focus': {
-      background: 'red',
-    },
+    alignItems: 'center',
+    transition: 'box-shadow ease-in .2s',
+    gap: 8,
   },
-  ({ focus }) => focus && {},
+  ({ focus }) =>
+    focus && {
+      boxShadow: '0 0 2px 0.2rem rgba(136, 0, 97, 0.4)',
+    },
 );
 
 const Input = styled.input({
@@ -34,10 +37,11 @@ const Input = styled.input({
 });
 
 export default function BigInput({ icon, ...props }: BigInputProps) {
-  const [focus, setFocus] = React.useState(false);
-
+  const [focus, setFocus] = React.useState(true);
+  console.log(focus);
   return (
     <Container focus={focus}>
+      {icon && <Icon icon={icon} size="2x" />}
       <Input onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
     </Container>
   );
