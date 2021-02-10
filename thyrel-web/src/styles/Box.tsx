@@ -10,7 +10,7 @@ All CSS props can be applicate to this component.
 List is below.
 */
 type BoxType = {
-  display?: 'flex';
+  display?: 'flex' | 'none' | 'block';
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   width?: number | string;
