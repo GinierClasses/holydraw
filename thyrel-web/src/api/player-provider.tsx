@@ -10,4 +10,9 @@ function destroy() {
   // TODO: invalidate the token in API
 }
 
-export { getToken, destroy };
+function setToken(token: string) {
+  window.localStorage.setItem(playerTokenKey, token);
+  // TODO: invalidate the token in API
+}
+
+export { getToken, destroy, setToken };

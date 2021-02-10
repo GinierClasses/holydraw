@@ -1,14 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
-namespace thyrel_api.Controllers.ModelsControllers
+namespace thyrel_api.Controllers
 {
-    public class PlayerController
+    public class PlayerDataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
-        public PlayerController()
+
+        public PlayerDataProvider()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }
@@ -20,24 +21,43 @@ namespace thyrel_api.Controllers.ModelsControllers
         /// <param name="avatarUrl"></param>
         /// <param name="isOwner"></param>
         /// <param name="roomId"></param>
-        public Player Add(string username, string avatarUrl, bool isOwner, int roomId)
+        public Player Add(string username, string avatarUrl, bool isOwner, int roomId, int tokenId)
         {
-            var playerToAdd = new Player(null, username, avatarUrl, isOwner, null, DateTime.Now, roomId);
+            var playerToAdd = new Player(null, username, avatarUrl, isOwner, null, DateTime.Now, roomId, tokenId);
 
             var entity = _holyDrawDbContext.Player.Add(playerToAdd);
             SaveChanges();
             return entity.Entity;
         }
+
         /// <summary>
         /// To get a Player by it's ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>The player</returns>
         public Player GetPlayer(int id)
         {
-            var player = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == id);
+            var player = _holyDrawDbContext.Player
+                .Include(p => p.Room)
+                .Include(p => p.Token)
+                .SingleOrDefault(p => p.Id == id);
             return player;
         }
+
+        /// <summary>
+        /// To get a Player by it's ID
+        /// </summary>
+        /// <param name="tokenKey"></param>
+        /// <returns></returns>
+        public Player GetPlayerByToken(string tokenKey)
+        {
+            var player = _holyDrawDbContext.Player
+                .Include(p => p.Token)
+                .SingleOrDefault(p => p.Token.TokenKey == tokenKey);
+            return player;
+        }
+
+
         /// <summary>
         /// To disable a Player (set the discard date to now)
         /// </summary>
@@ -50,6 +70,7 @@ namespace thyrel_api.Controllers.ModelsControllers
             player.DisableAt = DateTime.Now;
             UpdatePlayer(dbPlayer, player);
         }
+
         /// <summary>
         /// Set the Player as Owner
         /// </summary>
@@ -85,6 +106,7 @@ namespace thyrel_api.Controllers.ModelsControllers
                 Console.WriteLine(e);
             }
         }
+
         private void SaveChanges()
         {
             _holyDrawDbContext.SaveChangesAsync();
