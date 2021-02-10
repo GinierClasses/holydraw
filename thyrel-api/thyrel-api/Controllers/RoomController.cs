@@ -22,18 +22,17 @@ namespace thyrel_api.Controllers
             public string Username;
             public string AvatarUrl;
         }
-        
+
         // Call this endpoint to create a room
         // POST: api/room
         [HttpPost]
         public ActionResult<Player> Post([FromBody] PostBody body)
         {
-            
             if (body.Username == null || body.AvatarUrl == null)
                 return NotFound(); // 404 : most of api error
-            var roomController = new MRoomController();
-            var playerController = new MPlayerController();
-            var tokenController = new MTokenController();
+            var roomController = new RoomDataProvider();
+            var playerController = new PlayerDataProvider();
+            var tokenController = new TokenDataProvider();
 
             var room = roomController.Add();
             var token = tokenController.Add();

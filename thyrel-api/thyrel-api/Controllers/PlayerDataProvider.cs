@@ -5,10 +5,11 @@ using thyrel_api.Models;
 
 namespace thyrel_api.Controllers
 {
-    public class MPlayerController
+    public class PlayerDataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
-        public MPlayerController()
+
+        public PlayerDataProvider()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }
@@ -28,7 +29,7 @@ namespace thyrel_api.Controllers
             SaveChanges();
             return entity.Entity;
         }
-        
+
         /// <summary>
         /// To get a Player by it's ID
         /// </summary>
@@ -55,8 +56,8 @@ namespace thyrel_api.Controllers
                 .SingleOrDefault(p => p.Token.TokenKey == tokenKey);
             return player;
         }
-        
-        
+
+
         /// <summary>
         /// To disable a Player (set the discard date to now)
         /// </summary>
@@ -69,6 +70,7 @@ namespace thyrel_api.Controllers
             player.DisableAt = DateTime.Now;
             UpdatePlayer(dbPlayer, player);
         }
+
         /// <summary>
         /// Set the Player as Owner
         /// </summary>
@@ -104,6 +106,7 @@ namespace thyrel_api.Controllers
                 Console.WriteLine(e);
             }
         }
+
         private void SaveChanges()
         {
             _holyDrawDbContext.SaveChangesAsync();

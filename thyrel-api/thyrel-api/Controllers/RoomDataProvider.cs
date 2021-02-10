@@ -5,10 +5,10 @@ using thyrel_api.Models;
 
 namespace thyrel_api.Controllers
 {
-    public class MRoomController
+    public class RoomDataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
-        public MRoomController()
+        public RoomDataProvider()
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }
