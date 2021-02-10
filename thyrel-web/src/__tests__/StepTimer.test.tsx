@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import StepTimer from '../components/StepTimer';
 
-describe('BigButton', () => {
+describe('StepTimer', () => {
   test('style change all second', async () => {
     const { container } = render(
       <StepTimer
