@@ -17,7 +17,7 @@ namespace thyrel_api.Controllers
             _websocketHandler = websocketHandler;
         }
 
-        public class PostBody
+        public class PlayerRoomBody
         {
             public string Username;
             public string AvatarUrl;
@@ -26,19 +26,34 @@ namespace thyrel_api.Controllers
         // Call this endpoint to create a room
         // POST: api/room
         [HttpPost]
-        public ActionResult<Player> Post([FromBody] PostBody body)
+        public ActionResult<Player> Post([FromBody] PlayerRoomBody body)
         {
             if (body.Username == null || body.AvatarUrl == null)
                 return NotFound(); // 404 : most of api error
-            var roomController = new RoomDataProvider();
-            var playerController = new PlayerDataProvider();
-            var tokenController = new TokenDataProvider();
+            var roomDataProvider = new RoomDataProvider();
+            var playerDataProvider = new PlayerDataProvider();
 
-            var room = roomController.Add();
-            var token = tokenController.Add();
-            var player = playerController.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
+            var room = roomDataProvider.Add();
+            var token = new TokenDataProvider().Add();
+            var player = playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
             // use `GetPlayer` to include `Token` and `Room`
-            return playerController.GetPlayer(player.Id ?? 1);
+            return playerDataProvider.GetPlayer(player.Id ?? 1);
+        }
+
+        // Call this endpoint to create a room
+        // POST: api/room/join/roomidentifier
+        [HttpPatch("join/{identifier}")]
+        public ActionResult<Player> Join(string identifier, [FromBody] PlayerRoomBody body)
+        {
+            if (body.Username == null || body.AvatarUrl == null)
+                return NotFound(); // 404 : most of api error
+            var room = new RoomDataProvider().GetRoom(identifier);
+            if (room == null)
+                return NotFound();
+            var playerDataProvider = new PlayerDataProvider();
+            var token = new TokenDataProvider().Add();
+            var player = playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
+            return playerDataProvider.GetPlayer(player.Id ?? 1);
         }
     }
 }
