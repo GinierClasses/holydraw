@@ -3,15 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace thyrel_api.Models
 {
-    public class Sentence
+    public class Element
     {
-        public Sentence() { }
+        public Element() { }
 
-        public Sentence(int? id, string text, int step, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
+        public Element(int? id, int step, ElementType type, string text, int? drawingId, DateTime? finishAt, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
         {
             Id = id;
-            Text = text;
             Step = step;
+            Type = type;
+            Text = text;
+            DrawingId = drawingId;
+            FinishAt = finishAt;
             CreatedAt = createdAt;
             CreatorId = creatorId;
             InitiatorId = initiatorId;
@@ -19,16 +22,18 @@ namespace thyrel_api.Models
         }
 
         public int? Id { get; set; }
-        public string Text { get; set; }
         public int Step { get; set; }
+        public ElementType Type { get; set; }
+        public string? Text { get; set; }
+        public int? DrawingId { get; set; }
+        public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
 
+
         public int CreatorId { get; set; }
-        [ForeignKey("CreatorId")]
         public virtual Player Creator { get; set; }
 
         public int InitiatorId { get; set; }
-        [ForeignKey("InitiatorId")]
         public virtual Player Initiator { get; set; }
 
         public int SessionId { get; set; }
