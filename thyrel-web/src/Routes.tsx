@@ -14,7 +14,7 @@ export default function Routes() {
   return (
     <Router>
       <Switch>
-        <Route path="/join/:identifier" component={Lobby} />
+        <Route path="/join/:identifier" component={Home} />
         <Route path="/r" component={RoomRoutes} />
         <Route path="/t" component={ComponentTest} />
         <Route path="/home" component={Home} />

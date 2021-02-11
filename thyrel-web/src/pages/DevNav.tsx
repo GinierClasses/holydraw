@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Nav } from 'rsuite';
 import Box from '../styles/Box';
 
@@ -8,33 +7,17 @@ export default function DevNav() {
       <h1>You're in DevNav</h1>
       <Box justifyContent="space-between">
         <Nav appearance="tabs" activeKey="devnav">
-          <Nav.Item eventKey="devnav">
-            <Link to="/">Dev nav</Link>
-          </Nav.Item>
-          <Link to="/r/start">
-            <Nav.Item>Go Room Start</Nav.Item>
-          </Link>
-          <Link to="/r/write">
-            <Nav.Item>Go Room Write</Nav.Item>
-          </Link>
-          <Link to="/r/draw">
-            <Nav.Item>Go Room Draw</Nav.Item>
-          </Link>
-          <Link to="/r/lobby">
-            <Nav.Item>Go Room Lobby</Nav.Item>
-          </Link>
-          <Link to="/r">
-            <Nav.Item>Go Room</Nav.Item>
-          </Link>
-          <Link to="/t">
-            <Nav.Item>Go tests</Nav.Item>
-          </Link>
-          <Link to="/home">
-            <Nav.Item>Go home</Nav.Item>
-          </Link>
-          <Link to="/test">
-            <Nav.Item>Go Test the API</Nav.Item>
-          </Link>
+          {/* With react-router-dom it's not a good practive do don't use
+          <Link /> but Rsuits alredy render a link */}
+          <Nav.Item href="/" eventKey="devnav">Dev nav</Nav.Item>
+          <Nav.Item href="/r/start">Go Room Start</Nav.Item>
+          <Nav.Item href="/r/write">Go Room Write</Nav.Item>
+          <Nav.Item href="/r/draw">Go Room Draw</Nav.Item>
+          <Nav.Item href="/r/lobby">Go Room Lobby</Nav.Item>
+          <Nav.Item href="/r">Go Room</Nav.Item>
+          <Nav.Item href="/home">Go home</Nav.Item>
+          <Nav.Item href="/test">Go Test the API</Nav.Item>
+          <Nav.Item href="/t">Go to TESTS pages</Nav.Item>
         </Nav>
       </Box>
     </Box>
