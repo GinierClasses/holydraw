@@ -35,9 +35,7 @@ namespace thyrel_api.Models
         public int TokenId { get; set; }
         public Token Token { get; set; }
         
-        public virtual List<Sentence> AlbumSentences { get; set; }
-        public virtual List<Sentence> CreatedSentences { get; set; }
-        public virtual List<Drawing> AlbumDrawings { get; set; }
-        public virtual List<Drawing> CreatedDrawings { get; set; }
+        public virtual List<Element> AlbumElements { get; set; }
+        public virtual List<Element> CreatedElements { get; set; }
     }
 }
