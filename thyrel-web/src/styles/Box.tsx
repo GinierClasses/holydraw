@@ -18,7 +18,7 @@ type BoxType = {
   borderColor?: string | 'baseColor';
   className?: string;
   bg?: string;
-  borderRadius?: number;
+  borderRadius?: number | string;
   borderWidth?: number;
   border?: string;
   justifyContent?:

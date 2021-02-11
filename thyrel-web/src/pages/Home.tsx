@@ -2,6 +2,8 @@ import { useHistory } from 'react-router-dom';
 import { Button, Notification } from 'rsuite';
 import { client } from '../api/client';
 import { setToken } from '../api/player-provider';
+import AvatarCard from '../components/Home/AvatarCard';
+import UserCard from '../components/lobby/UserCard';
 import Player from '../types/Player.type';
 
 // component when we aren't in a Lobby
