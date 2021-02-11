@@ -10,10 +10,11 @@ All CSS props can be applicate to this component.
 List is below.
 */
 type BoxType = {
-  display?: 'flex';
+  display?: 'flex' | 'none' | 'block';
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   width?: number | string;
+  gap?: number;
   height?: number | string;
   borderColor?: string | 'baseColor';
   className?: string;
@@ -97,6 +98,7 @@ const Box = styled.div<BoxType>(
     flexDirection,
     flexWrap,
     width,
+    gap,
     height,
     borderColor,
     bg,
@@ -114,6 +116,7 @@ const Box = styled.div<BoxType>(
       flexWrap,
       flexDirection,
       width,
+      gap,
       height,
       background: bg,
       borderRadius,

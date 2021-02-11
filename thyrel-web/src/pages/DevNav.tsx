@@ -26,6 +26,9 @@ export default function DevNav() {
           <Link to="/r">
             <Nav.Item>Go Room</Nav.Item>
           </Link>
+          <Link to="/t">
+            <Nav.Item>Go tests</Nav.Item>
+          </Link>
           <Link to="/home">
             <Nav.Item>Go home</Nav.Item>
           </Link>

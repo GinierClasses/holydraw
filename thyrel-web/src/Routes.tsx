@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { RoomContextProvider } from './hooks/RoomProvider';
+import ComponentTest from './pages/ComponentTest';
 import DevNav from './pages/DevNav';
 import Home from './pages/Home';
 import Book from './pages/room/Book';
@@ -15,6 +16,7 @@ export default function Routes() {
       <Switch>
         <Route path="/join/:identifier" component={Lobby} />
         <Route path="/r" component={RoomRoutes} />
+        <Route path="/t" component={ComponentTest} />
         <Route path="/home" component={Home} />
         {/* Page to test the API 
         TODO : delete it */}
