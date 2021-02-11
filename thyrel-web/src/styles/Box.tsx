@@ -19,6 +19,7 @@ type BoxType = {
   borderColor?: string | 'baseColor';
   className?: string;
   bg?: string;
+  overflow?: string;
   borderRadius?: number | string;
   borderWidth?: number;
   border?: string;
@@ -90,6 +91,7 @@ const Box = styled.div<BoxType>(
     mr,
     padding,
     p,
+    overflow,
     pb,
     pl,
     pt,
@@ -117,6 +119,7 @@ const Box = styled.div<BoxType>(
       flexDirection,
       width,
       gap,
+      overflow,
       height,
       background: bg,
       borderRadius,

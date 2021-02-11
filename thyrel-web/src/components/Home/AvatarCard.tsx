@@ -1,4 +1,4 @@
-import { Avatar, Icon } from 'rsuite';
+import { Icon } from 'rsuite';
 import { baseColor } from '../../styles/colors';
 import Box from '../../styles/Box';
 // import styled from '@emotion/styled';
@@ -21,7 +21,6 @@ export default function AvatarCard({
   size,
   onShuffle,
 }: AvatarCardProps) {
-  console.log(image);
   return (
     <Box
       alignItems="center"
@@ -52,11 +51,14 @@ export default function AvatarCard({
       <Box
         borderWidth={2}
         borderRadius="50%"
-        className={css({
-          overflow: 'hidden',
-          // position: 'relative',
-        })}>
-        <img src={image} width={256} height={256} alt="Avatar" />
+        width={256}
+        height={256}
+        overflow="hidden">
+        <img
+          src={image}
+          className={css({ width: 256, height: 'fit-content' })}
+          alt="Avatar"
+        />
       </Box>
     </Box>
   );

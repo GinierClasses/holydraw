@@ -1,4 +1,5 @@
 import BigButton from '../components/BigButton';
+import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/lobby/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
 import UserCard from '../components/lobby/UserCard';
@@ -18,6 +19,8 @@ export default function ComponentTest() {
             onFinish={() => console.log('finished')}
           />
         </Box>
+
+        <AvatarCard image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Le%C3%AFko_in_snow.jpg/220px-Le%C3%AFko_in_snow.jpg" />
 
         <UserCard
           id={1}
