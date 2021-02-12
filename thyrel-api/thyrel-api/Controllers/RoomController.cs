@@ -41,7 +41,7 @@ namespace thyrel_api.Controllers
         }
 
         // Call this endpoint to create a room
-        // POST: api/room/join/roomidentifier
+        // PATCH: api/room/join/roomidentifier
         [HttpPatch("join/{identifier}")]
         public ActionResult<Player> Join(string identifier, [FromBody] PlayerRoomBody body)
         {
