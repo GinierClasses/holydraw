@@ -61,7 +61,7 @@ export default function Home(
       HolyDraw - Home
       <div>
         <Button onClick={onStart}>Start game</Button>
-        <Button onClick={onJoin}>JOIN A GAME game</Button>
+        <Button onClick={onJoin}>JOIN A GAME</Button>
       </div>
     </Box>
   );
