@@ -6,4 +6,4 @@
 
 - [ ] My Pull Request point to `sprint` branch
 - [ ] I move my Issue to `Review in progress`
-- [ ] I had test if is necessary.
+- [ ] I add tests if necessary.
