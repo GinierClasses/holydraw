@@ -1,5 +1,5 @@
 import { Icon } from 'rsuite';
-import { baseColor } from '../../styles/colors';
+import { baseColor, bgFade } from '../../styles/colors';
 import Box from '../../styles/Box';
 // import styled from '@emotion/styled';
 import { css } from '@emotion/css';
@@ -40,9 +40,9 @@ export default function AvatarCard({
           bottom: '0',
           width: '48px',
           height: '48px',
-          boxShadow: '0px 6px 1px rgba(30, 70, 70, 0.55)',
+          boxShadow: `0px 4px 1px ${bgFade(0.8)}`,
           '&:active': {
-            bottom: -6,
+            bottom: -4,
             boxShadow: 'none',
           },
         })}>
