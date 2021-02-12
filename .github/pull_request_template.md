@@ -1,12 +1,9 @@
-Small description or specification about your job
+## Description
 
-<details>
-<summary>
-Check List
-</summary>
+
+
+#### Checklist
 
 - [ ] My Pull Request point to `sprint` branch
 - [ ] I move my Issue to `Review in progress`
 - [ ] I had test if is necessary.
-
-</details>
