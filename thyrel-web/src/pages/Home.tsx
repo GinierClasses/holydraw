@@ -38,11 +38,30 @@ export default function Home(
     });
   }
 
+  function onJoin() {
+    // todo :
+    client<Player>(`room/join/${identifier}`, {
+      data: { username: 'todo', avatarUrl: 'todo' },
+      method: 'PATCH',
+    }).then((player: Player) => {
+      if (player.token.tokenKey) {
+        Notification['success']({
+          title: 'Room successfully created.',
+          description: 'Invite your friends.',
+        });
+        setToken(player.token.tokenKey);
+        // to redirect to an other page
+        history.push('/r/lobby');
+      }
+    });
+  }
+
   return (
     <Box m={16}>
       HolyDraw - Home
       <div>
         <Button onClick={onStart}>Start game</Button>
+        <Button onClick={onJoin}>JOIN A GAME</Button>
       </div>
     </Box>
   );
