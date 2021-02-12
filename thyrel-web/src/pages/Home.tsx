@@ -15,6 +15,8 @@ export default function Home(
   props: RouteComponentProps<{ identifier?: string }>,
 ) {
   // will be `Null` if no identifier was provided in the route
+  // 🚮 remove this line ⬇️
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const identifier = props.match.params.identifier;
 
   const history = useHistory();
