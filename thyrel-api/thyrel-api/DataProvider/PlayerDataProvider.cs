@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
-namespace thyrel_api.Controllers
+namespace thyrel_api.DataProvider
 {
     public class PlayerDataProvider
     {

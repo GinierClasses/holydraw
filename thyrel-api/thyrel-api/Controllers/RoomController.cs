@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using thyrel_api.DataProvider;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
 
