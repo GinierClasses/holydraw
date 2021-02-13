@@ -4,14 +4,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
+using thyrel_api.Controllers;
+using Microsoft.EntityFrameworkCore;
 
 namespace thyrel_api.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
         private IWebsocketHandler _websocketHandler;
+        private readonly HolyDrawDbContext _holyDrawDbContext;
 
         public TestController(IWebsocketHandler websocketHandler)
         {
