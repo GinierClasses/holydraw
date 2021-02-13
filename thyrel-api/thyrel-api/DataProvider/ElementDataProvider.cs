@@ -9,11 +9,16 @@ namespace thyrel_api.DataProvider
 {
     public class ElementDataProvider : IElementDataProvider
     {
-        private readonly HolyDrawDbContext _holyDrawDbContext;
+        public HolyDrawDbContext HolyDrawDbContext { get; }
 
         public ElementDataProvider()
         {
-            _holyDrawDbContext = new HolyDrawDbContext();
+            HolyDrawDbContext = new HolyDrawDbContext();
+        }
+        
+        public ElementDataProvider(DbContextOptions<HolyDrawDbContext> options)
+        {
+            HolyDrawDbContext = new HolyDrawDbContext(options);
         }
 
         /// <summary>
@@ -23,13 +28,13 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
-        /// <param name="text"></param>
+        /// <param name="drawingId"></param>
         /// <returns></returns>
-        public async Task<Element> AddDrawing(int creatorId, int initiatorId ,int step, int sessionId, string text = "")
+        public async Task<Element> AddDrawing(int creatorId, int initiatorId ,int step, int sessionId, int? drawingId = null)
         {
-            var element = new Element(null, step, creatorId, initiatorId, sessionId, text);
+            var element = new Element(null, step, creatorId, initiatorId, sessionId, drawingId);
 
-            var entity = await _holyDrawDbContext.Element.AddAsync(element);
+            var entity = await HolyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;
         }
@@ -41,13 +46,13 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
-        /// <param name="drawingId"></param>
+        /// <param name="text"></param>
         /// <returns>An element</returns>
-        public async Task<Element> AddSentence(int creatorId, int initiatorId ,int step, int sessionId, int? drawingId = null)
+        public async Task<Element> AddSentence(int creatorId, int initiatorId ,int step, int sessionId, string text = "")
         {
-            var element = new Element(null, step, creatorId, initiatorId, sessionId, drawingId);
+            var element = new Element(null, step, creatorId, initiatorId, sessionId, text);
 
-            var entity = await _holyDrawDbContext.Element.AddAsync(element);
+            var entity = await HolyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;
         }
@@ -60,7 +65,7 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Element> SetSentence(int elementId, string sentence)
         {
-            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
+            var element = await HolyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
             if (element == null)
                 return null;
@@ -78,7 +83,7 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Element> SetDrawing(int elementId, int drawingId)
         {
-            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
+            var element = await HolyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
             if (element == null)
                 return null;
@@ -96,7 +101,7 @@ namespace thyrel_api.DataProvider
         /// <returns>Edited element</returns>
         public async Task<Element> HandleFinish(int elementId, bool isFinish)
         {
-            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
+            var element = await HolyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
             if (element == null)
                 return null;
@@ -117,16 +122,27 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<List<Element>> GetAlbum(int initiatorId)
         {
-            var element = await _holyDrawDbContext.Element
+            var element = await HolyDrawDbContext.Element
                 .Where(e => e.InitiatorId == initiatorId)
                 .OrderBy(e => e.Step)
                 .ToListAsync();
             return element;
         }
+        /// <summary>
+        /// Get one element by those ID
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <returns></returns>
+        public async Task<Element> GetElement(int elementId)
+        {
+            var element = await HolyDrawDbContext.Element
+                .SingleOrDefaultAsync(e => e.Id == elementId);
+            return element;
+        }
         
         private async Task SaveChanges()
         {
-            await _holyDrawDbContext.SaveChangesAsync();
+            await HolyDrawDbContext.SaveChangesAsync();
         }
     }
 }

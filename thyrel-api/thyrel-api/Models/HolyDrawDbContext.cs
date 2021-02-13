@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace thyrel_api.Models
 {
@@ -11,9 +10,19 @@ namespace thyrel_api.Models
         public DbSet<Room> Room { get; set; }
         public DbSet<Player> Player { get; set; }
         
+        public HolyDrawDbContext(DbContextOptions<HolyDrawDbContext> options)
+            : base(options)
+        {
+        }
+
+        public HolyDrawDbContext()
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root");
+            if(!optionsBuilder.IsConfigured)
+                optionsBuilder.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,6 +48,7 @@ namespace thyrel_api.Models
             {
                 entity.ToTable("Element");
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 
                 entity.HasOne(e => e.Session)
                     .WithMany(e => e.Elements);

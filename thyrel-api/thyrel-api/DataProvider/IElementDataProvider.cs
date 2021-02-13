@@ -6,6 +6,8 @@ namespace thyrel_api.DataProvider
 {
     public interface IElementDataProvider
     {
+        HolyDrawDbContext HolyDrawDbContext { get; }
+        
         /// <summary>
         /// Create a Drawing Element
         /// </summary>
@@ -13,9 +15,9 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
-        /// <param name="text"></param>
+        /// <param name="drawingId"></param>
         /// <returns></returns>
-        Task<Element> AddDrawing(int creatorId, int initiatorId ,int step, int sessionId, string text = "");
+        Task<Element> AddDrawing(int creatorId, int initiatorId ,int step, int sessionId, int? drawingId = null);
 
         /// <summary>
         /// Create a Sentence Element
@@ -24,9 +26,9 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
-        /// <param name="drawingId"></param>
+        /// <param name="text"></param>
         /// <returns>An element</returns>
-        Task<Element> AddSentence(int creatorId, int initiatorId ,int step, int sessionId, int? drawingId = null);
+        Task<Element> AddSentence(int creatorId, int initiatorId ,int step, int sessionId, string text = "");
 
         /// <summary>
         /// Set the sentence into a Element
@@ -58,5 +60,12 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <returns></returns>
         Task<List<Element>> GetAlbum(int initiatorId);
+
+        /// <summary>
+        /// Get one element by those ID
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <returns></returns>
+        Task<Element> GetElement(int elementId);
     }
 }

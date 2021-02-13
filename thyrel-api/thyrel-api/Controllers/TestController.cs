@@ -21,11 +21,11 @@ namespace thyrel_api.Controllers
 
         // GET: api/Test
         [HttpGet]
-        public async Task<ActionResult<Player>> Get()
+        public async Task<ActionResult<Element>> Get()
         {
             var c = new ElementDataProvider();
             await c.SetSentence(1, "false mon petit didier");
-            return null;
+            return await c.GetElement(1);
         }
         
         // POST: api/Test
