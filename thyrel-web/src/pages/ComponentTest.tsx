@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import BigButton from '../components/BigButton';
 import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/lobby/AppLayout';
@@ -8,6 +9,13 @@ import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 
 export default function ComponentTest() {
+  const [ppIndex, setPpIndex] = useState(0);
+
+  const nextPp = () => {
+    if (ppIndex > profilesPictures.length - 2) setPpIndex(0);
+    else setPpIndex(p => p + 1);
+  };
+
   return (
     <AppLayout>
       <Box flexDirection="column" alignItems="center" width="100%" gap={10}>
@@ -21,18 +29,20 @@ export default function ComponentTest() {
           />
         </Box>
 
-        <AvatarCard image={profilesPictures[3]} />
+        <AvatarCard image={profilesPictures[ppIndex]} onShuffle={nextPp} />
 
         <UserCard
           id={1}
           name="John Doe"
-          avatar={profilesPictures[3]}
+          avatar={profilesPictures[ppIndex]}
           isOwner={true}
           isKickable={false}
           onKick={id => console.log('User id is :', id)}
         />
 
-        <BigButton icon="star">Test</BigButton>
+        <BigButton icon="star" onClick={nextPp}>
+          Test
+        </BigButton>
       </Box>
     </AppLayout>
   );

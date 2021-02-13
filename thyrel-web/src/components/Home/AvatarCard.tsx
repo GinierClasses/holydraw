@@ -34,7 +34,7 @@ export default function AvatarCard({ image, onShuffle }: AvatarCardProps) {
       className={css({
         position: 'relative',
       })}>
-      <ShuffleButton onClick={() => onShuffle?.()}>
+      <ShuffleButton onClick={onShuffle}>
         <Icon icon="random" />
       </ShuffleButton>
       <Box
