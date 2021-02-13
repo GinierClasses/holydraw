@@ -1,24 +1,32 @@
 import { Icon } from 'rsuite';
 import { baseColor, bgFade } from '../../styles/colors';
 import Box from '../../styles/Box';
-// import styled from '@emotion/styled';
 import { css } from '@emotion/css';
+import styled from '@emotion/styled';
 
 type AvatarCardProps = {
-  image?: string;
-  size?: 'md' | 'lg';
+  image: string;
   onShuffle?: () => void;
 };
 
-// const StyledAvatar = styled(Avatar)({
-//   width: '48px',
-//   height: '48px',
-// });
+const ShuffleButton = styled.button({
+  backgroundColor: baseColor,
+  outline: 'none',
+  borderRadius: '50%',
+  position: 'absolute',
+  left: '0',
+  bottom: '0',
+  width: '48px',
+  height: '48px',
+  boxShadow: `0px 4px 1px ${bgFade(0.8)}`,
+  '&:active': {
+    bottom: -4,
+    boxShadow: 'none',
+  },
+})
 
 export default function AvatarCard({
-  //children,
   image,
-  size,
   onShuffle,
 }: AvatarCardProps) {
   return (
@@ -29,25 +37,10 @@ export default function AvatarCard({
       className={css({
         position: 'relative',
       })}>
-      <button
-        onClick={() => onShuffle?.()}
-        className={css({
-          backgroundColor: baseColor,
-          outline: 'none',
-          borderRadius: '50%',
-          position: 'absolute',
-          left: '0',
-          bottom: '0',
-          width: '48px',
-          height: '48px',
-          boxShadow: `0px 4px 1px ${bgFade(0.8)}`,
-          '&:active': {
-            bottom: -4,
-            boxShadow: 'none',
-          },
-        })}>
+      <ShuffleButton
+        onClick={() => onShuffle?.()}>
         <Icon icon="random" />
-      </button>
+      </ShuffleButton>
       <Box
         borderWidth={2}
         borderRadius="50%"
@@ -56,7 +49,7 @@ export default function AvatarCard({
         overflow="hidden">
         <img
           src={image}
-          className={css({ width: 256, height: 'fit-content' })}
+          className={css({ height: '100%'})}
           alt="Avatar"
         />
       </Box>
