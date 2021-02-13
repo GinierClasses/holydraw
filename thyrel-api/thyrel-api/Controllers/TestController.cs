@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using thyrel_api.DataProvider;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
 
@@ -22,6 +23,8 @@ namespace thyrel_api.Controllers
         [HttpGet]
         public async Task<ActionResult<Player>> Get()
         {
+            var c = new ElementDataProvider();
+            await c.SetSentence(1, "false mon petit didier");
             return null;
         }
         
