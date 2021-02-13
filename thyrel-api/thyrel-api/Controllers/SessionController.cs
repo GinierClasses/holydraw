@@ -29,7 +29,7 @@ namespace thyrel_api.Controllers
         // Call this endpoint to create a Session
         // POST: api/session
         [HttpPost]
-        public async Task<ActionResult<Session>> StartAsync([FromBody] StartBody body)
+        public async Task<ActionResult<Session>> Start([FromBody] StartBody body)
         {
             var sessionDataProvider = new SessionDataProvider();
             var playerDataProvider = new PlayerDataProvider();
