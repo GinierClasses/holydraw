@@ -21,7 +21,7 @@ namespace thyrel_api.DataProvider
         /// <param name="roomId"></param>
         public async Task<Session> Add(int roomId)
         {
-            var sessionToAdd = new Session(null, null, roomId);
+            var sessionToAdd = new Session(null, roomId);
 
             var entity = await _holyDrawDbContext.Session.AddAsync(sessionToAdd);
             await SaveChanges();

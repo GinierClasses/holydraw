@@ -32,7 +32,7 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Element> AddDrawing(int creatorId, int initiatorId ,int step, int sessionId, int? drawingId = null)
         {
-            var element = new Element(null, step, creatorId, initiatorId, sessionId, drawingId);
+            var element = new Element(step, creatorId, initiatorId, sessionId, drawingId);
 
             var entity = await HolyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
@@ -50,7 +50,7 @@ namespace thyrel_api.DataProvider
         /// <returns>An element</returns>
         public async Task<Element> AddSentence(int creatorId, int initiatorId ,int step, int sessionId, string text = "")
         {
-            var element = new Element(null, step, creatorId, initiatorId, sessionId, text);
+            var element = new Element(step, creatorId, initiatorId, sessionId, text);
 
             var entity = await HolyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();

@@ -26,7 +26,7 @@ namespace thyrel_api.DataProvider
                 Enumerable.Repeat(allChar, 16)
                     .Select(identifier => identifier[random.Next(identifier.Length)]).ToArray());
 
-            var room = new Room(null, givenIdentifier, null);
+            var room = new Room(givenIdentifier, null);
 
             var entity = await _holyDrawDbContext.Room.AddAsync(room);
             await SaveChanges();

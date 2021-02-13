@@ -7,9 +7,8 @@ namespace thyrel_api.Models
     {
         public Element() { }
 
-        public Element(int? id, int step, int creatorId, int initiatorId, int sessionId,  int? drawingId = null)
+        public Element(int step, int creatorId, int initiatorId, int sessionId,  int? drawingId = null)
         {
-            Id = id;
             Step = step;
             Type = ElementType.Drawing;
             DrawingId = drawingId;
@@ -19,9 +18,8 @@ namespace thyrel_api.Models
             SessionId = sessionId;
         }
         
-        public Element(int? id, int step,  int creatorId, int initiatorId, int sessionId, string text = null)
+        public Element(int step,  int creatorId, int initiatorId, int sessionId, string text = null)
         {
-            Id = id;
             Step = step;
             Type = ElementType.Sentence;
             Text = text;
@@ -31,7 +29,7 @@ namespace thyrel_api.Models
             CreatedAt = DateTime.Now;
         }
 
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public int Step { get; set; }
         public ElementType Type { get; set; }
         public string? Text { get; set; }

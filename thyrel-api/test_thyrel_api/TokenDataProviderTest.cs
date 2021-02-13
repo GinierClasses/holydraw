@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -9,6 +10,7 @@ namespace test_thyrel_api
     public class TokenDataProviderTest
     {
         private IElementDataProvider _elementDataProvider;
+        private HolyDrawDbContext _context;
 
         [SetUp]
         public async Task Setup()
@@ -20,6 +22,11 @@ namespace test_thyrel_api
 
             _elementDataProvider = new ElementDataProvider(options);
             await AddMockData();
+        }
+        
+        [TearDown]
+        public async Task TearDown()
+        {
         }
 
         [Test]
@@ -66,19 +73,19 @@ namespace test_thyrel_api
                 .UseInMemoryDatabase("thyrel_db")
                 .Options;
             var context = new HolyDrawDbContext(options);
-
-            var roomEntity = await context.Room.AddAsync(new Room(1, "Jean", null));
-            var tokenEntity = await context.Token.AddAsync(new Token(1, "player-key"));
-            var tokenEntity2 = await context.Token.AddAsync(new Token(2, "player-key"));
+            _context = context;
+            var roomEntity = await context.Room.AddAsync(new Room("Jean", null));
+            var tokenEntity = await context.Token.AddAsync(new Token("player-key"));
+            var tokenEntity2 = await context.Token.AddAsync(new Token("player-key"));
             var player1 = await context.Player.AddAsync(
-                new Player(1, "TestUserOwner", "TestAvatar", true, null,
-                    roomEntity.Entity.Id ?? 1, tokenEntity.Entity.Id ?? 1));
+                new Player("TestUserOwner", "TestAvatar", true, null,
+                    roomEntity.Entity.Id, tokenEntity.Entity.Id));
             var player2 = await context.Player.AddAsync(
-                new Player(2, "TestUser", "TestAvatar2", false, null,
-                    roomEntity.Entity.Id ?? 1, tokenEntity2.Entity.Id ?? 1));
-            var session = await context.Session.AddAsync(new Session(1, null, roomEntity.Entity.Id ?? 1));
-            var element = await context.Element.AddAsync(new Element(1, 1, player1.Entity.Id ?? 1,
-                player1.Entity.Id ?? 1, session.Entity.Id ?? 1, "hello sentence"));
+                new Player("TestUser", "TestAvatar2", false, null,
+                    roomEntity.Entity.Id, tokenEntity2.Entity.Id));
+            var session = await context.Session.AddAsync(new Session(null, roomEntity.Entity.Id));
+            var element = await context.Element.AddAsync(new Element(1, player1.Entity.Id,
+                player1.Entity.Id, session.Entity.Id, "hello sentence"));
             await context.SaveChangesAsync();
         }
     }

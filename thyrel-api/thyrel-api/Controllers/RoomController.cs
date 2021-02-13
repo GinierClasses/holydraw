@@ -35,9 +35,9 @@ namespace thyrel_api.Controllers
 
             var room = await roomDataProvider.Add();
             var token = await new TokenDataProvider().Add();
-            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
+            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id, token.Id);
             // use `GetPlayer` to include `Token` and `Room`
-            return await playerDataProvider.GetPlayer(player.Id ?? 1);
+            return await playerDataProvider.GetPlayer(player.Id);
         }
 
         // Call this endpoint to create a room
@@ -52,8 +52,8 @@ namespace thyrel_api.Controllers
                 return NotFound();
             var playerDataProvider = new PlayerDataProvider();
             var token = await new TokenDataProvider().Add();
-            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
-            return await playerDataProvider.GetPlayer(player.Id ?? 1);
+            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id, token.Id);
+            return await playerDataProvider.GetPlayer(player.Id);
         }
     }
 }

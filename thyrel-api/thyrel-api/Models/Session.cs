@@ -7,15 +7,14 @@ namespace thyrel_api.Models
     {
         public Session() { }
 
-        public Session(int? id, DateTime? finishAt, int roomId)
+        public Session(DateTime? finishAt, int roomId)
         {
-            Id = id;
             FinishAt = finishAt;
             CreatedAt = DateTime.Now;
             RoomId = roomId;
         }
 
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public DateTime? FinishAt { get; set; }
         public DateTime? StepFinishAt { get; set; }
         public DateTime CreatedAt { get; set; }

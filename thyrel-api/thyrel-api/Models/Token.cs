@@ -14,14 +14,13 @@ namespace thyrel_api.Models
         /// <param name="id">id</param>
         /// <param name="tokenKey">key</param>
         /// <param name="playerId">playerId</param>
-        public Token(int? id, string tokenKey)
+        public Token(string tokenKey)
         {
-            Id = id;
             TokenKey = tokenKey;
             CreatedAt = DateTime.Now;
         }
 
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string TokenKey { get; set; }
         public DateTime? DiscardAt { get; set; }
         public DateTime CreatedAt { get; set; }

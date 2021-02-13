@@ -26,7 +26,7 @@ namespace thyrel_api.DataProvider
                 Enumerable.Repeat(allChar, 16)
                     .Select(text => text[random.Next(text.Length)]).ToArray());
 
-            var token = new Token(null, resultToken);
+            var token = new Token(resultToken);
             
             var entry = await _holyDrawDbContext.Token.AddAsync(token);
             await SaveChanges();
