@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using thyrel_api.Controllers.ModelsControllers;
+using thyrel_api.DataProvider;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
 
@@ -24,18 +26,28 @@ namespace thyrel_api.Controllers
             public int RoomId;
         }
 
-        // Call this endpoint to create a room
-        // POST: api/room
+        // Call this endpoint to create a Session
+        // POST: api/session
         [HttpPost]
-        public ActionResult<Player> Start([FromBody] StartBody body)
+        public async Task<ActionResult<Session>> StartAsync([FromBody] StartBody body)
         {
             var sessionDataProvider = new SessionDataProvider();
             var playerDataProvider = new PlayerDataProvider();
+            var elementDataProvider = new ElementDataProvider();
+            var addedSession = sessionDataProvider.Add(body.RoomId);
 
-            sessionDataProvider.Add(body.RoomId);
+            if (addedSession == null)
+            {
+                return NotFound();
+            }
 
-            playerDataProvider.GetPlayersByRoom(body.RoomId).ForEach(p => );
+            playerDataProvider.GetPlayersByRoom(body.RoomId).ForEach(async p => await elementDataProvider.AddSentence(p.Id ?? 0, p.Id ?? 0, 1, addedSession.Id ?? 0));
 
+            await _websocketHandler.SendMessageToSockets(
+                    JsonSerializer.Serialize(
+                        new EventJson(WebsocketEvent.SessionStart)), body.RoomId);
+
+            return addedSession;
         }
     }
 }
