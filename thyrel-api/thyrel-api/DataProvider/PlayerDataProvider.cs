@@ -6,7 +6,7 @@ using thyrel_api.Models;
 
 namespace thyrel_api.DataProvider
 {
-    public class PlayerDataProvider
+    public class PlayerDataProvider : IPlayerDataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
 

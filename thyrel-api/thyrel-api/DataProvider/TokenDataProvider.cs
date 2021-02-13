@@ -6,7 +6,7 @@ using thyrel_api.Models;
 
 namespace thyrel_api.DataProvider
 {
-    public class TokenDataProvider
+    public class TokenDataProvider : ITokenDataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
 
