@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import styled from '@emotion/styled';
 import Box from '../../styles/Box';
 import { Icon } from 'rsuite';
-import { bgColor } from '../../styles/colors';
+import { baseColor, bgColor } from '../../styles/colors';
 
 type UserCardProps = {
   id: number;
@@ -16,8 +16,17 @@ type UserCardProps = {
 
 // Sets size for avatar component
 const StyledAvatar = styled(Avatar)({
-  width: '48px',
-  height: '48px',
+  width: 48,
+  height: 48,
+  backgroundColor: 'transparent',
+  border: `1px solid ${baseColor}`,
+  overflow: 'visible',
+  '> img': {
+    // `!important` is awful in CSS but I don't have the choice
+    height: '48px !important',
+    width: 'auto !important',
+    margin: 'auto',
+  },
 });
 
 export default function UserCard({
