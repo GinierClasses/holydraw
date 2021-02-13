@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import styled from '@emotion/styled';
 import Box from '../../styles/Box';
 import { Icon } from 'rsuite';
-import { bgColor } from '../../styles/colors';
+import { baseColor, bgColor } from '../../styles/colors';
 
 type UserCardProps = {
   id: number;
@@ -18,6 +18,9 @@ type UserCardProps = {
 const StyledAvatar = styled(Avatar)({
   width: '48px',
   height: '48px',
+  backgroundColor: 'transparent',
+  border: `1px solid ${baseColor}`,
+  overflow: 'visible',
 });
 
 export default function UserCard({

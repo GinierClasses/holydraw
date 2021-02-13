@@ -1,5 +1,5 @@
 import { Icon } from 'rsuite';
-import { baseColor, bgFade } from '../../styles/colors';
+import { baseColor, bgColor, bgFade } from '../../styles/colors';
 import Box from '../../styles/Box';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
@@ -23,12 +23,9 @@ const ShuffleButton = styled.button({
     bottom: -4,
     boxShadow: 'none',
   },
-})
+});
 
-export default function AvatarCard({
-  image,
-  onShuffle,
-}: AvatarCardProps) {
+export default function AvatarCard({ image, onShuffle }: AvatarCardProps) {
   return (
     <Box
       alignItems="center"
@@ -37,8 +34,7 @@ export default function AvatarCard({
       className={css({
         position: 'relative',
       })}>
-      <ShuffleButton
-        onClick={() => onShuffle?.()}>
+      <ShuffleButton onClick={() => onShuffle?.()}>
         <Icon icon="random" />
       </ShuffleButton>
       <Box
@@ -46,10 +42,11 @@ export default function AvatarCard({
         borderRadius="50%"
         width={256}
         height={256}
-        overflow="hidden">
+        bg={bgColor}
+        className={css({ boxShadow: `0px 4px 1px ${bgFade(0.8)}` })}>
         <img
           src={image}
-          className={css({ height: '100%'})}
+          className={css({ height: 256, width: 'auto', margin: 'auto' })}
           alt="Avatar"
         />
       </Box>

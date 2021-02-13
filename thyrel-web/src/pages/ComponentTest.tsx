@@ -4,6 +4,7 @@ import AppLayout from '../components/lobby/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
 import UserCard from '../components/lobby/UserCard';
 import StepTimer from '../components/StepTimer';
+import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 
 export default function ComponentTest() {
@@ -20,12 +21,12 @@ export default function ComponentTest() {
           />
         </Box>
 
-        <AvatarCard image="https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Le%C3%AFko_in_snow.jpg/220px-Le%C3%AFko_in_snow.jpg" />
+        <AvatarCard image={profilesPictures[3]} />
 
         <UserCard
           id={1}
           name="John Doe"
-          avatar="https://cutt.ly/skYcTql"
+          avatar={profilesPictures[3]}
           isOwner={true}
           isKickable={false}
           onKick={id => console.log('User id is :', id)}
