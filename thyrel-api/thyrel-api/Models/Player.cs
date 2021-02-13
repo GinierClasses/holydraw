@@ -8,7 +8,7 @@ namespace thyrel_api.Models
     {
         public Player() { }
 
-        public Player(int? id, string username, string avatarUrl, bool isOwner, DateTime? disableAt, DateTime createdAt,
+        public Player(int? id, string username, string avatarUrl, bool isOwner, DateTime? disableAt,
             int roomId, int tokenId)
         {
             Id = id;
@@ -16,7 +16,7 @@ namespace thyrel_api.Models
             AvatarUrl = avatarUrl;
             IsOwner = isOwner;
             DisableAt = disableAt;
-            CreatedAt = createdAt;
+            CreatedAt = DateTime.Now;
             RoomId = roomId;
             TokenId = tokenId;
         }

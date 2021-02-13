@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
@@ -25,34 +26,34 @@ namespace thyrel_api.Controllers
         // Call this endpoint to create a room
         // POST: api/room
         [HttpPost]
-        public ActionResult<Player> Post([FromBody] PlayerRoomBody body)
+        public async Task<ActionResult<Player>> Post([FromBody] PlayerRoomBody body)
         {
             if (body.Username == null || body.AvatarUrl == null)
                 return NotFound(); // 404 : most of api error
             var roomDataProvider = new RoomDataProvider();
             var playerDataProvider = new PlayerDataProvider();
 
-            var room = roomDataProvider.Add();
-            var token = new TokenDataProvider().Add();
-            var player = playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
+            var room = await roomDataProvider.Add();
+            var token = await new TokenDataProvider().Add();
+            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
             // use `GetPlayer` to include `Token` and `Room`
-            return playerDataProvider.GetPlayer(player.Id ?? 1);
+            return await playerDataProvider.GetPlayer(player.Id ?? 1);
         }
 
         // Call this endpoint to create a room
         // PATCH: api/room/join/roomidentifier
         [HttpPatch("join/{identifier}")]
-        public ActionResult<Player> Join(string identifier, [FromBody] PlayerRoomBody body)
+        public async Task<ActionResult<Player>> Join(string identifier, [FromBody] PlayerRoomBody body)
         {
             if (body.Username == null || body.AvatarUrl == null)
                 return NotFound(); // 404 : most of api error
-            var room = new RoomDataProvider().GetRoom(identifier);
+            var room = await new RoomDataProvider().GetRoom(identifier);
             if (room == null)
                 return NotFound();
             var playerDataProvider = new PlayerDataProvider();
-            var token = new TokenDataProvider().Add();
-            var player = playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
-            return playerDataProvider.GetPlayer(player.Id ?? 1);
+            var token = await new TokenDataProvider().Add();
+            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
+            return await playerDataProvider.GetPlayer(player.Id ?? 1);
         }
     }
 }

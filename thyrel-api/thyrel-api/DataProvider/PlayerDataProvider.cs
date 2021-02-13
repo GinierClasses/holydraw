@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
@@ -21,12 +22,13 @@ namespace thyrel_api.DataProvider
         /// <param name="avatarUrl"></param>
         /// <param name="isOwner"></param>
         /// <param name="roomId"></param>
-        public Player Add(string username, string avatarUrl, bool isOwner, int roomId, int tokenId)
+        /// <param name="tokenId"></param>
+        public async Task<Player> Add(string username, string avatarUrl, bool isOwner, int roomId, int tokenId)
         {
-            var playerToAdd = new Player(null, username, avatarUrl, isOwner, null, DateTime.Now, roomId, tokenId);
+            var player = new Player(null, username, avatarUrl, isOwner, null, roomId, tokenId);
 
-            var entity = _holyDrawDbContext.Player.Add(playerToAdd);
-            SaveChanges();
+            var entity = await _holyDrawDbContext.Player.AddAsync(player);
+            await SaveChanges();
             return entity.Entity;
         }
 
@@ -35,12 +37,12 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="id"></param>
         /// <returns>The player</returns>
-        public Player GetPlayer(int id)
+        public async Task<Player> GetPlayer(int id)
         {
-            var player = _holyDrawDbContext.Player
+            var player = await _holyDrawDbContext.Player
                 .Include(p => p.Room)
                 .Include(p => p.Token)
-                .SingleOrDefault(p => p.Id == id);
+                .SingleOrDefaultAsync(p => p.Id == id);
             return player;
         }
 
@@ -49,11 +51,11 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="tokenKey"></param>
         /// <returns></returns>
-        public Player GetPlayerByToken(string tokenKey)
+        public async Task<Player> GetPlayerByToken(string tokenKey)
         {
-            var player = _holyDrawDbContext.Player
+            var player = await _holyDrawDbContext.Player
                 .Include(p => p.Token)
-                .SingleOrDefault(p => p.Token.TokenKey == tokenKey);
+                .SingleOrDefaultAsync(p => p.Token.TokenKey == tokenKey);
             return player;
         }
 
@@ -61,55 +63,54 @@ namespace thyrel_api.DataProvider
         /// <summary>
         /// To disable a Player (set the discard date to now)
         /// </summary>
-        /// <param name="player"></param>
-        public void Disable(Player player)
+        /// <param name="playerId"></param>
+        public async Task<Player> Disable(int playerId)
         {
-            var dbPlayer = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == player.Id);
-            if (dbPlayer == null)
-                return;
+            var player = await _holyDrawDbContext.Player.SingleOrDefaultAsync(p => p.Id == playerId);
+            if (player == null)
+                return null;
+
             player.DisableAt = DateTime.Now;
-            UpdatePlayer(dbPlayer, player);
+            await SaveChanges();
+            return player;
         }
 
         /// <summary>
         /// Set the Player as Owner
         /// </summary>
-        /// <param name="player"></param>
-        public void SetOwner(Player player)
+        /// <param name="playerId"></param>
+        /// <param name="isOwner"></param>
+        public async Task<Player> SetOwner(int playerId, bool isOwner = true)
         {
-            var dbPlayer = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == player.Id);
+            var player = await _holyDrawDbContext.Player.SingleOrDefaultAsync(p => p.Id == playerId);
+            if (player == null)
+                return null;
+
+            player.IsOwner = isOwner;
+            await SaveChanges();
+            return player;
+        }
+
+        /// <summary>
+        /// Handle isPlayer (when session start) column
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="isPlaying"></param>
+        /// <returns></returns>
+        public async Task<Player> SetIsPlaying(int playerId, bool isPlaying)
+        {
+            var dbPlayer = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == playerId);
             if (dbPlayer == null)
-                return;
-            player.IsOwner = true;
-            UpdatePlayer(dbPlayer, player);
+                return null;
+            
+            dbPlayer.IsOwner = isPlaying;
+            await SaveChanges();
+            return dbPlayer;
         }
 
-        public void SetIsPlaying(Player player, bool isPlaying)
+        private async Task SaveChanges()
         {
-            var dbPlayer = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == player.Id);
-            if (dbPlayer == null)
-                return;
-            player.IsPlaying = isPlaying;
-            UpdatePlayer(dbPlayer, player);
-        }
-
-        private void UpdatePlayer(Player dbPlayer, Player player)
-        {
-            try
-            {
-                _holyDrawDbContext.Player.Attach(player);
-                _holyDrawDbContext.Entry(dbPlayer).State = EntityState.Modified;
-                SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
-        private void SaveChanges()
-        {
-            _holyDrawDbContext.SaveChangesAsync();
+            await _holyDrawDbContext.SaveChangesAsync();
         }
     }
 }

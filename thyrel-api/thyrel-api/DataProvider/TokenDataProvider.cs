@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
@@ -17,16 +18,18 @@ namespace thyrel_api.DataProvider
         /// <summary>
         /// Create a new Token autogenerate
         /// </summary>
-        public Token Add()
+        public async Task<Token> Add()
         {
             const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz-.";
             var random = new Random();
             var resultToken = new string(
                 Enumerable.Repeat(allChar, 16)
-                    .Select(token => token[random.Next(token.Length)]).ToArray());
+                    .Select(text => text[random.Next(text.Length)]).ToArray());
 
-            var entry = _holyDrawDbContext.Token.Add(new Token(null, resultToken));
-            SaveChanges();
+            var token = new Token(null, resultToken);
+            
+            var entry = await _holyDrawDbContext.Token.AddAsync(token);
+            await SaveChanges();
 
             return entry.Entity;
         }
@@ -34,40 +37,33 @@ namespace thyrel_api.DataProvider
         /// <summary>
         /// To discord a token
         /// </summary>
-        /// <param name="token">Token to discard</param>
-        public void Discard(Token token)
+        /// <param name="tokenId"></param>
+        public async Task<Token> Discard(int tokenId)
         {
-            var dbToken = _holyDrawDbContext.Token.SingleOrDefault(c => c.Id == token.Id);
+            var dbToken = await _holyDrawDbContext.Token.SingleOrDefaultAsync(c => c.Id == tokenId);
             if (dbToken == null)
-                return;
-            token.DiscardAt = DateTime.Now;
-            try
-            {
-                _holyDrawDbContext.Token.Attach(token);
-                _holyDrawDbContext.Entry(dbToken).State = EntityState.Modified;
-                SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+                return null;
+            
+            dbToken.DiscardAt = DateTime.Now;
+            await SaveChanges();
+            return dbToken;
         }
 
         /// <summary>
         /// To find Player associated with the key
         /// </summary>
-        /// <param name="key">the token key</param>
+        /// <param name="tokenKey">the token key</param>
         /// <returns>Return the Player with associated key if player exist or null</returns>
-        public Player FindPlayer(string key)
+        public async Task<Player> FindPlayer(string tokenKey)
         {
-            var token = _holyDrawDbContext.Token
-                .Where(t => t.TokenKey == key && t.DiscardAt != null);
-            return token.Last()?.Players.First();
+            var token = await _holyDrawDbContext.Token
+                .SingleOrDefaultAsync(t => t.TokenKey == tokenKey && t.DiscardAt != null);
+            return token?.Players.First();
         }
 
-        private void SaveChanges()
+        private async Task SaveChanges()
         {
-            _holyDrawDbContext.SaveChangesAsync();
+            await _holyDrawDbContext.SaveChangesAsync();
         }
     }
 }
