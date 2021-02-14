@@ -22,5 +22,12 @@ namespace thyrel_api.DataProvider
         /// <param name="tokenKey">the token key</param>
         /// <returns>Return the Player with associated key if player exist or null</returns>
         Task<Player> FindPlayer(string tokenKey);
+
+        /// <summary>
+        /// To find a Token
+        /// </summary>
+        /// <param name="tokenId"></param>
+        /// <returns>Return token with this ID</returns>
+        Task<Token> GetToken(int tokenId);
     }
 }

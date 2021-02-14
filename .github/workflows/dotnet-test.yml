@@ -1,0 +1,31 @@
+name: Dotnet test validation
+
+on: [pull_request]
+
+jobs:
+  build:
+    # use ubuntu for more build minutes
+    runs-on: ubuntu-latest
+    # use release mode for all steps
+    env:
+      config: 'Release'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.101
+
+        # restore dependencies
+      - name: Install dependencies
+        run: cd thyrel-api && dotnet restore
+
+        # build project
+      - name: Build
+        run:
+          cd thyrel-api && dotnet build
+
+          # run tests with built project
+      - name: Test PR
+        run: cd thyrel-api && dotnet test --no-restore --no-build"

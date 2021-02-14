@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ using thyrel_api.Models;
 
 namespace test_thyrel_api
 {
-    public class TokenDataProviderTest
+    public class ElementDataProviderTest
     {
         private IElementDataProvider _elementDataProvider;
         private HolyDrawDbContext _context;
@@ -15,20 +16,17 @@ namespace test_thyrel_api
         [SetUp]
         public async Task Setup()
         {
-
             var options = new DbContextOptionsBuilder<HolyDrawDbContext>()
                 .UseInMemoryDatabase("thyrel_db")
                 .Options;
-
+            
             _elementDataProvider = new ElementDataProvider(options);
-            await AddMockData();
+
+            var mock = new MockDatabase(options);
+            await mock.AddMockData();
+            _context = mock.Context;
         }
         
-        [TearDown]
-        public async Task TearDown()
-        {
-        }
-
         [Test]
         public async Task AddSentenceFunctionCreateSentence()
         {
@@ -50,7 +48,7 @@ namespace test_thyrel_api
         [Test]
         public async Task SetSentenceEditValueOfText()
         {
-            const string newText = "yoyo";
+            const string newText = "yow";
             var newElement = await _elementDataProvider.SetSentence(1, newText);
             Assert.AreEqual(newText, newElement.Text);
             var dbElement = await _elementDataProvider.GetElement(1);
@@ -66,27 +64,33 @@ namespace test_thyrel_api
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newId, dbElement.DrawingId);
         }
-
-        private async Task AddMockData()
+        
+        [Test]
+        public async Task HandleFinishChangeTheFinish()
         {
-            var options = new DbContextOptionsBuilder<HolyDrawDbContext>()
-                .UseInMemoryDatabase("thyrel_db")
-                .Options;
-            var context = new HolyDrawDbContext(options);
-            _context = context;
-            var roomEntity = await context.Room.AddAsync(new Room("Jean", null));
-            var tokenEntity = await context.Token.AddAsync(new Token("player-key"));
-            var tokenEntity2 = await context.Token.AddAsync(new Token("player-key"));
-            var player1 = await context.Player.AddAsync(
-                new Player("TestUserOwner", "TestAvatar", true, null,
-                    roomEntity.Entity.Id, tokenEntity.Entity.Id));
-            var player2 = await context.Player.AddAsync(
-                new Player("TestUser", "TestAvatar2", false, null,
-                    roomEntity.Entity.Id, tokenEntity2.Entity.Id));
-            var session = await context.Session.AddAsync(new Session(null, roomEntity.Entity.Id));
-            var element = await context.Element.AddAsync(new Element(1, player1.Entity.Id,
-                player1.Entity.Id, session.Entity.Id, "hello sentence"));
-            await context.SaveChangesAsync();
+            await _elementDataProvider.HandleFinish(1, true);
+            var element1 = await _elementDataProvider.GetElement(1);
+            Assert.IsNotNull(element1.FinishAt);
+            await _elementDataProvider.HandleFinish(1, false);
+            var element2 = await _elementDataProvider.GetElement(1);
+            Assert.IsNull(element2.FinishAt);
+        }
+        
+        [Test]
+        public async Task TestGetAlbum()
+        {
+            var elementExpected = _context.Element.Count(e => e.InitiatorId == 1);
+            var album = await _elementDataProvider.GetAlbum(1);
+            Assert.AreEqual(elementExpected,album.Count());
+        }
+        
+        [Test]
+        public async Task TestGetElement()
+        {
+            var element = await _elementDataProvider.GetElement(1);
+            var expectedElement = await _context.Element.SingleAsync(e => e.Id == 1);
+            Assert.AreEqual(expectedElement.Id, element.Id);
+            Assert.AreEqual(expectedElement.Text, element.Text);
         }
     }
 }

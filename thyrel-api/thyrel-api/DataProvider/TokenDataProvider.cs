@@ -14,6 +14,11 @@ namespace thyrel_api.DataProvider
         {
             _holyDrawDbContext = new HolyDrawDbContext();
         }
+        
+        public TokenDataProvider(DbContextOptions<HolyDrawDbContext> options)
+        {
+            _holyDrawDbContext = new HolyDrawDbContext(options);
+        }
 
         /// <summary>
         /// Create a new Token autogenerate
@@ -57,8 +62,19 @@ namespace thyrel_api.DataProvider
         public async Task<Player> FindPlayer(string tokenKey)
         {
             var token = await _holyDrawDbContext.Token
-                .SingleOrDefaultAsync(t => t.TokenKey == tokenKey && t.DiscardAt != null);
-            return token?.Players.First();
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync(t => t.TokenKey == tokenKey && t.DiscardAt == null);
+            return token?.Players.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// To find a Token
+        /// </summary>
+        /// <param name="tokenId"></param>
+        /// <returns>Return token with this ID</returns>
+        public async Task<Token> GetToken(int tokenId)
+        {
+            return await _holyDrawDbContext.Token.FindAsync(tokenId);
         }
 
         private async Task SaveChanges()
