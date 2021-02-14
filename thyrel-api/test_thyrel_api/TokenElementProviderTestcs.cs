@@ -49,7 +49,7 @@ namespace test_thyrel_api
         {
             const int id = 1;
             var token1 = await _tokenDataProvider.GetToken(id);
-            Assert.AreEqual(4, token1.Id);
+            Assert.AreEqual(1, token1.Id);
         }
         
         [Test]

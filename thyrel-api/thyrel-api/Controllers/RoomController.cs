@@ -59,9 +59,9 @@ namespace thyrel_api.Controllers
         // Call this endpoint to get a room
         // GET : api/room/roomidentifier
         [HttpGet("{identifier}")]
-        public ActionResult<Room> GetRoom(string identifier)
+        public async Task<ActionResult<Room>> GetRoom(string identifier)
         {
-            var room = new RoomDataProvider().GetRoom(identifier);
+            var room = await new RoomDataProvider().GetRoom(identifier);
             return room;
         }
     }
