@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,25 +7,17 @@ using thyrel_api.Models;
 
 namespace test_thyrel_api
 {
-    public class ElementDataProviderTest
+    public class ElementDataProviderTest : TestProvider
     {
         private IElementDataProvider _elementDataProvider;
-        private HolyDrawDbContext _context;
 
         [SetUp]
         public async Task Setup()
         {
-            var options = new DbContextOptionsBuilder<HolyDrawDbContext>()
-                .UseInMemoryDatabase("thyrel_db")
-                .Options;
-            
-            _elementDataProvider = new ElementDataProvider(options);
-
-            var mock = new MockDatabase(options);
-            await mock.AddMockData();
-            _context = mock.Context;
+            await SetupTest();
+            _elementDataProvider = new ElementDataProvider(Options);
         }
-        
+
         [Test]
         public async Task AddSentenceFunctionCreateSentence()
         {
@@ -79,7 +70,7 @@ namespace test_thyrel_api
         [Test]
         public async Task TestGetAlbum()
         {
-            var elementExpected = _context.Element.Count(e => e.InitiatorId == 1);
+            var elementExpected = Context.Element.Count(e => e.InitiatorId == 1);
             var album = await _elementDataProvider.GetAlbum(1);
             Assert.AreEqual(elementExpected,album.Count());
         }
@@ -88,7 +79,7 @@ namespace test_thyrel_api
         public async Task TestGetElement()
         {
             var element = await _elementDataProvider.GetElement(1);
-            var expectedElement = await _context.Element.SingleAsync(e => e.Id == 1);
+            var expectedElement = await Context.Element.SingleAsync(e => e.Id == 1);
             Assert.AreEqual(expectedElement.Id, element.Id);
             Assert.AreEqual(expectedElement.Text, element.Text);
         }

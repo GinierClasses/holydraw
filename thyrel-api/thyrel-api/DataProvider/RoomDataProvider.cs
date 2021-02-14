@@ -67,7 +67,7 @@ namespace thyrel_api.DataProvider
         public async Task<Room> Finish(int roomId)
         {
             var dbRoom = await _holyDrawDbContext.Room
-                .SingleOrDefaultAsync(p => p.Id == roomId);
+                .FindAsync(roomId);
             if (dbRoom == null)
                 return null;
 

@@ -45,7 +45,7 @@ namespace thyrel_api.DataProvider
         /// <param name="tokenId"></param>
         public async Task<Token> Discard(int tokenId)
         {
-            var dbToken = await _holyDrawDbContext.Token.SingleOrDefaultAsync(c => c.Id == tokenId);
+            var dbToken = await _holyDrawDbContext.Token.FindAsync(tokenId);
             if (dbToken == null)
                 return null;
             

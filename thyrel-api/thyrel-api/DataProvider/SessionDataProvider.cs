@@ -34,8 +34,8 @@ namespace thyrel_api.DataProvider
         /// <param name="sessionId"></param>
         public async Task<Session> Finish(int sessionId)
         {
-            var session = _holyDrawDbContext.Session
-                .SingleOrDefault(s => s.Id == sessionId);
+            var session = await _holyDrawDbContext.Session
+                .FindAsync(sessionId);
             
             if (session == null)
                 return null;

@@ -3,41 +3,32 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
-using thyrel_api.Models;
 
 namespace test_thyrel_api
 {
-    public class TokenElementProviderTest
+    public class TokenElementProviderTest : TestProvider
     {
         private ITokenDataProvider _tokenDataProvider;
-        private HolyDrawDbContext _context;
 
         [SetUp]
         public async Task Setup()
         {
-            var options = new DbContextOptionsBuilder<HolyDrawDbContext>()
-                .UseInMemoryDatabase("thyrel_db")
-                .Options;
-
-            _tokenDataProvider = new TokenDataProvider(options);
-
-            var mock = new MockDatabase(options);
-            await mock.AddMockData();
-            _context = mock.Context;
+            await SetupTest();
+            _tokenDataProvider = new TokenDataProvider(Options);
         }
 
         [Test]
         public async Task AddSentenceFunctionCreateSentence()
         {
-            var elementCount = _context.Token.Count();
+            var elementCount = Context.Token.Count();
             await _tokenDataProvider.Add();
-            Assert.AreEqual(elementCount + 1, _context.Token.Count());
+            Assert.AreEqual(elementCount + 1, Context.Token.Count());
         }
 
         [Test]
         public async Task DiscardTokenEditColumn()
         {
-            var tokenNotDiscord = await _context.Token.FirstAsync(t => t.DiscardAt == null);
+            var tokenNotDiscord = await Context.Token.FirstAsync(t => t.DiscardAt == null);
             var updatedElement = await _tokenDataProvider.Discard(tokenNotDiscord.Id);
             var tokenNotDiscordUpdate = await _tokenDataProvider.GetToken(tokenNotDiscord.Id);
             Assert.IsNotNull(tokenNotDiscordUpdate.DiscardAt);

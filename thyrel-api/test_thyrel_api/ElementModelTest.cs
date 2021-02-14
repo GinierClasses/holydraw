@@ -5,11 +5,6 @@ namespace test_thyrel_api
 {
     public class ElementModelTest
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-        
         [Test]
         public void DrawingElementConstructor()
         {

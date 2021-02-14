@@ -66,7 +66,7 @@ namespace thyrel_api.DataProvider
         /// <param name="playerId"></param>
         public async Task<Player> Disable(int playerId)
         {
-            var player = await _holyDrawDbContext.Player.SingleOrDefaultAsync(p => p.Id == playerId);
+            var player = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (player == null)
                 return null;
 
@@ -82,7 +82,7 @@ namespace thyrel_api.DataProvider
         /// <param name="isOwner"></param>
         public async Task<Player> SetOwner(int playerId, bool isOwner = true)
         {
-            var player = await _holyDrawDbContext.Player.SingleOrDefaultAsync(p => p.Id == playerId);
+            var player = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (player == null)
                 return null;
 
@@ -99,7 +99,7 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Player> SetIsPlaying(int playerId, bool isPlaying)
         {
-            var dbPlayer = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == playerId);
+            var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (dbPlayer == null)
                 return null;
             

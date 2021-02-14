@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
 using thyrel_api.Models;
 
 namespace test_thyrel_api
@@ -36,12 +34,12 @@ namespace test_thyrel_api
         {
             var elements = new List<Element>
             {
-                new Element(1, 1, 1, 1, "element-sentence-1"),
-                new Element(1, 2, 2, 1, "element-sentence-2"),
-                new Element(1, 3, 3, 1, "element-sentence-3"),
-                new Element(1, 4, 4, 1, "element-sentence-4"),
-                new Element(1, 6, 6, 1, "element-sentence-5"),
-                new Element(1, 7, 7, 1, "element-sentence-6"),
+                new (1, 1, 1, 1, "element-sentence-1"),
+                new (1, 2, 2, 1, "element-sentence-2"),
+                new (1, 3, 3, 1, "element-sentence-3"),
+                new (1, 4, 4, 1, "element-sentence-4"),
+                new (1, 6, 6, 1, "element-sentence-5"),
+                new (1, 7, 7, 1, "element-sentence-6"),
             };
             
             await Context.Element.AddRangeAsync(elements);
@@ -82,16 +80,16 @@ namespace test_thyrel_api
         {
             var tokens = new List<Token>
             {
-                new Token("token-1-key"),
-                new Token("token-2-key"),
-                new Token("token-3-key"),
-                new Token("token-4-key"),
-                new Token("token-5-key"),
-                new Token("token-6-key"),
-                new Token("token-7-key"),
-                new Token("token-8-key"),
-                new Token("token-9-key"),
-                new Token("token-10-key"),
+                new ("token-1-key"),
+                new ("token-2-key"),
+                new ("token-3-key"),
+                new ("token-4-key"),
+                new ("token-5-key"),
+                new ("token-6-key"),
+                new ("token-7-key"),
+                new ("token-8-key"),
+                new ("token-9-key"),
+                new ("token-10-key"),
             };
             
             await Context.Token.AddRangeAsync(tokens);
@@ -101,10 +99,10 @@ namespace test_thyrel_api
         {
             var rooms = new List<Room>
             {
-                new Room("room-1-id", null),
-                new Room("room-2-id", null),
-                new Room("room-3-id", null),
-                new Room("room-4-id", null),
+                new ("room-1-id", null),
+                new ("room-2-id", null),
+                new ("room-3-id", null),
+                new ("room-4-id", null),
             };
 
             await Context.Room.AddRangeAsync(rooms);

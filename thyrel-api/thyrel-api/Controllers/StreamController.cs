@@ -12,11 +12,11 @@ namespace thyrel_api.Controllers
     [Route("api/[controller]")]
     public class StreamController : Controller
     {
-        public IWebsocketHandler WebsocketHandler { get; }
+        private readonly IWebsocketHandler _websocketHandler;
 
         public StreamController(IWebsocketHandler websocketHandler)
         {
-            WebsocketHandler = websocketHandler;
+            _websocketHandler = websocketHandler;
         }
 
         // api/stream
@@ -30,7 +30,7 @@ namespace thyrel_api.Controllers
             {
                 WebSocket websocket = await context.WebSockets.AcceptWebSocketAsync();
 
-                await WebsocketHandler.Handle(Guid.NewGuid(), websocket);
+                await _websocketHandler.Handle(Guid.NewGuid(), websocket);
             }
             else
             {
