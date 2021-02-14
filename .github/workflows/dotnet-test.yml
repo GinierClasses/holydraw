@@ -15,7 +15,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.101
+          dotnet-version: '5.0.100'
 
         # restore dependencies
       - name: Install dependencies
@@ -24,8 +24,8 @@ jobs:
         # build project
       - name: Build
         run:
-          cd thyrel-api && dotnet build
+          cd thyrel-api && dotnet build test_thyrel_api && dotnet build thyrel-api
 
           # run tests with built project
       - name: Test PR
-        run: cd thyrel-api && dotnet test --no-restore --no-build"
+        run: cd thyrel-api && dotnet test --no-restore --no-build
