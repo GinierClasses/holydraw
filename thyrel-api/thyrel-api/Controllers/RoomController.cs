@@ -55,5 +55,14 @@ namespace thyrel_api.Controllers
             var player = playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
             return playerDataProvider.GetPlayer(player.Id ?? 1);
         }
+        
+        // Call this endpoint to get a room
+        // GET : api/room/roomidentifier
+        [HttpGet("{identifier}")]
+        public ActionResult<Room> GetRoom(string identifier)
+        {
+            var room = new RoomDataProvider().GetRoom(identifier);
+            return room;
+        }
     }
 }

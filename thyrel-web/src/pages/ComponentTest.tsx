@@ -1,13 +1,21 @@
-import { Avatar } from 'rsuite';
+import { useState } from 'react';
 import BigButton from '../components/BigButton';
+import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/lobby/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
 import UserCard from '../components/lobby/UserCard';
 import UserCardList from '../components/lobby/UserCardList';
 import StepTimer from '../components/StepTimer';
+import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 
 export default function ComponentTest() {
+  const [ppIndex, setPpIndex] = useState(0);
+
+  const nextPp = () => {
+    setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
+  };
+
   return (
     <AppLayout>
       <Box flexDirection="column" alignItems="center" width="100%" gap={10}>
@@ -21,10 +29,12 @@ export default function ComponentTest() {
           />
         </Box>
 
+        <AvatarCard image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+
         <UserCard
           id={1}
           name="John Doe"
-          avatar="https://cutt.ly/skYcTql"
+          avatar={profilesPictures[ppIndex]}
           isOwner={true}
           isKickable={false}
           onKick={id => console.log('User id is :', id)}
@@ -99,6 +109,9 @@ export default function ComponentTest() {
             },
           ]}
         />
+        <BigButton icon="star" onClick={nextPp}>
+          Test
+        </BigButton>
       </Box>
     </AppLayout>
   );
