@@ -115,7 +115,7 @@ export default function ComponentTest() {
           onKick={id => console.log('id is', id)}
         />
 
-        <PlayerCount countPlayer={8} maxPlayer={12} />
+        <PlayerCount count={8} max={12} />
       </Box>
     </AppLayout>
   );

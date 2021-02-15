@@ -2,14 +2,11 @@ import { css } from '@emotion/css';
 import Box from '../styles/Box';
 
 type PayerCountProps = {
-  countPlayer: number;
-  maxPlayer: number;
+  count: number;
+  max: number;
 };
 
-export default function PayerCount({
-  countPlayer,
-  maxPlayer,
-}: PayerCountProps) {
+export default function PayerCount({ count, max }: PayerCountProps) {
   return (
     <Box padding={8}>
       <p
@@ -18,7 +15,7 @@ export default function PayerCount({
           fontWeight: 'bold',
           fontSize: 16,
         })}>
-        {countPlayer}/{maxPlayer}
+        {count}/{max}
       </p>
     </Box>
   );
