@@ -10,9 +10,11 @@ type AppLayoutProps = {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <Box
-      height={720}
       bg={paperColor}
       margin="auto"
+      maxWidth={1000}
+      minWidth={320}
+      minHeight="100vh"
       className={css({
         borderLeft: `1px solid ${baseColor}`,
         borderRight: `1px solid ${baseColor}`,
