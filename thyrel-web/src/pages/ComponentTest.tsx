@@ -18,7 +18,7 @@ export default function ComponentTest() {
 
   return (
     <AppLayout>
-      <Box flexDirection="column" alignItems="center" width="100%" gap={10}>
+      <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
         <AppTitle />
 
         <Box display="block" width={100} height={100}>
@@ -110,6 +110,8 @@ export default function ComponentTest() {
               roomId: 1,
             },
           ]}
+          isKickable={true}
+          onKick={id => console.log('id is', id)}
         />
       </Box>
     </AppLayout>

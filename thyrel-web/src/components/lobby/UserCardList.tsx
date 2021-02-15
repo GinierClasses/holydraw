@@ -4,17 +4,23 @@ import Player from '../../types/Player.type';
 
 type UserCardListProps = {
   players: Player[];
+  isKickable: boolean;
+  onKick?: (id: number) => void;
 };
 
-export default function UserCardList({ players }: UserCardListProps) {
+export default function UserCardList({
+  players,
+  isKickable,
+  onKick,
+}: UserCardListProps) {
   return (
     <Box
       gap={16}
       height={384}
       width={270}
+      overflowY="scroll"
       alignItems="center"
       flexDirection="column"
-      overflowY="scroll"
       pr={8}>
       {players.map(player => {
         return (
@@ -23,8 +29,8 @@ export default function UserCardList({ players }: UserCardListProps) {
             name={player.username}
             avatar={player.avatarUrl}
             isOwner={player.isOwner}
-            isKickable={false}
-            onKick={id => console.log('User id is :', id)}
+            isKickable={isKickable}
+            onKick={onKick}
             key={player.id}
           />
         );
