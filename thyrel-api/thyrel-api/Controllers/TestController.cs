@@ -23,7 +23,7 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult<Element>> Get()
         {
             var c = new ElementDataProvider();
-            await c.SetSentence(1, "false mon petit didier");
+            await c.SetSentence(1, "false mon petite didier");
             return await c.GetElement(1);
         }
 

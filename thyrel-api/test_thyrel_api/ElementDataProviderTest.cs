@@ -72,7 +72,7 @@ namespace test_thyrel_api
         {
             var elementExpected = Context.Element.Count(e => e.InitiatorId == 1);
             var album = await _elementDataProvider.GetAlbum(1);
-            Assert.AreEqual(elementExpected,album.Count());
+            Assert.AreEqual(elementExpected, album.Count);
         }
         
         [Test]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,8 +19,7 @@ namespace test_thyrel_api
 
         public async Task AddMockData()
         {
-            if (Context.Player.Any())
-                return;
+            await Context.Database.EnsureDeletedAsync();
             
             await CreateRoom();
             await CreateToken();
@@ -28,8 +28,7 @@ namespace test_thyrel_api
             await CreateElements();
             await Context.SaveChangesAsync();
         }
-        
-        
+
         private async Task CreateElements()
         {
             var elements = new List<Element>
@@ -59,7 +58,7 @@ namespace test_thyrel_api
 
 
         private async Task CreatePlayer()
-        {
+        {   
             var players = new List<Player>
             {
                 new("player-1-owner", "player-1-avatarurl", true, null, 1, 1),
