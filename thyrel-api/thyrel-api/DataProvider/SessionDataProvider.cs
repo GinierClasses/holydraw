@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
 namespace thyrel_api.DataProvider
@@ -16,12 +14,12 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Create a new Session
+        ///     Create a new Session
         /// </summary>
         /// <param name="roomId"></param>
         public async Task<Session> Add(int roomId)
         {
-            var sessionToAdd = new Session(null, null, roomId);
+            var sessionToAdd = new Session(null, roomId);
 
             var entity = await _holyDrawDbContext.Session.AddAsync(sessionToAdd);
             await SaveChanges();
@@ -29,14 +27,14 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Set finishAt to DateTime.Now
+        ///     Set finishAt to DateTime.Now
         /// </summary>
         /// <param name="sessionId"></param>
         public async Task<Session> Finish(int sessionId)
         {
-            var session = _holyDrawDbContext.Session
-                .SingleOrDefault(s => s.Id == sessionId);
-            
+            var session = await _holyDrawDbContext.Session
+                .FindAsync(sessionId);
+
             if (session == null)
                 return null;
             session.FinishAt = DateTime.Now;

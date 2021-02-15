@@ -1,19 +1,28 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace thyrel_api.Models
 {
     public class HolyDrawDbContext : DbContext
     {
+        public HolyDrawDbContext(DbContextOptions<HolyDrawDbContext> options)
+            : base(options)
+        {
+        }
+
+        public HolyDrawDbContext()
+        {
+        }
+
         public DbSet<Token> Token { get; set; }
         public DbSet<Session> Session { get; set; }
         public DbSet<Element> Element { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<Player> Player { get; set; }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root");
+            if (!optionsBuilder.IsConfigured)
+                optionsBuilder.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,21 +48,22 @@ namespace thyrel_api.Models
             {
                 entity.ToTable("Element");
                 entity.HasKey(e => e.Id);
-                
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
                 entity.HasOne(e => e.Session)
                     .WithMany(e => e.Elements);
-                
+
                 entity.HasOne(e => e.Creator)
                     .WithMany(e => e.CreatedElements)
                     .HasForeignKey(e => e.CreatorId)
                     .HasPrincipalKey(e => e.Id);
-                
+
                 entity.HasOne(e => e.Initiator)
                     .WithMany(e => e.AlbumElements)
                     .HasForeignKey(e => e.InitiatorId)
                     .HasPrincipalKey(e => e.Id);
             });
-            
+
             modelBuilder.Entity<Room>(entity =>
             {
                 entity.ToTable("Room");

@@ -6,13 +6,13 @@ namespace thyrel_api.DataProvider
     public interface ISessionDataProvider
     {
         /// <summary>
-        /// Create a new Session
+        ///     Create a new Session
         /// </summary>
         /// <param name="roomId"></param>
         Task<Session> Add(int roomId);
 
         /// <summary>
-        /// Set finishAt to DateTime.Now
+        ///     Set finishAt to DateTime.Now
         /// </summary>
         /// <param name="sessionId"></param>
         Task<Session> Finish(int sessionId);

@@ -15,8 +15,13 @@ namespace thyrel_api.DataProvider
             _holyDrawDbContext = new HolyDrawDbContext();
         }
 
+        public TokenDataProvider(DbContextOptions<HolyDrawDbContext> options)
+        {
+            _holyDrawDbContext = new HolyDrawDbContext(options);
+        }
+
         /// <summary>
-        /// Create a new Token autogenerate
+        ///     Create a new Token autogenerate
         /// </summary>
         public async Task<Token> Add()
         {
@@ -26,8 +31,8 @@ namespace thyrel_api.DataProvider
                 Enumerable.Repeat(allChar, 16)
                     .Select(text => text[random.Next(text.Length)]).ToArray());
 
-            var token = new Token(null, resultToken);
-            
+            var token = new Token(resultToken);
+
             var entry = await _holyDrawDbContext.Token.AddAsync(token);
             await SaveChanges();
 
@@ -35,30 +40,41 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To discord a token
+        ///     To discord a token
         /// </summary>
         /// <param name="tokenId"></param>
         public async Task<Token> Discard(int tokenId)
         {
-            var dbToken = await _holyDrawDbContext.Token.SingleOrDefaultAsync(c => c.Id == tokenId);
+            var dbToken = await _holyDrawDbContext.Token.FindAsync(tokenId);
             if (dbToken == null)
                 return null;
-            
+
             dbToken.DiscardAt = DateTime.Now;
             await SaveChanges();
             return dbToken;
         }
 
         /// <summary>
-        /// To find Player associated with the key
+        ///     To find Player associated with the key
         /// </summary>
         /// <param name="tokenKey">the token key</param>
         /// <returns>Return the Player with associated key if player exist or null</returns>
         public async Task<Player> FindPlayer(string tokenKey)
         {
             var token = await _holyDrawDbContext.Token
-                .SingleOrDefaultAsync(t => t.TokenKey == tokenKey && t.DiscardAt != null);
-            return token?.Players.First();
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync(t => t.TokenKey == tokenKey && t.DiscardAt == null);
+            return token?.Players.FirstOrDefault();
+        }
+
+        /// <summary>
+        ///     To find a Token
+        /// </summary>
+        /// <param name="tokenId"></param>
+        /// <returns>Return token with this ID</returns>
+        public async Task<Token> GetToken(int tokenId)
+        {
+            return await _holyDrawDbContext.Token.FindAsync(tokenId);
         }
 
         private async Task SaveChanges()

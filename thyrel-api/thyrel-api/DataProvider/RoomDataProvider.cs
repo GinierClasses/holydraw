@@ -16,7 +16,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Add a new room
+        ///     Add a new room
         /// </summary>
         public async Task<Room> Add()
         {
@@ -26,7 +26,7 @@ namespace thyrel_api.DataProvider
                 Enumerable.Repeat(allChar, 16)
                     .Select(identifier => identifier[random.Next(identifier.Length)]).ToArray());
 
-            var room = new Room(null, givenIdentifier, null);
+            var room = new Room(givenIdentifier, null);
 
             var entity = await _holyDrawDbContext.Room.AddAsync(room);
             await SaveChanges();
@@ -34,7 +34,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To get a Room by it's ID
+        ///     To get a Room by it's ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -47,7 +47,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To get a Room by it's Identifier
+        ///     To get a Room by it's Identifier
         /// </summary>
         /// <param name="identifier"></param>
         /// <returns></returns>
@@ -60,14 +60,14 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To end a Room ( set the discard date to now)
+        ///     To end a Room ( set the discard date to now)
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
         public async Task<Room> Finish(int roomId)
         {
             var dbRoom = await _holyDrawDbContext.Room
-                .SingleOrDefaultAsync(p => p.Id == roomId);
+                .FindAsync(roomId);
             if (dbRoom == null)
                 return null;
 

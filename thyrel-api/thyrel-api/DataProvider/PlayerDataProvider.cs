@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
@@ -16,7 +15,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To add a new Player
+        ///     To add a new Player
         /// </summary>
         /// <param name="username"></param>
         /// <param name="avatarUrl"></param>
@@ -25,7 +24,7 @@ namespace thyrel_api.DataProvider
         /// <param name="tokenId"></param>
         public async Task<Player> Add(string username, string avatarUrl, bool isOwner, int roomId, int tokenId)
         {
-            var player = new Player(null, username, avatarUrl, isOwner, null, roomId, tokenId);
+            var player = new Player(username, avatarUrl, isOwner, null, roomId, tokenId);
 
             var entity = await _holyDrawDbContext.Player.AddAsync(player);
             await SaveChanges();
@@ -33,7 +32,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To get a Player by it's ID
+        ///     To get a Player by it's ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>The player</returns>
@@ -47,7 +46,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To get a Player by it's ID
+        ///     To get a Player by it's ID
         /// </summary>
         /// <param name="tokenKey"></param>
         /// <returns></returns>
@@ -61,12 +60,12 @@ namespace thyrel_api.DataProvider
 
 
         /// <summary>
-        /// To disable a Player (set the discard date to now)
+        ///     To disable a Player (set the discard date to now)
         /// </summary>
         /// <param name="playerId"></param>
         public async Task<Player> Disable(int playerId)
         {
-            var player = await _holyDrawDbContext.Player.SingleOrDefaultAsync(p => p.Id == playerId);
+            var player = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (player == null)
                 return null;
 
@@ -76,13 +75,13 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Set the Player as Owner
+        ///     Set the Player as Owner
         /// </summary>
         /// <param name="playerId"></param>
         /// <param name="isOwner"></param>
         public async Task<Player> SetOwner(int playerId, bool isOwner = true)
         {
-            var player = await _holyDrawDbContext.Player.SingleOrDefaultAsync(p => p.Id == playerId);
+            var player = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (player == null)
                 return null;
 
@@ -92,17 +91,17 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Handle isPlayer (when session start) column
+        ///     Handle isPlayer (when session start) column
         /// </summary>
         /// <param name="playerId"></param>
         /// <param name="isPlaying"></param>
         /// <returns></returns>
         public async Task<Player> SetIsPlaying(int playerId, bool isPlaying)
         {
-            var dbPlayer = _holyDrawDbContext.Player.SingleOrDefault(p => p.Id == playerId);
+            var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (dbPlayer == null)
                 return null;
-            
+
             dbPlayer.IsOwner = isPlaying;
             await SaveChanges();
             return dbPlayer;

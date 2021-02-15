@@ -17,12 +17,6 @@ namespace thyrel_api.Controllers
             _websocketHandler = websocketHandler;
         }
 
-        public class PlayerRoomBody
-        {
-            public string Username;
-            public string AvatarUrl;
-        }
-
         // Call this endpoint to create a room
         // POST: api/room
         [HttpPost]
@@ -35,9 +29,9 @@ namespace thyrel_api.Controllers
 
             var room = await roomDataProvider.Add();
             var token = await new TokenDataProvider().Add();
-            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
+            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id, token.Id);
             // use `GetPlayer` to include `Token` and `Room`
-            return await playerDataProvider.GetPlayer(player.Id ?? 1);
+            return await playerDataProvider.GetPlayer(player.Id);
         }
 
         // Call this endpoint to create a room
@@ -52,17 +46,23 @@ namespace thyrel_api.Controllers
                 return NotFound();
             var playerDataProvider = new PlayerDataProvider();
             var token = await new TokenDataProvider().Add();
-            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id ?? 1, token.Id ?? 1);
-            return await playerDataProvider.GetPlayer(player.Id ?? 1);
+            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id, token.Id);
+            return await playerDataProvider.GetPlayer(player.Id);
         }
-        
+
         // Call this endpoint to get a room
-        // GET : api/room/roomidentifier
+        // GET : api/room/identifier
         [HttpGet("{identifier}")]
-        public ActionResult<Room> GetRoom(string identifier)
+        public async Task<ActionResult<Room>> GetRoom(string identifier)
         {
-            var room = new RoomDataProvider().GetRoom(identifier);
+            var room = await new RoomDataProvider().GetRoom(identifier);
             return room;
+        }
+
+        public class PlayerRoomBody
+        {
+            public string AvatarUrl;
+            public string Username;
         }
     }
 }
