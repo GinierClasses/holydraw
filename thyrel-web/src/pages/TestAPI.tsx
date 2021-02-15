@@ -9,13 +9,16 @@ import Player from '../types/Player.type';
 export default function TestAPI() {
   const [data, setData] = React.useState<any>();
   const [testedValue, setTestedValue] = React.useState<string>('');
-  const history = useHistory()
+  const history = useHistory();
 
   function getTestData() {
-    client<Player>("test").then((player: Player) => {
-      setToken(player.token.tokenKey)
-      history.push("/r")
-    })
+    client<Player>('test').then((player: Player) => {
+      if (!player.token?.tokenKey) {
+        return;
+      }
+      setToken(player.token.tokenKey);
+      history.push('/r');
+    });
   }
 
   function sendPostRequest() {
