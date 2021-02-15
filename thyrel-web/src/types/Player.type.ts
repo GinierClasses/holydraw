@@ -7,11 +7,11 @@ type Player = {
   avatarUrl: string,
   isOwner: boolean,
   isPlaying: boolean,
-  disableAt: string,
+  disableAt?: string,
   createdAt: string,
   roomId: number,
-  room: Room,
-  token: Token
+  room?: Room,
+  token?: Token
 }
 
 export default Player;
