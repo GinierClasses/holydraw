@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
 
-body {
+body,
+html,
+#root {
   --base-color: #880061;
   margin: 0;
   background-color: #0f131a;
@@ -10,6 +12,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scrollbar-color: var(--base-color);
+  scrollbar-width: 6px;
 }
 
 code {
@@ -19,4 +23,20 @@ code {
 
 *:focus {
   outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #00000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--base-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #53013c;
 }

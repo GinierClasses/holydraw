@@ -13,6 +13,7 @@ type BoxType = {
   display?: 'flex' | 'none' | 'block';
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
+  overflowY?: 'scroll';
   width?: number | string;
   gap?: number;
   height?: number | string;
@@ -97,6 +98,7 @@ const Box = styled.div<BoxType>(
     display,
     flexDirection,
     flexWrap,
+    overflowY,
     width,
     gap,
     height,
@@ -114,6 +116,7 @@ const Box = styled.div<BoxType>(
       alignItems,
       justifyContent,
       flexWrap,
+      overflowY,
       flexDirection,
       width,
       gap,
