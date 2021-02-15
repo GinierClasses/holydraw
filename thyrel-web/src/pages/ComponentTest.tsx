@@ -12,7 +12,7 @@ export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
 
   const nextPp = () => {
-    setPpIndex(p => p > profilesPictures.length - 2 ? 0 : p + 1)
+    setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
 
   return (

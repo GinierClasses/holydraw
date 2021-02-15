@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
@@ -11,34 +10,34 @@ using Microsoft.EntityFrameworkCore;
 namespace thyrel_api.Controllers
 {
 
-  [Route("api/[controller]")]
-  [ApiController]
-  public class TestController : ControllerBase
-  {
-    private IWebsocketHandler _websocketHandler;
-    private readonly HolyDrawDbContext _holyDrawDbContext;
-
-    public TestController(IWebsocketHandler websocketHandler)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TestController : ControllerBase
     {
-      _websocketHandler = websocketHandler;
-    }
+        private IWebsocketHandler _websocketHandler;
+        private readonly HolyDrawDbContext _holyDrawDbContext;
 
-    // GET: api/Test
-    [HttpGet]
-    public async Task<ActionResult<Player>> Get()
-    {
-      var c = new ElementDataProvider();
-      await c.SetSentence(1, "false mon petit didier");
-      return null;
-    }
+        public TestController(IWebsocketHandler websocketHandler)
+        {
+            _websocketHandler = websocketHandler;
+        }
 
-    // POST: api/Test
-    [HttpPost]
-    public IEnumerable<string> Post([FromBody] string value)
-    {
-      var isInt = int.TryParse(value, out var intValue);
-      _websocketHandler.SendMessageToSockets("YOYO here", isInt ? intValue : null);
-      return new[] { "Here is you're value", value };
+        // GET: api/Test
+        [HttpGet]
+        public async Task<ActionResult<Element>> Get()
+        {
+            var c = new ElementDataProvider();
+            await c.SetSentence(1, "false mon petite didier");
+            return await c.GetElement(1);
+        }
+
+        // POST: api/Test
+        [HttpPost]
+        public IEnumerable<string> Post([FromBody] string value)
+        {
+            var isInt = int.TryParse(value, out var intValue);
+            _websocketHandler.SendMessageToSockets("YOYO here", isInt ? intValue : null);
+            return new[] {"Here is you're value", value};
+        }
     }
-  }
 }
