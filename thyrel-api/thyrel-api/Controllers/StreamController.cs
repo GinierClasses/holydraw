@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using thyrel_api.Models;
 using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
@@ -12,11 +8,11 @@ namespace thyrel_api.Controllers
     [Route("api/[controller]")]
     public class StreamController : Controller
     {
-        public IWebsocketHandler WebsocketHandler { get; }
+        private readonly IWebsocketHandler _websocketHandler;
 
         public StreamController(IWebsocketHandler websocketHandler)
         {
-            WebsocketHandler = websocketHandler;
+            _websocketHandler = websocketHandler;
         }
 
         // api/stream
@@ -28,9 +24,9 @@ namespace thyrel_api.Controllers
 
             if (isSocketRequest)
             {
-                WebSocket websocket = await context.WebSockets.AcceptWebSocketAsync();
+                var websocket = await context.WebSockets.AcceptWebSocketAsync();
 
-                await WebsocketHandler.Handle(Guid.NewGuid(), websocket);
+                await _websocketHandler.Handle(Guid.NewGuid(), websocket);
             }
             else
             {

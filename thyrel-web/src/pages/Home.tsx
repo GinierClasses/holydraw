@@ -26,7 +26,7 @@ export default function Home(
     client<Player>('room', {
       data: { username: 'todo', avatarUrl: 'todo' },
     }).then((player: Player) => {
-      if (player.token.tokenKey) {
+      if (player.token?.tokenKey) {
         Notification['success']({
           title: 'Room successfully created.',
           description: 'Invite your friends.',
@@ -44,7 +44,7 @@ export default function Home(
       data: { username: 'todo', avatarUrl: 'todo' },
       method: 'PATCH',
     }).then((player: Player) => {
-      if (player.token.tokenKey) {
+      if (player.token?.tokenKey) {
         Notification['success']({
           title: 'Room successfully created.',
           description: 'Invite your friends.',
