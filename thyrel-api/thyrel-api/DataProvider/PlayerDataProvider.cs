@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
@@ -62,7 +63,7 @@ namespace thyrel_api.DataProvider
         /// <summary>
         /// To get a Players by it's room
         /// </summary>
-        /// <param name="tokenKey"></param>
+        /// <param name="roomId"></param>
         /// <returns></returns>
         public List<Player> GetPlayersByRoom(int roomId)
         {

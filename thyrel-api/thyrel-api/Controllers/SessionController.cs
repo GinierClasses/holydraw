@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using thyrel_api.Controllers.ModelsControllers;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
@@ -34,14 +31,14 @@ namespace thyrel_api.Controllers
             var sessionDataProvider = new SessionDataProvider();
             var playerDataProvider = new PlayerDataProvider();
             var elementDataProvider = new ElementDataProvider();
-            var addedSession = sessionDataProvider.Add(body.RoomId);
+            var addedSession = await sessionDataProvider.Add(body.RoomId);
 
             if (addedSession == null)
             {
                 return NotFound();
             }
 
-            playerDataProvider.GetPlayersByRoom(body.RoomId).ForEach(async p => await elementDataProvider.AddSentence(p.Id ?? 0, p.Id ?? 0, 1, addedSession.Id ?? 0));
+            playerDataProvider.GetPlayersByRoom(body.RoomId).ForEach(async p => await elementDataProvider.AddSentence(p.Id, p.Id, 1, addedSession.Id));
 
             await _websocketHandler.SendMessageToSockets(
                     JsonSerializer.Serialize(
