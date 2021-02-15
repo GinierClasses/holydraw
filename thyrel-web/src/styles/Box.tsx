@@ -16,6 +16,10 @@ type BoxType = {
   overflowY?: 'scroll';
   width?: number | string;
   gap?: number;
+  minHeight?: number | string;
+  maxHeight?: number | string;
+  minWidth?: number | string;
+  maxWidth?: number | string;
   height?: number | string;
   borderColor?: string | 'baseColor';
   className?: string;
@@ -84,46 +88,28 @@ type BoxType = {
 
 const Box = styled.div<BoxType>(
   ({
-    margin,
     m,
     mb,
     ml,
     mt,
     mr,
-    padding,
     p,
-    overflow,
     pb,
     pl,
     pt,
     pr,
+    margin,
     display,
-    flexDirection,
-    flexWrap,
-    overflowY,
-    width,
-    gap,
-    height,
+    padding,
     borderColor,
     bg,
     borderRadius,
     borderWidth,
     border,
-    alignContent,
-    alignItems,
-    justifyContent,
+    ...props
   }) => {
     const styles: any = {
-      alignContent,
-      alignItems,
-      justifyContent,
-      flexWrap,
-      overflowY,
-      flexDirection,
-      width,
-      gap,
-      overflow,
-      height,
+      ...props,
       background: bg,
       borderRadius,
       marginTop: mt,
