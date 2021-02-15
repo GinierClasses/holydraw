@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Button, Icon, IconProps } from 'rsuite';
-import { baseColor } from '../styles/colors';
+import { baseColor, bgFade } from '../styles/colors';
 import { css } from '@emotion/css';
 import React from 'react';
 import Box from '../styles/Box';
@@ -17,7 +17,7 @@ const StyledButton = styled(Button)(({ size }) => ({
   fontSize: size === 'md' ? 18 : 32,
   padding: '8px 16px',
   minWidth: size === 'md' ? 128 : 192,
-  boxShadow: '0px 8px 1px rgba(0, 0, 0, 0.5)',
+  boxShadow: `0px 8px 1px ${bgFade(0.8)}`,
   position: 'relative',
   '&:active': {
     top: 8,

@@ -7,18 +7,28 @@ namespace thyrel_api.Models
     {
         public Element() { }
 
-        public Element(int? id, int step, ElementType type, string text, int? drawingId, DateTime? finishAt, DateTime createdAt, int creatorId, int initiatorId, int sessionId)
+        public Element(int? id, int step, int creatorId, int initiatorId, int sessionId,  int? drawingId = null)
         {
             Id = id;
             Step = step;
-            Type = type;
-            Text = text;
+            Type = ElementType.Drawing;
             DrawingId = drawingId;
-            FinishAt = finishAt;
-            CreatedAt = createdAt;
+            CreatedAt = DateTime.Now;
             CreatorId = creatorId;
             InitiatorId = initiatorId;
             SessionId = sessionId;
+        }
+        
+        public Element(int? id, int step,  int creatorId, int initiatorId, int sessionId, string text = null)
+        {
+            Id = id;
+            Step = step;
+            Type = ElementType.Sentence;
+            Text = text;
+            CreatorId = creatorId;
+            InitiatorId = initiatorId;
+            SessionId = sessionId;
+            CreatedAt = DateTime.Now;
         }
 
         public int? Id { get; set; }

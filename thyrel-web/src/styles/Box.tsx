@@ -15,11 +15,16 @@ type BoxType = {
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   width?: number | string;
   gap?: number;
+  minHeight?: number | string;
+  maxHeight?: number | string;
+  minWidth?: number | string;
+  maxWidth?: number | string;
   height?: number | string;
   borderColor?: string | 'baseColor';
   className?: string;
   bg?: string;
-  borderRadius?: number;
+  overflow?: string;
+  borderRadius?: number | string;
   borderWidth?: number;
   border?: string;
   justifyContent?:
@@ -90,6 +95,7 @@ const Box = styled.div<BoxType>(
     mr,
     padding,
     p,
+    overflow,
     pb,
     pl,
     pt,
@@ -107,16 +113,25 @@ const Box = styled.div<BoxType>(
     border,
     alignContent,
     alignItems,
+    maxWidth,
+    minWidth,
+    maxHeight,
+    minHeight,
     justifyContent,
   }) => {
     const styles: any = {
       alignContent,
+      maxWidth,
+      minWidth,
+      maxHeight,
+      minHeight,
       alignItems,
       justifyContent,
       flexWrap,
       flexDirection,
       width,
       gap,
+      overflow,
       height,
       background: bg,
       borderRadius,
