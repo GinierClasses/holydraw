@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -14,6 +15,15 @@ namespace test_thyrel_api
         {
             await SetupTest();
             _roomDataProvider = new RoomDataProvider(Options);
+        }
+
+        [Test]
+        public async Task AddRoomTest()
+        {
+            var roomCount = Context.Room.Count();
+            await _roomDataProvider.Add();
+            Assert.AreEqual(roomCount + 1, Context.Room.Count());
+
         }
 
         [Test]
@@ -36,6 +46,15 @@ namespace test_thyrel_api
 
             var roomNull = await _roomDataProvider.GetRoom("efiwefhiofewiho");
             Assert.IsNull(roomNull);            
+        }
+
+        [Test]
+        public async Task EndRoomTest()
+        {
+            var room = await Context.Room.FirstAsync(r => r.FinishAt == null);
+            await _roomDataProvider.Finish(room.Id);
+            var roomEdited = await _roomDataProvider.GetRoom(room.Id);
+            Assert.IsNotNull(roomEdited.FinishAt);
         }
     }
 }

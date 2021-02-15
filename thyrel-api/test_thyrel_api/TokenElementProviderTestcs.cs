@@ -18,7 +18,7 @@ namespace test_thyrel_api
         }
 
         [Test]
-        public async Task AddSentenceFunctionCreateSentence()
+        public async Task AddTokenTest()
         {
             var elementCount = Context.Token.Count();
             await _tokenDataProvider.Add();
