@@ -4,6 +4,7 @@ import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/lobby/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
 import UserCard from '../components/lobby/UserCard';
+import PlayerCount from '../components/PlayerCount';
 import UserCardList from '../components/lobby/UserCardList';
 import StepTimer from '../components/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
@@ -113,6 +114,8 @@ export default function ComponentTest() {
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
+
+        <PlayerCount countPlayer={8} maxPlayer={12} />
       </Box>
     </AppLayout>
   );

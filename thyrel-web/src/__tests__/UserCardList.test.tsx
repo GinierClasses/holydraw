@@ -31,8 +31,6 @@ describe('UserCardList', () => {
     const size = container.children[0].children.length;
 
     expect(size).toEqual(data.length);
-
-    screen.debug();
   });
 
   test('OnKick works', () => {
