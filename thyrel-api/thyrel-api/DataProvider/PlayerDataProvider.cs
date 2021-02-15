@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
@@ -58,6 +59,17 @@ namespace thyrel_api.DataProvider
             return player;
         }
 
+        /// <summary>
+        /// To get a Players by it's room
+        /// </summary>
+        /// <param name="tokenKey"></param>
+        /// <returns></returns>
+        public List<Player> GetPlayersByRoom(int roomId)
+        {
+            var player = _holyDrawDbContext.Player
+                .Where(p => p.RoomId == roomId);
+            return player.ToList();
+        }
 
         /// <summary>
         ///     To disable a Player (set the discard date to now)
