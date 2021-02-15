@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { updateSetAccessor } from 'typescript';
 import BigButton from '../components/BigButton';
 import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/lobby/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
+import BigInput from '../components/lobby/BigInput';
 import UserCard from '../components/lobby/UserCard';
 import StepTimer from '../components/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
@@ -10,7 +12,7 @@ import Box from '../styles/Box';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
-
+  const [username, setusername] = useState("didier")
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
@@ -27,6 +29,9 @@ export default function ComponentTest() {
             onFinish={() => console.log('finished')}
           />
         </Box>
+
+{username}
+        <BigInput value={username} onChange={(e) => console.log(e.target.value)} />
 
         <AvatarCard image={profilesPictures[ppIndex]} onShuffle={nextPp} />
 
