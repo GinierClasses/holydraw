@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import BigButton from '../components/BigButton';
 import AvatarCard from '../components/Home/AvatarCard';
-import AppLayout from '../components/lobby/AppLayout';
+import AppLayout from '../components/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
 import UserCard from '../components/lobby/UserCard';
 import StepTimer from '../components/StepTimer';
