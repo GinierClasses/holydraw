@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { updateSetAccessor } from 'typescript';
 import BigButton from '../components/BigButton';
 import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/lobby/AppLayout';
@@ -13,7 +12,7 @@ import Box from '../styles/Box';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
-  const [username, setusername] = useState("didier")
+
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
@@ -31,8 +30,7 @@ export default function ComponentTest() {
           />
         </Box>
 
-{username}
-        <BigInput value={username} onChange={(e) => console.log(e.target.value)} />
+        <BigInput value={"didier"} icon="apple" />
 
         <AvatarCard image={profilesPictures[ppIndex]} onShuffle={nextPp} />
 
