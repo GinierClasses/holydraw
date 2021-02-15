@@ -8,12 +8,12 @@ namespace thyrel_api.Models
     {
         public Room() { }
 
-        public Room(int? id, string identifier, DateTime? finishAt, DateTime createdAt)
+        public Room(int? id, string identifier, DateTime? finishAt)
         {
             Id = id;
             Identifier = identifier;
             FinishAt = finishAt;
-            CreatedAt = createdAt;
+            CreatedAt = DateTime.Now;
         }
 
         public int? Id { get; set; }

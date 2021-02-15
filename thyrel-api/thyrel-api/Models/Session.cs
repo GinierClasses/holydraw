@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace thyrel_api.Models
+namespace thyrel_api.Models  
 {
     public class Session
     {
         public Session() { }
 
-        public Session(int? id, DateTime? finishAt, DateTime createdAt, int roomId)
+        public Session(int? id, DateTime? finishAt, int roomId)
         {
             Id = id;
             FinishAt = finishAt;
-            CreatedAt = createdAt;
+            CreatedAt = DateTime.Now;
             RoomId = roomId;
         }
 

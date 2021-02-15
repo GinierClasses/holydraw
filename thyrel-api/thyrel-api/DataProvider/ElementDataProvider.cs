@@ -7,7 +7,7 @@ using thyrel_api.Models;
 
 namespace thyrel_api.DataProvider
 {
-    public class ElementDataProvider
+    public class ElementDataProvider : IElementDataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
 
