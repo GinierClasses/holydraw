@@ -6,14 +6,14 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using thyrel_api.Controllers;
+using thyrel_api.DataProvider;
 using thyrel_api.Models;
 
 namespace thyrel_api.Websocket
 {
     public class WebsocketHandler : IWebsocketHandler
     {
-        public List<SocketConnection> websocketConnections = new List<SocketConnection>();
+        private List<SocketConnection> _websocketConnections = new();
 
         public WebsocketHandler()
         {
@@ -22,13 +22,13 @@ namespace thyrel_api.Websocket
 
         public async Task Handle(Guid id, WebSocket webSocket)
         {
-            lock (websocketConnections)
+            lock (_websocketConnections)
             {
-                websocketConnections.Add(new SocketConnection
+                _websocketConnections.Add(new SocketConnection
                 {
                     Id = id,
                     WebSocket = webSocket,
-                    RoomId = null,
+                    RoomId = null
                 });
             }
 
@@ -38,17 +38,17 @@ namespace thyrel_api.Websocket
                 var message = await ReceiveMessage(id, webSocket);
                 if (message == null) continue;
 
-                var connection = websocketConnections.Find(w => w.Id == id);
+                var connection = _websocketConnections.Find(w => w.Id == id);
 
                 if (connection == null || connection.RoomId != null) continue;
                 // deserialize message from Player
                 var socketJson = JsonSerializer.Deserialize<RoomSocketJson>(
-                    message, 
+                    message,
                     new JsonSerializerOptions {AllowTrailingCommas = true});
-                
+
                 var playerToken = socketJson?.PlayerToken;
-                
-                var player = playerToken == null ? null : new PlayerDataProvider().GetPlayerByToken(playerToken);
+
+                var player = playerToken == null ? null : await new PlayerDataProvider().GetPlayerByToken(playerToken);
                 // if no matching token or no token
                 if (player == null)
                 {
@@ -66,7 +66,31 @@ namespace thyrel_api.Websocket
             }
         }
 
-        private async Task<string> ReceiveMessage(Guid id, WebSocket webSocket)
+        /// <summary>
+        ///     Send a message to websocket matching with the RoomId
+        /// </summary>
+        /// <param name="message">Message to send, stringify if Json</param>
+        /// <param name="roomId">Id of the room to send</param>
+        /// <returns></returns>
+        public async Task SendMessageToSockets(string message, int? roomId = null)
+        {
+            IEnumerable<SocketConnection> toSentTo;
+
+            lock (_websocketConnections)
+            {
+                toSentTo = roomId == null
+                    ? _websocketConnections.ToList()
+                    : _websocketConnections.Where(w => w.RoomId == roomId).ToList();
+            }
+
+            var tasks = toSentTo.Select(async websocketConnection =>
+            {
+                await SendMessageToSocket(websocketConnection, message);
+            });
+            await Task.WhenAll(tasks);
+        }
+
+        private static async Task<string> ReceiveMessage(Guid id, WebSocket webSocket)
         {
             var arraySegment = new ArraySegment<byte>(new byte[4096]);
             var receivedMessage = await webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
@@ -77,30 +101,6 @@ namespace thyrel_api.Websocket
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Send a message to websocket matching with the RoomId
-        /// </summary>
-        /// <param name="message">Message to send, stringify if Json</param>
-        /// <param name="roomId">Id of the room to send</param>
-        /// <returns></returns>
-        public async Task SendMessageToSockets(string message, int? roomId = null)
-        {
-            IEnumerable<SocketConnection> toSentTo;
-
-            lock (websocketConnections)
-            {
-                toSentTo = roomId == null
-                    ? websocketConnections.ToList()
-                    : websocketConnections.Where(w => w.RoomId == roomId).ToList();
-            }
-
-            var tasks = toSentTo.Select(async websocketConnection =>
-            {
-                await SendMessageToSocket(websocketConnection, message);
-            });
-            await Task.WhenAll(tasks);
         }
 
         private static async Task SendMessageToSocket(SocketConnection socketConnection, string message)
@@ -123,22 +123,20 @@ namespace thyrel_api.Websocket
                     IEnumerable<SocketConnection> openSockets;
                     IEnumerable<SocketConnection> closedSockets;
 
-                    lock (websocketConnections)
+                    lock (_websocketConnections)
                     {
-                        openSockets = websocketConnections.Where(x =>
+                        openSockets = _websocketConnections.Where(x =>
                             x.WebSocket.State == WebSocketState.Open || x.WebSocket.State == WebSocketState.Connecting);
-                        closedSockets = websocketConnections.Where(x =>
+                        closedSockets = _websocketConnections.Where(x =>
                             x.WebSocket.State != WebSocketState.Open && x.WebSocket.State != WebSocketState.Connecting);
 
-                        websocketConnections = openSockets.ToList();
+                        _websocketConnections = openSockets.ToList();
                     }
 
                     foreach (var closedWebsocketConnection in closedSockets)
-                    {
                         await SendMessageToSockets(
                             JsonSerializer.Serialize(
                                 new EventJson(WebsocketEvent.PlayerLeft)), closedWebsocketConnection.RoomId);
-                    }
 
                     await Task.Delay(5000);
                 }
