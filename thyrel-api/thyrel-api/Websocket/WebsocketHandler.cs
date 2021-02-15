@@ -13,7 +13,7 @@ namespace thyrel_api.Websocket
 {
     public class WebsocketHandler : IWebsocketHandler
     {
-        private List<SocketConnection> _websocketConnections = new List<SocketConnection>();
+        private List<SocketConnection> _websocketConnections = new();
 
         public WebsocketHandler()
         {
@@ -28,7 +28,7 @@ namespace thyrel_api.Websocket
                 {
                     Id = id,
                     WebSocket = webSocket,
-                    RoomId = null,
+                    RoomId = null
                 });
             }
 
@@ -43,14 +43,12 @@ namespace thyrel_api.Websocket
                 if (connection == null || connection.RoomId != null) continue;
                 // deserialize message from Player
                 var socketJson = JsonSerializer.Deserialize<RoomSocketJson>(
-                    message, 
+                    message,
                     new JsonSerializerOptions {AllowTrailingCommas = true});
-                
+
                 var playerToken = socketJson?.PlayerToken;
-                
-                var player = playerToken == null ? 
-                    null : 
-                    await new PlayerDataProvider().GetPlayerByToken(playerToken);
+
+                var player = playerToken == null ? null : await new PlayerDataProvider().GetPlayerByToken(playerToken);
                 // if no matching token or no token
                 if (player == null)
                 {
@@ -68,21 +66,8 @@ namespace thyrel_api.Websocket
             }
         }
 
-        private static async Task<string> ReceiveMessage(Guid id, WebSocket webSocket)
-        {
-            var arraySegment = new ArraySegment<byte>(new byte[4096]);
-            var receivedMessage = await webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
-            if (receivedMessage.MessageType == WebSocketMessageType.Text)
-            {
-                var message = Encoding.Default.GetString(arraySegment).TrimEnd('\0');
-                return message;
-            }
-
-            return null;
-        }
-
         /// <summary>
-        /// Send a message to websocket matching with the RoomId
+        ///     Send a message to websocket matching with the RoomId
         /// </summary>
         /// <param name="message">Message to send, stringify if Json</param>
         /// <param name="roomId">Id of the room to send</param>
@@ -103,6 +88,19 @@ namespace thyrel_api.Websocket
                 await SendMessageToSocket(websocketConnection, message);
             });
             await Task.WhenAll(tasks);
+        }
+
+        private static async Task<string> ReceiveMessage(Guid id, WebSocket webSocket)
+        {
+            var arraySegment = new ArraySegment<byte>(new byte[4096]);
+            var receivedMessage = await webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
+            if (receivedMessage.MessageType == WebSocketMessageType.Text)
+            {
+                var message = Encoding.Default.GetString(arraySegment).TrimEnd('\0');
+                return message;
+            }
+
+            return null;
         }
 
         private static async Task SendMessageToSocket(SocketConnection socketConnection, string message)
@@ -136,11 +134,9 @@ namespace thyrel_api.Websocket
                     }
 
                     foreach (var closedWebsocketConnection in closedSockets)
-                    {
                         await SendMessageToSockets(
                             JsonSerializer.Serialize(
                                 new EventJson(WebsocketEvent.PlayerLeft)), closedWebsocketConnection.RoomId);
-                    }
 
                     await Task.Delay(5000);
                 }

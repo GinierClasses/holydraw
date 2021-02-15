@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace thyrel_api.Models  
+namespace thyrel_api.Models
 {
     public class Session
     {
-        public Session() { }
+        public Session()
+        {
+        }
 
         public Session(DateTime? finishAt, int roomId)
         {

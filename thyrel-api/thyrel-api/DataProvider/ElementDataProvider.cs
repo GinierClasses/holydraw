@@ -9,8 +9,6 @@ namespace thyrel_api.DataProvider
 {
     public class ElementDataProvider : IElementDataProvider
     {
-        public HolyDrawDbContext HolyDrawDbContext { get; }
-
         public ElementDataProvider()
         {
             HolyDrawDbContext = new HolyDrawDbContext();
@@ -21,8 +19,10 @@ namespace thyrel_api.DataProvider
             HolyDrawDbContext = new HolyDrawDbContext(options);
         }
 
+        public HolyDrawDbContext HolyDrawDbContext { get; }
+
         /// <summary>
-        /// Create a Drawing Element
+        ///     Create a Drawing Element
         /// </summary>
         /// <param name="creatorId"></param>
         /// <param name="initiatorId"></param>
@@ -41,7 +41,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Create a Sentence Element
+        ///     Create a Sentence Element
         /// </summary>
         /// <param name="creatorId"></param>
         /// <param name="initiatorId"></param>
@@ -60,7 +60,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Set the sentence into a Element
+        ///     Set the sentence into a Element
         /// </summary>
         /// <param name="elementId"></param>
         /// <param name="sentence"></param>
@@ -78,7 +78,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Set the DrawingId into a Element
+        ///     Set the DrawingId into a Element
         /// </summary>
         /// <param name="elementId"></param>
         /// <param name="drawingId"></param>
@@ -96,7 +96,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Handle finish State
+        ///     Handle finish State
         /// </summary>
         /// <param name="elementId">elementId to handle</param>
         /// <param name="isFinish">true = element finish, false = element not finish</param>
@@ -118,7 +118,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Album of this InitiatorId
+        ///     Album of this InitiatorId
         /// </summary>
         /// <param name="initiatorId"></param>
         /// <returns></returns>
@@ -132,7 +132,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Get one element by those ID
+        ///     Get one element by those ID
         /// </summary>
         /// <param name="elementId"></param>
         /// <returns></returns>

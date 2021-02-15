@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace thyrel_api.Models
 {
     public class Room
     {
-        public Room() { }
+        public Room()
+        {
+        }
 
         public Room(string identifier, DateTime? finishAt)
         {

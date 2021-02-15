@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
@@ -16,7 +15,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To add a new Player
+        ///     To add a new Player
         /// </summary>
         /// <param name="username"></param>
         /// <param name="avatarUrl"></param>
@@ -33,7 +32,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To get a Player by it's ID
+        ///     To get a Player by it's ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>The player</returns>
@@ -47,7 +46,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To get a Player by it's ID
+        ///     To get a Player by it's ID
         /// </summary>
         /// <param name="tokenKey"></param>
         /// <returns></returns>
@@ -61,7 +60,7 @@ namespace thyrel_api.DataProvider
 
 
         /// <summary>
-        /// To disable a Player (set the discard date to now)
+        ///     To disable a Player (set the discard date to now)
         /// </summary>
         /// <param name="playerId"></param>
         public async Task<Player> Disable(int playerId)
@@ -76,7 +75,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Set the Player as Owner
+        ///     Set the Player as Owner
         /// </summary>
         /// <param name="playerId"></param>
         /// <param name="isOwner"></param>
@@ -92,7 +91,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Handle isPlayer (when session start) column
+        ///     Handle isPlayer (when session start) column
         /// </summary>
         /// <param name="playerId"></param>
         /// <param name="isPlaying"></param>
@@ -102,7 +101,7 @@ namespace thyrel_api.DataProvider
             var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (dbPlayer == null)
                 return null;
-            
+
             dbPlayer.IsOwner = isPlaying;
             await SaveChanges();
             return dbPlayer;

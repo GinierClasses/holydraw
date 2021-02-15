@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace thyrel_api.Models
 {
     public class Token
     {
-        public Token() { }
+        public Token()
+        {
+        }
 
         /// <summary>
-        /// Only this constructor. A token never will be initialized with other data
+        ///     Only this constructor. A token never will be initialized with other data
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="tokenKey">key</param>
@@ -24,7 +25,7 @@ namespace thyrel_api.Models
         public string TokenKey { get; set; }
         public DateTime? DiscardAt { get; set; }
         public DateTime CreatedAt { get; set; }
-        
+
         public List<Player> Players { get; set; }
     }
 }

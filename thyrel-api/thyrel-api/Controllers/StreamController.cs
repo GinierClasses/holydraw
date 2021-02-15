@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using thyrel_api.Models;
 using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
@@ -28,7 +24,7 @@ namespace thyrel_api.Controllers
 
             if (isSocketRequest)
             {
-                WebSocket websocket = await context.WebSockets.AcceptWebSocketAsync();
+                var websocket = await context.WebSockets.AcceptWebSocketAsync();
 
                 await _websocketHandler.Handle(Guid.NewGuid(), websocket);
             }
