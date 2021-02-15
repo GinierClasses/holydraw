@@ -40,14 +40,16 @@ export default function ComponentTest() {
           onKick={id => console.log('User id is :', id)}
         />
 
-        <BigButton icon="star">Test</BigButton>
+        <BigButton icon="star" onClick={nextPp}>
+          Test
+        </BigButton>
 
         <UserCardList
           players={[
             {
               id: 1,
               username: 'jeanmich',
-              avatarUrl: 'jeanmich.com',
+              avatarUrl: profilesPictures[0],
               isOwner: true,
               isPlaying: true,
               createdAt: '',
@@ -56,7 +58,7 @@ export default function ComponentTest() {
             {
               id: 2,
               username: 'Xx_plao',
-              avatarUrl: 'jeanmich.com',
+              avatarUrl: profilesPictures[1],
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -65,7 +67,7 @@ export default function ComponentTest() {
             {
               id: 3,
               username: 'AAAAAAHHHH',
-              avatarUrl: 'oui.com',
+              avatarUrl: profilesPictures[2],
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -74,7 +76,7 @@ export default function ComponentTest() {
             {
               id: 4,
               username: 'Melvyn',
-              avatarUrl: 'nopn.com',
+              avatarUrl: profilesPictures[3],
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -83,7 +85,7 @@ export default function ComponentTest() {
             {
               id: 5,
               username: 'Ana',
-              avatarUrl: 'nopn.com',
+              avatarUrl: profilesPictures[4],
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -92,7 +94,7 @@ export default function ComponentTest() {
             {
               id: 6,
               username: 'Alex',
-              avatarUrl: 'nopn.com',
+              avatarUrl: profilesPictures[5],
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -101,7 +103,7 @@ export default function ComponentTest() {
             {
               id: 7,
               username: 'Luca',
-              avatarUrl: 'nopn.com',
+              avatarUrl: profilesPictures[6],
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -109,9 +111,6 @@ export default function ComponentTest() {
             },
           ]}
         />
-        <BigButton icon="star" onClick={nextPp}>
-          Test
-        </BigButton>
       </Box>
     </AppLayout>
   );
