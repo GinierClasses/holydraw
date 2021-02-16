@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import AppLayout from '../components/AppLayout';
 import BigButton from '../components/BigButton';
 import PlayerAvatar from '../components/Home/PlayerAvatar';
-import AppLayout from '../components/lobby/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
 import PlayerCard from '../components/lobby/PlayerCard';
 import PlayerCardList from '../components/lobby/PlayerCardList';
