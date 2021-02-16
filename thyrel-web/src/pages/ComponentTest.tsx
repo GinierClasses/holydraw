@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import BigButton from '../components/BigButton';
-import AvatarCard from '../components/Home/AvatarCard';
+import PlayerAvatar from '../components/Home/PlayerAvatar';
 import AppLayout from '../components/lobby/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
-import UserCard from '../components/lobby/UserCard';
-import UserCardList from '../components/lobby/UserCardList';
+import PlayerCard from '../components/lobby/PlayerCard';
+import PlayerCardList from '../components/lobby/PlayerCardList';
 import StepTimer from '../components/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
@@ -29,9 +29,9 @@ export default function ComponentTest() {
           />
         </Box>
 
-        <AvatarCard image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+        <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
 
-        <UserCard
+        <PlayerCard
           id={1}
           name="John Doe"
           avatar={profilesPictures[ppIndex]}
@@ -44,7 +44,7 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <UserCardList
+        <PlayerCardList
           players={[
             {
               id: 1,
