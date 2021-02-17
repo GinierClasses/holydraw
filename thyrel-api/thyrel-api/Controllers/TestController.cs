@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace thyrel_api.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
