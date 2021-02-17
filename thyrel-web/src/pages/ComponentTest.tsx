@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AppLayout from '../components/AppLayout';
 import BigButton from '../components/BigButton';
+import PlayerCount from '../components/PlayerCount';
 import PlayerAvatar from '../components/Home/PlayerAvatar';
 import AppTitle from '../components/lobby/AppTitle';
 import BigInput from '../components/lobby/BigInput';
@@ -116,7 +117,7 @@ export default function ComponentTest() {
           onKick={id => console.log('id is', id)}
         />
 
-        {/* <PlayerCount count={8} max={12} /> */}
+        <PlayerCount count={8} max={12} />
       </Box>
     </AppLayout>
   );
