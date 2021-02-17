@@ -42,7 +42,7 @@ namespace thyrel_api.Websocket
 
                 if (connection == null || connection.RoomId != null) continue;
                 // deserialize message from Player
-                var socketJson = JsonSerializer.Deserialize<RoomSocketJson>(
+                var socketJson = JsonSerializer.Deserialize<ConnexionSocketMessage>(
                     message,
                     new JsonSerializerOptions {AllowTrailingCommas = true});
 
@@ -53,16 +53,20 @@ namespace thyrel_api.Websocket
                 if (player == null)
                 {
                     await SendMessageToSocket(connection, JsonSerializer.Serialize(
-                        new EventJson(WebsocketEvent.Invalid)));
+                        new BaseWebsocketEvent(WebsocketEvent.Invalid)));
                     continue;
                 }
 
-                connection.RoomId = player?.RoomId;
+                if (!player.IsConnected)
+                    await new PlayerDataProvider().SetIsConnected(player.Id, true);
+
+                connection.RoomId = player.RoomId;
+                connection.PlayerId = player.Id;
 
                 // inform room that a new player join
                 await SendMessageToSockets(
                     JsonSerializer.Serialize(
-                        new EventJson(WebsocketEvent.PlayerJoin)), player?.RoomId);
+                        new BaseWebsocketEvent(WebsocketEvent.PlayerJoin)), player.RoomId);
             }
         }
 
@@ -134,9 +138,14 @@ namespace thyrel_api.Websocket
                     }
 
                     foreach (var closedWebsocketConnection in closedSockets)
+                    {
+                        // update player who leave to unconnected
+                        await new PlayerDataProvider().SetIsConnected(
+                            closedWebsocketConnection.PlayerId ?? -1, false);
                         await SendMessageToSockets(
                             JsonSerializer.Serialize(
-                                new EventJson(WebsocketEvent.PlayerLeft)), closedWebsocketConnection.RoomId);
+                                new BaseWebsocketEvent(WebsocketEvent.PlayerLeft)), closedWebsocketConnection.RoomId);
+                    }
 
                     await Task.Delay(5000);
                 }
@@ -149,5 +158,6 @@ namespace thyrel_api.Websocket
         public Guid Id { get; set; }
         public WebSocket WebSocket { get; set; }
         public int? RoomId { get; set; }
+        public int? PlayerId { get; set; }
     }
 }
