@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import StepTimer from '../components/StepTimer';
+import StepTimer from '../components/room/StepTimer';
 
 describe('StepTimer', () => {
   test('style change all second', async () => {
