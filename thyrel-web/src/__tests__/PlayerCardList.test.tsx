@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import UserCardList from '../components/lobby/UserCardList';
+import PlayerCardList from '../components/lobby/PlayerCardList';
 
 const data = [
   {
@@ -23,10 +23,10 @@ const data = [
   },
 ];
 
-describe('UserCardList', () => {
+describe('PlayerCardList', () => {
   test('Check number of elements', () => {
     const { container } = render(
-      <UserCardList players={data} isKickable={false} />,
+      <PlayerCardList players={data} isKickable={false} />,
     );
     const size = container.children[0].children.length;
 
@@ -36,7 +36,7 @@ describe('UserCardList', () => {
   test('OnKick works', () => {
     const onKick = jest.fn();
 
-    render(<UserCardList players={data} isKickable={true} onKick={onKick} />);
+    render(<PlayerCardList players={data} isKickable={true} onKick={onKick} />);
 
     userEvent.click(screen.getByRole('button'));
 

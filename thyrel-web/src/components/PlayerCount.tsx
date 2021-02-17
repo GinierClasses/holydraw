@@ -1,12 +1,12 @@
 import { css } from '@emotion/css';
 import Box from '../styles/Box';
 
-type PayerCountProps = {
+type PlayerCountProps = {
   count: number;
   max: number;
 };
 
-export default function PayerCount({ count, max }: PayerCountProps) {
+export default function PlayerCount({ count, max }: PlayerCountProps) {
   return (
     <Box padding={8}>
       <p

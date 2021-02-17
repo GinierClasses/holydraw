@@ -4,13 +4,13 @@ import { Notification } from 'rsuite';
 import { client } from '../api/client';
 import { setToken } from '../api/player-provider';
 import BigButton from '../components/BigButton';
-import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
 import BigInput from '../components/lobby/BigInput';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import Player from '../types/Player.type';
+import PlayerAvatar from '../components/Home/PlayerAvatar';
 
 export default function Home(
   props: RouteComponentProps<{ identifier?: string }>,
@@ -63,7 +63,7 @@ export default function Home(
       </Box>
       <Box mt={16}>
         <Box flexDirection="column" alignItems="center" width="100%" gap={24}>
-          <AvatarCard image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+          <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
 
           <BigInput
             icon={'edit'}

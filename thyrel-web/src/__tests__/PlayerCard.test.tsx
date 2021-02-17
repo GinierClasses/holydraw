@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import UserCard from '../components/lobby/UserCard';
+import PlayerCard from '../components/lobby/PlayerCard';
 
-describe('UserCard', () => {
+describe('PlayerCard', () => {
   test('default props work', () => {
     const data = { id: 1, name: 'jean', avatar: 'AVATAR-URL.com' };
-    render(<UserCard id={data.id} name={data.name} avatar={data.avatar} />);
+    render(<PlayerCard id={data.id} name={data.name} avatar={data.avatar} />);
 
     expect(screen.getByText(data.name)).toBeInTheDocument();
     expect(screen.getByRole('img')).toHaveAttribute('src', data.avatar);
@@ -14,7 +14,7 @@ describe('UserCard', () => {
   test('display star if isOwner', () => {
     const data = { id: 1, name: 'jean', avatar: 'AVATAR-URL.com' };
     render(
-      <UserCard id={data.id} name={data.name} avatar={data.avatar} isOwner />,
+      <PlayerCard id={data.id} name={data.name} avatar={data.avatar} isOwner />,
     );
 
     // testId it's useful when it's impossible to get the tag
@@ -24,7 +24,7 @@ describe('UserCard', () => {
   test('display star if isOwner and isKickable', () => {
     const data = { id: 1, name: 'jean', avatar: 'AVATAR-URL.com' };
     render(
-      <UserCard
+      <PlayerCard
         id={data.id}
         name={data.name}
         avatar={data.avatar}
@@ -42,7 +42,7 @@ describe('UserCard', () => {
     // `jest.fn` is a test function to know with what she has been called
     const onKick = jest.fn();
     render(
-      <UserCard
+      <PlayerCard
         id={data.id}
         name={data.name}
         avatar={data.avatar}
