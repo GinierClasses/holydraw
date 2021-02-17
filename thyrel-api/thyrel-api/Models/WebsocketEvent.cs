@@ -12,6 +12,7 @@ namespace thyrel_api.Models
         Invalid = -1,
         PlayerJoin = 1,
         PlayerLeft = 2,
+        PlayerFinished = 3,
         SessionStart = 11,
         SessionUpdate = 12,
         NextStep = 13, // on a step is finish
