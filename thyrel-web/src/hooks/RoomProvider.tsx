@@ -70,7 +70,7 @@ export function useRoomContext() {
   const context = React.useContext(RoomContext);
   if (!context)
     throw new Error(
-      'useWebsocket should be used within a RoomSocketContextProvider',
+      'useRoomContext should be used within a RoomSocketContextProvider',
     );
   return context;
 }
