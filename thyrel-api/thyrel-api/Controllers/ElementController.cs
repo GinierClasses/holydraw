@@ -28,7 +28,7 @@ namespace thyrel_api.Controllers
             var session = await new SessionDataProvider().GetSessionById(element.SessionId);
             await new ElementDataProvider().HandleFinish(id, true);
 
-            if (element.Text != null)
+            if (element.Type == ElementType.Sentence)
             {
                 await new ElementDataProvider().SetSentence(id, body.Text);
             }
