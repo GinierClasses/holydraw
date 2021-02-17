@@ -22,6 +22,6 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="sessionId"></param>
         /// <returns></returns>
-        Task<Session> GetSessionById(int sessionId;
+        Task<Session> GetSessionById(int sessionId);
     }
 }
