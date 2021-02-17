@@ -1,18 +1,18 @@
 import Box from '../../styles/Box';
-import UserCard from './UserCard';
+import PlayerCard from './PlayerCard';
 import Player from '../../types/Player.type';
 
-type UserCardListProps = {
+type PlayerCardListProps = {
   players: Player[];
   isKickable: boolean;
   onKick?: (id: number) => void;
 };
 
-export default function UserCardList({
+export default function PlayerCardList({
   players,
   isKickable,
   onKick,
-}: UserCardListProps) {
+}: PlayerCardListProps) {
   return (
     <Box
       gap={16}
@@ -24,7 +24,7 @@ export default function UserCardList({
       pr={8}>
       {players.map(player => {
         return (
-          <UserCard
+          <PlayerCard
             id={player.id}
             name={player.username}
             avatar={player.avatarUrl}
