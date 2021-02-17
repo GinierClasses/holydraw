@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import AppLayout from '../components/AppLayout';
 import BigButton from '../components/BigButton';
-import PlayerCount from '../components/PlayerCount';
-import PlayerAvatar from '../components/Home/PlayerAvatar';
+import PlayerCount from '../components/room/PlayerCount';
+import PlayerAvatar from '../components/home/PlayerAvatar';
 import AppTitle from '../components/lobby/AppTitle';
 import BigInput from '../components/lobby/BigInput';
 import PlayerCard from '../components/lobby/PlayerCard';
 import PlayerCardList from '../components/lobby/PlayerCardList';
-import StepTimer from '../components/StepTimer';
+import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
+import DirectiveLabel from '../components/room/DirectiveLabel';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -118,6 +119,11 @@ export default function ComponentTest() {
         />
 
         <PlayerCount count={8} max={12} />
+
+        <DirectiveLabel
+          directive="Time to draw"
+          sentence="Mémé fait des fucks à la police"
+        />
       </Box>
     </AppLayout>
   );

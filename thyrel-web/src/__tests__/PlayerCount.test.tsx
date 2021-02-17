@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import PlayerCount from '../components/PlayerCount';
+import PlayerCount from '../components/room/PlayerCount';
 
 describe('PayerCount', () => {
   test('Check if displays right number', () => {
