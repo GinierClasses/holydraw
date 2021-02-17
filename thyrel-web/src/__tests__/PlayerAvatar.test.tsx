@@ -8,7 +8,7 @@ describe('PlayerAvatar', () => {
     render(<PlayerAvatar image={img} />);
     expect(screen.getByRole('img')).toHaveAttribute('src', img);
   });
-  
+
   test('onShuffle is called on shuffle', () => {
     const onShuffle = jest.fn();
     render(<PlayerAvatar image="" onShuffle={onShuffle} />);
