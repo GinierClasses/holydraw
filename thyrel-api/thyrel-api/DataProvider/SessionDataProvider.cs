@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
 namespace thyrel_api.DataProvider
@@ -40,6 +41,18 @@ namespace thyrel_api.DataProvider
             session.FinishAt = DateTime.Now;
 
             await SaveChanges();
+            return session;
+        }
+
+        /// <summary>
+        /// To get a Session by it's id
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
+        public async Task<Session> GetSessionById(int sessionId)
+        {
+            var session = await _holyDrawDbContext.Session
+                .SingleOrDefaultAsync(s => s.Id == sessionId);
             return session;
         }
 
