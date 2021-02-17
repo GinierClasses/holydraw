@@ -1,5 +1,5 @@
 import { Progress } from 'rsuite';
-import { baseColor } from '../styles/colors';
+import { baseColor } from '../../styles/colors';
 import React from 'react';
 
 type StepTimerProps = {
