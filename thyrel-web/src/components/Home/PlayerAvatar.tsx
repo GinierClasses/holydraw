@@ -4,7 +4,7 @@ import Box from '../../styles/Box';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
 
-type AvatarCardProps = {
+type PlayerAvatarProps = {
   image: string;
   onShuffle?: () => void;
 };
@@ -25,7 +25,7 @@ const ShuffleButton = styled.button({
   },
 });
 
-export default function AvatarCard({ image, onShuffle }: AvatarCardProps) {
+export default function PlayerAvatar({ image, onShuffle }: PlayerAvatarProps) {
   return (
     <Box
       alignItems="center"

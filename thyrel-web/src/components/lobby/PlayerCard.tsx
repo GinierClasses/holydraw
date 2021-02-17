@@ -5,7 +5,7 @@ import Box from '../../styles/Box';
 import { Icon } from 'rsuite';
 import { baseColor, bgColor } from '../../styles/colors';
 
-type UserCardProps = {
+type PlayerCardProps = {
   id: number;
   name: string;
   avatar: string;
@@ -29,14 +29,14 @@ const StyledAvatar = styled(Avatar)({
   },
 });
 
-export default function UserCard({
+export default function PlayerCard({
   id,
   name,
   avatar,
   isOwner,
   isKickable,
   onKick,
-}: UserCardProps) {
+}: PlayerCardProps) {
   return (
     <Box
       borderWidth={1}

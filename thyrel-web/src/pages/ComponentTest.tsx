@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import BigButton from '../components/BigButton';
-import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/AppLayout';
+import BigButton from '../components/BigButton';
+import PlayerCount from '../components/PlayerCount';
+import PlayerAvatar from '../components/Home/PlayerAvatar';
 import AppTitle from '../components/lobby/AppTitle';
 import BigInput from '../components/lobby/BigInput';
-import UserCard from '../components/lobby/UserCard';
-import UserCardList from '../components/lobby/UserCardList';
+import PlayerCard from '../components/lobby/PlayerCard';
+import PlayerCardList from '../components/lobby/PlayerCardList';
 import StepTimer from '../components/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
@@ -30,11 +31,10 @@ export default function ComponentTest() {
           />
         </Box>
 
-        <BigInput value={"didier"} icon="apple" />
+        <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+        <BigInput value={'didier'} icon="apple" />
 
-        <AvatarCard image={profilesPictures[ppIndex]} onShuffle={nextPp} />
-
-        <UserCard
+        <PlayerCard
           id={1}
           name="John Doe"
           avatar={profilesPictures[ppIndex]}
@@ -47,7 +47,7 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <UserCardList
+        <PlayerCardList
           players={[
             {
               id: 1,
@@ -116,6 +116,8 @@ export default function ComponentTest() {
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
+
+        <PlayerCount count={8} max={12} />
       </Box>
     </AppLayout>
   );
