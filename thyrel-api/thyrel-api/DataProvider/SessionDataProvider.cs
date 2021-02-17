@@ -52,7 +52,7 @@ namespace thyrel_api.DataProvider
         public async Task<Session> GetSessionById(int sessionId)
         {
             var session = await _holyDrawDbContext.Session
-                .SingleOrDefaultAsync(s => s.Id == sessionId);
+                .FindAsync(sessionId);
             return session;
         }
 
