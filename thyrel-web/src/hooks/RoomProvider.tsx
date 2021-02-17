@@ -32,6 +32,7 @@ export function RoomContextProvider({
   const getRoom = React.useCallback(() => {
     // todo : set the room with api values
     setRoom(undefined);
+    // if room -> getPlayers, else -> getRoom
   }, []);
 
   const { wsState } = useWebsocket(

@@ -15,7 +15,6 @@ namespace thyrel_api.Controllers
     public class TestController : ControllerBase
     {
         private IWebsocketHandler _websocketHandler;
-        private readonly HolyDrawDbContext _holyDrawDbContext;
 
         public TestController(IWebsocketHandler websocketHandler)
         {

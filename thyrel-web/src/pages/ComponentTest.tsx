@@ -3,6 +3,7 @@ import BigButton from '../components/BigButton';
 import AvatarCard from '../components/Home/AvatarCard';
 import AppLayout from '../components/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
+import BigInput from '../components/lobby/BigInput';
 import UserCard from '../components/lobby/UserCard';
 import PlayerCount from '../components/PlayerCount';
 import UserCardList from '../components/lobby/UserCardList';
@@ -29,6 +30,8 @@ export default function ComponentTest() {
             onFinish={() => console.log('finished')}
           />
         </Box>
+
+        <BigInput value={"didier"} icon="apple" />
 
         <AvatarCard image={profilesPictures[ppIndex]} onShuffle={nextPp} />
 
