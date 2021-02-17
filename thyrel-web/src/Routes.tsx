@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { PlayerContextProvider } from './hooks/PlayerProvider';
 import { RoomContextProvider } from './hooks/RoomProvider';
 import ComponentTest from './pages/ComponentTest';
 import DevNav from './pages/DevNav';
@@ -31,16 +32,18 @@ export default function Routes() {
 
 function RoomRoutes() {
   return (
-    <RoomContextProvider>
-      <Switch>
-        <Route path="/r/start" component={Start} />
-        <Route path="/r/draw" component={Draw} />
-        <Route path="/r/write" component={Write} />
-        <Route path="/r/book" component={Book} />
+    <PlayerContextProvider>
+      <RoomContextProvider>
+        <Switch>
+          <Route path="/r/start" component={Start} />
+          <Route path="/r/draw" component={Draw} />
+          <Route path="/r/write" component={Write} />
+          <Route path="/r/book" component={Book} />
 
-        <Route path="/r/lobby" component={Lobby} />
-        <Route path="/r" component={Lobby} />
-      </Switch>
-    </RoomContextProvider>
+          <Route path="/r/lobby" component={Lobby} />
+          <Route path="/r" component={Lobby} />
+        </Switch>
+      </RoomContextProvider>
+    </PlayerContextProvider>
   );
 }
