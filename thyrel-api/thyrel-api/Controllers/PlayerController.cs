@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Models;
 
@@ -20,7 +21,7 @@ namespace thyrel_api.Controllers
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext);
             if (player == null) return Unauthorized();
-            return player;
+            return await new PlayerDataProvider().GetPlayer(player.Id);
         }
     }
 }

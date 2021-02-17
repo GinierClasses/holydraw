@@ -46,7 +46,7 @@ namespace thyrel_api.Controllers
                 return NotFound();
             var playerDataProvider = new PlayerDataProvider();
             var token = await new TokenDataProvider().Add();
-            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id, token.Id);
+            var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, false, room.Id, token.Id);
             return await playerDataProvider.GetPlayer(player.Id);
         }
 

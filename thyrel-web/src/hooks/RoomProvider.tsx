@@ -1,8 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Notification } from 'rsuite';
+import { client } from '../api/client';
+import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { parseJson } from '../utils/json';
+import { usePlayerContext } from './PlayerProvider';
 import useWebsocket, {
   WebsocketMessage,
   WebsocketEvent,
@@ -12,6 +15,7 @@ import useWebsocket, {
 type RoomSocketContextProps = {
   room?: Room;
   wsState: WsStates;
+  players?: Player[];
 };
 
 const RoomContext = React.createContext<RoomSocketContextProps>({
@@ -27,13 +31,29 @@ export function RoomContextProvider({
   children,
 }: RoomSocketContextProviderProps) {
   const [room, setRoom] = React.useState<Room>();
+  const [players, setPlayers] = React.useState<Player[]>();
+  const { player } = usePlayerContext();
   const history = useHistory();
 
-  const getRoom = React.useCallback(() => {
-    // todo : set the room with api values
-    setRoom(undefined);
-    // if room -> getPlayers, else -> getRoom
-  }, []);
+  const updateRoom = React.useCallback(() => {
+    client<Room>(`room/${player?.room?.identifier}`).then(r => {
+      if (r.players) {
+        setPlayers(r.players);
+        delete r.players;
+      }
+      setRoom(r);
+    });
+  }, [player]);
+
+  React.useEffect(() => {
+    updateRoom();
+  }, [updateRoom]);
+
+  const updatePlayer = React.useCallback(() => {
+    client<Player[]>(`room/${player?.room?.identifier}/players`).then(p =>
+      setPlayers(p),
+    );
+  }, [player]);
 
   const { wsState } = useWebsocket(
     React.useCallback(
@@ -50,18 +70,22 @@ export function RoomContextProvider({
             history.push('/home');
             break;
           case WebsocketEvent.PlayerJoin:
-            getRoom();
+            console.log('Update player join');
+            // todo : replace by `updatePlayer`
+            updateRoom();
             break;
           case WebsocketEvent.PlayerLeft:
-            getRoom();
+            console.log('Update player left');
+            // todo : replace by `updatePlayer`
+            updateRoom();
             break;
         }
       },
-      [getRoom, history],
+      [updatePlayer, history],
     ),
   );
 
-  const values = { room, wsState };
+  const values = { room, wsState, players };
 
   return <RoomContext.Provider value={values}>{children}</RoomContext.Provider>;
 }
