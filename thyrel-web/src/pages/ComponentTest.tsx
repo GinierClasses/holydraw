@@ -3,6 +3,7 @@ import AppLayout from '../components/AppLayout';
 import BigButton from '../components/BigButton';
 import PlayerAvatar from '../components/Home/PlayerAvatar';
 import AppTitle from '../components/lobby/AppTitle';
+import BigInput from '../components/lobby/BigInput';
 import PlayerCard from '../components/lobby/PlayerCard';
 import PlayerCardList from '../components/lobby/PlayerCardList';
 import StepTimer from '../components/StepTimer';
@@ -30,6 +31,7 @@ export default function ComponentTest() {
         </Box>
 
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+        <BigInput value={'didier'} icon="apple" />
 
         <PlayerCard
           id={1}
@@ -113,6 +115,8 @@ export default function ComponentTest() {
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
+
+        {/* <PlayerCount count={8} max={12} /> */}
       </Box>
     </AppLayout>
   );
