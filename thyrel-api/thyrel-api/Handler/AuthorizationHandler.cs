@@ -1,47 +1,33 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using thyrel_api.Controllers;
 using thyrel_api.Models;
-using System.Web;
+using thyrel_api.DataProvider;
 
 
 namespace thyrel_api.Handler
 { 
-    public class AuthorizationHandler : ControllerBase
+    public static class AuthorizationHandler
     {
-        public AuthorizationHandler()
-        {
-
-        }
-
-        public Player CheckAuthorization(HttpContext httpContext)
+        /// <summary>
+        ///     Usage in your controller :
+        /// 
+        ///     var player = await AuthorizationHandler.CheckAuthorization(HttpContext);
+        ///     if (player == null) return Unauthorized();
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns>Player or Null</returns>
+        public static async Task<Player> CheckAuthorization(HttpContext httpContext)
         {
             // get the authorization header
             string authHeader = httpContext.Request.Headers["Authorization"];
             // check header is valid
-            if (authHeader == null && !authHeader.StartsWith("Bearer"))
-            {
-                //Handle what happens if that isn't the case
-                throw new HttpResponseException(HttpStatusCode.Unauthorized);
-            }
+            if (authHeader == null || !authHeader.StartsWith("Bearer"))
+                return null;
             // get the token
             string playerToken = authHeader.Substring("Bearer ".Length).Trim();
             // use the PlayerDataProvider to get the Player with this Token (func : `GetPlayerByToken`)
-            var player = new PlayerDataProvider().GetPlayerByToken(playerToken);
-            if (player == null)
-                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            var player = await new PlayerDataProvider().GetPlayerByToken(playerToken);
             return player;
-        }
-    }
-
-    public class HttpResponseException : Exception
-    {
-        public HttpResponseException(HttpStatusCode unauthorized)
-        {
-            throw new NotImplementedException();
         }
     }
 }
