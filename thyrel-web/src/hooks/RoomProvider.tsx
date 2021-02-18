@@ -81,7 +81,7 @@ export function RoomContextProvider({
             break;
         }
       },
-      [updatePlayer, history],
+      [history, updateRoom],
     ),
   );
 

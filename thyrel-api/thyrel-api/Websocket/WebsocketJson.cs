@@ -16,7 +16,7 @@ namespace thyrel_api.Websocket
     {
         public BaseWebsocketEvent(WebsocketEvent websocketEvent)
         {
-            WebsocketEvent = websocketEvent;
+            this.websocketEvent = websocketEvent;
         }
 
         public WebsocketEvent websocketEvent { get; }
