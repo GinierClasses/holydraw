@@ -13,7 +13,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       bg={paperColor}
       display="block"
       margin="auto"
-      width={100}
+      width="100%"
       maxWidth={1000}
       minWidth={320}
       minHeight="100vh"

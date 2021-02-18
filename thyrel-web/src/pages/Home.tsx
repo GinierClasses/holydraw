@@ -56,12 +56,7 @@ export default function Home(
   }
 
   return (
-    <Box
-      flexDirection="column"
-      alignItems="center"
-      width="100%"
-      gap={24}
-      p={32}>
+    <Box flexDirection="column" alignItems="center" width="100%" gap={24}>
       <Box p={32} width="100%">
         <AppTitle />
       </Box>
