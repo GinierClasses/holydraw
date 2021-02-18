@@ -2,9 +2,9 @@ using thyrel_api.Models;
 
 namespace thyrel_api.Websocket
 {
-    public class RoomSocketJson
+    public class ConnexionSocketMessage
     {
-        public RoomSocketJson(string playerToken)
+        public ConnexionSocketMessage(string playerToken)
         {
             PlayerToken = playerToken;
         }
@@ -12,13 +12,14 @@ namespace thyrel_api.Websocket
         public string PlayerToken { get; set; }
     }
 
-    public class EventJson
+    public class BaseWebsocketEvent
     {
-        public EventJson(WebsocketEvent websocketEvent)
+        public BaseWebsocketEvent(WebsocketEvent websocketEvent)
         {
-            this.websocketEvent = websocketEvent;
+            WebsocketEvent = websocketEvent;
         }
 
-        private WebsocketEvent websocketEvent;
+        // first lowerCase for matching front
+        public WebsocketEvent WebsocketEvent { get; set; }
     }
 }
