@@ -35,20 +35,18 @@ export default function Routes() {
 
 function RoomRoutes() {
   return (
-    <AppLayout>
-      <PlayerContextProvider>
-        <RoomContextProvider>
-          <Switch>
-            <Route path="/r/start" component={Start} />
-            <Route path="/r/draw" component={Draw} />
-            <Route path="/r/write" component={Write} />
-            <Route path="/r/book" component={Book} />
+    <PlayerContextProvider>
+      <RoomContextProvider>
+        <Switch>
+          <Route path="/r/start" component={Start} />
+          <Route path="/r/draw" component={Draw} />
+          <Route path="/r/write" component={Write} />
+          <Route path="/r/book" component={Book} />
 
-            <Route path="/r/lobby" component={Lobby} />
-            <Route path="/r" component={Lobby} />
-          </Switch>
-        </RoomContextProvider>
-      </PlayerContextProvider>
-    </AppLayout>
+          <Route path="/r/lobby" component={Lobby} />
+          <Route path="/r" component={Lobby} />
+        </Switch>
+      </RoomContextProvider>
+    </PlayerContextProvider>
   );
 }
