@@ -61,7 +61,7 @@ export function RoomContextProvider({
         const websocketMessage = parseJson<WebsocketMessage>(message);
         if (!websocketMessage) return;
 
-        switch (websocketMessage.websocketEvent) {
+        switch (websocketMessage.WebsocketEvent) {
           case WebsocketEvent.Invalid:
             Notification['error']({
               title: "You're not in a game.",

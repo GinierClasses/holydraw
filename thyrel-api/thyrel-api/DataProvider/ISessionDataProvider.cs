@@ -16,5 +16,12 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="sessionId"></param>
         Task<Session> Finish(int sessionId);
+
+        /// <summary>
+        /// To get a Session by it's id
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <returns></returns>
+        Task<Session> GetSessionById(int sessionId);
     }
 }

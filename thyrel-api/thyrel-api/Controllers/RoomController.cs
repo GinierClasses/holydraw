@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
@@ -57,6 +59,15 @@ namespace thyrel_api.Controllers
         {
             var room = await new RoomDataProvider().GetRoom(identifier);
             return room;
+        }
+        
+        // Call this endpoint to get players of a room
+        // GET : api/room/{id}/players
+        [HttpGet("{id}/players")]
+        public async Task<ActionResult<List<Player>>> GetPlayersByRoom(int roomId)
+        {
+            var player = await new PlayerDataProvider().GetPlayersByRoom(roomId);
+            return player;
         }
 
         public class PlayerRoomBody

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import PlayerAvatar from '../components/Home/PlayerAvatar';
+import PlayerAvatar from '../components/home/PlayerAvatar';
 
 describe('PlayerAvatar', () => {
   test('img is correctly display ', () => {

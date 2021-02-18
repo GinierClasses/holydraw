@@ -1,3 +1,4 @@
+import AppLayout from './components/AppLayout';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PlayerContextProvider } from './hooks/PlayerProvider';
 import { RoomContextProvider } from './hooks/RoomProvider';
@@ -13,20 +14,22 @@ import TestAPI from './pages/TestAPI';
 
 export default function Routes() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/join/:identifier" component={Home} />
-        <Route path="/r" component={RoomRoutes} />
-        <Route path="/t" component={ComponentTest} />
-        <Route path="/home" component={Home} />
-        {/* Page to test the API 
+    <AppLayout>
+      <Router>
+        <Switch>
+          <Route path="/join/:identifier" component={Home} />
+          <Route path="/r" component={RoomRoutes} />
+          <Route path="/t" component={ComponentTest} />
+          <Route path="/home" component={Home} />
+          {/* Page to test the API 
         TODO : delete it */}
-        <Route path="/test" component={TestAPI} />
-        {/* For test, I add a special Nav
+          <Route path="/test" component={TestAPI} />
+          {/* For test, I add a special Nav
         TODO: replace it by `Home` */}
-        <Route path="/" component={DevNav} />
-      </Switch>
-    </Router>
+          <Route path="/" component={DevNav} />
+        </Switch>
+      </Router>
+    </AppLayout>
   );
 }
 

@@ -13,15 +13,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
       bg={paperColor}
       display="block"
       margin="auto"
+      width="100%"
       maxWidth={1000}
       minWidth={320}
       minHeight="100vh"
       className={css({
         borderLeft: `1px solid ${baseColor}`,
         borderRight: `1px solid ${baseColor}`,
-        width: '100%',
-        maxWidth: '1000px',
-        minWidth: '320px',
       })}>
       {children}
     </Box>

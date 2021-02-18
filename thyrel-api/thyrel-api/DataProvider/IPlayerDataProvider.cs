@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using thyrel_api.Models;
 
@@ -49,5 +50,20 @@ namespace thyrel_api.DataProvider
         /// <param name="isPlaying"></param>
         /// <returns></returns>
         Task<Player> SetIsPlaying(int playerId, bool isPlaying);
+        
+        /// <summary>
+        ///     Handle isConnected (when user left) column
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="isConnected"></param>
+        /// <returns></returns>
+        Task<Player> SetIsConnected(int playerId, bool isConnected);
+
+        /// <summary>
+        /// To get a Players by it's room
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        Task<List<Player>> GetPlayersByRoom(int roomId);
     }
 }

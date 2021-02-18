@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import Box from '../styles/Box';
+import Box from '../../styles/Box';
 
 type PlayerCountProps = {
   count: number;
