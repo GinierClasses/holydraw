@@ -9,7 +9,7 @@ namespace test_thyrel_api
 {
     public class MockDatabase
     {
-        public HolyDrawDbContext Context;
+        public readonly HolyDrawDbContext Context;
 
         public MockDatabase(DbContextOptions<HolyDrawDbContext> options)
         {

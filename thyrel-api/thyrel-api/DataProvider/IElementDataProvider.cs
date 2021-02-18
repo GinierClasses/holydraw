@@ -6,8 +6,6 @@ namespace thyrel_api.DataProvider
 {
     public interface IElementDataProvider
     {
-        HolyDrawDbContext HolyDrawDbContext { get; }
-
         /// <summary>
         ///     Create a Drawing Element
         /// </summary>

@@ -16,6 +16,11 @@ namespace thyrel_api.DataProvider
             _holyDrawDbContext = new HolyDrawDbContext();
         }
 
+        public PlayerDataProvider(DbContextOptions<HolyDrawDbContext> options)
+        {
+            _holyDrawDbContext = new HolyDrawDbContext(options);
+        }
+
         /// <summary>
         ///     To add a new Player
         /// </summary>
@@ -65,11 +70,11 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        public List<Player> GetPlayersByRoom(int roomId)
+        public async Task<List<Player>> GetPlayersByRoom(int roomId)
         {
-            var player = _holyDrawDbContext.Player
-                .Where(p => p.RoomId == roomId);
-            return player.ToList();
+            var player = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == roomId && p.IsConnected).ToListAsync();
+            return player;
         }
 
         /// <summary>
@@ -115,7 +120,24 @@ namespace thyrel_api.DataProvider
             if (dbPlayer == null)
                 return null;
 
-            dbPlayer.IsOwner = isPlaying;
+            dbPlayer.IsPlaying = isPlaying;
+            await SaveChanges();
+            return dbPlayer;
+        }
+
+        /// <summary>
+        ///     Handle isConnected (when user left) column
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <param name="isConnected"></param>
+        /// <returns></returns>
+        public async Task<Player> SetIsConnected(int playerId, bool isConnected)
+        {
+            var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
+            if (dbPlayer == null)
+                return null;
+
+            dbPlayer.IsConnected = isConnected;
             await SaveChanges();
             return dbPlayer;
         }
