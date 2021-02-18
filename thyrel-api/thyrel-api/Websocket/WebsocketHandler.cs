@@ -47,8 +47,9 @@ namespace thyrel_api.Websocket
                     new JsonSerializerOptions {AllowTrailingCommas = true});
 
                 var playerToken = socketJson?.PlayerToken;
-
-                var player = playerToken == null ? null : await new PlayerDataProvider().GetPlayerByToken(playerToken);
+                var playerDataProvider = new PlayerDataProvider();
+                
+                var player = playerToken == null ? null : await playerDataProvider.GetPlayerByToken(playerToken);
                 // if no matching token or no token
                 if (player == null)
                 {
@@ -58,7 +59,7 @@ namespace thyrel_api.Websocket
                 }
 
                 if (!player.IsConnected)
-                    await new PlayerDataProvider().SetIsConnected(player.Id, true);
+                    await playerDataProvider.SetIsConnected(player.Id, true);
 
                 connection.RoomId = player.RoomId;
                 connection.PlayerId = player.Id;

@@ -3,13 +3,19 @@ import React from 'react';
 import { SelectPicker } from 'rsuite';
 import { useRoomContext } from '../../hooks/RoomProvider';
 import Box from '../../styles/Box';
-import { baseColor, bgColor, paperColor } from '../../styles/colors';
-import BigInput from './BigInput';
+import { baseColor, paperColor } from '../../styles/colors';
 
 export default function SettingsMenu() {
-  const { room } = useRoomContext();
+  const { room, wsState } = useRoomContext();
   return (
-    <Box borderRadius={4} p={16} bg={baseColor} flexDirection="column" gap={24}>
+    <Box
+      borderRadius={4}
+      minWidth={328}
+      p={16}
+      bg={baseColor}
+      flexDirection="column"
+      gap={24}>
+      {wsState}
       <p
         className={css({
           background: paperColor,
@@ -28,7 +34,6 @@ export default function SettingsMenu() {
           },
         ]}
         searchable={false}
-        menuClassName={css({ backgroundColor: 'red' })}
       />
     </Box>
   );

@@ -63,7 +63,7 @@ namespace thyrel_api.Controllers
         
         // Call this endpoint to get players of a room
         // GET : api/room/{id}/players
-        [HttpGet("{id}/players")]
+        [HttpGet("{roomId}/players")]
         public async Task<ActionResult<List<Player>>> GetPlayersByRoom(int roomId)
         {
             var player = await new PlayerDataProvider().GetPlayersByRoom(roomId);

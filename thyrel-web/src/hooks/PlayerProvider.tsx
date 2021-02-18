@@ -39,7 +39,9 @@ export function PlayerContextProvider({
   const values = { player };
 
   return (
-    <PlayerContext.Provider value={values}>{children}</PlayerContext.Provider>
+    <PlayerContext.Provider value={values}>
+      {player ? children : <p>loading</p>}
+    </PlayerContext.Provider>
   );
 }
 

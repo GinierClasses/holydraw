@@ -50,7 +50,8 @@ export function RoomContextProvider({
   }, [updateRoom]);
 
   const updatePlayer = React.useCallback(() => {
-    client<Player[]>(`room/${player?.room?.identifier}/players`).then(p =>
+    console.log('UPDATE PLAYER FUCK');
+    client<Player[]>(`room/${player?.room?.id}/players`).then(p =>
       setPlayers(p),
     );
   }, [player]);
@@ -61,7 +62,7 @@ export function RoomContextProvider({
         const websocketMessage = parseJson<WebsocketMessage>(message);
         if (!websocketMessage) return;
 
-        switch (websocketMessage.WebsocketEvent) {
+        switch (websocketMessage.websocketEvent) {
           case WebsocketEvent.Invalid:
             Notification['error']({
               title: "You're not in a game.",
@@ -72,16 +73,16 @@ export function RoomContextProvider({
           case WebsocketEvent.PlayerJoin:
             console.log('Update player join');
             // todo : replace by `updatePlayer`
-            updateRoom();
+            updatePlayer();
             break;
           case WebsocketEvent.PlayerLeft:
             console.log('Update player left');
             // todo : replace by `updatePlayer`
-            updateRoom();
+            updatePlayer();
             break;
         }
       },
-      [history, updateRoom],
+      [history, updatePlayer],
     ),
   );
 
