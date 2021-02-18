@@ -9,7 +9,9 @@ export default function DevNav() {
         <Nav appearance="tabs" activeKey="devnav">
           {/* With react-router-dom it's not a good practive do don't use
           <Link /> but Rsuits alredy render a link */}
-          <Nav.Item href="/" eventKey="devnav">Dev nav</Nav.Item>
+          <Nav.Item href="/" eventKey="devnav">
+            Dev nav
+          </Nav.Item>
           <Nav.Item href="/r/start">Go Room Start</Nav.Item>
           <Nav.Item href="/r/write">Go Room Write</Nav.Item>
           <Nav.Item href="/r/draw">Go Room Draw</Nav.Item>

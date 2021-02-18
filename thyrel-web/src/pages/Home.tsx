@@ -4,7 +4,6 @@ import { Notification } from 'rsuite';
 import { client } from '../api/client';
 import { setToken } from '../api/player-provider';
 import BigButton from '../components/BigButton';
-import AppLayout from '../components/AppLayout';
 import AppTitle from '../components/lobby/AppTitle';
 import BigInput from '../components/lobby/BigInput';
 import profilesPictures from '../images/profiles/profiles-pictures';
@@ -57,7 +56,12 @@ export default function Home(
   }
 
   return (
-    <AppLayout>
+    <Box
+      flexDirection="column"
+      alignItems="center"
+      width="100%"
+      gap={24}
+      p={32}>
       <Box p={32} width="100%">
         <AppTitle />
       </Box>
@@ -85,6 +89,6 @@ export default function Home(
           </Box>
         </Box>
       </Box>
-    </AppLayout>
+    </Box>
   );
 }
