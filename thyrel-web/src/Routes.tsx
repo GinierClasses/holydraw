@@ -22,10 +22,10 @@ export default function Routes() {
           <Route path="/t" component={ComponentTest} />
           <Route path="/home" component={Home} />
           {/* Page to test the API 
-        TODO : delete it */}
+          TODO : delete it */}
           <Route path="/test" component={TestAPI} />
           {/* For test, I add a special Nav
-        TODO: replace it by `Home` */}
+          TODO: replace it by `Home` */}
           <Route path="/" component={DevNav} />
         </Switch>
       </Router>

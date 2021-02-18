@@ -3,7 +3,7 @@ import Box from '../styles/Box';
 
 export default function DevNav() {
   return (
-    <Box m={16} flexDirection="column" alignItems="center">
+    <Box p={16} flexDirection="column" alignItems="center">
       <h1>You're in DevNav</h1>
       <Box justifyContent="space-between">
         <Nav appearance="tabs" activeKey="devnav">
