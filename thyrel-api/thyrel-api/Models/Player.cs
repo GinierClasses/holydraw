@@ -26,6 +26,7 @@ namespace thyrel_api.Models
         public string AvatarUrl { get; set; }
         public bool IsOwner { get; set; }
         public bool IsPlaying { get; set; }
+        public bool IsConnected { get; set; } = true;
         public DateTime? DisableAt { get; set; }
         public DateTime CreatedAt { get; set; }
 

@@ -49,14 +49,6 @@ CREATE TABLE `Element` (
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `Element`
---
-
-INSERT INTO `Element` (`id`, `SessionId`, `CreatorId`, `InitiatorId`, `Type`, `Text`, `DrawingId`, `FinishAt`, `Step`, `CreatedAt`) VALUES
-(2, 9, 6, 6, 1, NULL, NULL, NULL, 1, '2021-02-13 15:31:01'),
-(3, 9, 20, 20, 1, NULL, NULL, NULL, 1, '2021-02-13 15:31:01'),
-(4, 9, 21, 21, 1, NULL, NULL, NULL, 1, '2021-02-13 15:31:01');
 
 -- --------------------------------------------------------
 
@@ -73,6 +65,7 @@ CREATE TABLE `Player` (
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL,
   `IsPlaying` tinyint(1) NOT NULL DEFAULT '0',
+  `IsConnected` tinyint(1) NOT NULL DEFAULT '1',
   `TokenId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -80,13 +73,12 @@ CREATE TABLE `Player` (
 -- Dumping data for table `Player`
 --
 
-INSERT INTO `Player` (`Id`, `Username`, `AvatarUrl`, `IsOwner`, `DisableAt`, `CreatedAt`, `RoomId`, `IsPlaying`, `TokenId`) VALUES
-(6, 'JeanMichel', 'https://google.com', 0, NULL, '2021-02-06 14:17:19', 7, 0, 30),
-(17, 'Robotope', 'todo', 1, NULL, '2021-02-07 11:47:41', 18, 0, 40),
-(18, 'Allurisant', 'todo', 1, NULL, '2021-02-07 11:48:45', 19, 0, 41),
-(19, 'Jandidier', 'todo', 1, NULL, '2021-02-07 11:54:41', 20, 0, 42),
-(20, 'Jeanmich', 'sadasdada.com', 0, NULL, '2021-02-13 14:30:04', 7, 0, 41),
-(21, 'sylviandurif', 'opajpdjsa.com', 0, NULL, '2021-02-13 14:30:38', 7, 0, 30);
+INSERT INTO `Player` (`Id`, `Username`, `AvatarUrl`, `IsOwner`, `DisableAt`, `CreatedAt`, `RoomId`, `IsPlaying`, `IsConnected`, `TokenId`) VALUES
+(21, 'Mathieu', '1', 1, NULL, '2021-02-17 11:38:59', 22, 0, 1, 44),
+(22, 'Alexogros', '0', 1, NULL, '2021-02-17 14:42:34', 22, 0, 1, 45),
+(23, 'LeDrogay', '4', 1, NULL, '2021-02-17 14:49:40', 22, 0, 1, 46),
+(24, 'Melvynien', '6', 1, NULL, '2021-02-17 14:50:12', 22, 0, 1, 47),
+(25, 'SuperPower', '1', 1, NULL, '2021-02-17 14:51:24', 22, 0, 1, 48);
 
 -- --------------------------------------------------------
 
@@ -105,11 +97,8 @@ CREATE TABLE `Room` (
 -- Dumping data for table `Room`
 --
 
-INSERT INTO `Room` (`Id`, `FinishAt`, `CreatedAt`, `Identifier`) VALUES
-(7, NULL, '2021-02-06 14:15:48', 'IASJDIOAopidasJ\"=?8183h21321903u2'),
-(18, NULL, '2021-02-07 11:47:40', 'ASHioUPDPAH=(P\"9u390'),
-(19, NULL, '2021-02-07 11:48:44', 'SIOAHDPOH\"*=)\"'),
-(20, NULL, '2021-02-07 11:54:41', 'EQIDPH0WQ)U\"*()h219');
+INSERT INTO `Room` (`Id`, `Identifier`, `FinishAt`, `CreatedAt`) VALUES
+(22, 'Vy0nWtXyTJ7JipVz', NULL, '2021-02-17 11:38:58');
 
 -- --------------------------------------------------------
 
@@ -131,8 +120,7 @@ CREATE TABLE `Session` (
 --
 
 INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`) VALUES
-(7, NULL, NULL, NULL, '2021-02-06 14:17:57', 7),
-(9, NULL, NULL, 0, '2021-02-13 15:31:01', 7);
+(8, NULL, NULL, 2, '2021-02-17 18:00:18', 22);
 
 -- --------------------------------------------------------
 
@@ -152,12 +140,14 @@ CREATE TABLE `Token` (
 --
 
 INSERT INTO `Token` (`Id`, `DiscardAt`, `CreatedAt`, `TokenKey`) VALUES
-(30, NULL, '2021-02-06 14:16:40', 'oLHQOEIPW(=)ü*+\"UNUE)P+=\"'),
-(38, NULL, '2021-02-06 16:08:14', 'SIOPHD=ü\"+)U)=ü+Hä*P*H'),
-(39, NULL, '2021-02-06 21:36:26', '\"+*ü=üU\"+)U*\"ü+=U*`+*'),
-(40, NULL, '2021-02-07 11:47:40', '+\")=*U\"+H(IH*?\"+)H(*=?*)H\"+'),
-(41, NULL, '2021-02-07 11:48:45', '+\"(=*U+\")H*P)\"+G(*(\")+?ZH*=+\"ZH*'),
-(42, NULL, '2021-02-07 11:54:41', 'iOJH\"+P)(*H\")=+(H*(=)+\"H?*PH+\")');
+(41, 'cgx2QLoJHdwHNJ1V', NULL, '2021-02-07 11:48:45'),
+(42, 'g-S2VA-h3yBJIrf5', NULL, '2021-02-07 11:54:41'),
+(43, '7TVlYbudEIMQf5pw', NULL, '2021-02-17 11:35:12'),
+(44, 'u0vJ0wB0nhDOKnQb', NULL, '2021-02-17 11:38:59'),
+(45, 'ixhEcnWDVmXLlhc3', NULL, '2021-02-17 14:42:33'),
+(46, 'n..m.4vB8I0rnyFu', NULL, '2021-02-17 14:49:40'),
+(47, 'wqAihfmHw6AJKx8c', NULL, '2021-02-17 14:50:12'),
+(48, '4ruOuZyHbfFMZF7E', NULL, '2021-02-17 14:51:24');
 
 --
 -- Indexes for dumped tables
@@ -209,31 +199,31 @@ ALTER TABLE `Token`
 -- AUTO_INCREMENT for table `Element`
 --
 ALTER TABLE `Element`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `Player`
 --
 ALTER TABLE `Player`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `Room`
 --
 ALTER TABLE `Room`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `Session`
 --
 ALTER TABLE `Session`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `Token`
 --
 ALTER TABLE `Token`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- Constraints for dumped tables

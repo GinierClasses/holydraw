@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import AppLayout from '../components/AppLayout';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
 import PlayerAvatar from '../components/home/PlayerAvatar';
@@ -22,7 +21,7 @@ export default function ComponentTest() {
   };
 
   return (
-    <AppLayout>
+    <Box>
       <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
         <AppTitle />
 
@@ -135,6 +134,6 @@ export default function ComponentTest() {
           }}
         />
       </Box>
-    </AppLayout>
+    </Box>
   );
 }

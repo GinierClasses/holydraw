@@ -23,7 +23,7 @@ export enum WebsocketEvent {
 }
 
 export type WebsocketMessage = {
-  websocketEvent: WebsocketEvent;
+  WebsocketEvent: WebsocketEvent;
 };
 
 export default function useWebsocket(onMessage?: (data: string) => void) {
