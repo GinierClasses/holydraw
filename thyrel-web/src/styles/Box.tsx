@@ -177,4 +177,6 @@ const Box = styled.div<BoxType>(
   },
 );
 
+Box.displayName = 'Box';
+
 export default Box;
