@@ -10,9 +10,11 @@ import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
+import SizePicker from '../components/room/SizePicker';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
+  const [size, setSize] = useState(8);
 
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
@@ -122,6 +124,14 @@ export default function ComponentTest() {
         <DirectiveLabel
           directive="Time to draw"
           sentence="Mémé fait des fucks à la police"
+        />
+
+        <SizePicker
+          currentSize={size}
+          onSizeChange={size => {
+            console.log('Size is :', size);
+            setSize(size);
+          }}
         />
       </Box>
     </Box>
