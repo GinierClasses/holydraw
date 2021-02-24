@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
 
@@ -14,9 +16,11 @@ namespace thyrel_api.Websocket
     public class WebsocketHandler : IWebsocketHandler
     {
         private List<SocketConnection> _websocketConnections = new();
+        private IServiceScopeFactory _scopeFactory;
 
-        public WebsocketHandler()
+        public WebsocketHandler(IServiceScopeFactory scopeFactory)
         {
+            _scopeFactory = scopeFactory;
             SetupCleanUpTask();
         }
 
@@ -47,7 +51,7 @@ namespace thyrel_api.Websocket
                     new JsonSerializerOptions {AllowTrailingCommas = true});
 
                 var playerToken = socketJson?.PlayerToken;
-                var playerDataProvider = new PlayerDataProvider();
+                var playerDataProvider = new PlayerDataProvider(GetInjectedContext());
                 
                 var player = playerToken == null ? null : await playerDataProvider.GetPlayerByToken(playerToken);
                 // if no matching token or no token
@@ -140,9 +144,12 @@ namespace thyrel_api.Websocket
 
                     foreach (var closedWebsocketConnection in closedSockets)
                     {
-                        // update player who leave to unconnected
-                        await new PlayerDataProvider().SetIsConnected(
-                            closedWebsocketConnection.PlayerId ?? -1, false);
+                        if (!openSockets.Any(s => s.PlayerId != closedWebsocketConnection.PlayerId))
+                        {
+                            // update player who leave to unconnected
+                            await new PlayerDataProvider(GetInjectedContext()).SetIsConnected(
+                                closedWebsocketConnection.PlayerId ?? -1, false);
+                        }
                         await SendMessageToSockets(
                             JsonSerializer.Serialize(
                                 new BaseWebsocketEvent(WebsocketEvent.PlayerLeft)), closedWebsocketConnection.RoomId);
@@ -151,6 +158,12 @@ namespace thyrel_api.Websocket
                     await Task.Delay(5000);
                 }
             });
+        }
+
+        private HolyDrawDbContext GetInjectedContext()
+        {
+            var scope = _scopeFactory.CreateScope();
+            return scope.ServiceProvider.GetRequiredService<HolyDrawDbContext>();
         }
     }
 

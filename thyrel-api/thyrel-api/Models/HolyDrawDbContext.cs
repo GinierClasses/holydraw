@@ -22,7 +22,11 @@ namespace thyrel_api.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
+            {
+                // this code is called any times ????
+                // else destroy this override function
                 optionsBuilder.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

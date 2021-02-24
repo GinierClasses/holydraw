@@ -10,9 +10,9 @@ namespace thyrel_api.DataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
 
-        public TokenDataProvider()
+        public TokenDataProvider(HolyDrawDbContext context)
         {
-            _holyDrawDbContext = new HolyDrawDbContext();
+            _holyDrawDbContext = context;
         }
 
         public TokenDataProvider(DbContextOptions<HolyDrawDbContext> options)

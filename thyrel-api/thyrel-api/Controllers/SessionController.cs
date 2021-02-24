@@ -11,11 +11,13 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class SessionController : ControllerBase
     {
-        private IWebsocketHandler _websocketHandler;
+        private readonly IWebsocketHandler _websocketHandler;
+        private HolyDrawDbContext _context;
 
-        public SessionController(IWebsocketHandler websocketHandler)
+        public SessionController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
             _websocketHandler = websocketHandler;
+            _context = context;
         }
 
         public class StartBody
@@ -28,9 +30,9 @@ namespace thyrel_api.Controllers
         [HttpPost]
         public async Task<ActionResult<Session>> Start([FromBody] StartBody body)
         {
-            var sessionDataProvider = new SessionDataProvider();
-            var playerDataProvider = new PlayerDataProvider();
-            var elementDataProvider = new ElementDataProvider();
+            var sessionDataProvider = new SessionDataProvider(_context);
+            var playerDataProvider = new PlayerDataProvider(_context);
+            var elementDataProvider = new ElementDataProvider(_context);
             var addedSession = await sessionDataProvider.Add(body.RoomId);
 
             if (addedSession == null)

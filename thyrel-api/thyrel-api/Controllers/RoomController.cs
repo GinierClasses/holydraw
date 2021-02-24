@@ -12,11 +12,11 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        private IWebsocketHandler _websocketHandler;
+        private HolyDrawDbContext _context;
 
-        public RoomController(IWebsocketHandler websocketHandler)
+        public RoomController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
-            _websocketHandler = websocketHandler;
+            _context = context;
         }
 
         // Call this endpoint to create a room
@@ -26,11 +26,11 @@ namespace thyrel_api.Controllers
         {
             if (body.Username == null || body.AvatarUrl == null)
                 return NotFound(); // 404 : most of api error
-            var roomDataProvider = new RoomDataProvider();
-            var playerDataProvider = new PlayerDataProvider();
+            var roomDataProvider = new RoomDataProvider(_context);
+            var playerDataProvider = new PlayerDataProvider(_context);
 
             var room = await roomDataProvider.Add();
-            var token = await new TokenDataProvider().Add();
+            var token = await new TokenDataProvider(_context).Add();
             var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id, token.Id);
             // use `GetPlayer` to include `Token` and `Room`
             return await playerDataProvider.GetPlayer(player.Id);
@@ -43,11 +43,11 @@ namespace thyrel_api.Controllers
         {
             if (body.Username == null || body.AvatarUrl == null)
                 return NotFound(); // 404 : most of api error
-            var room = await new RoomDataProvider().GetRoom(identifier);
+            var room = await new RoomDataProvider(_context).GetRoom(identifier);
             if (room == null)
                 return NotFound();
-            var playerDataProvider = new PlayerDataProvider();
-            var token = await new TokenDataProvider().Add();
+            var playerDataProvider = new PlayerDataProvider(_context);
+            var token = await new TokenDataProvider(_context).Add();
             var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, false, room.Id, token.Id);
             return await playerDataProvider.GetPlayer(player.Id);
         }
@@ -57,7 +57,7 @@ namespace thyrel_api.Controllers
         [HttpGet("{identifier}")]
         public async Task<ActionResult<Room>> GetRoom(string identifier)
         {
-            var room = await new RoomDataProvider().GetRoom(identifier);
+            var room = await new RoomDataProvider(_context).GetRoom(identifier);
             return room;
         }
         
@@ -66,7 +66,7 @@ namespace thyrel_api.Controllers
         [HttpGet("{roomId}/players")]
         public async Task<ActionResult<List<Player>>> GetPlayersByRoom(int roomId)
         {
-            var player = await new PlayerDataProvider().GetPlayersByRoom(roomId);
+            var player = await new PlayerDataProvider(_context).GetPlayersByRoom(roomId);
             return player;
         }
 

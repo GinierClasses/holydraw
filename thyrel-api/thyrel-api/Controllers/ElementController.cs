@@ -11,11 +11,14 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class ElementController : ControllerBase
     {
-        private IWebsocketHandler _websocketHandler;
+        private readonly IWebsocketHandler _websocketHandler;
+        private readonly HolyDrawDbContext _context;
 
-        public ElementController(IWebsocketHandler websocketHandler)
+        public ElementController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
             _websocketHandler = websocketHandler;
+            _context = context;
+
         }
 
 
@@ -24,17 +27,18 @@ namespace thyrel_api.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
         {
-            var element = await new ElementDataProvider().GetElement(id);
-            var session = await new SessionDataProvider().GetSessionById(element.SessionId);
-            await new ElementDataProvider().HandleFinish(id, true);
+            var elementDataProvider = new ElementDataProvider(_context);
+            var element = await elementDataProvider.GetElement(id);
+            var session = await new SessionDataProvider(_context).GetSessionById(element.SessionId);
+            await elementDataProvider.HandleFinish(id, true);
 
             if (element.Type == ElementType.Sentence)
             {
-                await new ElementDataProvider().SetSentence(id, body.Text);
+                await elementDataProvider.SetSentence(id, body.Text);
             }
             else
             {
-                await new ElementDataProvider().SetDrawing(id, body.DrawingId ?? 0);
+                await elementDataProvider.SetDrawing(id, body.DrawingId ?? 0);
             }
 
             await _websocketHandler.SendMessageToSockets(
@@ -49,7 +53,7 @@ namespace thyrel_api.Controllers
         [HttpGet("get/{id}")]
         public async Task<ActionResult<Element>> GetElement(int id)
         {
-            var element = await new ElementDataProvider().GetElement(id);
+            var element = await new ElementDataProvider(_context).GetElement(id);
             return element;
         }
 

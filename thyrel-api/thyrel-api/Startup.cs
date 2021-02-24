@@ -7,19 +7,21 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using thyrel_api.Websocket;
 using System;
+using Microsoft.EntityFrameworkCore;
+using thyrel_api.Models;
 
 namespace thyrel_api
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        private CorsPolicy GenerateCorsPolicy()
+        private static CorsPolicy GenerateCorsPolicy()
         {
             var corsBuilder = new CorsPolicyBuilder();
             corsBuilder.AllowAnyHeader();
@@ -38,6 +40,9 @@ namespace thyrel_api
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
+            
+            services.AddDbContext<HolyDrawDbContext>(options => 
+                options.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root"));
 
             // allow controlled to be used as injected props
             // services.AddMvcCore().AddControllersAsServices();

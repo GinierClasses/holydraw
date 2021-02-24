@@ -37,24 +37,20 @@ export function RoomContextProvider({
 
   const updateRoom = React.useCallback(() => {
     client<Room>(`room/${player?.room?.identifier}`).then(r => {
-      if (r.players) {
-        setPlayers(r.players);
-        delete r.players;
-      }
       setRoom(r);
     });
   }, [player]);
 
-  React.useEffect(() => {
-    updateRoom();
-  }, [updateRoom]);
-
   const updatePlayer = React.useCallback(() => {
-    console.log('UPDATE PLAYER FUCK');
     client<Player[]>(`room/${player?.room?.id}/players`).then(p =>
       setPlayers(p),
     );
   }, [player]);
+
+  React.useEffect(() => {
+    updateRoom();
+    updatePlayer();
+  }, [updatePlayer, updateRoom]);
 
   const { wsState } = useWebsocket(
     React.useCallback(

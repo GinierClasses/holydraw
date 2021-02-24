@@ -10,9 +10,9 @@ namespace thyrel_api.DataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
 
-        public RoomDataProvider()
+        public RoomDataProvider(HolyDrawDbContext context)
         {
-            _holyDrawDbContext = new HolyDrawDbContext();
+            _holyDrawDbContext = context;
         }
         
         public RoomDataProvider(DbContextOptions<HolyDrawDbContext> options)
@@ -59,7 +59,6 @@ namespace thyrel_api.DataProvider
         public async Task<Room> GetRoom(string identifier)
         {
             var room = await _holyDrawDbContext.Room
-                .Include(r => r.Players)
                 .SingleOrDefaultAsync(p => p.Identifier == identifier);
             return room;
         }

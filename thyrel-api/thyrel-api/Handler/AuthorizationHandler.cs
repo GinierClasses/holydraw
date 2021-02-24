@@ -16,7 +16,7 @@ namespace thyrel_api.Handler
         /// </summary>
         /// <param name="httpContext"></param>
         /// <returns>Player or Null</returns>
-        public static async Task<Player> CheckAuthorization(HttpContext httpContext)
+        public static async Task<Player> CheckAuthorization(HttpContext httpContext, HolyDrawDbContext context)
         {
             // get the authorization header
             string authHeader = httpContext.Request.Headers["Authorization"];
@@ -26,7 +26,7 @@ namespace thyrel_api.Handler
             // get the token
             string playerToken = authHeader.Substring("Bearer ".Length).Trim();
             // use the PlayerDataProvider to get the Player with this Token (func : `GetPlayerByToken`)
-            var player = await new PlayerDataProvider().GetPlayerByToken(playerToken);
+            var player = await new PlayerDataProvider(context).GetPlayerByToken(playerToken);
             return player;
         }
     }

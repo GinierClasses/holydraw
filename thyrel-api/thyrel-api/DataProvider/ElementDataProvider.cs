@@ -9,11 +9,11 @@ namespace thyrel_api.DataProvider
 {
     public class ElementDataProvider : IElementDataProvider
     {
-        private HolyDrawDbContext _holyDrawDbContext;
+        private readonly HolyDrawDbContext _holyDrawDbContext;
 
-        public ElementDataProvider()
+        public ElementDataProvider(HolyDrawDbContext context)
         {
-            _holyDrawDbContext = new HolyDrawDbContext();
+            _holyDrawDbContext = context;
         }
 
         public ElementDataProvider(DbContextOptions<HolyDrawDbContext> options)

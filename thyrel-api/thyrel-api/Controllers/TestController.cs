@@ -14,17 +14,19 @@ namespace thyrel_api.Controllers
     public class TestController : ControllerBase
     {
         private IWebsocketHandler _websocketHandler;
+        private HolyDrawDbContext _context;
 
-        public TestController(IWebsocketHandler websocketHandler)
+        public TestController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
             _websocketHandler = websocketHandler;
+            _context = context;
         }
 
         // GET: api/Test
         [HttpGet]
         public async Task<ActionResult<Element>> Get()
         {
-            var c = new ElementDataProvider();
+            var c = new ElementDataProvider(_context);
             await c.SetSentence(1, "false mon petite didier");
             return await c.GetElement(1);
         }
