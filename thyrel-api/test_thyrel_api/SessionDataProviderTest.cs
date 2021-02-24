@@ -21,7 +21,7 @@ namespace test_thyrel_api
         public async Task AddSessionTest()
         {
             var sessionCount = Context.Session.Count();
-            await _sessionDataProvider.Add(roomId:1);
+            await _sessionDataProvider.Add(1);
             Assert.AreEqual(sessionCount + 1, Context.Session.Count());
         }
         
