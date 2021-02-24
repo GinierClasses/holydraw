@@ -38,4 +38,3 @@ Réalisée dans le cadre des modules : `i226b - Implémenter orienté objets (av
 * run `docker-compose up` (dans le dossier du projet)
 
 
-[Lien vers le board du sprint](https://github.com/GinierClasses/teamproject-thyrel-team/projects/1)
