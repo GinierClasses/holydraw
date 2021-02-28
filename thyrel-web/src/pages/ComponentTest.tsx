@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import AppLayout from '../components/AppLayout';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
@@ -11,6 +11,7 @@ import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
+import DrawColorPicker from '../components/draw/DrawColorPicker';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -23,6 +24,8 @@ export default function ComponentTest() {
     <AppLayout>
       <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
         <AppTitle />
+
+        <DrawColorPicker colors={["blue","red","yellow","blue","red","yellow","blue","red","brown","blue","red","yellow"]} color="brown"/>
 
         <Box display="block" width={100} height={100}>
           <StepTimer

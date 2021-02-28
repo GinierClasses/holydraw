@@ -11,6 +11,7 @@ import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import Player from '../types/Player.type';
 import PlayerAvatar from '../components/home/PlayerAvatar';
+import DrawColorPicker from '../components/draw/DrawColorPicker';
 
 export default function Home(
   props: RouteComponentProps<{ identifier?: string }>,
