@@ -42,7 +42,7 @@ export default function ComponentTest() {
             '#FA00FF',
             '#FA00FF',
           ]}
-          color="#24FF00"
+          currentColor="#24FF00"
         />
 
         <Box display="block" width={100} height={100}>

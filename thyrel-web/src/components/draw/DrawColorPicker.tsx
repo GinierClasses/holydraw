@@ -7,7 +7,7 @@ import React from 'react';
 type DrawColorPickerProps = {
   colors: Array<string>;
   onChange?: (color: string) => void;
-  color: string;
+  currentColor: string;
 };
 
 const SquareButton = styled.button({
@@ -18,26 +18,30 @@ const SquareButton = styled.button({
 });
 
 function coupleColors(colors: Array<string>) {
-  let couples = new Array<Array<string>>();
-  let index = 0;
-  colors.forEach(color => {
-    let colorCouples = couples[index];
-    if (!colorCouples) {
-      couples[index] = [color];
-    } else if (colorCouples.length === 1) {
-      couples[index].push(color);
-    } else if (colorCouples.length === 2) {
-      index++;
-      couples[index] = [color];
-    }
-  });
-
-  return couples;
+  return colors.reduce(
+    (acc: { index: number; result: Array<Array<string>> }, val) => {
+      let colorCouples = acc.result[acc.index];
+      if (!colorCouples) {
+        acc.result[acc.index] = [val];
+        return acc;
+      }
+      if (colorCouples.length === 1) {
+        acc.result[acc.index].push(val);
+        return acc;
+      }
+      if (colorCouples.length === 2) {
+        acc.index++;
+        acc.result[acc.index] = [val];
+      }
+      return acc;
+    },
+    { index: 0, result: [] },
+  ).result;
 }
 
 export default function DrawColorPicker({
   colors,
-  color,
+  currentColor: color,
   onChange,
 }: DrawColorPickerProps) {
   return (
@@ -54,7 +58,6 @@ export default function DrawColorPicker({
           position: 'static',
           background: baseColor,
         })}>
-        {/* <div> */}
         {coupleColors(colors).map(Couple => {
           return (
             <div
@@ -66,8 +69,8 @@ export default function DrawColorPicker({
                 paddingBottom: '4px',
                 top: '248px',
               })}>
-              {Couple.map(c => {
-                const isSelected = c === color;
+              {Couple.map(squareColor => {
+                const isSelected = squareColor === color;
 
                 return (
                   <SquareButton
@@ -76,7 +79,7 @@ export default function DrawColorPicker({
                       height: '32px',
                       padding: '8px',
                       border: isSelected ? '3px solid white' : undefined,
-                      background: c,
+                      background: squareColor,
                     })}></SquareButton>
                 );
               })}
