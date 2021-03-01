@@ -25,7 +25,25 @@ export default function ComponentTest() {
       <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
         <AppTitle />
 
-        <DrawColorPicker colors={["blue","red","yellow","blue","red","yellow","blue","red","brown","blue","red","yellow"]} color="brown"/>
+        <DrawColorPicker
+          colors={[
+            '#FF0000',
+            '#FFC700',
+            '#24FF00',
+            '#001AFF',
+            '#00F0FF',
+            '#6564A6',
+            '#759F81',
+            '#FFFA8A',
+            '#8C33D2',
+            '#FF8A00',
+            '#00FFC2',
+            '#001AFF',
+            '#FA00FF',
+            '#FA00FF',
+          ]}
+          color="#24FF00"
+        />
 
         <Box display="block" width={100} height={100}>
           <StepTimer
