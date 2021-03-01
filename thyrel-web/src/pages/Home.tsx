@@ -1,35 +1,23 @@
-import { useHistory } from 'react-router-dom';
-import { Button, Notification } from 'rsuite';
-import { client } from '../api/client';
-import { setToken } from '../api/player-provider';
-import Player from '../types/Player.type';
+import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import AppLayout from '../components/AppLayout';
+import AppTitle from '../components/lobby/AppTitle';
+import Box from '../styles/Box';
+import PlayerForm from '../components/home/PlayerForm';
 
-// component when we aren't in a Lobby
-export default function Home() {
-  const history = useHistory();
-
-  function onStart() {
-    client<Player>('room', {
-      data: { username: 'todo', avatarUrl: 'todo' },
-    }).then((player: Player) => {
-      if (player.token.tokenKey) {
-        Notification['success']({
-          title: 'Room successfully created.',
-          description: 'Invite your friends.',
-        });
-        setToken(player.token.tokenKey);
-        // to redirect to an other page
-        history.push('/r/lobby');
-      }
-    });
-  }
+export default function Home(
+  props: RouteComponentProps<{ identifier?: string }>,
+) {
+  const identifier = props.match.params.identifier;
 
   return (
-    <div style={{ margin: 16 }}>
-      HolyDraw - Home
-      <div>
-        <Button onClick={onStart}>Start game</Button>
-      </div>
-    </div>
+    <Box flexDirection="column" alignItems="center" width="100%" gap={24}>
+      <Box p={32} width="100%">
+        <AppTitle />
+      </Box>
+      <Box mt={16}>
+        <PlayerForm identifier={identifier} />
+      </Box>
+    </Box>
   );
 }

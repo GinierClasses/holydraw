@@ -1,23 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Nav } from 'rsuite';
+import Box from '../styles/Box';
 
 export default function DevNav() {
   return (
-    <div style={{ margin: 16 }}>
-      You're in DevNav
-      <div
-        style={{
-          width: 400,
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}>
-        <Link to="/r/start">Go Room Start</Link>
-        <Link to="/r/write">Go Room Write</Link>
-        <Link to="/r/draw">Go Room Draw</Link>
-        <Link to="/r/lobby">Go Room Lobby</Link>
-        <Link to="/r">Go Room</Link>
-        <Link to="/home">Go home</Link>
-        <Link to="/test">Go Test the API</Link>
-      </div>
-    </div>
+    <Box p={16} flexDirection="column" alignItems="center">
+      <h1>You're in DevNav</h1>
+      <Box justifyContent="space-between">
+        <Nav appearance="tabs" activeKey="devnav">
+          {/* With react-router-dom it's not a good practive do don't use
+          <Link /> but Rsuits alredy render a link */}
+          <Nav.Item href="/" eventKey="devnav">
+            Dev nav
+          </Nav.Item>
+          <Nav.Item href="/r/start">Go Room Start</Nav.Item>
+          <Nav.Item href="/r/write">Go Room Write</Nav.Item>
+          <Nav.Item href="/r/draw">Go Room Draw</Nav.Item>
+          <Nav.Item href="/r/lobby">Go Room Lobby</Nav.Item>
+          <Nav.Item href="/r">Go Room</Nav.Item>
+          <Nav.Item href="/home">Go home</Nav.Item>
+          <Nav.Item href="/test">Go Test the API</Nav.Item>
+          <Nav.Item href="/t">Go to TESTS pages</Nav.Item>
+        </Nav>
+      </Box>
+    </Box>
   );
 }

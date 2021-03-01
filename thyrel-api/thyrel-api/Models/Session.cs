@@ -5,24 +5,26 @@ namespace thyrel_api.Models
 {
     public class Session
     {
-        public Session() { }
-
-        public Session(int? id, DateTime? finishAt, DateTime createdAt, int roomId)
+        public Session()
         {
-            Id = id;
+        }
+
+        public Session(DateTime? finishAt, int roomId)
+        {
             FinishAt = finishAt;
-            CreatedAt = createdAt;
+            CreatedAt = DateTime.Now;
             RoomId = roomId;
         }
 
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public DateTime? FinishAt { get; set; }
+        public DateTime? StepFinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int ActualStep { get; set; }
 
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
 
-        public virtual List<Sentence> Sentences { get; set; }
-        public virtual List<Drawing> Drawings { get; set; }
+        public virtual List<Element> Elements { get; set; }
     }
 }

@@ -10,15 +10,24 @@ All CSS props can be applicate to this component.
 List is below.
 */
 type BoxType = {
-  display?: 'flex';
+  display?: 'flex' | 'none' | 'block';
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   width?: number | string;
+  gap?: number;
+  boxSizing?: string;
+  minHeight?: number | string;
+  maxHeight?: number | string;
+  minWidth?: number | string;
+  maxWidth?: number | string;
   height?: number | string;
   borderColor?: string | 'baseColor';
   className?: string;
   bg?: string;
-  borderRadius?: number;
+  overflowY?: string;
+  overflow?: string;
+  boxShadow?: string;
+  borderRadius?: number | string;
   borderWidth?: number;
   border?: string;
   justifyContent?:
@@ -89,6 +98,9 @@ const Box = styled.div<BoxType>(
     mr,
     padding,
     p,
+    boxSizing,
+    overflowY,
+    overflow,
     pb,
     pl,
     pt,
@@ -97,6 +109,8 @@ const Box = styled.div<BoxType>(
     flexDirection,
     flexWrap,
     width,
+    gap,
+    boxShadow,
     height,
     borderColor,
     bg,
@@ -105,15 +119,28 @@ const Box = styled.div<BoxType>(
     border,
     alignContent,
     alignItems,
+    maxWidth,
+    minWidth,
+    maxHeight,
+    minHeight,
     justifyContent,
   }) => {
     const styles: any = {
       alignContent,
+      maxWidth,
+      minWidth,
+      maxHeight,
+      minHeight,
       alignItems,
+      boxSizing,
       justifyContent,
       flexWrap,
       flexDirection,
       width,
+      gap,
+      boxShadow,
+      overflowY,
+      overflow,
       height,
       background: bg,
       borderRadius,
@@ -149,5 +176,7 @@ const Box = styled.div<BoxType>(
     return styles;
   },
 );
+
+Box.displayName = 'Box';
 
 export default Box;

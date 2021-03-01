@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.808.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "thyrel-api", "thyrel-api\thyrel-api.csproj", "{9B30512E-70EA-47A5-A51E-A88A77F4C0AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_thyrel_api", "test_thyrel_api\test_thyrel_api.csproj", "{FA028B92-90BC-48C6-85CA-9753C568A210}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9B30512E-70EA-47A5-A51E-A88A77F4C0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B30512E-70EA-47A5-A51E-A88A77F4C0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B30512E-70EA-47A5-A51E-A88A77F4C0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA028B92-90BC-48C6-85CA-9753C568A210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA028B92-90BC-48C6-85CA-9753C568A210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA028B92-90BC-48C6-85CA-9753C568A210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA028B92-90BC-48C6-85CA-9753C568A210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

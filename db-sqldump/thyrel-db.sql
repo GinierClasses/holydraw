@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Feb 03, 2021 at 09:41 AM
+-- Generation Time: Feb 17, 2021 at 07:36 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.13
 
@@ -27,35 +27,33 @@ USE thyrel_db;
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `thyrel_db`
+-- Database: `thyrel_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Drawing`
+-- Table structure for table `Element`
 --
 
-CREATE TABLE `Drawing` (
-  `Id` int NOT NULL,
-  `Step` int NOT NULL,
-  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE `Element` (
+  `id` int NOT NULL,
+  `SessionId` int NOT NULL,
   `CreatorId` int NOT NULL,
   `InitiatorId` int NOT NULL,
-  `SessionId` int NOT NULL
+  `Type` int NOT NULL,
+  `Text` text,
+  `DrawingId` int DEFAULT NULL,
+  `FinishAt` datetime DEFAULT NULL,
+  `Step` int NOT NULL,
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Déchargement des données de la table `Drawing`
---
-
-INSERT INTO `Drawing` (`Id`, `Step`, `CreatedAt`, `CreatorId`, `InitiatorId`, `SessionId`) VALUES
-(2, 2, '2021-02-06 14:18:34', 6, 6, 7);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Player`
+-- Table structure for table `Player`
 --
 
 CREATE TABLE `Player` (
@@ -67,125 +65,105 @@ CREATE TABLE `Player` (
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL,
   `IsPlaying` tinyint(1) NOT NULL DEFAULT '0',
+  `IsConnected` tinyint(1) NOT NULL DEFAULT '1',
   `TokenId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `Player`
+-- Dumping data for table `Player`
 --
 
-INSERT INTO `Player` (`Id`, `Username`, `AvatarUrl`, `IsOwner`, `DisableAt`, `CreatedAt`, `RoomId`, `IsPlaying`, `TokenId`) VALUES
-(6, 'JeanMichel', 'https://google.com', 0, NULL, '2021-02-06 14:17:19', 7, 0, 30),
-(17, 'Robotope', 'todo', 1, NULL, '2021-02-07 11:47:41', 18, 0, 40),
-(18, 'Allurisant', 'todo', 1, NULL, '2021-02-07 11:48:45', 19, 0, 41),
-(19, 'Jandidier', 'todo', 1, NULL, '2021-02-07 11:54:41', 20, 0, 42);
+INSERT INTO `Player` (`Id`, `Username`, `AvatarUrl`, `IsOwner`, `DisableAt`, `CreatedAt`, `RoomId`, `IsPlaying`, `IsConnected`, `TokenId`) VALUES
+(21, 'Mathieu', '1', 1, NULL, '2021-02-17 11:38:59', 22, 0, 1, 44),
+(22, 'Alexogros', '0', 1, NULL, '2021-02-17 14:42:34', 22, 0, 1, 45),
+(23, 'LeDrogay', '4', 1, NULL, '2021-02-17 14:49:40', 22, 0, 1, 46),
+(24, 'Melvynien', '6', 1, NULL, '2021-02-17 14:50:12', 22, 0, 1, 47),
+(25, 'SuperPower', '1', 1, NULL, '2021-02-17 14:51:24', 22, 0, 1, 48);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Room`
+-- Table structure for table `Room`
 --
 
 CREATE TABLE `Room` (
   `Id` int NOT NULL,
-  `Identifier` text NOT NULL,
   `FinishAt` datetime DEFAULT NULL,
-  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Identifier` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `Room`
+-- Dumping data for table `Room`
 --
 
 INSERT INTO `Room` (`Id`, `Identifier`, `FinishAt`, `CreatedAt`) VALUES
-(7, 'aslasq248129anskllknad', NULL, '2021-02-06 14:15:48'),
-(18, 'iWSJDD4xLT05', NULL, '2021-02-07 11:47:40'),
-(19, 'uCFj7F0rc42O', NULL, '2021-02-07 11:48:44'),
-(20, 'msIOpgvWKtBs', NULL, '2021-02-07 11:54:41');
+(22, 'Vy0nWtXyTJ7JipVz', NULL, '2021-02-17 11:38:58');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Sentence`
---
-
-CREATE TABLE `Sentence` (
-  `Id` int NOT NULL,
-  `Text` text NOT NULL,
-  `Step` int NOT NULL,
-  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `CreatorId` int NOT NULL,
-  `InitiatorId` int NOT NULL,
-  `SessionId` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Déchargement des données de la table `Sentence`
---
-
-INSERT INTO `Sentence` (`Id`, `Text`, `Step`, `CreatedAt`, `CreatorId`, `InitiatorId`, `SessionId`) VALUES
-(2, 'Un chien unijamboste', 1, '2021-02-06 14:18:18', 6, 6, 7);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `Session`
+-- Table structure for table `Session`
 --
 
 CREATE TABLE `Session` (
   `Id` int NOT NULL,
   `FinishAt` datetime DEFAULT NULL,
+  `StepFinishAt` datetime DEFAULT NULL,
+  `ActualStep` int DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `Session`
+-- Dumping data for table `Session`
 --
 
-INSERT INTO `Session` (`Id`, `FinishAt`, `CreatedAt`, `RoomId`) VALUES
-(7, NULL, '2021-02-06 14:17:57', 7);
+INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`) VALUES
+(8, NULL, NULL, 2, '2021-02-17 18:00:18', 22);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Token`
+-- Table structure for table `Token`
 --
 
 CREATE TABLE `Token` (
   `Id` int NOT NULL,
-  `TokenKey` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `DiscardAt` datetime DEFAULT NULL,
-  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `TokenKey` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `Token`
+-- Dumping data for table `Token`
 --
 
-INSERT INTO `Token` (`Id`, `TokenKey`, `DiscardAt`, `CreatedAt`) VALUES
-(30, 'Mb3JdKHHhN123Huk', NULL, '2021-02-06 14:16:40'),
-(38, 'Mb3JdKHHhNrz7Huk', NULL, '2021-02-06 16:08:14'),
-(39, 'bVmIa4A3HwqQm6x2', NULL, '2021-02-06 21:36:26'),
-(40, 'jrm7ZmiGqR729vOp', NULL, '2021-02-07 11:47:40'),
+INSERT INTO `Token` (`Id`, `DiscardAt`, `CreatedAt`, `TokenKey`) VALUES
 (41, 'cgx2QLoJHdwHNJ1V', NULL, '2021-02-07 11:48:45'),
-(42, 'g-S2VA-h3yBJIrf5', NULL, '2021-02-07 11:54:41');
+(42, 'g-S2VA-h3yBJIrf5', NULL, '2021-02-07 11:54:41'),
+(43, '7TVlYbudEIMQf5pw', NULL, '2021-02-17 11:35:12'),
+(44, 'u0vJ0wB0nhDOKnQb', NULL, '2021-02-17 11:38:59'),
+(45, 'ixhEcnWDVmXLlhc3', NULL, '2021-02-17 14:42:33'),
+(46, 'n..m.4vB8I0rnyFu', NULL, '2021-02-17 14:49:40'),
+(47, 'wqAihfmHw6AJKx8c', NULL, '2021-02-17 14:50:12'),
+(48, '4ruOuZyHbfFMZF7E', NULL, '2021-02-17 14:51:24');
 
 --
--- Index pour les tables déchargées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `Drawing`
+-- Indexes for table `Element`
 --
-ALTER TABLE `Drawing`
-  ADD PRIMARY KEY (`Id`),
-  ADD KEY `fk_creatorid_2` (`CreatorId`),
-  ADD KEY `fk_initiatorid_2` (`InitiatorId`),
-  ADD KEY `fk_sessionid2` (`SessionId`);
+ALTER TABLE `Element`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_sessionid` (`SessionId`),
+  ADD KEY `fk_creatorid` (`CreatorId`),
+  ADD KEY `fk_initiatorid` (`InitiatorId`);
 
 --
--- Index pour la table `Player`
+-- Indexes for table `Player`
 --
 ALTER TABLE `Player`
   ADD PRIMARY KEY (`Id`),
@@ -193,102 +171,81 @@ ALTER TABLE `Player`
   ADD KEY `fk_tokenid` (`TokenId`);
 
 --
--- Index pour la table `Room`
+-- Indexes for table `Room`
 --
 ALTER TABLE `Room`
-  ADD PRIMARY KEY (`Id`);
-
---
--- Index pour la table `Sentence`
---
-ALTER TABLE `Sentence`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `fk_creatorid` (`CreatorId`),
-  ADD KEY `fk_initiatorid` (`InitiatorId`),
-  ADD KEY `fk_sessionid` (`SessionId`);
+  ADD KEY `idx_room_identifier` (`Identifier`);
 
 --
--- Index pour la table `Session`
+-- Indexes for table `Session`
 --
 ALTER TABLE `Session`
   ADD PRIMARY KEY (`Id`),
   ADD KEY `fk_roomid` (`RoomId`);
 
 --
--- Index pour la table `Token`
+-- Indexes for table `Token`
 --
 ALTER TABLE `Token`
-  ADD PRIMARY KEY (`Id`);
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `idx_token_tokenkey` (`TokenKey`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `Drawing`
+-- AUTO_INCREMENT for table `Element`
 --
-ALTER TABLE `Drawing`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `Element`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `Player`
+-- AUTO_INCREMENT for table `Player`
 --
 ALTER TABLE `Player`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT pour la table `Room`
+-- AUTO_INCREMENT for table `Room`
 --
 ALTER TABLE `Room`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT pour la table `Sentence`
---
-ALTER TABLE `Sentence`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT pour la table `Session`
+-- AUTO_INCREMENT for table `Session`
 --
 ALTER TABLE `Session`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT pour la table `Token`
+-- AUTO_INCREMENT for table `Token`
 --
 ALTER TABLE `Token`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
--- Contraintes pour les tables déchargées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `Drawing`
+-- Constraints for table `Element`
 --
-ALTER TABLE `Drawing`
-  ADD CONSTRAINT `fk_creatorid_drawing` FOREIGN KEY (`CreatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fk_initiatorid_drawing` FOREIGN KEY (`InitiatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fk_sessionid_drawing` FOREIGN KEY (`SessionId`) REFERENCES `Session` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `Element`
+  ADD CONSTRAINT `fk_creatorid` FOREIGN KEY (`CreatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_initiatorid` FOREIGN KEY (`InitiatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_sessionid` FOREIGN KEY (`SessionId`) REFERENCES `Session` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Contraintes pour la table `Player`
+-- Constraints for table `Player`
 --
 ALTER TABLE `Player`
   ADD CONSTRAINT `fk_roomid_player` FOREIGN KEY (`RoomId`) REFERENCES `Room` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fk_tokenid_player` FOREIGN KEY (`TokenId`) REFERENCES `Token` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Contraintes pour la table `Sentence`
---
-ALTER TABLE `Sentence`
-  ADD CONSTRAINT `fk_creatorid_sentence` FOREIGN KEY (`CreatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fk_initiatorid_sentence` FOREIGN KEY (`InitiatorId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `fk_sessionid_sentence` FOREIGN KEY (`SessionId`) REFERENCES `Session` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
---
--- Contraintes pour la table `Session`
+-- Constraints for table `Session`
 --
 ALTER TABLE `Session`
   ADD CONSTRAINT `fk_roomid` FOREIGN KEY (`RoomId`) REFERENCES `Room` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;

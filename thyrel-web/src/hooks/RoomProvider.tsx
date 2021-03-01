@@ -30,8 +30,9 @@ export function RoomContextProvider({
   const history = useHistory();
 
   const getRoom = React.useCallback(() => {
-    // todo : set the room
+    // todo : set the room with api values
     setRoom(undefined);
+    // if room -> getPlayers, else -> getRoom
   }, []);
 
   const { wsState } = useWebsocket(
@@ -40,7 +41,7 @@ export function RoomContextProvider({
         const websocketMessage = parseJson<WebsocketMessage>(message);
         if (!websocketMessage) return;
 
-        switch (websocketMessage.websocketEvent) {
+        switch (websocketMessage.WebsocketEvent) {
           case WebsocketEvent.Invalid:
             Notification['error']({
               title: "You're not in a game.",
@@ -48,7 +49,10 @@ export function RoomContextProvider({
             });
             history.push('/home');
             break;
-          case WebsocketEvent.NewPlayerJoin:
+          case WebsocketEvent.PlayerJoin:
+            getRoom();
+            break;
+          case WebsocketEvent.PlayerLeft:
             getRoom();
             break;
         }
@@ -66,7 +70,7 @@ export function useRoomContext() {
   const context = React.useContext(RoomContext);
   if (!context)
     throw new Error(
-      'useWebsocket should be used within a RoomSocketContextProvider',
+      'useRoomContext should be used within a RoomSocketContextProvider',
     );
   return context;
 }

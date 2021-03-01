@@ -15,11 +15,15 @@ export enum WsStates {
 
 export enum WebsocketEvent {
   Invalid = -1,
-  NewPlayerJoin = 0,
+  PlayerJoin = 1,
+  PlayerLeft = 2,
+  SessionStart = 11,
+  SessionUpdate = 12,
+  NextStep = 13, // on a step is finish
 }
 
 export type WebsocketMessage = {
-  websocketEvent: WebsocketEvent;
+  WebsocketEvent: WebsocketEvent;
 };
 
 export default function useWebsocket(onMessage?: (data: string) => void) {

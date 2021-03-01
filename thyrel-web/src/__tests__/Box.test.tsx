@@ -115,4 +115,22 @@ describe('Box', () => {
 
     expect(box).toHaveClass(className);
   });
+  test('minWidth maxHeight', () => {
+    const test = { minWidth: 120, maxHeight: 140 };
+
+    render(<Box {...test}>BOXID</Box>);
+    const box = screen.getByText('BOXID');
+
+    expect(box).toHaveStyle(`min-width: ${test.minWidth}px`);
+    expect(box).toHaveStyle(`max-height: ${test.maxHeight}px`);
+  });
+  test('gap and overflow', () => {
+    const test = { gap: 120, overflow: 'visible' };
+
+    render(<Box {...test}>BOXID</Box>);
+    const box = screen.getByText('BOXID');
+
+    expect(box).toHaveStyle(`gap: ${test.gap}px`);
+    expect(box).toHaveStyle(`overflow: ${test.overflow}`);
+  });
 });
