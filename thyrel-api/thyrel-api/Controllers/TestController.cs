@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
-using thyrel_api.Controllers;
-using Microsoft.EntityFrameworkCore;
 
 namespace thyrel_api.Controllers
 {
@@ -24,11 +22,10 @@ namespace thyrel_api.Controllers
 
         // GET: api/Test
         [HttpGet]
-        public async Task<ActionResult<Element>> Get()
+        public async Task<ActionResult<Player>> Get()
         {
-            var c = new ElementDataProvider(_context);
-            await c.SetSentence(1, "false mon petite didier");
-            return await c.GetElement(1);
+            var c = new PlayerDataProvider(_context);
+            return await c.GetPlayer(27);
         }
 
         // POST: api/Test
@@ -36,7 +33,7 @@ namespace thyrel_api.Controllers
         public IEnumerable<string> Post([FromBody] string value)
         {
             var isInt = int.TryParse(value, out var intValue);
-            _websocketHandler.SendMessageToSockets("YOYO here", isInt ? intValue : null);
+            _websocketHandler.SendMessageToSockets("Yo yo here", isInt ? intValue : null);
             return new[] {"Here is you're value", value};
         }
     }

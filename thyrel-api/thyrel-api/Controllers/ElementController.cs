@@ -18,7 +18,6 @@ namespace thyrel_api.Controllers
         {
             _websocketHandler = websocketHandler;
             _context = context;
-
         }
 
 

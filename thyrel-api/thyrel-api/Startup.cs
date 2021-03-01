@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using thyrel_api.Websocket;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using thyrel_api.Models;
 
 namespace thyrel_api
@@ -40,15 +41,36 @@ namespace thyrel_api
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
-            
-            services.AddDbContext<HolyDrawDbContext>(options => 
-                options.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root"));
 
+            services.AddDbContextPool<HolyDrawDbContext>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(
+                        // Replace with your connection string.
+                        "server=localhost,3306;database=thyrel_db;user=root;password=root",
+                        // Replace with your server version and type.
+                        // For common usages, see pull request #1233.
+                        new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
+                        mySqlOptions => mySqlOptions
+                            .CharSetBehavior(CharSetBehavior.NeverAppend))
+                    // Everything from this point on is optional but helps with debugging.
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors());
+            
+            //services.AddDbContext<HolyDrawDbContext>(options => 
+             //   options.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root"));
+            // services.AddDbContext<HolyDrawDbContext>((serviceProvider, builder) =>
+            // {
+                // Use some code here to look up the connection string
+                // Note that the service provider (serviceProvider) is available if needed
+                // var connectionString = ...;
+               // builder.UseMySQL("server=localhost,3306;database=thyrel_db;user=root;password=root");
+            // });
+            
             // allow controlled to be used as injected props
             // services.AddMvcCore().AddControllersAsServices();
             // add controller in application
             services.AddControllers();
-            // add cors to alows web server to get informations
+            // add cors to allows web server to get information
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins", GenerateCorsPolicy());

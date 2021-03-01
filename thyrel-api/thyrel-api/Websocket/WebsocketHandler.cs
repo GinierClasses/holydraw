@@ -63,7 +63,7 @@ namespace thyrel_api.Websocket
                 }
 
                 if (!player.IsConnected)
-                    await playerDataProvider.SetIsConnected(player.Id, true);
+                    player = await playerDataProvider.SetIsConnected(player.Id, true);
 
                 connection.RoomId = player.RoomId;
                 connection.PlayerId = player.Id;
@@ -71,7 +71,7 @@ namespace thyrel_api.Websocket
                 // inform room that a new player join
                 await SendMessageToSockets(
                     JsonSerializer.Serialize(
-                        new BaseWebsocketEvent(WebsocketEvent.PlayerJoin)), player.RoomId);
+                        new PlayerWebsocketEvent(WebsocketEvent.PlayerJoin, player)), player.RoomId);
             }
         }
 
@@ -103,13 +103,10 @@ namespace thyrel_api.Websocket
         {
             var arraySegment = new ArraySegment<byte>(new byte[4096]);
             var receivedMessage = await webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
-            if (receivedMessage.MessageType == WebSocketMessageType.Text)
-            {
-                var message = Encoding.Default.GetString(arraySegment).TrimEnd('\0');
-                return message;
-            }
-
-            return null;
+            if (receivedMessage.MessageType != WebSocketMessageType.Text) return null;
+            
+            var message = Encoding.Default.GetString(arraySegment).TrimEnd('\0');
+            return message;
         }
 
         private static async Task SendMessageToSocket(SocketConnection socketConnection, string message)
@@ -134,25 +131,37 @@ namespace thyrel_api.Websocket
 
                     lock (_websocketConnections)
                     {
-                        openSockets = _websocketConnections.Where(x =>
-                            x.WebSocket.State == WebSocketState.Open || x.WebSocket.State == WebSocketState.Connecting);
-                        closedSockets = _websocketConnections.Where(x =>
-                            x.WebSocket.State != WebSocketState.Open && x.WebSocket.State != WebSocketState.Connecting);
+                        openSockets = _websocketConnections.Where(r =>
+                            r.WebSocket.State == WebSocketState.Open || r.WebSocket.State == WebSocketState.Connecting);
+                        closedSockets = _websocketConnections.Where(r =>
+                            r.WebSocket.State != WebSocketState.Open && r.WebSocket.State != WebSocketState.Connecting);
 
                         _websocketConnections = openSockets.ToList();
                     }
 
-                    foreach (var closedWebsocketConnection in closedSockets)
+                    foreach (var closedSocket in closedSockets)
                     {
-                        if (!openSockets.Any(s => s.PlayerId != closedWebsocketConnection.PlayerId))
+                        if (openSockets.Any(s => s.PlayerId == closedSocket.PlayerId)) continue;
+                        // update player who leave to unconnected
+                        if (closedSocket.PlayerId == null) continue;
+
+                        var playerDataProvider = new PlayerDataProvider(GetInjectedContext());
+                        var player = await playerDataProvider.SetIsConnected(
+                            closedSocket.PlayerId ?? -1, false);
+                        
+                        if (player.IsOwner)
                         {
-                            // update player who leave to unconnected
-                            await new PlayerDataProvider(GetInjectedContext()).SetIsConnected(
-                                closedWebsocketConnection.PlayerId ?? -1, false);
+                            var newOwnerPlayer = await playerDataProvider.FindNewOwner(player.Id);
+                            if (newOwnerPlayer != null)
+                            {
+                                await SendMessageToSockets(
+                                    JsonSerializer.Serialize(
+                                        new BaseWebsocketEvent(WebsocketEvent.NewOwnerPlayer)), closedSocket.RoomId);
+                            }
                         }
                         await SendMessageToSockets(
                             JsonSerializer.Serialize(
-                                new BaseWebsocketEvent(WebsocketEvent.PlayerLeft)), closedWebsocketConnection.RoomId);
+                                new PlayerWebsocketEvent(WebsocketEvent.PlayerLeft, player)), closedSocket.RoomId);
                     }
 
                     await Task.Delay(5000);
