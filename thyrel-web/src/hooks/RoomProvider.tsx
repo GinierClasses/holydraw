@@ -1,11 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Notification } from 'rsuite';
-import { client } from '../api/client';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { parseJson } from '../utils/json';
-import { usePlayerContext } from './PlayerProvider';
+import { useRoomState } from './useRoomState';
 import useWebsocket, {
   WebsocketMessage,
   WebsocketEvent,
@@ -15,11 +14,12 @@ import useWebsocket, {
 type RoomSocketContextProps = {
   room?: Room;
   wsState: WsStates;
-  players?: Player[];
+  players: Player[];
 };
 
 const RoomContext = React.createContext<RoomSocketContextProps>({
   wsState: WsStates.IDLE,
+  players: [],
 });
 
 type RoomSocketContextProviderProps = {
@@ -30,57 +30,39 @@ type RoomSocketContextProviderProps = {
 export function RoomContextProvider({
   children,
 }: RoomSocketContextProviderProps) {
-  const [room, setRoom] = React.useState<Room>();
-  const [players, setPlayers] = React.useState<Player[]>();
-  const { player } = usePlayerContext();
+  const {
+    room,
+    players,
+    updatePlayer,
+    removePlayer,
+    addPlayer,
+  } = useRoomState();
+  // const { player } = usePlayerContext();
   const history = useHistory();
 
-  const updateRoom = React.useCallback(() => {
-    client<Room>(`room/${player?.room?.identifier}`).then(r => {
-      setRoom(r);
-    });
-  }, [player]);
+  const { wsState } = useWebsocket((message: string) => {
+    const websocketMessage = parseJson<WebsocketMessage>(message);
+    if (!websocketMessage) return;
 
-  const updatePlayer = React.useCallback(() => {
-    client<Player[]>(`room/${player?.room?.id}/players`).then(p =>
-      setPlayers(p),
-    );
-  }, [player]);
-
-  React.useEffect(() => {
-    updateRoom();
-    updatePlayer();
-  }, [updatePlayer, updateRoom]);
-
-  const { wsState } = useWebsocket(
-    React.useCallback(
-      (message: string) => {
-        const websocketMessage = parseJson<WebsocketMessage>(message);
-        if (!websocketMessage) return;
-
-        switch (websocketMessage.websocketEvent) {
-          case WebsocketEvent.Invalid:
-            Notification['error']({
-              title: "You're not in a game.",
-              description: 'You will go back to the home.',
-            });
-            history.push('/home');
-            break;
-          case WebsocketEvent.PlayerJoin:
-            console.log('Update player join');
-            // todo : replace by `updatePlayer`
-            updatePlayer();
-            break;
-          case WebsocketEvent.PlayerLeft:
-            console.log('Update player left');
-            // todo : replace by `updatePlayer`
-            updatePlayer();
-            break;
-        }
-      },
-      [history, updatePlayer],
-    ),
-  );
+    switch (websocketMessage.websocketEvent) {
+      case WebsocketEvent.Invalid:
+        Notification['error']({
+          title: "You're not in a game.",
+          description: 'You will go back to the home.',
+        });
+        history.push('/home');
+        break;
+      case WebsocketEvent.PlayerJoin:
+        addPlayer(websocketMessage.player);
+        break;
+      case WebsocketEvent.PlayerLeft:
+        removePlayer(websocketMessage.player);
+        break;
+      case WebsocketEvent.NewOwnerPlayer:
+        console.log('New Owner player');
+        updatePlayer();
+    }
+  });
 
   const values = { room, wsState, players };
 

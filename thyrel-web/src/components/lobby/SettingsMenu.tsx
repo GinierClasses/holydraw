@@ -1,6 +1,5 @@
 import { css } from '@emotion/css';
 import React from 'react';
-import { SelectPicker } from 'rsuite';
 import { useRoomContext } from '../../hooks/RoomProvider';
 import Box from '../../styles/Box';
 import { baseColor, paperColor } from '../../styles/colors';
@@ -26,15 +25,6 @@ export default function SettingsMenu() {
         })}>
         {room?.identifier}
       </p>
-      <SelectPicker
-        data={[
-          {
-            label: 'Settings1',
-            value: '2',
-          },
-        ]}
-        searchable={false}
-      />
     </Box>
   );
 }

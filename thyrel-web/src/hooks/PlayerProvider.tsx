@@ -2,6 +2,7 @@ import React from 'react';
 import { Notification } from 'rsuite';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
+import Loading from '../components/Loading';
 import Player from '../types/Player.type';
 
 type PlayerContextProps = {
@@ -40,7 +41,7 @@ export function PlayerContextProvider({
 
   return (
     <PlayerContext.Provider value={values}>
-      {player ? children : <p>loading</p>}
+      {player ? children : <Loading />}
     </PlayerContext.Provider>
   );
 }
