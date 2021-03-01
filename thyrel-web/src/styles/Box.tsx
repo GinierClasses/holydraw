@@ -15,6 +15,7 @@ type BoxType = {
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
   width?: number | string;
   gap?: number;
+  boxSizing?: string;
   minHeight?: number | string;
   maxHeight?: number | string;
   minWidth?: number | string;
@@ -97,6 +98,7 @@ const Box = styled.div<BoxType>(
     mr,
     padding,
     p,
+    boxSizing,
     overflowY,
     overflow,
     pb,
@@ -130,6 +132,7 @@ const Box = styled.div<BoxType>(
       maxHeight,
       minHeight,
       alignItems,
+      boxSizing,
       justifyContent,
       flexWrap,
       flexDirection,
@@ -173,5 +176,7 @@ const Box = styled.div<BoxType>(
     return styles;
   },
 );
+
+Box.displayName = 'Box';
 
 export default Box;

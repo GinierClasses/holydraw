@@ -38,11 +38,13 @@ namespace thyrel_api.Controllers
                 return NotFound();
             }
 
-            playerDataProvider.GetPlayersByRoom(body.RoomId).ForEach(async p => await elementDataProvider.AddSentence(p.Id, p.Id, 1, addedSession.Id));
+            var players = await playerDataProvider.GetPlayersByRoom(body.RoomId);
+            players.ForEach(async p => 
+                await elementDataProvider.AddSentence(p.Id, p.Id, 1, addedSession.Id));
 
             await _websocketHandler.SendMessageToSockets(
                     JsonSerializer.Serialize(
-                        new EventJson(WebsocketEvent.SessionStart)), body.RoomId);
+                        new BaseWebsocketEvent(WebsocketEvent.SessionStart)), body.RoomId);
 
             return addedSession;
         }

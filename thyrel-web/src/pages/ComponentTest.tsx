@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import AppLayout from '../components/AppLayout';
+import { useState } from 'react';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
 import PlayerAvatar from '../components/home/PlayerAvatar';
@@ -12,16 +11,18 @@ import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import DrawColorPicker from '../components/draw/DrawColorPicker';
+import SizePicker from '../components/room/SizePicker';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
+  const [size, setSize] = useState(8);
 
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
 
   return (
-    <AppLayout>
+    <Box>
       <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
         <AppTitle />
 
@@ -145,7 +146,15 @@ export default function ComponentTest() {
           directive="Time to draw"
           sentence="Mémé fait des fucks à la police"
         />
+
+        <SizePicker
+          currentSize={size}
+          onSizeChange={size => {
+            console.log('Size is :', size);
+            setSize(size);
+          }}
+        />
       </Box>
-    </AppLayout>
+    </Box>
   );
 }
