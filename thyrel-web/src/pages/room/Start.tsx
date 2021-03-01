@@ -13,7 +13,7 @@ export default function Start() {
         max={7}
         finishAt={new Date('2021-02-10T15:15:00')}
         timeDuration={1000}
-        onFinish={() => console.log('Finished!')}
+        onFinish={() => console.log('Finished?')}
       />
 
       <Box flexDirection="column" alignItems="center">
