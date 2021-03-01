@@ -15,6 +15,7 @@ const SquareButton = styled.button({
   borderRadius: '4px',
   width: '32px',
   height: '32px',
+  padding: '8px',
 });
 
 function coupleColors(colors: Array<string>) {
@@ -45,48 +46,41 @@ export default function DrawColorPicker({
   onChange,
 }: DrawColorPickerProps) {
   return (
-    <Box>
-      <Box
-        width={88}
-        display="flex"
-        flexDirection="column"
-        padding="8px"
-        height={288}
-        borderRadius={5}
-        justifyContent="center"
-        className={css({
-          position: 'static',
-          background: baseColor,
-        })}>
-        {coupleColors(colors).map(Couple => {
-          return (
-            <div
-              className={css({
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingTop: '4px',
-                paddingBottom: '4px',
-                top: '248px',
-              })}>
-              {Couple.map(squareColor => {
-                const isSelected = squareColor === color;
+    <Box
+    width={88}
+    display="flex"
+    flexDirection="column"
+    padding="8px"
+    borderRadius={5}
+    justifyContent="center"
+    className={css({
+        background: baseColor,
+    })}>
+    {coupleColors(colors).map(Couple => {
+        return (
+        <div
+            className={css({
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingTop: '4px',
+            paddingBottom: '4px',
+            top: '248px',
+            })}>
+            {Couple.map(squareColor => {
+            const isSelected = squareColor === color;
 
-                return (
-                  <SquareButton
-                    className={css({
-                      width: '32px',
-                      height: '32px',
-                      padding: '8px',
-                      border: isSelected ? '3px solid white' : undefined,
-                      background: squareColor,
-                    })}></SquareButton>
-                );
-              })}
-            </div>
-          );
-        })}
-      </Box>
+            return (
+                <SquareButton
+                className={css({
+                    border: isSelected ? '3px solid white' : undefined,
+                    background: squareColor,
+                })}/>
+            );
+            })}
+        </div>
+        );
+    })}
     </Box>
   );
 }
