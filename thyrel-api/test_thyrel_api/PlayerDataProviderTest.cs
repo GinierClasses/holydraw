@@ -23,7 +23,7 @@ namespace test_thyrel_api
         {
             var playerCount = Context.Player.Count();
             var username = "Tintin";
-            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c"
+            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c";
             var isOwner = true;
             var roomId = 1;
             var tokenId = 1;
@@ -35,7 +35,7 @@ namespace test_thyrel_api
         private async Task GetPlayer()
         {
             var username = "Tintin";
-            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c"
+            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c";
             var isOwner = true;
             var roomId = 1;
             var tokenId = 1;
@@ -47,7 +47,7 @@ namespace test_thyrel_api
         private async Task GetPlayerByToken()
         {
             var username = "Tintin";
-            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c"
+            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c";
             var isOwner = true;
             var roomId = 1;
             var tokenId = 1;
