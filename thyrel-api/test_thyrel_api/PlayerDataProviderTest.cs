@@ -8,12 +8,57 @@ namespace test_thyrel_api
     public class PlayerDataProviderTest : TestProvider
     {
         private IPlayerDataProvider _playerDataProvider;
+        private ITokenDataProvider _tokenDataProvider;
         
         [SetUp]
         public async Task Setup()
         {
             await SetupTest();
             _playerDataProvider = new PlayerDataProvider(Options);
+            _tokenDataProvider = new TokenDataProvider(Options);
+        }
+
+        [Test]
+        private async Task Add()
+        {
+            var playerCount = Context.Player.Count();
+            var username = "Tintin";
+            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c"
+            var isOwner = true;
+            var roomId = 1;
+            var tokenId = 1;
+            var newPlayer = await _playerDataProvider.Add(username, avatarUrl, isOwner, roomId, tokenId);
+            Assert.AreEqual(playerCount + 1, Context.Player.Count());
+        }
+
+        [Test]
+        private async Task GetPlayer()
+        {
+            var username = "Tintin";
+            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c"
+            var isOwner = true;
+            var roomId = 1;
+            var tokenId = 1;
+            var newPlayer = await _playerDataProvider.Add(username, avatarUrl, isOwner, roomId, tokenId);
+            Assert.AreEqual(newPlayer, _playerDataProvider.GetPlayer(newPlayer.Id));
+        }
+
+        [Test]
+        private async Task GetPlayerByToken()
+        {
+            var username = "Tintin";
+            var avatarUrl = "https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fencrypted-tbn0.gstatic.com%2Fimages%3Fq%3Dtbn%3AANd9GcSn6vswIVDw48Lk4SLKU2jxQVzj1Dkfg9Ja_w69Sq-g8ylBQeo%26s&sp=1614708915Tfaf9667bd04707b2fff3708ccc338676bbc04a20241de1936f33fccb7f6d333c"
+            var isOwner = true;
+            var roomId = 1;
+            var tokenId = 1;
+            var newPlayer = await _playerDataProvider.Add(username, avatarUrl, isOwner, roomId, tokenId);
+            Assert.AreEqual(newPlayer, _playerDataProvider.GetPlayerByToken(newPlayer.Token.TokenKey));
+        }
+
+        [Test]
+        private async Task TestDisable()
+        {
+            
         }
 
         // test player by room do not take player not connected and return correct players
