@@ -30,7 +30,6 @@ export default function BookPlayerList({
   return (
     <Box
       gap={8}
-      margin="0px 0px 25px 0px"
       height={50}
       width={200}
       overflowX="scroll"

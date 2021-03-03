@@ -21,6 +21,72 @@ export default function ComponentTest() {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
 
+  const testPlayerList = [
+    {
+      id: 1,
+      username: 'jeanmich',
+      avatarUrl: profilesPictures[0],
+      isOwner: true,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 2,
+      username: 'Xx_plao',
+      avatarUrl: profilesPictures[1],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 3,
+      username: 'AAAAAAHHHH',
+      avatarUrl: profilesPictures[2],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 4,
+      username: 'Melvyn',
+      avatarUrl: profilesPictures[3],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 5,
+      username: 'Ana',
+      avatarUrl: profilesPictures[4],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 6,
+      username: 'Alex',
+      avatarUrl: profilesPictures[5],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 7,
+      username: 'Luca',
+      avatarUrl: profilesPictures[6],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+  ];
+
   return (
     <Box>
       <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
@@ -51,71 +117,7 @@ export default function ComponentTest() {
         </BigButton>
 
         <PlayerCardList
-          players={[
-            {
-              id: 1,
-              username: 'jeanmich',
-              avatarUrl: profilesPictures[0],
-              isOwner: true,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 2,
-              username: 'Xx_plao',
-              avatarUrl: profilesPictures[1],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 3,
-              username: 'AAAAAAHHHH',
-              avatarUrl: profilesPictures[2],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 4,
-              username: 'Melvyn',
-              avatarUrl: profilesPictures[3],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 5,
-              username: 'Ana',
-              avatarUrl: profilesPictures[4],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 6,
-              username: 'Alex',
-              avatarUrl: profilesPictures[5],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 7,
-              username: 'Luca',
-              avatarUrl: profilesPictures[6],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-          ]}
+          players={testPlayerList}
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
@@ -135,73 +137,7 @@ export default function ComponentTest() {
           }}
         />
 
-        <BookPlayerList
-          players={[
-            {
-              id: 1,
-              username: 'jeanmich',
-              avatarUrl: profilesPictures[0],
-              isOwner: true,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 2,
-              username: 'Xx_plao',
-              avatarUrl: profilesPictures[1],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 3,
-              username: 'AAAAAAHHHH',
-              avatarUrl: profilesPictures[2],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 4,
-              username: 'Melvyn',
-              avatarUrl: profilesPictures[3],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 5,
-              username: 'Ana',
-              avatarUrl: profilesPictures[4],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 6,
-              username: 'Alex',
-              avatarUrl: profilesPictures[5],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 7,
-              username: 'Luca',
-              avatarUrl: profilesPictures[6],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-          ]}
-          playerId={3}></BookPlayerList>
+        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
       </Box>
     </Box>
   );
