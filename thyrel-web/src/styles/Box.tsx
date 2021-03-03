@@ -25,6 +25,7 @@ type BoxType = {
   className?: string;
   bg?: string;
   overflowY?: string;
+  overflowX?: string;
   overflow?: string;
   boxShadow?: string;
   borderRadius?: number | string;
@@ -100,6 +101,7 @@ const Box = styled.div<BoxType>(
     p,
     boxSizing,
     overflowY,
+    overflowX,
     overflow,
     pb,
     pl,
@@ -140,6 +142,7 @@ const Box = styled.div<BoxType>(
       gap,
       boxShadow,
       overflowY,
+      overflowX,
       overflow,
       height,
       background: bg,
