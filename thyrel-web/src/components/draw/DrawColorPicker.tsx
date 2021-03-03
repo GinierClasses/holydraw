@@ -19,21 +19,20 @@ const SquareButton = styled.button({
 
 function coupleColors(colors: Array<string>) {
   return colors.reduce(
-    (acc: { index: number; result: Array<Array<string>> }, val) => {
-      let colorCouples = acc.result[acc.index];
-      if (!colorCouples) {
-        acc.result[acc.index] = [val];
-        return acc;
+    (accumulator: { index: number; result: Array<Array<string>> }, val) => {
+      let colorCouples = accumulator.result[accumulator.index];
+      switch (colorCouples?.length) {
+        case undefined:
+          accumulator.result[accumulator.index] = [val];
+          break;
+        case 1:
+          accumulator.result[accumulator.index] = [val];
+          break;
+        default:
+          accumulator.index++;
+          accumulator.result[accumulator.index] = [val];
       }
-      if (colorCouples.length === 1) {
-        acc.result[acc.index].push(val);
-        return acc;
-      }
-      if (colorCouples.length === 2) {
-        acc.index++;
-        acc.result[acc.index] = [val];
-      }
-      return acc;
+      return accumulator;
     },
     { index: 0, result: [] },
   ).result;
@@ -41,7 +40,7 @@ function coupleColors(colors: Array<string>) {
 
 export default function DrawColorPicker({
   colors,
-  currentColor: color,
+  currentColor,
   onChange,
 }: DrawColorPickerProps) {
   return (
@@ -70,7 +69,7 @@ export default function DrawColorPicker({
                 top: '248px',
               })}>
               {Couple.map(squareColor => {
-                const isSelected = squareColor === color;
+                const isSelected = squareColor === currentColor;
 
                 return (
                   <SquareButton
