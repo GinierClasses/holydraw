@@ -41,7 +41,7 @@ export function RoomContextProvider({
         const websocketMessage = parseJson<WebsocketMessage>(message);
         if (!websocketMessage) return;
 
-        switch (websocketMessage.websocketEvent) {
+        switch (websocketMessage.WebsocketEvent) {
           case WebsocketEvent.Invalid:
             Notification['error']({
               title: "You're not in a game.",
@@ -70,7 +70,7 @@ export function useRoomContext() {
   const context = React.useContext(RoomContext);
   if (!context)
     throw new Error(
-      'useWebsocket should be used within a RoomSocketContextProvider',
+      'useRoomContext should be used within a RoomSocketContextProvider',
     );
   return context;
 }
