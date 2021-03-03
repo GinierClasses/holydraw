@@ -12,6 +12,7 @@ import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import DrawColorPicker from '../components/draw/DrawColorPicker';
 import SizePicker from '../components/room/SizePicker';
+import BookPlayerList from '../components/room/BookPlayerList';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -20,6 +21,72 @@ export default function ComponentTest() {
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
+
+  const testPlayerList = [
+    {
+      id: 1,
+      username: 'jeanmich',
+      avatarUrl: profilesPictures[0],
+      isOwner: true,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 2,
+      username: 'Xx_plao',
+      avatarUrl: profilesPictures[1],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 3,
+      username: 'AAAAAAHHHH',
+      avatarUrl: profilesPictures[2],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 4,
+      username: 'Melvyn',
+      avatarUrl: profilesPictures[3],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 5,
+      username: 'Ana',
+      avatarUrl: profilesPictures[4],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 6,
+      username: 'Alex',
+      avatarUrl: profilesPictures[5],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+    {
+      id: 7,
+      username: 'Luca',
+      avatarUrl: profilesPictures[6],
+      isOwner: false,
+      isPlaying: true,
+      createdAt: '',
+      roomId: 1,
+    },
+  ];
 
   return (
     <Box>
@@ -48,8 +115,8 @@ export default function ComponentTest() {
 
         <Box display="block" width={100} height={100}>
           <StepTimer
-            finishAt={new Date('2021-02-10T15:15:00')}
-            timeDuration={1000}
+            finishAt={new Date('2021-03-02T10:27:00')}
+            timeDuration={100}
             onFinish={() => console.log('finished')}
           />
         </Box>
@@ -71,71 +138,7 @@ export default function ComponentTest() {
         </BigButton>
 
         <PlayerCardList
-          players={[
-            {
-              id: 1,
-              username: 'jeanmich',
-              avatarUrl: profilesPictures[0],
-              isOwner: true,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 2,
-              username: 'Xx_plao',
-              avatarUrl: profilesPictures[1],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 3,
-              username: 'AAAAAAHHHH',
-              avatarUrl: profilesPictures[2],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 4,
-              username: 'Melvyn',
-              avatarUrl: profilesPictures[3],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 5,
-              username: 'Ana',
-              avatarUrl: profilesPictures[4],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 6,
-              username: 'Alex',
-              avatarUrl: profilesPictures[5],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-            {
-              id: 7,
-              username: 'Luca',
-              avatarUrl: profilesPictures[6],
-              isOwner: false,
-              isPlaying: true,
-              createdAt: '',
-              roomId: 1,
-            },
-          ]}
+          players={testPlayerList}
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
@@ -154,6 +157,8 @@ export default function ComponentTest() {
             setSize(size);
           }}
         />
+
+        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
       </Box>
     </Box>
   );
