@@ -16,8 +16,7 @@ const StyledAvatar = styled(Avatar)({
   height: 32,
   overflow: 'visible',
   '> img': {
-    // `!important` is awful in CSS but I don't have the choice
-    height: '26px !important',
+    height: '32px !important',
     width: 'auto !important',
     margin: 'auto',
   },
@@ -30,8 +29,7 @@ export default function BookPlayerList({
   return (
     <Box
       gap={8}
-      height={50}
-      width={200}
+      maxWidth={200}
       overflowX="scroll"
       alignItems="center"
       flexDirection="row">
