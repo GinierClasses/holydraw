@@ -6,17 +6,19 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace thyrel_api.Websocket
 {
     public class WebsocketHandler : IWebsocketHandler
     {
+        private readonly IServiceScopeFactory _scopeFactory;
         private List<SocketConnection> _websocketConnections = new();
-        private IServiceScopeFactory _scopeFactory;
 
         public WebsocketHandler(IServiceScopeFactory scopeFactory)
         {
@@ -46,18 +48,16 @@ namespace thyrel_api.Websocket
 
                 if (connection == null || connection.RoomId != null) continue;
                 // deserialize message from Player
-                var socketJson = JsonSerializer.Deserialize<ConnexionSocketMessage>(
-                    message,
-                    new JsonSerializerOptions {AllowTrailingCommas = true});
+                var socketJson = JsonConvert.DeserializeObject<ConnexionSocketMessage>(message);
 
                 var playerToken = socketJson?.PlayerToken;
                 var playerDataProvider = new PlayerDataProvider(GetInjectedContext());
-                
+
                 var player = playerToken == null ? null : await playerDataProvider.GetPlayerByToken(playerToken);
                 // if no matching token or no token
                 if (player == null)
                 {
-                    await SendMessageToSocket(connection, JsonSerializer.Serialize(
+                    await SendMessageToSocket(connection, JSON.Serialize(
                         new BaseWebsocketEvent(WebsocketEvent.Invalid)));
                     continue;
                 }
@@ -67,10 +67,12 @@ namespace thyrel_api.Websocket
 
                 connection.RoomId = player.RoomId;
                 connection.PlayerId = player.Id;
+                // remove token locally (not in the DB)
+                player.Token = null;
 
                 // inform room that a new player join
                 await SendMessageToSockets(
-                    JsonSerializer.Serialize(
+                    JSON.Serialize(
                         new PlayerWebsocketEvent(WebsocketEvent.PlayerJoin, player)), player.RoomId);
             }
         }
@@ -104,7 +106,7 @@ namespace thyrel_api.Websocket
             var arraySegment = new ArraySegment<byte>(new byte[4096]);
             var receivedMessage = await webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
             if (receivedMessage.MessageType != WebSocketMessageType.Text) return null;
-            
+
             var message = Encoding.Default.GetString(arraySegment).TrimEnd('\0');
             return message;
         }
@@ -148,19 +150,19 @@ namespace thyrel_api.Websocket
                         var playerDataProvider = new PlayerDataProvider(GetInjectedContext());
                         var player = await playerDataProvider.SetIsConnected(
                             closedSocket.PlayerId ?? -1, false);
-                        
+
                         if (player.IsOwner)
                         {
-                            var newOwnerPlayer = await playerDataProvider.FindNewOwner(player.Id);
+                            var newOwnerPlayer = await playerDataProvider.FindNewOwner(player.RoomId);
+                            await playerDataProvider.SetOwner(player, false);
                             if (newOwnerPlayer != null)
-                            {
                                 await SendMessageToSockets(
-                                    JsonSerializer.Serialize(
+                                    JSON.Serialize(
                                         new BaseWebsocketEvent(WebsocketEvent.NewOwnerPlayer)), closedSocket.RoomId);
-                            }
                         }
+
                         await SendMessageToSockets(
-                            JsonSerializer.Serialize(
+                            JSON.Serialize(
                                 new PlayerWebsocketEvent(WebsocketEvent.PlayerLeft, player)), closedSocket.RoomId);
                     }
 

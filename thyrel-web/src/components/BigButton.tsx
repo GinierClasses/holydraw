@@ -15,7 +15,7 @@ type BigButtonProps = {
 const StyledButton = styled(Button)(({ size }) => ({
   height: size === 'md' ? 42 : 58,
   fontSize: size === 'md' ? 18 : 32,
-  padding: '8px 16px',
+  padding: '0px 16px',
   minWidth: size === 'md' ? 128 : 192,
   boxShadow: `0px 8px 1px ${bgFade(0.8)}`,
   position: 'relative',

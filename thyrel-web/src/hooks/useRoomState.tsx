@@ -30,10 +30,10 @@ export function useRoomState() {
 
   const addPlayer = (player?: Player) => {
     if (!player) return;
+
     setPlayers(prevPlayers => {
-      const playersCopy = [...prevPlayers];
-      players.push(player);
-      return playersCopy;
+      if (prevPlayers.find(p => p.id === player.id)) return prevPlayers;
+      return [...prevPlayers, player];
     });
   };
 

@@ -11,10 +11,11 @@ export default function SettingsMenu() {
       borderRadius={4}
       minWidth={328}
       p={16}
+      height="auto"
       bg={baseColor}
       flexDirection="column"
       gap={24}>
-      {wsState}
+      <p>{wsState}</p>
       <p
         className={css({
           background: paperColor,

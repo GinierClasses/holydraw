@@ -54,7 +54,7 @@ export default function ComponentTest() {
             {
               id: 1,
               username: 'jeanmich',
-              avatarUrl: profilesPictures[0],
+              avatarUrl: '0',
               isOwner: true,
               isPlaying: true,
               createdAt: '',
@@ -63,7 +63,7 @@ export default function ComponentTest() {
             {
               id: 2,
               username: 'Xx_plao',
-              avatarUrl: profilesPictures[1],
+              avatarUrl: '1',
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -72,7 +72,7 @@ export default function ComponentTest() {
             {
               id: 3,
               username: 'AAAAAAHHHH',
-              avatarUrl: profilesPictures[2],
+              avatarUrl: '2',
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -81,7 +81,7 @@ export default function ComponentTest() {
             {
               id: 4,
               username: 'Melvyn',
-              avatarUrl: profilesPictures[3],
+              avatarUrl: '3',
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -90,7 +90,7 @@ export default function ComponentTest() {
             {
               id: 5,
               username: 'Ana',
-              avatarUrl: profilesPictures[4],
+              avatarUrl: '4',
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -99,7 +99,7 @@ export default function ComponentTest() {
             {
               id: 6,
               username: 'Alex',
-              avatarUrl: profilesPictures[5],
+              avatarUrl: '5',
               isOwner: false,
               isPlaying: true,
               createdAt: '',
@@ -108,7 +108,7 @@ export default function ComponentTest() {
             {
               id: 7,
               username: 'Luca',
-              avatarUrl: profilesPictures[6],
+              avatarUrl: '6',
               isOwner: false,
               isPlaying: true,
               createdAt: '',

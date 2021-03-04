@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
@@ -41,7 +42,7 @@ namespace thyrel_api.Controllers
             }
 
             await _websocketHandler.SendMessageToSockets(
-                JsonSerializer.Serialize(
+                JsonConvert.SerializeObject(
                     new BaseWebsocketEvent(WebsocketEvent.PlayerFinished)), session.RoomId);
 
             return Ok();

@@ -11,6 +11,7 @@ namespace thyrel_api.Controllers
     public class PlayerController : ControllerBase
     {
         private readonly HolyDrawDbContext _context;
+
         public PlayerController(HolyDrawDbContext context)
         {
             _context = context;

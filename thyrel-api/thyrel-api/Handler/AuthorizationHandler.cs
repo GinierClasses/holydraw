@@ -5,7 +5,7 @@ using thyrel_api.DataProvider;
 
 
 namespace thyrel_api.Handler
-{ 
+{
     public static class AuthorizationHandler
     {
         /// <summary>

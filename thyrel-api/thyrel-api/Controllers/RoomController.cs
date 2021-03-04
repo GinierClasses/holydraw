@@ -60,7 +60,7 @@ namespace thyrel_api.Controllers
             var room = await new RoomDataProvider(_context).GetRoom(identifier);
             return room;
         }
-        
+
         // Call this endpoint to get players of a room
         // GET : api/room/{id}/players
         [HttpGet("{roomId}/players")]

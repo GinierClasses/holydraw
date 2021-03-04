@@ -37,7 +37,6 @@ export function RoomContextProvider({
     removePlayer,
     addPlayer,
   } = useRoomState();
-  // const { player } = usePlayerContext();
   const history = useHistory();
 
   const { wsState } = useWebsocket((message: string) => {

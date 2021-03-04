@@ -97,9 +97,8 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="playerId"></param>
         /// <param name="isOwner"></param>
-        public async Task<Player> SetOwner(int playerId, bool isOwner = true)
+        public async Task<Player> SetOwner(Player player, bool isOwner = true)
         {
-            var player = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (player == null)
                 return null;
 
@@ -151,13 +150,13 @@ namespace thyrel_api.DataProvider
         public async Task<Player> FindNewOwner(int roomId)
         {
             var firstPlayerConnected = await _holyDrawDbContext.Player
-                .Where(p => p.IsConnected && !p.IsOwner)
+                .Where(p => p.RoomId == roomId && p.IsConnected && !p.IsOwner)
                 .FirstOrDefaultAsync();
 
             if (firstPlayerConnected == null)
                 return null;
-            
-            firstPlayerConnected.IsOwner = true;
+
+            await SetOwner(firstPlayerConnected);
             return firstPlayerConnected;
         }
 

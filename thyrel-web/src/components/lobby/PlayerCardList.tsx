@@ -18,7 +18,6 @@ export default function PlayerCardList({
     <Box
       gap={16}
       height={384}
-      width={270}
       overflowY="scroll"
       alignItems="center"
       flexDirection="column"
