@@ -20,7 +20,7 @@ const SquareButton = styled.button({
 
 function coupleColors(colors: Array<string>) {
   return colors.reduce(
-    (accumulator: { index: number; result: Array<Array<string>> }, value) => {
+    (accumulator: { index: number; result: string[][]}, value) => {
       let colorCouples = accumulator.result[accumulator.index];
       switch (colorCouples?.length) {
         case undefined:
