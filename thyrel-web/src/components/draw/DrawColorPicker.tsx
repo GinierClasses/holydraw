@@ -5,7 +5,7 @@ import { baseColor } from '../../styles/colors';
 import React from 'react';
 
 type DrawColorPickerProps = {
-  colors: Array<string>;
+  colors: string[];
   onChange?: (color: string) => void;
   currentColor: string;
 };
