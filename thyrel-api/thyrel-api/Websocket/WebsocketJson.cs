@@ -19,19 +19,19 @@ namespace thyrel_api.Websocket
     {
         public BaseWebsocketEvent(WebsocketEvent websocketEvent)
         {
-            this.websocketEvent = websocketEvent;
+            WebsocketEvent = websocketEvent;
         }
 
-        public WebsocketEvent websocketEvent { get; }
+        public WebsocketEvent WebsocketEvent { get; }
     }
 
     public class PlayerWebsocketEvent : BaseWebsocketEvent
     {
-        public Player player { get; }
+        public Player Player { get; }
 
         public PlayerWebsocketEvent(WebsocketEvent websocketEvent, Player player) : base(websocketEvent)
         {
-            this.player = player;
+            Player = player;
         }
     }
 

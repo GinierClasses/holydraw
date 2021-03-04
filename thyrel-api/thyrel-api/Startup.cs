@@ -56,7 +56,7 @@ namespace thyrel_api
             services.AddDbContextPool<HolyDrawDbContext>(
                 dbContextOptions => dbContextOptions
                     .UseMySql(
-                        "server=localhost,3306;database=thyrel_db;user=root;password=root",
+                        _configuration.GetConnectionString("thyrel_db"),
                         new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
                         mySqlOptions => mySqlOptions
                             .CharSetBehavior(CharSetBehavior.NeverAppend))
