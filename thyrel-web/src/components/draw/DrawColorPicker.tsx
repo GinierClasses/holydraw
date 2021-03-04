@@ -18,7 +18,7 @@ const SquareButton = styled.button({
   padding: '8px',
 });
 
-function coupleColors(colors: Array<string>) {
+function coupleColors(colors: string[]) {
   return colors.reduce(
     (accumulator: { index: number; result: string[][]}, value) => {
       let colorCouples = accumulator.result[accumulator.index];
