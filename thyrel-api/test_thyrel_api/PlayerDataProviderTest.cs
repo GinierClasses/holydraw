@@ -9,7 +9,6 @@ namespace test_thyrel_api
     public class PlayerDataProviderTest : TestProvider
     {
         private IPlayerDataProvider _playerDataProvider;
-        private ITokenDataProvider _tokenDataProvider;
 
         [SetUp]
         public async Task Setup()
