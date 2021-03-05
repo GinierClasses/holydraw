@@ -46,8 +46,8 @@ namespace thyrel_api.Controllers
                 await elementDataProvider.AddSentence(p.Id, p.Id, 1, addedSession.Id));
 
             await _websocketHandler.SendMessageToSockets(
-                JSON.Serialize(
-                    new BaseWebsocketEvent(WebsocketEvent.SessionStart)), body.RoomId);
+                Json.Serialize(
+                    new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), body.RoomId);
 
             return addedSession;
         }

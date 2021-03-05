@@ -1,4 +1,5 @@
 import React from 'react';
+import { Notification } from 'rsuite';
 import { getToken } from '../api/player-provider';
 import { testApiUrl } from '../test/data';
 import Player from '../types/Player.type';
@@ -29,20 +30,22 @@ export enum WebsocketEvent {
 export type WebsocketMessage = {
   websocketEvent: WebsocketEvent;
   player?: Player;
+  playerId?: number;
 };
 
-export default function useWebsocket(onMessage?: (data: string) => void) {
+export function useWebsocket() {
   const [websocket, setWebsocket] = React.useState<WebSocket>();
   const [wsState, setWsState] = React.useState<WsStates>(WsStates.IDLE);
 
   const connect = React.useCallback(() => {
-    const url = `${'wss'}://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
+    const url = `wss://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
     const socket = new WebSocket(url);
-
+    let isOpen = false;
     setWsState(WsStates.CONNECTING);
     setWebsocket(socket);
 
     socket.onopen = function () {
+      isOpen = true;
       // identifie the request
       socket.send(JSON.stringify({ PlayerToken: getToken() }));
       setWsState(WsStates.CONNECTED);
@@ -50,22 +53,23 @@ export default function useWebsocket(onMessage?: (data: string) => void) {
 
     socket.onclose = function () {
       setWsState(WsStates.CLOSED);
+
+      isOpen &&
+        Notification.warning({
+          title: 'Connexion lost 😥 !',
+          description: 'We try to reconnect',
+        });
+      // set to undefined to reload the useEffect and rerun connection
+      isOpen && setWebsocket(undefined);
     };
   }, []);
 
   React.useEffect(() => {
-    connect();
-  }, [connect]);
-
-  React.useEffect(() => {
     if (websocket) {
-      websocket.onmessage = function (event) {
-        onMessage?.(event.data);
-      };
+      return () => websocket.close();
     }
-    return () => websocket?.close();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [websocket]);
+    connect();
+  }, [connect, websocket]);
 
-  return { wsState };
+  return { wsState, websocket };
 }

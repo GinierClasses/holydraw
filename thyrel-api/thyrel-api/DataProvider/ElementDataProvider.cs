@@ -34,7 +34,6 @@ namespace thyrel_api.DataProvider
             int? drawingId = null)
         {
             var element = new Element(step, creatorId, initiatorId, sessionId, drawingId);
-
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;

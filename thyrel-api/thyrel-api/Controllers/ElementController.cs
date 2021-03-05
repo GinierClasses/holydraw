@@ -42,8 +42,8 @@ namespace thyrel_api.Controllers
             }
 
             await _websocketHandler.SendMessageToSockets(
-                JSON.Serialize(
-                    new BaseWebsocketEvent(WebsocketEvent.PlayerFinished)), session.RoomId);
+                Json.Serialize(
+                    new BaseWebsocketEventJson(WebsocketEvent.PlayerFinished)), session.RoomId);
 
             return Ok();
         }

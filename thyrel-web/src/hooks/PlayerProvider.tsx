@@ -4,6 +4,9 @@ import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
 import Loading from '../components/Loading';
 import Player from '../types/Player.type';
+import { parseJson } from '../utils/json';
+import { WebsocketEvent, WebsocketMessage } from './useWebsocket';
+import { useWebsocketContext } from './WebsocketProvider';
 
 type PlayerContextProps = {
   player?: Player;
@@ -20,15 +23,36 @@ export function PlayerContextProvider({
   children,
 }: PlayerContextProviderProps) {
   const [player, setPlayer] = React.useState<Player>();
+  const { websocket } = useWebsocketContext();
+
+  React.useEffect(() => {
+    if (websocket && player) {
+      websocket.addEventListener('message', function (event: { data: string }) {
+        const websocketMessage = parseJson<WebsocketMessage>(event.data);
+        if (!websocketMessage) return;
+
+        switch (websocketMessage.websocketEvent) {
+          case WebsocketEvent.NewOwnerPlayer:
+            if (websocketMessage?.player?.id === player?.id) {
+              setPlayer(prev => (prev ? { ...prev, isOwner: true } : prev));
+            }
+            break;
+        }
+      });
+    }
+  }, [player, websocket]);
 
   React.useEffect(() => {
     let deleted = false;
     client<Player>('player/me', { token: getToken() || '' }).then(
-      p => !deleted && setPlayer(p),
+      player => {
+        if (deleted) return;
+        setPlayer(player);
+      },
       () =>
-        Notification['error']({
-          title: 'Error on try to get your profile.',
-          description: 'Try to refresh.',
+        Notification.error({
+          title: 'Player error',
+          description: 'Go on Home or refresh the page...',
         }),
     );
 

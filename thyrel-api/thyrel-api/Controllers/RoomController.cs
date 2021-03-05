@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +56,10 @@ namespace thyrel_api.Controllers
         [HttpGet("{identifier}")]
         public async Task<ActionResult<Room>> GetRoom(string identifier)
         {
-            var room = await new RoomDataProvider(_context).GetRoom(identifier);
+            var isId = int.TryParse(identifier, out var roomId);
+            var room = isId
+                ? await new RoomDataProvider(_context).GetRoom(roomId)
+                : await new RoomDataProvider(_context).GetRoom(identifier);
             return room;
         }
 
