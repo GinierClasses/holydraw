@@ -7,7 +7,7 @@ import GameBar from '../../components/GameBar';
 
 export default function Start() {
   return (
-    <Box padding="25px" flexDirection="column" gap={42}>
+    <Box padding={32} flexDirection="column" gap={42}>
       <GameBar
         count={6}
         max={7}
@@ -30,7 +30,7 @@ export default function Start() {
       </Box>
 
       <Box gap={16} flexDirection="column" alignItems="center">
-        <BigInput value={'A grandma ate my father'} icon="edit" />
+        <BigInput placeholder="A grandma ate my father" icon="edit" />
         <BigButton icon="check">Save</BigButton>
       </Box>
     </Box>
