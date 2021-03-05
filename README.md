@@ -48,9 +48,9 @@ Réalisée dans le cadre des modules : `i226b - Implémenter orienté objets (av
 
 ## Tests de la branche :
 
-**Dotnet :** ![Dotnet Tests](https://img.shields.io/github/workflow/status/GinierClasses/teamproject-thyrel-team/Dotnet%20test%20validation/sprint-3?style=for-the-badge)
+**Dotnet :** ![Dotnet Tests](https://img.shields.io/github/workflow/status/GinierClasses/teamproject-thyrel-team/Dotnet%20test%20validation/master?style=for-the-badge)
 
-**React :** ![React Tests](https://img.shields.io/github/workflow/status/GinierClasses/teamproject-thyrel-team/React%20test%20validation/sprint-3?style=for-the-badge)
+**React :** ![React Tests](https://img.shields.io/github/workflow/status/GinierClasses/teamproject-thyrel-team/React%20test%20validation/master?style=for-the-badge)
 
 ## Activité du repo :
 
