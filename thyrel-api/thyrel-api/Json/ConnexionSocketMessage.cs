@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.SignalR;
-
-namespace thyrel_api.Websocket
+namespace thyrel_api.Json
 {
     public class ConnexionSocketMessage
     {

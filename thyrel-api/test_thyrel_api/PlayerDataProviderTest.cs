@@ -13,7 +13,7 @@ namespace test_thyrel_api
         public async Task Setup()
         {
             await SetupTest();
-            _playerDataProvider = new PlayerDataProvider(Options);
+            _playerDataProvider = new PlayerDataProvider(Context);
         }
 
         // test player by room do not take player not connected and return correct players

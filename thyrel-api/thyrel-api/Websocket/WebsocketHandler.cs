@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using thyrel_api.DataProvider;
+using thyrel_api.Json;
 using thyrel_api.Models;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -57,7 +58,7 @@ namespace thyrel_api.Websocket
                 // if no matching token or no token
                 if (player == null)
                 {
-                    await SendMessageToSocket(connection, Json.Serialize(
+                    await SendMessageToSocket(connection, Json.Json.Serialize(
                         new BaseWebsocketEventJson(WebsocketEvent.Invalid)));
                     continue;
                 }
@@ -72,7 +73,7 @@ namespace thyrel_api.Websocket
 
                 // inform room that a new player join
                 await SendMessageToSockets(
-                    Json.Serialize(
+                    Json.Json.Serialize(
                         new PlayerWebsocketEventJson(WebsocketEvent.PlayerJoin, player)), player.RoomId);
             }
         }
@@ -146,7 +147,7 @@ namespace thyrel_api.Websocket
                     foreach (var closedSocket in closedSockets.Where(closedSocket => openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                     {
                         await SendMessageToSockets(
-                            Json.Serialize(
+                            Json.Json.Serialize(
                                 new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerLeft, closedSocket.PlayerId)), closedSocket.RoomId);
                         if (closedSocket.PlayerId == null) continue;
 
@@ -161,7 +162,7 @@ namespace thyrel_api.Websocket
                         
                         await playerDataProvider.SetOwner(player, false);
                         await SendMessageToSockets(
-                            Json.Serialize(
+                            Json.Json.Serialize(
                                 new PlayerWebsocketEventJson(WebsocketEvent.NewOwnerPlayer, newOwnerPlayer)), closedSocket.RoomId);
                     }
 

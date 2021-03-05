@@ -16,11 +16,6 @@ namespace thyrel_api.DataProvider
             _holyDrawDbContext = context;
         }
 
-        public PlayerDataProvider(DbContextOptions<HolyDrawDbContext> options)
-        {
-            _holyDrawDbContext = new HolyDrawDbContext(options);
-        }
-
         /// <summary>
         ///     To add a new Player
         /// </summary>

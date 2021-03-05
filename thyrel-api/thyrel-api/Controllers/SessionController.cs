@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using Newtonsoft.Json;
 using thyrel_api.DataProvider;
+using thyrel_api.Json;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
 
@@ -46,7 +47,7 @@ namespace thyrel_api.Controllers
                 await elementDataProvider.AddSentence(p.Id, p.Id, 1, addedSession.Id));
 
             await _websocketHandler.SendMessageToSockets(
-                Json.Serialize(
+                Json.Json.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), body.RoomId);
 
             return addedSession;

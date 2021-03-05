@@ -14,11 +14,6 @@ namespace thyrel_api.DataProvider
             _holyDrawDbContext = context;
         }
         
-        public SessionDataProvider(DbContextOptions<HolyDrawDbContext> options)
-        {
-            _holyDrawDbContext = new HolyDrawDbContext(options);
-        }
-
         /// <summary>
         ///     Create a new Session
         /// </summary>

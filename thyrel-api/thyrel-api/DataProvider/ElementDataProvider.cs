@@ -16,11 +16,6 @@ namespace thyrel_api.DataProvider
             _holyDrawDbContext = context;
         }
 
-        public ElementDataProvider(DbContextOptions<HolyDrawDbContext> options)
-        {
-            _holyDrawDbContext = new HolyDrawDbContext(options);
-        }
-
         /// <summary>
         ///     Create a Drawing Element
         /// </summary>

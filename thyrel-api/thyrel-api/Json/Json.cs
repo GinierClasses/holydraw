@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace thyrel_api.Websocket
+namespace thyrel_api.Json
 {
     public static class Json
     {
