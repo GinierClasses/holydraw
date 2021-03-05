@@ -4,6 +4,7 @@ import { Button, Icon } from 'rsuite';
 import Box from '../../styles/Box';
 import { bgFade } from '../../styles/colors';
 import { Notification } from 'rsuite';
+import { copyToClipboard } from '../../utils/clipboard';
 
 type ShareRoomButtonProps = {
   identifier: string;
@@ -22,26 +23,17 @@ const StyledButton = styled(Button)(() => ({
   },
 }));
 
-function copyIdentifierLink(identifier: string) {
-  const tempInput = document.createElement('input');
-  tempInput.value = identifier;
-  document.body.appendChild(tempInput);
-  tempInput.select();
-  document.execCommand('copy');
-  document.body.removeChild(tempInput);
-  Notification.success({
-    title: 'URL successfully copied 😎',
-  });
-}
-
 export default function ShareRoomButton({ identifier }: ShareRoomButtonProps) {
   return (
     <StyledButton
-      onClick={event =>
-        copyIdentifierLink(`${window.location.origin}/join/${identifier}`)
-      }>
+      onClick={function () {
+        return (
+          copyToClipboard(`${window.location.origin}/join/${identifier}`),
+          Notification.success({ title: 'URL successfully copied 😎' })
+        );
+      }}>
       <Box alignItems="center">
-        <Icon icon={'key'} size={'2x'} />
+        <Icon icon="key" size="2x" />
         <span
           className={css({
             marginLeft: 16,
