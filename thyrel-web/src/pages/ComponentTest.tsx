@@ -11,6 +11,7 @@ import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import SizePicker from '../components/room/SizePicker';
+import ShareRoomButton from '../components/lobby/ShareRoomButton';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -35,7 +36,7 @@ export default function ComponentTest() {
 
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
         <BigInput value={'didier'} icon="apple" />
-
+        <ShareRoomButton identifier="LH4AH3" />
         <PlayerCard
           id={1}
           name="John Doe"
