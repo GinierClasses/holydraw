@@ -79,7 +79,7 @@ namespace test_thyrel_api
         public async Task TestSetOwner()
         {
             var playerId = 1;
-            var player = Context.Player.First(p => p.Id == playerId);
+            var player = Context.Player.First(p => !p.IsOwner);
 
             var ownerPlayer = await _playerDataProvider.SetOwner(player.Id, true);
             Assert.IsTrue(ownerPlayer.IsOwner);
