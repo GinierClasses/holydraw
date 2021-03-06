@@ -37,4 +37,31 @@ Réalisée dans le cadre des modules : `i226b - Implémenter orienté objets (av
 **Docker**
 * run `docker-compose up` (dans le dossier du projet)
 
-SPRINT-3
+---
+
+## Information sur le projet :
+
+![Current Branch](https://img.shields.io/badge/branch-sprint--3-blue?style=for-the-badge)
+
+![Most used language](https://img.shields.io/github/languages/top/GinierClasses/teamproject-thyrel-team?style=for-the-badge) 
+![Number of languages](https://img.shields.io/github/languages/count/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
+
+## Tests de la branche :
+
+**Dotnet :** ![Dotnet Tests](https://img.shields.io/github/workflow/status/GinierClasses/teamproject-thyrel-team/Dotnet%20test%20validation/master?style=for-the-badge)
+
+**React :** ![React Tests](https://img.shields.io/github/workflow/status/GinierClasses/teamproject-thyrel-team/React%20test%20validation/master?style=for-the-badge)
+
+## Activité du repo :
+
+![Contributors](https://img.shields.io/github/contributors/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
+![Open Issues](https://img.shields.io/github/issues-raw/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
+![Closes Issues](https://img.shields.io/github/issues-closed-raw/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
+![Open Pull Requests](https://img.shields.io/github/issues-pr-raw/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
+![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
+![Sprint Completion](https://img.shields.io/github/milestones/progress-percent/GinierClasses/teamproject-thyrel-team/3?style=for-the-badge)
+
+## Qualité du code :
+
+**CodeFactor :** ![Code Quality](https://img.shields.io/codefactor/grade/github/ginierclasses/teamproject-thyrel-team?style=for-the-badge)
