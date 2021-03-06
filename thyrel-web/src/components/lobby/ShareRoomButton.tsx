@@ -26,11 +26,9 @@ const StyledButton = styled(Button)(() => ({
 export default function ShareRoomButton({ identifier }: ShareRoomButtonProps) {
   return (
     <StyledButton
-      onClick={function () {
-        return (
-          copyToClipboard(`${window.location.origin}/join/${identifier}`),
-          Notification.success({ title: 'URL successfully copied 😎' })
-        );
+      onClick={() => {
+        copyToClipboard(`${window.location.origin}/join/${identifier}`);
+        Notification.success({ title: 'URL successfully copied 😎' });
       }}>
       <Box alignItems="center">
         <Icon icon="key" size="2x" />
