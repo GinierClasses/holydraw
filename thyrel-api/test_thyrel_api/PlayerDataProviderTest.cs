@@ -2,18 +2,87 @@ using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
+using thyrel_api.Models;
 
 namespace test_thyrel_api
 {
     public class PlayerDataProviderTest : TestProvider
     {
         private IPlayerDataProvider _playerDataProvider;
-        
+
         [SetUp]
         public async Task Setup()
         {
             await SetupTest();
             _playerDataProvider = new PlayerDataProvider(Context);
+        }
+
+        [Test]
+        public async Task Add()
+        {
+            var username = "Tintin";
+            var avatarUrl = " ";
+            var isOwner = true;
+            var roomId = 1;
+            var tokenId = 1;
+
+            var playerCount = Context.Player.Count();
+            await _playerDataProvider.Add(username, avatarUrl, isOwner, roomId, tokenId);
+            Assert.AreEqual(playerCount + 1, Context.Player.Count());
+        }
+
+        [Test]
+        public async Task GetPlayer()
+        {
+            var playerId = 1;
+            var player = Context.Player.First(p => p.Id == playerId);
+
+            var playerFromProvider = await _playerDataProvider.GetPlayer(player.Id);
+            Assert.AreEqual(player.Id, playerFromProvider.Id);
+            var playerNull = await _playerDataProvider.GetPlayer(-1);
+            Assert.IsNull(playerNull);
+        }
+
+        [Test]
+        public async Task GetPlayerByToken()
+        {
+            var playerId = 1;
+            var player = Context.Player.First(p => p.Id == playerId);
+            var token = new Token("xxxTokenKeyxxx");
+            player.Token = token;
+            await Context.SaveChangesAsync();
+
+            var playerFromToken = await _playerDataProvider.GetPlayerByToken(token.TokenKey);
+            Assert.AreEqual(player.Id, playerFromToken.Id);
+        }
+
+        [Test]
+        public async Task TestDisableNotExistingPlayerShouldReturnNull()
+        {
+            Assert.IsNull(await _playerDataProvider.Disable(-1));
+        }
+        [Test]
+        public async Task TestDisablePlayer()
+        {
+            var playerId = 1;
+            var player = Context.Player.First(p => p.Id == playerId);
+            var disabledPlayer = await _playerDataProvider.Disable(player.Id);
+            Assert.IsNotNull(disabledPlayer.DisableAt);
+        }
+        [Test]
+        public async Task TestSetOwnerOfNotExistingPlayerShouldReturnNull()
+        {
+            Assert.IsNull(await _playerDataProvider.SetOwner(0, true));
+        }
+        
+        [Test]
+        public async Task TestSetOwner()
+        {
+            var playerId = 1;
+            var player = Context.Player.First(p => !p.IsOwner);
+
+            var ownerPlayer = await _playerDataProvider.SetOwner(player.Id, true);
+            Assert.IsTrue(ownerPlayer.IsOwner);
         }
 
         // test player by room do not take player not connected and return correct players
