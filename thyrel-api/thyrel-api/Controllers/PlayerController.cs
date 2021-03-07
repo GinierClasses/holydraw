@@ -1,7 +1,10 @@
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Models;
+using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
 {
@@ -9,8 +12,10 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        public PlayerController()
+        private IWebsocketHandler _websocketHandler;
+        public PlayerController(IWebsocketHandler websocketHandler)
         {
+            _websocketHandler = websocketHandler;
         }
 
         // Call this endpoint to get own player
@@ -22,5 +27,21 @@ namespace thyrel_api.Controllers
             if (player == null) return Unauthorized();
             return player;
         }
-    }
+
+        /*Route : PATCH : players/{id
+    }/kick*/
+        [HttpPatch("players/{id}/kick")]
+        public async Task<ActionResult<Player>> Kick(int id)
+        {
+            var playerDataProvider = new PlayerDataProvider();
+
+            var player = playerDataProvider.KickPlayerFromRoomById(id);
+
+            await _websocketHandler.SendMessageToSockets(
+                    JsonSerializer.Serialize(
+                        new BaseWebsocketEvent(WebsocketEvent.PlayerKicked)), id);
+
+            return await playerDataProvider.GetPlayer(player.Id);
+        }
+}
 }

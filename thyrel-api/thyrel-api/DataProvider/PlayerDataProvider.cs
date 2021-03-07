@@ -142,6 +142,18 @@ namespace thyrel_api.DataProvider
             return dbPlayer;
         }
 
+        public async Task<Player> KickPlayerFromRoomById(int playerId)
+        {
+            var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
+            if (dbPlayer == null)
+                return null;
+
+            dbPlayer.RoomId = null;
+            dbPlayer.Room = null;
+            await SaveChanges();
+            return dbPlayer;
+        }
+
         private async Task SaveChanges()
         {
             await _holyDrawDbContext.SaveChangesAsync();
