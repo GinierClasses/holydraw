@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using Newtonsoft.Json;
 using thyrel_api.DataProvider;
 using thyrel_api.Json;
 using thyrel_api.Models;
@@ -14,7 +12,7 @@ namespace thyrel_api.Controllers
     public class SessionController : ControllerBase
     {
         private readonly IWebsocketHandler _websocketHandler;
-        private HolyDrawDbContext _context;
+        private readonly HolyDrawDbContext _context;
 
         public SessionController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
@@ -45,9 +43,9 @@ namespace thyrel_api.Controllers
             var players = await playerDataProvider.GetPlayersByRoom(body.RoomId);
             players.ForEach(async p =>
                 await elementDataProvider.AddSentence(p.Id, p.Id, 1, addedSession.Id));
-
+            
             await _websocketHandler.SendMessageToSockets(
-                Json.Json.Serialize(
+                Json.JSON.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), body.RoomId);
 
             return addedSession;

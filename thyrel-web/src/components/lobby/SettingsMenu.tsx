@@ -1,31 +1,19 @@
-import { css } from '@emotion/css';
-import React from 'react';
 import { useRoomContext } from '../../hooks/RoomProvider';
 import Box from '../../styles/Box';
-import { baseColor, paperColor } from '../../styles/colors';
+import ShareRoomButton from './ShareRoomButton';
 
 export default function SettingsMenu() {
   const { room, wsState } = useRoomContext();
   return (
     <Box
-      borderRadius={4}
+      borderRadius="0 4px 4px 0"
       minWidth={328}
-      p={16}
+      pl={16}
       height="auto"
-      bg={baseColor}
       flexDirection="column"
       gap={24}>
       <p>{wsState}</p>
-      <p
-        className={css({
-          background: paperColor,
-          color: '#ffffff',
-          fontSize: 16,
-          padding: 16,
-          borderRadius: 4,
-        })}>
-        {room?.identifier}
-      </p>
+      <ShareRoomButton identifier={room?.identifier || 'loading...'} />
     </Box>
   );
 }

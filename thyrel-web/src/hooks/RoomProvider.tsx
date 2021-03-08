@@ -56,13 +56,10 @@ export function RoomContextProvider({
             addPlayer(websocketMessage.player);
             break;
           case WebsocketEvent.PlayerLeft:
-            removePlayer(websocketMessage.player);
+            removePlayer(websocketMessage.playerId);
             break;
           case WebsocketEvent.NewOwnerPlayer:
             updatePlayer();
-            break;
-          case WebsocketEvent.SessionStart:
-            history.push('/r/start');
             break;
         }
       });

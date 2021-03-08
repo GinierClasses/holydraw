@@ -3,6 +3,7 @@ import React from 'react';
 import { client } from '../../api/client';
 import BigButton from '../../components/BigButton';
 import AppTitle from '../../components/lobby/AppTitle';
+import LobbyStartButton from '../../components/lobby/LobbyStartButton';
 import { Players, PlayerCountBox } from '../../components/lobby/Players';
 import SettingsMenu from '../../components/lobby/SettingsMenu';
 import { useRoomContext } from '../../hooks/RoomProvider';
@@ -37,7 +38,11 @@ export default function Lobby() {
         height="100vh"
         alignItems="center"
         flexDirection="column">
-        <Box flexDirection="column" alignItems="flex-end" width="100%">
+        <Box
+          bg={bgFade(0.8)}
+          flexDirection="column"
+          alignItems="flex-end"
+          width="100%">
           <PlayerCountBox />
           <Box
             justifyContent="space-between"
