@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonToolbar, Input, Modal } from 'rsuite';
+import { Button, Input, Modal } from 'rsuite';
 import BigButton from '../BigButton';
 
 type ModalJoinProps = {
@@ -15,20 +15,15 @@ export default function ModalJoin({
   const [identifier, setIdentifier] = React.useState('');
   return (
     <>
-      <ButtonToolbar>
-        <BigButton
-          icon="angle-double-up"
-          size="lg"
-          onClick={() => {
-            if (identifier) {
-              onClick(identifier);
-            } else {
-              setOpen(true);
-            }
-          }}>
-          Join
-        </BigButton>
-      </ButtonToolbar>
+      <BigButton
+        icon="angle-double-up"
+        size="lg"
+        onClick={() => {
+          if (urlIdentifier) onClick(urlIdentifier);
+          else setOpen(true);
+        }}>
+        Join
+      </BigButton>
 
       <Modal
         show={open}
@@ -48,7 +43,7 @@ export default function ModalJoin({
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => onClick(identifier)} appearance="primary">
-            Join
+            Join the
           </Button>
           <Button onClick={() => setOpen(false)} appearance="subtle">
             Cancel

@@ -63,7 +63,7 @@ describe('PlayerForm', () => {
     const identifier = 'bullsit';
     render(<PlayerForm identifier={identifier} />);
     userEvent.type(screen.getByRole('textbox'), playerUsername);
-    userEvent.click(screen.getByText(/join/i));
+    userEvent.click(screen.getByRole('button', { name: /join/i }));
 
     await waitFor(() => expect(serverMock).toHaveBeenCalledTimes(1));
     await waitFor(() =>
