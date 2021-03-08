@@ -28,8 +28,7 @@ namespace thyrel_api.Controllers
             return player;
         }
 
-        /*Route : PATCH : players/{id
-    }/kick*/
+        //Call this enpoint to kick the player from the room he is in
         [HttpPatch("players/{id}/kick")]
         public async Task<ActionResult<Player>> Kick(int id)
         {

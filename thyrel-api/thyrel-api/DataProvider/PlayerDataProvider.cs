@@ -142,6 +142,11 @@ namespace thyrel_api.DataProvider
             return dbPlayer;
         }
 
+        /// <summary>
+        ///     Delete Room from the player (kick a player from the room)
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
         public async Task<Player> KickPlayerFromRoomById(int playerId)
         {
             var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
