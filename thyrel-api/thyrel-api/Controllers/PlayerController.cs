@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
+using thyrel_api.Json;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
 
@@ -35,14 +36,13 @@ namespace thyrel_api.Controllers
         [HttpPatch("players/{id}/kick")]
         public async Task<ActionResult<Player>> Kick(int id)
         {
-            var playerDataProvider = new PlayerDataProvider();
+            var playerDataProvider = new PlayerDataProvider(_context);
 
             var player = await playerDataProvider.KickPlayerFromRoomById(id);
 
-            //TODO change BaseWebsocketEvent with WebsocketEventWithPlayerId
             await _websocketHandler.SendMessageToSockets(
                     JsonSerializer.Serialize(
-                        new BaseWebsocketEvent(WebsocketEvent.PlayerKicked)), id);
+                        new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerKicked, player.Id)), id);
 
             return player;
         }
