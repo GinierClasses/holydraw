@@ -34,13 +34,14 @@ namespace thyrel_api.Controllers
         {
             var playerDataProvider = new PlayerDataProvider();
 
-            var player = playerDataProvider.KickPlayerFromRoomById(id);
+            var player = await playerDataProvider.KickPlayerFromRoomById(id);
 
+            //TODO change BaseWebsocketEvent with WebsocketEventWithPlayerId
             await _websocketHandler.SendMessageToSockets(
                     JsonSerializer.Serialize(
                         new BaseWebsocketEvent(WebsocketEvent.PlayerKicked)), id);
 
-            return await playerDataProvider.GetPlayer(player.Id);
+            return player;
         }
 }
 }
