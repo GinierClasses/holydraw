@@ -4,9 +4,10 @@ import StepTimer from './room/StepTimer';
 import Box from '../styles/Box';
 import { css } from '@emotion/css';
 import Mq from '../styles/breakpoint';
+//import { useRoomContext } from '../hooks/RoomProvider';
 
 type GameBarProps = {
-  count: number;
+  count?: number;
   max: number;
   finishAt: Date;
   timeDuration: number;
@@ -20,6 +21,8 @@ export default function GameBar({
   timeDuration,
   onFinish,
 }: GameBarProps) {
+  //const { players } = useRoomContext();
+
   return (
     <Box
       className={css({
@@ -39,7 +42,7 @@ export default function GameBar({
             top: '-64px',
           },
         })}>
-        <PlayerCount count={count} max={max} />
+        <PlayerCount count={6} max={max} />
 
         <Box
           display="block"

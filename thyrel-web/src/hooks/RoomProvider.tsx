@@ -60,6 +60,10 @@ export function RoomContextProvider({
       case WebsocketEvent.NewOwnerPlayer:
         console.log('New Owner player');
         updatePlayer();
+        break;
+      case WebsocketEvent.SessionStart:
+        history.push('/r/start');
+        break;
     }
   });
 
