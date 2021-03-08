@@ -19,7 +19,7 @@ export default function LobbyStartButton() {
       data: {
         roomId: room?.id,
       },
-    }).then((session: Session) => {
+    }).then(() => {
       Notification['success']({
         title: 'Game successfully started',
         description: 'Begin to play !',
@@ -39,7 +39,7 @@ export default function LobbyStartButton() {
       {player?.isOwner && (
         <div>
           <BigButton
-            onClick={() => onStart()}
+            onClick={onStart}
             className={css({ marginTop: 12 })}
             icon="angle-double-right">
             Start
