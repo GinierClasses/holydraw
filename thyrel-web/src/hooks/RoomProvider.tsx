@@ -61,6 +61,9 @@ export function RoomContextProvider({
           case WebsocketEvent.NewOwnerPlayer:
             updatePlayer();
             break;
+          case WebsocketEvent.SessionStart:
+            history?.push('/r/start');
+            break;
         }
       });
     }
