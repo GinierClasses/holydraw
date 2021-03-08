@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
 import AppTitle from '../components/AppTitle';
@@ -12,10 +12,9 @@ import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
 import DrawColorPicker from '../components/room/draw/DrawColorPicker';
 import SizePicker from '../components/room/draw/SizePicker';
-
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
-
 import BookPlayerList from '../components/room/book/BookPlayerList';
+import ButtonModalJoin from '../components/home/ButtonModalJoin';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -123,7 +122,9 @@ export default function ComponentTest() {
             onFinish={() => console.log('finished')}
           />
         </Box>
-
+        <ButtonModalJoin
+          identifier={undefined}
+          onClick={console.log}></ButtonModalJoin>
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
         <BigInput value={'didier'} icon="apple" />
         <ShareRoomButton identifier="LH4AH3" />
