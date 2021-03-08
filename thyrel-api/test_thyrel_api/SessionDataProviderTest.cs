@@ -14,7 +14,7 @@ namespace test_thyrel_api
         public async Task Setup()
         {
             await SetupTest();
-            _sessionDataProvider = new SessionDataProvider(Options);
+            _sessionDataProvider = new SessionDataProvider(Context);
         }
         
         [Test]

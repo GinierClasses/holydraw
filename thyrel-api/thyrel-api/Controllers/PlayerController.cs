@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Models;
 
@@ -9,8 +10,11 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        public PlayerController()
+        private readonly HolyDrawDbContext _context;
+
+        public PlayerController(HolyDrawDbContext context)
         {
+            _context = context;
         }
 
         // Call this endpoint to get own player
@@ -18,9 +22,9 @@ namespace thyrel_api.Controllers
         [HttpGet("me")]
         public async Task<ActionResult<Player>> Post()
         {
-            var player = await AuthorizationHandler.CheckAuthorization(HttpContext);
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player == null) return Unauthorized();
-            return player;
+            return await new PlayerDataProvider(_context).GetPlayer(player.Id);
         }
     }
 }
