@@ -26,19 +26,21 @@ export function PlayerContextProvider({
   const { websocket } = useWebsocketContext();
 
   React.useEffect(() => {
-    if (websocket && player) {
-      websocket.addEventListener('message', function (event: { data: string }) {
-        const websocketMessage = parseJson<WebsocketMessage>(event.data);
-        if (!websocketMessage) return;
+    function onMessage(event: { data: string }) {
+      const websocketMessage = parseJson<WebsocketMessage>(event.data);
+      if (!websocketMessage) return;
 
-        switch (websocketMessage.websocketEvent) {
-          case WebsocketEvent.NewOwnerPlayer:
-            if (websocketMessage?.player?.id === player?.id) {
-              setPlayer(prev => (prev ? { ...prev, isOwner: true } : prev));
-            }
-            break;
-        }
-      });
+      switch (websocketMessage.websocketEvent) {
+        case WebsocketEvent.NewOwnerPlayer:
+          if (websocketMessage?.player?.id === player?.id) {
+            setPlayer(prev => (prev ? { ...prev, isOwner: true } : prev));
+          }
+          break;
+      }
+    }
+    if (websocket && player) {
+      websocket.addEventListener('message', onMessage);
+      return () => websocket.removeEventListener('message', onMessage);
     }
   }, [player, websocket]);
 

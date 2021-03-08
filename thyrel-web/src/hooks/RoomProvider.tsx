@@ -38,31 +38,33 @@ export function RoomContextProvider({
   const { wsState, websocket } = useWebsocketContext();
 
   React.useEffect(() => {
-    if (websocket) {
-      websocket.addEventListener('message', function (event: { data: string }) {
-        const message = event.data;
-        const websocketMessage = parseJson<WebsocketMessage>(message);
-        if (!websocketMessage) return;
+    function onMessage(event: { data: string }) {
+      const message = event.data;
+      const websocketMessage = parseJson<WebsocketMessage>(message);
+      if (!websocketMessage) return;
 
-        switch (websocketMessage.websocketEvent) {
-          case WebsocketEvent.Invalid:
-            Notification['error']({
-              title: "You're not in a game.",
-              description: 'You will go back to the home.',
-            });
-            history.push('/home');
-            break;
-          case WebsocketEvent.PlayerJoin:
-            addPlayer(websocketMessage.player);
-            break;
-          case WebsocketEvent.PlayerLeft:
-            removePlayer(websocketMessage.playerId);
-            break;
-          case WebsocketEvent.NewOwnerPlayer:
-            updatePlayer();
-            break;
-        }
-      });
+      switch (websocketMessage.websocketEvent) {
+        case WebsocketEvent.Invalid:
+          Notification['error']({
+            title: "You're not in a game.",
+            description: 'You will go back to the home.',
+          });
+          history.push('/home');
+          break;
+        case WebsocketEvent.PlayerJoin:
+          addPlayer(websocketMessage.player);
+          break;
+        case WebsocketEvent.PlayerLeft:
+          removePlayer(websocketMessage.playerId);
+          break;
+        case WebsocketEvent.NewOwnerPlayer:
+          updatePlayer();
+          break;
+      }
+    }
+    if (websocket) {
+      websocket.addEventListener('message', onMessage);
+      return () => websocket.removeEventListener('message', onMessage);
     }
   }, [addPlayer, history, removePlayer, updatePlayer, websocket]);
 
