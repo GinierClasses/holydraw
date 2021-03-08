@@ -1,6 +1,5 @@
-import React from 'react';
-import BigButton from '../../components/BigButton';
 import AppTitle from '../../components/lobby/AppTitle';
+import LobbyStartButton from '../../components/lobby/LobbyStartButton';
 import { Players, PlayerCountBox } from '../../components/lobby/Players';
 import SettingsMenu from '../../components/lobby/SettingsMenu';
 import Box from '../../styles/Box';
@@ -33,9 +32,7 @@ export default function Lobby() {
             <Players />
           </Box>
         </Box>
-        <Box m={24}>
-          <BigButton icon="angle-double-right">Start</BigButton>
-        </Box>
+        <LobbyStartButton />
       </Box>
     </Box>
   );

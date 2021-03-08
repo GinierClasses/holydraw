@@ -12,7 +12,7 @@ namespace thyrel_api.Controllers
     public class SessionController : ControllerBase
     {
         private readonly IWebsocketHandler _websocketHandler;
-        private HolyDrawDbContext _context;
+        private readonly HolyDrawDbContext _context;
 
         public SessionController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {

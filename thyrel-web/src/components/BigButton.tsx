@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { Button, Icon, IconProps } from 'rsuite';
+import { Button, ButtonProps, Icon, IconProps } from 'rsuite';
 import { baseColor, bgFade } from '../styles/colors';
 import { css } from '@emotion/css';
 import React from 'react';
 import Box from '../styles/Box';
 
-type BigButtonProps = {
+type BigButtonProps = ButtonProps & {
   children?: React.ReactNode;
   icon?: IconProps['icon'];
   size?: 'md' | 'lg';
@@ -30,13 +30,15 @@ export default function BigButton({
   icon,
   size,
   onClick,
+  ...props
 }: BigButtonProps) {
   return (
     <StyledButton
       onClick={onClick}
       appearance="primary"
       bg={baseColor}
-      size={size}>
+      size={size}
+      {...props}>
       <Box alignItems="center">
         {icon ? (
           <Icon

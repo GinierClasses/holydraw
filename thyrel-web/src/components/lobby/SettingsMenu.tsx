@@ -1,4 +1,3 @@
-import { css } from '@emotion/css';
 import { useRoomContext } from '../../hooks/RoomProvider';
 import Box from '../../styles/Box';
 import ShareRoomButton from './ShareRoomButton';
