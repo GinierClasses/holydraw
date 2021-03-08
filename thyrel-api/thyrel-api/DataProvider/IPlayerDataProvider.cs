@@ -39,9 +39,9 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the Player as Owner
         /// </summary>
-        /// <param name="playerId"></param>
+        /// <param name="player"></param>
         /// <param name="isOwner"></param>
-        Task<Player> SetOwner(int playerId, bool isOwner = true);
+        Task<Player> SetOwner(Player player, bool isOwner = true);
 
         /// <summary>
         ///     Handle isPlayer (when session start) column
@@ -50,7 +50,7 @@ namespace thyrel_api.DataProvider
         /// <param name="isPlaying"></param>
         /// <returns></returns>
         Task<Player> SetIsPlaying(int playerId, bool isPlaying);
-        
+
         /// <summary>
         ///     Handle isConnected (when user left) column
         /// </summary>
@@ -72,5 +72,12 @@ namespace thyrel_api.DataProvider
         /// <param name="playerId"></param>
         /// <returns></returns>
         Task<Player> KickPlayerFromRoomById(int playerId);
+
+        /// <summary>
+        /// Find a new owner for a room
+        /// </summary>
+        /// <param name="roomId">Room to find a owner</param>
+        /// <returns></returns>
+        Task<Player> FindNewOwner(int roomId);
     }
 }

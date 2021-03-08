@@ -11,14 +11,9 @@ namespace thyrel_api.DataProvider
     {
         private readonly HolyDrawDbContext _holyDrawDbContext;
 
-        public PlayerDataProvider()
+        public PlayerDataProvider(HolyDrawDbContext context)
         {
-            _holyDrawDbContext = new HolyDrawDbContext();
-        }
-
-        public PlayerDataProvider(DbContextOptions<HolyDrawDbContext> options)
-        {
-            _holyDrawDbContext = new HolyDrawDbContext(options);
+            _holyDrawDbContext = context;
         }
 
         /// <summary>
@@ -97,9 +92,8 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="playerId"></param>
         /// <param name="isOwner"></param>
-        public async Task<Player> SetOwner(int playerId, bool isOwner = true)
+        public async Task<Player> SetOwner(Player player, bool isOwner = true)
         {
-            var player = await _holyDrawDbContext.Player.FindAsync(playerId);
             if (player == null)
                 return null;
 
@@ -138,6 +132,7 @@ namespace thyrel_api.DataProvider
                 return null;
 
             dbPlayer.IsConnected = isConnected;
+            
             await SaveChanges();
             return dbPlayer;
         }
@@ -156,6 +151,23 @@ namespace thyrel_api.DataProvider
             dbPlayer.RoomId = null;
             await SaveChanges();
             return dbPlayer;
+        }
+
+        /// Find a new owner for a room
+        /// </summary>
+        /// <param name="roomId">Room to find a owner</param>
+        /// <returns></returns>
+        public async Task<Player> FindNewOwner(int roomId)
+        {
+            var firstPlayerConnected = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == roomId && p.IsConnected && !p.IsOwner)
+                .FirstOrDefaultAsync();
+
+            if (firstPlayerConnected == null)
+                return null;
+
+            await SetOwner(firstPlayerConnected);
+            return firstPlayerConnected;
         }
 
         private async Task SaveChanges()

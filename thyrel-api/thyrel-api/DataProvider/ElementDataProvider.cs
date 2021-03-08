@@ -9,16 +9,11 @@ namespace thyrel_api.DataProvider
 {
     public class ElementDataProvider : IElementDataProvider
     {
-        private HolyDrawDbContext _holyDrawDbContext;
+        private readonly HolyDrawDbContext _holyDrawDbContext;
 
-        public ElementDataProvider()
+        public ElementDataProvider(HolyDrawDbContext context)
         {
-            _holyDrawDbContext = new HolyDrawDbContext();
-        }
-
-        public ElementDataProvider(DbContextOptions<HolyDrawDbContext> options)
-        {
-            _holyDrawDbContext = new HolyDrawDbContext(options);
+            _holyDrawDbContext = context;
         }
 
         /// <summary>
@@ -34,7 +29,6 @@ namespace thyrel_api.DataProvider
             int? drawingId = null)
         {
             var element = new Element(step, creatorId, initiatorId, sessionId, drawingId);
-
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;

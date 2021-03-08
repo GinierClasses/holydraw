@@ -12,10 +12,13 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private IWebsocketHandler _websocketHandler;
-        public PlayerController(IWebsocketHandler websocketHandler)
+        private readonly IWebsocketHandler _websocketHandler;
+        private readonly HolyDrawDbContext _context;
+
+        public PlayerController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
             _websocketHandler = websocketHandler;
+            _context = context;
         }
 
         // Call this endpoint to get own player
@@ -23,9 +26,9 @@ namespace thyrel_api.Controllers
         [HttpGet("me")]
         public async Task<ActionResult<Player>> Post()
         {
-            var player = await AuthorizationHandler.CheckAuthorization(HttpContext);
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player == null) return Unauthorized();
-            return player;
+            return await new PlayerDataProvider(_context).GetPlayer(player.Id);
         }
 
         //Call this enpoint to kick the player from the room he is in

@@ -1,6 +1,8 @@
 import React from 'react';
+import { Notification } from 'rsuite';
 import { getToken } from '../api/player-provider';
 import { testApiUrl } from '../test/data';
+import Player from '../types/Player.type';
 
 const apiURL = process.env.REACT_APP_API_URL || testApiUrl;
 const domainRegExp = /\b(?:(?:https?|ftp):\/\/)?([^/\n]+)\/?/;
@@ -17,6 +19,8 @@ export enum WebsocketEvent {
   Invalid = -1,
   PlayerJoin = 1,
   PlayerLeft = 2,
+  PlayerFinished = 3,
+  NewOwnerPlayer = 4,
   PlayerKicked = 5,
   SessionStart = 11,
   SessionUpdate = 12,
@@ -24,21 +28,24 @@ export enum WebsocketEvent {
 }
 
 export type WebsocketMessage = {
-  WebsocketEvent: WebsocketEvent;
+  websocketEvent: WebsocketEvent;
+  player?: Player;
+  playerId?: number;
 };
 
-export default function useWebsocket(onMessage?: (data: string) => void) {
+export function useWebsocket() {
   const [websocket, setWebsocket] = React.useState<WebSocket>();
   const [wsState, setWsState] = React.useState<WsStates>(WsStates.IDLE);
 
   const connect = React.useCallback(() => {
-    const url = `${'wss'}://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
+    const url = `wss://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
     const socket = new WebSocket(url);
-
+    let isOpen = false;
     setWsState(WsStates.CONNECTING);
     setWebsocket(socket);
 
     socket.onopen = function () {
+      isOpen = true;
       // identifie the request
       socket.send(JSON.stringify({ PlayerToken: getToken() }));
       setWsState(WsStates.CONNECTED);
@@ -46,21 +53,23 @@ export default function useWebsocket(onMessage?: (data: string) => void) {
 
     socket.onclose = function () {
       setWsState(WsStates.CLOSED);
+
+      isOpen &&
+        Notification.warning({
+          title: 'Connexion lost 😥 !',
+          description: 'We try to reconnect',
+        });
+      // set to undefined to reload the useEffect and rerun connection
+      isOpen && setWebsocket(undefined);
     };
   }, []);
 
   React.useEffect(() => {
-    connect();
-  }, [connect]);
-
-  React.useEffect(() => {
     if (websocket) {
-      websocket.onmessage = function (event) {
-        onMessage?.(event.data);
-      };
+      return () => websocket.close();
     }
-    return () => websocket?.close();
-  }, [onMessage, websocket]);
+    connect();
+  }, [connect, websocket]);
 
-  return { wsState };
+  return { wsState, websocket };
 }
