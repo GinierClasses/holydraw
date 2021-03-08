@@ -74,7 +74,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       <Box flexDirection="column" alignItems="center" width="100%" gap={12}>
         <ButtonModalJoin
           identifier={identifier}
-          onClick={onJoin}></ButtonModalJoin>
+          onClick={onJoin} />
 
         {!identifier && (
           <BigButton icon="angle-double-right" size="lg" onClick={onStart}>
