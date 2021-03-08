@@ -1,7 +1,7 @@
 using System;
 using System.Net.WebSockets;
 
-namespace thyrel_api.Websocket
+namespace thyrel_api.Models
 {
     public class SocketConnection
     {

@@ -39,10 +39,10 @@ namespace thyrel_api.Websocket
                 });
             }
 
-            // we handle message from Player only for authentificate
+            // we handle message from Player only for authenticate
             while (webSocket.State == WebSocketState.Open)
             {
-                var message = await ReceiveMessage(id, webSocket);
+                var message = await ReceiveMessage(webSocket);
                 if (message == null) continue;
 
                 var connection = _websocketConnections.Find(w => w.Id == id);
@@ -102,8 +102,8 @@ namespace thyrel_api.Websocket
             await Task.WhenAll(tasks);
         }
 
-        private static async Task<string> ReceiveMessage(Guid id, WebSocket webSocket)
-        {
+        private static async Task<string> ReceiveMessage(WebSocket webSocket)
+        { 
             var arraySegment = new ArraySegment<byte>(new byte[4096]);
             var receivedMessage = await webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
             if (receivedMessage.MessageType != WebSocketMessageType.Text) return null;
@@ -154,7 +154,7 @@ namespace thyrel_api.Websocket
                         var playerDataProvider = new PlayerDataProvider(GetInjectedContext());
                         
                         var player = await playerDataProvider.SetIsConnected(
-                            closedSocket.PlayerId ?? -1, false);
+                            (int) closedSocket.PlayerId, false);
                         if (!player.IsOwner) continue;
                         
                         var newOwnerPlayer = await playerDataProvider.FindNewOwner(player.RoomId);
@@ -176,13 +176,5 @@ namespace thyrel_api.Websocket
             var scope = _scopeFactory.CreateScope();
             return scope.ServiceProvider.GetRequiredService<HolyDrawDbContext>();
         }
-    }
-
-    public class SocketConnection
-    {
-        public Guid Id { get; set; }
-        public WebSocket WebSocket { get; set; }
-        public int? RoomId { get; set; }
-        public int? PlayerId { get; set; }
     }
 }
