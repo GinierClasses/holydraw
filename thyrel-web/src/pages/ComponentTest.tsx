@@ -10,6 +10,7 @@ import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
+import DrawColorPicker from '../components/draw/DrawColorPicker';
 import SizePicker from '../components/room/SizePicker';
 import BookPlayerList from '../components/room/BookPlayerList';
 
@@ -91,6 +92,26 @@ export default function ComponentTest() {
     <Box>
       <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
         <AppTitle />
+
+        <DrawColorPicker
+          colors={[
+            '#FF0000',
+            '#FFC700',
+            '#24FF00',
+            '#001AFF',
+            '#00F0FF',
+            '#6564A6',
+            '#759F81',
+            '#FFFA8A',
+            '#8C33D2',
+            '#FF8A00',
+            '#00FFC2',
+            '#001AFF',
+            '#FA00FF',
+            '#FA00FF',
+          ]}
+          currentColor="#24FF00"
+        />
 
         <Box display="block" width={100} height={100}>
           <StepTimer
