@@ -154,7 +154,6 @@ namespace thyrel_api.DataProvider
                 return null;
 
             dbPlayer.RoomId = null;
-            dbPlayer.Room = null;
             await SaveChanges();
             return dbPlayer;
         }

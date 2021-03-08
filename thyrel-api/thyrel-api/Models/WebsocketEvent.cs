@@ -13,7 +13,7 @@ namespace thyrel_api.Models
         PlayerJoin = 1,
         PlayerLeft = 2,
         PlayerFinished = 3,
-        PlayerKicked = 7,
+        PlayerKicked = 5,
         SessionStart = 11,
         SessionUpdate = 12,
         NextStep = 13, // on a step is finish
