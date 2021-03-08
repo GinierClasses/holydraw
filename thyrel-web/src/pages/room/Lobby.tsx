@@ -32,9 +32,7 @@ export default function Lobby() {
             <Players />
           </Box>
         </Box>
-        <Box m={24}>
-          <LobbyStartButton />
-        </Box>
+        <LobbyStartButton />
       </Box>
     </Box>
   );
