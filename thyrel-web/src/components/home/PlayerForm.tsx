@@ -8,6 +8,7 @@ import Box from '../../styles/Box';
 import Player from '../../types/Player.type';
 import BigButton from '../BigButton';
 import BigInput from '../lobby/BigInput';
+import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
 
 const defaultUsername = 'Bgros';
@@ -39,7 +40,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
     });
   }
 
-  function onJoin() {
+  function onJoin(identifier: string) {
     client<Player>(`room/join/${identifier}`, {
       data: {
         username: username || defaultUsername,
@@ -71,9 +72,9 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       />
 
       <Box flexDirection="column" alignItems="center" width="100%" gap={12}>
-        <BigButton icon="angle-double-up" size="lg" onClick={onJoin}>
-          Join
-        </BigButton>
+        <ButtonModalJoin
+          identifier={identifier}
+          onClick={onJoin} />
 
         {!identifier && (
           <BigButton icon="angle-double-right" size="lg" onClick={onStart}>
