@@ -15,7 +15,7 @@ namespace test_thyrel_api
         public async Task Setup()
         {
             await SetupTest();
-            _elementDataProvider = new ElementDataProvider(Options);
+            _elementDataProvider = new ElementDataProvider(Context);
         }
 
         [Test]

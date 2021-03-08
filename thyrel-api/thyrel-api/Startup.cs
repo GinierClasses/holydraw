@@ -7,51 +7,72 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using thyrel_api.Websocket;
 using System;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using thyrel_api.Models;
 
 namespace thyrel_api
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        private CorsPolicy GenerateCorsPolicy()
+        private static CorsPolicy GenerateCorsPolicy()
         {
             var corsBuilder = new CorsPolicyBuilder();
             corsBuilder.AllowAnyHeader();
             corsBuilder.AllowAnyMethod();
             corsBuilder.AllowAnyOrigin(); // For anyone access.
-                                          // corsBuilder.WithOrigins("http://localhost:56573"); // for a specific url. Don't add a forward slash on the end!
+            // corsBuilder.WithOrigins("http://localhost:56573"); // for a specific url. Don't add a forward slash on the end!
             return corsBuilder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
-            
+
+
+            var contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
             // it's a config for stop infinite looping
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        options.SerializerSettings.ContractResolver = contractResolver;
+                        options.SerializerSettings.Formatting = Formatting.Indented;
+                    }
                 );
+
+            services.AddDbContextPool<HolyDrawDbContext>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(
+                        _configuration.GetConnectionString("thyrel_db"),
+                        new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
+                        mySqlOptions => mySqlOptions
+                            .CharSetBehavior(CharSetBehavior.NeverAppend))
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors());
 
             // allow controlled to be used as injected props
             // services.AddMvcCore().AddControllersAsServices();
             // add controller in application
             services.AddControllers();
-            // add cors to alows web server to get informations
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigins", GenerateCorsPolicy());
-            });
+            // add cors to allows web server to get information
+            services.AddCors(options => { options.AddPolicy("AllowAllOrigins", GenerateCorsPolicy()); });
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "thyrel_api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "thyrel_api", Version = "v1"});
             });
         }
 
@@ -64,23 +85,20 @@ namespace thyrel_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "thyrel_api v1"));
             }
-            
-            var webSocketOptions = new WebSocketOptions() 
+
+            var webSocketOptions = new WebSocketOptions()
             {
                 KeepAliveInterval = TimeSpan.FromSeconds(120),
             };
 
             app.UseWebSockets(webSocketOptions);
-            
+
             app.UseHttpsRedirection();
             app.UseRouting();
             // allow cors of all origins
             app.UseCors("AllowAllOrigins");
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -11,6 +11,8 @@ import BigInput from '../lobby/BigInput';
 import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
 
+const defaultUsername = 'Bgros';
+
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
   const [ppIndex, setPpIndex] = React.useState(0);
@@ -21,7 +23,10 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
 
   function onStart() {
     client<Player>('room', {
-      data: { username, avatarUrl: String(ppIndex) },
+      data: {
+        username: username || defaultUsername,
+        avatarUrl: String(ppIndex),
+      },
     }).then((player: Player) => {
       if (player.token?.tokenKey) {
         Notification['success']({
@@ -37,7 +42,10 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
 
   function onJoin(identifier: string) {
     client<Player>(`room/join/${identifier}`, {
-      data: { username, avatarUrl: String(ppIndex) },
+      data: {
+        username: username || defaultUsername,
+        avatarUrl: String(ppIndex),
+      },
       method: 'PATCH',
     }).then((player: Player) => {
       if (player.token?.tokenKey) {
@@ -60,7 +68,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         icon={'edit'}
         value={username}
         onChange={e => setUsername(e.target.value)}
-        placeholder="pseudo de bg"
+        placeholder="MonPseudo"
       />
 
       <Box flexDirection="column" alignItems="center" width="100%" gap={12}>

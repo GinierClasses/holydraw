@@ -14,7 +14,7 @@ namespace test_thyrel_api
         public async Task Setup()
         {
             await SetupTest();
-            _tokenDataProvider = new TokenDataProvider(Options);
+            _tokenDataProvider = new TokenDataProvider(Context);
         }
 
         [Test]

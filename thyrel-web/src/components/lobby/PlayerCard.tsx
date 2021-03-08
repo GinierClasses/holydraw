@@ -68,6 +68,7 @@ export default function PlayerCard({
               className={css({
                 backgroundColor: 'transparent',
                 outline: 'none',
+                padding: 0,
               })}>
               <Icon icon="close" />
             </button>

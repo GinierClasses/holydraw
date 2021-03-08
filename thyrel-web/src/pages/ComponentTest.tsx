@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
-import PlayerAvatar from '../components/home/PlayerAvatar';
 import AppTitle from '../components/lobby/AppTitle';
 import BigInput from '../components/lobby/BigInput';
 import PlayerCard from '../components/lobby/PlayerCard';
@@ -10,6 +9,7 @@ import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
+import PlayerAvatar from '../components/home/PlayerAvatar';
 import DrawColorPicker from '../components/draw/DrawColorPicker';
 import SizePicker from '../components/room/SizePicker';
 
