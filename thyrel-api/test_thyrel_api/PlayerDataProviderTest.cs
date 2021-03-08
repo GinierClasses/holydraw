@@ -20,7 +20,7 @@ namespace test_thyrel_api
         [Test]
         public async Task Add()
         {
-            var username = "Tintin";
+            var username = "Tinting";
             var avatarUrl = " ";
             var isOwner = true;
             var roomId = 1;
@@ -72,16 +72,15 @@ namespace test_thyrel_api
         [Test]
         public async Task TestSetOwnerOfNotExistingPlayerShouldReturnNull()
         {
-            Assert.IsNull(await _playerDataProvider.SetOwner(0, true));
+            Assert.IsNull(await _playerDataProvider.SetOwner(null));
         }
         
         [Test]
         public async Task TestSetOwner()
         {
-            var playerId = 1;
             var player = Context.Player.First(p => !p.IsOwner);
 
-            var ownerPlayer = await _playerDataProvider.SetOwner(player.Id, true);
+            var ownerPlayer = await _playerDataProvider.SetOwner(player);
             Assert.IsTrue(ownerPlayer.IsOwner);
         }
 
@@ -119,6 +118,18 @@ namespace test_thyrel_api
             Assert.IsNotNull(playerPlaying);
             var playerEdited = await _playerDataProvider.GetPlayer(playerNotPlaying.Id);
             Assert.IsTrue(playerEdited.IsPlaying);
+        }
+        
+        [Test]
+        public async Task TestFindNewPlayer()
+        {
+            var roomId = 1;
+            var prevOwner = Context.Player.FirstOrDefault(p => p.RoomId == roomId);
+            var newOwner = await _playerDataProvider.FindNewOwner(1);
+            Assert.IsTrue(newOwner.IsConnected);
+            Assert.IsTrue(prevOwner != null && newOwner.Id != prevOwner.Id);
+            Assert.IsTrue(newOwner.IsOwner);
+            Assert.IsTrue(newOwner.RoomId == roomId);
         }
     }
 }

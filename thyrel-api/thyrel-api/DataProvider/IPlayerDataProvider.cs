@@ -65,5 +65,12 @@ namespace thyrel_api.DataProvider
         /// <param name="roomId"></param>
         /// <returns></returns>
         Task<List<Player>> GetPlayersByRoom(int roomId);
+
+        /// <summary>
+        /// Find a new owner for a room
+        /// </summary>
+        /// <param name="roomId">Room to find a owner</param>
+        /// <returns></returns>
+        Task<Player> FindNewOwner(int roomId);
     }
 }

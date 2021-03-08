@@ -3,7 +3,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace thyrel_api.Json
 {
-    public static class Json
+    public static class JSON
     {
         public static string Serialize(object obj)
         {
