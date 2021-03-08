@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import AppTitle from '../components/lobby/AppTitle';
+import AppTitle from '../components/AppTitle';
 import Box from '../styles/Box';
 import PlayerForm from '../components/home/PlayerForm';
 

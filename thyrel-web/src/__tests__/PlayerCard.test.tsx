@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import PlayerCard from '../components/lobby/PlayerCard';
+import PlayerCard from '../components/room/lobby/PlayerCard';
 
 describe('PlayerCard', () => {
   test('default props work', () => {

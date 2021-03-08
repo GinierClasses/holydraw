@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
 import BigButton from '../../components/BigButton';
-import BigInput from '../../components/lobby/BigInput';
+import BigInput from '../../components/BigInput';
 import Box from '../../styles/Box';
 import GymGuy from '../../images/gym-guy.svg';
 import GameBar from '../../components/GameBar';
