@@ -4,6 +4,7 @@ import AppTitle from '../../components/lobby/AppTitle';
 import { Players, PlayerCountBox } from '../../components/lobby/Players';
 import SettingsMenu from '../../components/lobby/SettingsMenu';
 import Box from '../../styles/Box';
+import { bgFade } from '../../styles/colors';
 
 export default function Lobby() {
   return (
@@ -18,7 +19,11 @@ export default function Lobby() {
         height="100vh"
         alignItems="center"
         flexDirection="column">
-        <Box flexDirection="column" alignItems="flex-end" width="100%">
+        <Box
+          bg={bgFade(0.8)}
+          flexDirection="column"
+          alignItems="flex-end"
+          width="100%">
           <PlayerCountBox />
           <Box
             justifyContent="space-between"
