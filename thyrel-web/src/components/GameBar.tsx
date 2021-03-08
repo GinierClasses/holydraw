@@ -1,5 +1,5 @@
 import PlayerCount from './room/PlayerCount';
-import AppTitle from './lobby/AppTitle';
+import AppTitle from './AppTitle';
 import StepTimer from './room/StepTimer';
 import Box from '../styles/Box';
 import { css } from '@emotion/css';

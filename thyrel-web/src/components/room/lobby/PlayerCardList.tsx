@@ -1,7 +1,7 @@
-import Box from '../../styles/Box';
+import Box from '../../../styles/Box';
 import PlayerCard from './PlayerCard';
-import Player from '../../types/Player.type';
-import profilesPictures from '../../images/profiles/profiles-pictures';
+import Player from '../../../types/Player.type';
+import profilesPictures from '../../../images/profiles/profiles-pictures';
 
 type PlayerCardListProps = {
   players?: Player[];

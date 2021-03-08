@@ -1,9 +1,9 @@
 import { Avatar } from 'rsuite';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
-import Box from '../../styles/Box';
+import Box from '../../../styles/Box';
 import { Icon } from 'rsuite';
-import { baseColor, bgColor } from '../../styles/colors';
+import { baseColor, bgColor } from '../../../styles/colors';
 
 type PlayerCardProps = {
   id: number;

@@ -1,5 +1,5 @@
 import { css } from '@emotion/css';
-import { baseColor } from '../../styles/colors';
+import { baseColor } from '../styles/colors';
 
 export default function AppTitle() {
   return (

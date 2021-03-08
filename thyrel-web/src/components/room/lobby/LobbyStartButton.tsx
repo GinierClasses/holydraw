@@ -1,10 +1,10 @@
 import { css } from '@emotion/css';
 import React from 'react';
-import { usePlayerContext } from '../../hooks/PlayerProvider';
-import Box from '../../styles/Box';
-import { secondaryText } from '../../styles/colors';
-import BigButton from '../BigButton';
-import SpinnerIcon from '../SpinnerIcon';
+import { usePlayerContext } from '../../../hooks/PlayerProvider';
+import Box from '../../../styles/Box';
+import { secondaryText } from '../../../styles/colors';
+import BigButton from '../../BigButton';
+import SpinnerIcon from '../../SpinnerIcon';
 
 export default function LobbyStartButton() {
   const { player } = usePlayerContext();

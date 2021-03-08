@@ -7,7 +7,7 @@ import profilesPictures from '../../images/profiles/profiles-pictures';
 import Box from '../../styles/Box';
 import Player from '../../types/Player.type';
 import BigButton from '../BigButton';
-import BigInput from '../lobby/BigInput';
+import BigInput from '../BigInput';
 import PlayerAvatar from './PlayerAvatar';
 
 const defaultUsername = 'Bgros';

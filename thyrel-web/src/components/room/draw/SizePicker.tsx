@@ -1,6 +1,6 @@
 import { css } from '@emotion/css';
-import Box from '../../styles/Box';
-import { bgFade, primaryFade } from '../../styles/colors';
+import Box from '../../../styles/Box';
+import { bgFade, primaryFade } from '../../../styles/colors';
 
 type SizePickerProps = {
   currentSize: number;
