@@ -18,7 +18,9 @@ export default function ModalJoin({
       <BigButton
         icon="angle-double-up"
         size="lg"
-        onClick={() => urlIdentifier ? onClick(urlIdentifier) : setOpen(true)}
+        onClick={() =>
+          urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
+        }>
         Join
       </BigButton>
 
