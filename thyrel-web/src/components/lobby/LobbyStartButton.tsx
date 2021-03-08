@@ -19,13 +19,22 @@ export default function LobbyStartButton() {
       data: {
         roomId: room?.id,
       },
-    }).then(() => {
-      Notification['success']({
-        title: 'Game successfully started',
-        description: 'Begin to play !',
-      });
-    });
+    }).then(
+      () => {
+        Notification.success({
+          title: 'Game successfully started',
+          description: 'Begin to play !',
+        });
+      },
+      () => {
+        Notification.error({
+          title: "Couldn't start game",
+          description: 'Try again later',
+        });
+      },
+    );
   }
+
   return (
     <Box m={24} flexDirection="column" alignItems="center">
       <p className={css({ textAlign: 'center', color: secondaryText })}>
