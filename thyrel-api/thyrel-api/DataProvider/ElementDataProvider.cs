@@ -16,11 +16,6 @@ namespace thyrel_api.DataProvider
             _holyDrawDbContext = context;
         }
 
-        public ElementDataProvider(DbContextOptions<HolyDrawDbContext> options)
-        {
-            _holyDrawDbContext = new HolyDrawDbContext(options);
-        }
-
         /// <summary>
         ///     Create a Drawing Element
         /// </summary>
@@ -34,7 +29,6 @@ namespace thyrel_api.DataProvider
             int? drawingId = null)
         {
             var element = new Element(step, creatorId, initiatorId, sessionId, drawingId);
-
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;

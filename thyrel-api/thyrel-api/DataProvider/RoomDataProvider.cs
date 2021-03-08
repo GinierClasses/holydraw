@@ -15,11 +15,6 @@ namespace thyrel_api.DataProvider
             _holyDrawDbContext = context;
         }
         
-        public RoomDataProvider(DbContextOptions<HolyDrawDbContext> options)
-        {
-            _holyDrawDbContext = new HolyDrawDbContext(options);
-        }
-
         /// <summary>
         ///     Add a new room
         /// </summary>

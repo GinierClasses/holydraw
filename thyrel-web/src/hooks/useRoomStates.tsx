@@ -4,21 +4,23 @@ import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { usePlayerContext } from './PlayerProvider';
 
-export function useRoomState() {
+export function useRoomStates() {
   const [room, setRoom] = React.useState<Room>();
   const [players, setPlayers] = React.useState<Player[]>([]);
   const { player } = usePlayerContext();
 
   const updateRoom = React.useCallback(() => {
-    client<Room>(`room/${player?.room?.identifier}`).then(r => {
-      setRoom(r);
-    });
-  }, [player]);
+    client<Room>(`room/${player?.roomId}`).then(setRoom);
+  }, [player?.roomId]);
 
-  const removePlayer = (player?: Player) => {
-    if (!player) return;
+  const updatePlayer = React.useCallback(() => {
+    client<Player[]>(`room/${player?.roomId}/players`).then(setPlayers);
+  }, [player?.roomId]);
+
+  const removePlayer = React.useCallback((playerId?: number) => {
+    if (!playerId) return;
     setPlayers(prevPlayers => {
-      const playerIndex = prevPlayers?.findIndex(p => p.id === player.id);
+      const playerIndex = prevPlayers?.findIndex(p => p.id === playerId);
       if (playerIndex !== -1) {
         const playersCopy = [...prevPlayers];
         playersCopy.splice(playerIndex, 1);
@@ -26,22 +28,16 @@ export function useRoomState() {
       }
       return prevPlayers;
     });
-  };
+  }, []);
 
-  const addPlayer = (player?: Player) => {
+  const addPlayer = React.useCallback((player?: Player) => {
     if (!player) return;
 
     setPlayers(prevPlayers => {
       if (prevPlayers.find(p => p.id === player.id)) return prevPlayers;
       return [...prevPlayers, player];
     });
-  };
-
-  const updatePlayer = React.useCallback(() => {
-    client<Player[]>(`room/${player?.room?.id}/players`).then(p =>
-      setPlayers(p),
-    );
-  }, [player?.room?.id]);
+  }, []);
 
   React.useEffect(() => {
     updateRoom();

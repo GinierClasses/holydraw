@@ -14,7 +14,7 @@ namespace test_thyrel_api
         public async Task Setup()
         {
             await SetupTest();
-            _roomDataProvider = new RoomDataProvider(Options);
+            _roomDataProvider = new RoomDataProvider(Context);
         }
 
         [Test]

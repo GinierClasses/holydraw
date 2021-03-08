@@ -4,12 +4,9 @@ import { Notification } from 'rsuite';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { parseJson } from '../utils/json';
-import { useRoomState } from './useRoomState';
-import useWebsocket, {
-  WebsocketMessage,
-  WebsocketEvent,
-  WsStates,
-} from './useWebsocket';
+import { useRoomStates } from './useRoomStates';
+import { WebsocketMessage, WebsocketEvent, WsStates } from './useWebsocket';
+import { useWebsocketContext } from './WebsocketProvider';
 
 type RoomSocketContextProps = {
   room?: Room;
@@ -36,36 +33,41 @@ export function RoomContextProvider({
     updatePlayer,
     removePlayer,
     addPlayer,
-  } = useRoomState();
+  } = useRoomStates();
   const history = useHistory();
+  const { wsState, websocket } = useWebsocketContext();
 
-  const { wsState } = useWebsocket((message: string) => {
-    const websocketMessage = parseJson<WebsocketMessage>(message);
-    if (!websocketMessage) return;
+  React.useEffect(() => {
+    if (websocket) {
+      websocket.addEventListener('message', function (event: { data: string }) {
+        const message = event.data;
+        const websocketMessage = parseJson<WebsocketMessage>(message);
+        if (!websocketMessage) return;
 
-    switch (websocketMessage.websocketEvent) {
-      case WebsocketEvent.Invalid:
-        Notification['error']({
-          title: "You're not in a game.",
-          description: 'You will go back to the home.',
-        });
-        history.push('/home');
-        break;
-      case WebsocketEvent.PlayerJoin:
-        addPlayer(websocketMessage.player);
-        break;
-      case WebsocketEvent.PlayerLeft:
-        removePlayer(websocketMessage.player);
-        break;
-      case WebsocketEvent.NewOwnerPlayer:
-        console.log('New Owner player');
-        updatePlayer();
-        break;
-      case WebsocketEvent.SessionStart:
-        history.push('/r/start');
-        break;
+        switch (websocketMessage.websocketEvent) {
+          case WebsocketEvent.Invalid:
+            Notification['error']({
+              title: "You're not in a game.",
+              description: 'You will go back to the home.',
+            });
+            history.push('/home');
+            break;
+          case WebsocketEvent.PlayerJoin:
+            addPlayer(websocketMessage.player);
+            break;
+          case WebsocketEvent.PlayerLeft:
+            removePlayer(websocketMessage.player);
+            break;
+          case WebsocketEvent.NewOwnerPlayer:
+            updatePlayer();
+            break;
+          case WebsocketEvent.SessionStart:
+            history.push('/r/start');
+            break;
+        }
+      });
     }
-  });
+  }, [addPlayer, history, removePlayer, updatePlayer, websocket]);
 
   const values = { room, wsState, players };
 
