@@ -32,7 +32,8 @@ namespace thyrel_api.Controllers
             return await new PlayerDataProvider(_context).GetPlayer(player.Id);
         }
 
-        //Call this enpoint to kick the player from the room he is in
+        // Call this endpoint to kick the player from the room he is in
+        // PATCH: api/players/12/kick
         [HttpPatch("players/{id}/kick")]
         public async Task<ActionResult<Player>> Kick(int id)
         {

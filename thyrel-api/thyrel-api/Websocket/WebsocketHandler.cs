@@ -16,11 +16,18 @@ namespace thyrel_api.Websocket
     public class WebsocketHandler : IWebsocketHandler
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly HolyDrawDbContext _context;
         private List<SocketConnection> _websocketConnections = new();
 
         public WebsocketHandler(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
+            SetupCleanUpTask();
+        }
+        
+        public WebsocketHandler(HolyDrawDbContext context)
+        {
+            _context = context;
             SetupCleanUpTask();
         }
 
@@ -170,6 +177,7 @@ namespace thyrel_api.Websocket
 
         private HolyDrawDbContext GetInjectedContext()
         {
+            if (_context != null) return _context;
             var scope = _scopeFactory.CreateScope();
             return scope.ServiceProvider.GetRequiredService<HolyDrawDbContext>();
         }

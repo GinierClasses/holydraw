@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
+using thyrel_api.Handler;
 using thyrel_api.Models;
 
 namespace thyrel_api.Controllers
@@ -68,8 +69,11 @@ namespace thyrel_api.Controllers
         [HttpGet("{roomId}/players")]
         public async Task<ActionResult<List<Player>>> GetPlayersByRoom(int roomId)
         {
-            var player = await new PlayerDataProvider(_context).GetPlayersByRoom(roomId);
-            return player;
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player == null || player.RoomId != roomId) return Unauthorized();
+            
+            var players = await new PlayerDataProvider(_context).GetPlayersByRoom(roomId);
+            return players;
         }
 
         public class PlayerRoomBody

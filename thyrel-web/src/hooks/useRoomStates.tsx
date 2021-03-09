@@ -1,5 +1,6 @@
 import React from 'react';
 import { client } from '../api/client';
+import { getToken } from '../api/player-provider';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { usePlayerContext } from './PlayerProvider';
@@ -14,7 +15,9 @@ export function useRoomStates() {
   }, [player?.roomId]);
 
   const updatePlayer = React.useCallback(() => {
-    client<Player[]>(`room/${player?.roomId}/players`).then(setPlayers);
+    client<Player[]>(`room/${player?.roomId}/players`, {
+      token: getToken(),
+    }).then(setPlayers);
   }, [player?.roomId]);
 
   const removePlayer = React.useCallback((playerId?: number) => {
