@@ -13,5 +13,11 @@ const loadingClass = css({
 });
 
 export default function SpinnerIcon(props: IconProps) {
-  return <Icon {...props} className={clsx(props.className, loadingClass)} />;
+  return (
+    <Icon
+      aria-label="spinner icon"
+      {...props}
+      className={clsx(props.className, loadingClass)}
+    />
+  );
 }

@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
-import AppTitle from '../components/lobby/AppTitle';
-import BigInput from '../components/lobby/BigInput';
-import PlayerCard from '../components/lobby/PlayerCard';
-import PlayerCardList from '../components/lobby/PlayerCardList';
+import AppTitle from '../components/AppTitle';
+import BigInput from '../components/BigInput';
+import PlayerCard from '../components/room/lobby/PlayerCard';
+import PlayerCardList from '../components/room/lobby/PlayerCardList';
 import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
-import DrawColorPicker from '../components/draw/DrawColorPicker';
-import SizePicker from '../components/room/SizePicker';
-
-import ShareRoomButton from '../components/lobby/ShareRoomButton';
-
-import BookPlayerList from '../components/room/BookPlayerList';
+import DrawColorPicker from '../components/room/draw/DrawColorPicker';
+import SizePicker from '../components/room/draw/SizePicker';
+import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
+import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
 
 export default function ComponentTest() {

@@ -8,8 +8,8 @@ import {
   disabledText,
   secondaryText,
   primaryFade,
-} from '../../styles/colors';
-import Mq from '../../styles/breakpoint';
+} from '../styles/colors';
+import Mq from '../styles/breakpoint';
 import { css } from '@emotion/css';
 
 type ContainerProps = {

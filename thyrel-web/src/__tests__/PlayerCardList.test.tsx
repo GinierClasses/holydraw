@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import PlayerCardList from '../components/lobby/PlayerCardList';
+import PlayerCardList from '../components/room/lobby/PlayerCardList';
 
 const data = [
   {
