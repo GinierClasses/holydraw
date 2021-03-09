@@ -40,8 +40,9 @@ namespace thyrel_api.Controllers
                 return NotFound();
 
             var players = await playerDataProvider.GetPlayersByRoom(body.RoomId);
-            players.ForEach(async p =>
-                await elementDataProvider.AddSentence(p.Id, p.Id, 1, addedSession.Id));
+            var elements = new List<Element>();
+            players.ForEach(p => elements.Add(new Element(1, p.Id, p.Id, addedSession.Id, "")));
+            await elementDataProvider.AddElements(elements);
             
             await _websocketHandler.SendMessageToSockets(
                 JSON.Serialize(
