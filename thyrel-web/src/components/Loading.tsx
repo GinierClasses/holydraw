@@ -1,4 +1,3 @@
-import React from 'react';
 import Box from '../styles/Box';
 import Spinner from '../images/spinner.svg';
 

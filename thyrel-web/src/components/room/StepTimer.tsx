@@ -1,6 +1,6 @@
+import React from 'react';
 import { Progress } from 'rsuite';
 import { baseColor } from '../../styles/colors';
-import React from 'react';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { MediaQuery } from '../../styles/breakpoint';
 

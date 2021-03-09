@@ -1,10 +1,10 @@
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
 import { Button, Icon } from 'rsuite';
-import Box from '../../styles/Box';
-import { bgFade } from '../../styles/colors';
+import Box from 'styles/Box';
+import { bgFade } from 'styles/colors';
 import { Notification } from 'rsuite';
-import { copyToClipboard } from '../../utils/clipboard';
+import { copyToClipboard } from 'utils/clipboard';
 
 type ShareRoomButtonProps = {
   identifier: string;

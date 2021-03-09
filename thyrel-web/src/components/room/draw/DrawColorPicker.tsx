@@ -1,8 +1,7 @@
-import Box from '../../styles/Box';
+import Box from 'styles/Box';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
-import { baseColor } from '../../styles/colors';
-import React from 'react';
+import { baseColor } from 'styles/colors';
 
 type DrawColorPickerProps = {
   colors: string[];

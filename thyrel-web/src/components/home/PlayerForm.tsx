@@ -7,7 +7,7 @@ import profilesPictures from '../../images/profiles/profiles-pictures';
 import Box from '../../styles/Box';
 import Player from '../../types/Player.type';
 import BigButton from '../BigButton';
-import BigInput from '../lobby/BigInput';
+import BigInput from '../BigInput';
 import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
 
@@ -72,9 +72,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       />
 
       <Box flexDirection="column" alignItems="center" width="100%" gap={12}>
-        <ButtonModalJoin
-          identifier={identifier}
-          onClick={onJoin} />
+        <ButtonModalJoin identifier={identifier} onClick={onJoin} />
 
         {!identifier && (
           <BigButton icon="angle-double-right" size="lg" onClick={onStart}>
