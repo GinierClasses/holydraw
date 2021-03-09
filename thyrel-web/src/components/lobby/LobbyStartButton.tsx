@@ -4,10 +4,37 @@ import { usePlayerContext } from '../../hooks/PlayerProvider';
 import Box from '../../styles/Box';
 import { secondaryText } from '../../styles/colors';
 import BigButton from '../BigButton';
+import { Notification } from 'rsuite';
 import SpinnerIcon from '../SpinnerIcon';
+import { client } from '../../api/client';
+import Session from '../../types/Session.type';
+import { useRoomContext } from '../../hooks/RoomProvider';
 
 export default function LobbyStartButton() {
   const { player } = usePlayerContext();
+  const { room } = useRoomContext();
+
+  function onStart() {
+    client<Session>('session', {
+      data: {
+        roomId: room?.id,
+      },
+    }).then(
+      () => {
+        Notification.success({
+          title: 'Game successfully started',
+          description: 'Begin to play !',
+        });
+      },
+      () => {
+        Notification.error({
+          title: "Couldn't start game",
+          description: 'Try again later',
+        });
+      },
+    );
+  }
+
   return (
     <Box m={24} flexDirection="column" alignItems="center">
       <p className={css({ textAlign: 'center', color: secondaryText })}>
@@ -21,7 +48,7 @@ export default function LobbyStartButton() {
       {player?.isOwner && (
         <div>
           <BigButton
-            onClick={() => console.log('blabla')}
+            onClick={onStart}
             className={css({ marginTop: 12 })}
             icon="angle-double-right">
             Start

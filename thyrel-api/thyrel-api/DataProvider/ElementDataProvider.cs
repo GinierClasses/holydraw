@@ -54,6 +54,19 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
+        /// Add a list of elements
+        /// </summary>
+        /// <param name="elements"></param>
+        /// <returns></returns>
+        public async Task AddElements(List<Element> elements)
+        {
+            elements.ForEach(async e =>
+                await _holyDrawDbContext.Element.AddAsync(e));
+
+            await SaveChanges();
+        }
+
+        /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
         /// <param name="elementId"></param>
