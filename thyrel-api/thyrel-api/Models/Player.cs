@@ -30,7 +30,7 @@ namespace thyrel_api.Models
         public DateTime? DisableAt { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
         public virtual Room Room { get; set; }
 
         public int TokenId { get; set; }

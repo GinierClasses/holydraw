@@ -29,6 +29,13 @@ namespace thyrel_api.DataProvider
         Task<Element> AddSentence(int creatorId, int initiatorId, int step, int sessionId, string text = "");
 
         /// <summary>
+        /// Add a list of elements
+        /// </summary>
+        /// <param name="elements"></param>
+        /// <returns></returns>
+        Task AddElements(List<Element> elements);
+
+        /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
         /// <param name="elementId"></param>
