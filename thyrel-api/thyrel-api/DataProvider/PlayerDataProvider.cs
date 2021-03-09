@@ -138,6 +138,21 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
+        ///     Delete Room from the player (kick a player from the room)
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public async Task<Player> KickPlayerFromRoomById(int playerId)
+        {
+            var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
+            if (dbPlayer == null)
+                return null;
+
+            dbPlayer.RoomId = null;
+            await SaveChanges();
+            return dbPlayer;
+        }
+
         /// Find a new owner for a room
         /// </summary>
         /// <param name="roomId">Room to find a owner</param>

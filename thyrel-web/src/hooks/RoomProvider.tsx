@@ -45,7 +45,7 @@ export function RoomContextProvider({
 
       switch (websocketMessage.websocketEvent) {
         case WebsocketEvent.Invalid:
-          Notification['error']({
+          Notification.error({
             title: "You're not in a game.",
             description: 'You will go back to the home.',
           });
@@ -59,6 +59,9 @@ export function RoomContextProvider({
           break;
         case WebsocketEvent.NewOwnerPlayer:
           updatePlayer();
+          break;
+        case WebsocketEvent.SessionStart:
+          history?.push('/r/start');
           break;
       }
     }

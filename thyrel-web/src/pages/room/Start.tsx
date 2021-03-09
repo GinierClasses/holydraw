@@ -9,8 +9,7 @@ export default function Start() {
   return (
     <Box padding={32} flexDirection="column" gap={42}>
       <GameBar
-        count={6}
-        max={7}
+        max={12}
         finishAt={new Date('2021-02-10T15:15:00')}
         timeDuration={1000}
         onFinish={() => console.log('Finished?')}
