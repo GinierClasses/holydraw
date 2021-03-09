@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using thyrel_api.Controllers;
+using thyrel_api.Websocket;
 
 namespace test_thyrel_api
 {
@@ -16,7 +17,7 @@ namespace test_thyrel_api
             await SetupTest();
 
             var httpContext = new DefaultHttpContext();
-            var controller = new PlayerController(Context)
+            var controller = new PlayerController(new WebsocketHandler(Context), Context)
             {
                 ControllerContext = new ControllerContext
                 {
