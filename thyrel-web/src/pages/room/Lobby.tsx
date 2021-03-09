@@ -1,9 +1,9 @@
-import AppTitle from '../../components/AppTitle';
-import LobbyStartButton from '../../components/room/lobby/LobbyStartButton';
-import { Players, PlayerCountBox } from '../../components/room/lobby/Players';
-import SettingsMenu from '../../components/room/lobby/SettingsMenu';
-import Box from '../../styles/Box';
-import { bgFade } from '../../styles/colors';
+import AppTitle from 'components/AppTitle';
+import LobbyStartButton from 'components/room/lobby/LobbyStartAction';
+import { Players, PlayerCountBox } from 'components/room/lobby/Players';
+import SettingsMenu from 'components/room/lobby/SettingsMenu';
+import Box from 'styles/Box';
+import { bgFade } from 'styles/colors';
 
 export default function Lobby() {
   return (

@@ -1,7 +1,7 @@
-import Box from '../../../styles/Box';
-import Player from '../../../types/Player.type';
+import Box from 'styles/Box';
+import Player from 'types/Player.type';
 import { Avatar } from 'rsuite';
-import { primaryFade } from '../../../styles/colors';
+import { primaryFade } from 'styles/colors';
 import styled from '@emotion/styled';
 import { Tooltip, Whisper } from 'rsuite';
 import { css } from '@emotion/css';

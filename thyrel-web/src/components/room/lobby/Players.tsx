@@ -1,6 +1,6 @@
-import { usePlayerContext } from '../../../hooks/PlayerProvider';
-import { useRoomContext } from '../../../hooks/RoomProvider';
-import Box from '../../../styles/Box';
+import { usePlayerContext } from 'hooks/PlayerProvider';
+import { useRoomContext } from 'hooks/RoomProvider';
+import Box from 'styles/Box';
 import Loading from '../../Loading';
 import PlayerCount from '../../room/PlayerCount';
 import PlayerCardList from './PlayerCardList';
