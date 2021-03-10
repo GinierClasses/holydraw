@@ -16,8 +16,26 @@ import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
 
+const colors = [
+  '#FF0000',
+  '#FFC700',
+  '#24FF00',
+  '#001AAF',
+  '#005A5F',
+  '#6564A6',
+  '#759F81',
+  '#FFFA8A',
+  '#8C33D2',
+  '#FF8A00',
+  '#00FFC2',
+  '#002FFF',
+  '#FA00FF',
+  '#A450AC',
+];
+
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
+  const [currentColor, setCurrentColor] = useState(colors[0]);
   const [size, setSize] = useState(8);
 
   const nextPp = () => {
@@ -96,23 +114,11 @@ export default function ComponentTest() {
         <AppTitle />
 
         <DrawColorPicker
-          colors={[
-            '#FF0000',
-            '#FFC700',
-            '#24FF00',
-            '#001AFF',
-            '#00F0FF',
-            '#6564A6',
-            '#759F81',
-            '#FFFA8A',
-            '#8C33D2',
-            '#FF8A00',
-            '#00FFC2',
-            '#001AFF',
-            '#FA00FF',
-            '#FA00FF',
-          ]}
-          currentColor="#24FF00"
+          colors={colors}
+          currentColor={currentColor}
+          onColorChange={color => {
+            setCurrentColor(color);
+          }}
         />
 
         <Box display="block" width={100} height={100}>
