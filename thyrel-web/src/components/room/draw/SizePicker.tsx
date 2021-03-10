@@ -17,16 +17,17 @@ export default function SizePicker({
     <Box
       padding={8}
       gap={8}
-      bg="#88006120"
+      bg={primaryFade(0.2)}
       borderRadius={4}
       borderWidth={1}
       borderColor="#000000"
       alignItems="center"
       boxShadow={`0px 0px 4px ${bgFade(0.8)}`}>
-      {buttonSizes.map(size => {
+      {buttonSizes.map((size, i) => {
         const isCurrentSize = currentSize === size;
         return (
           <button
+            key={i}
             onClick={() => onSizeChange(size)}
             className={css({
               backgroundColor: 'transparent',

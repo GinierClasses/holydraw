@@ -1,11 +1,12 @@
 import Box from 'styles/Box';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
-import { baseColor } from 'styles/colors';
+import { primaryFade } from 'styles/colors';
+import React from 'react';
 
 type DrawColorPickerProps = {
   colors: string[];
-  onChange?: (color: string) => void;
+  onColorChange?: (color: string) => void;
   currentColor: string;
 };
 
@@ -14,10 +15,10 @@ const SquareButton = styled.button({
   borderRadius: '4px',
   width: '32px',
   height: '32px',
-  padding: '8px',
+  padding: '0',
 });
 
-function coupleColors(colors: string[]) {
+function getCoupleColors(colors: string[]) {
   return colors.reduce(
     (accumulator: { index: number; result: string[][] }, value) => {
       const colorCouples = accumulator.result[accumulator.index];
@@ -41,45 +42,50 @@ function coupleColors(colors: string[]) {
 export default function DrawColorPicker({
   colors,
   currentColor,
-  onChange,
+  onColorChange,
 }: DrawColorPickerProps) {
+  const coupleColors: string[][] = React.useMemo(
+    () => getCoupleColors(colors),
+    [colors],
+  );
+
   return (
     <Box
       width={88}
       display="flex"
       flexDirection="column"
       padding="8px"
-      borderRadius={5}
+      borderRadius={4}
+      gap={8}
+      borderWidth={1}
+      borderColor="#000000"
       justifyContent="center"
-      className={css({
-        background: baseColor,
-      })}>
-      {coupleColors(colors).map(Couple => {
-        return (
-          <div
-            className={css({
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingTop: '4px',
-              paddingBottom: '4px',
-              top: '248px',
-            })}>
-            {Couple.map(squareColor => {
-              const isSelected = squareColor === currentColor;
+      bg={primaryFade(0.2)}>
+      {coupleColors.map((couple, index) => (
+        <div
+          key={index}
+          className={css({
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            top: '248px',
+          })}>
+          {couple.map((squareColor, index) => {
+            const isSelected = squareColor === currentColor;
 
-              return (
-                <SquareButton
-                  className={css({
-                    border: isSelected ? '3px solid white' : undefined,
-                    background: squareColor,
-                  })}
-                />
-              );
-            })}
-          </div>
-        );
-      })}
+            return (
+              <SquareButton
+                key={index}
+                onClick={() => onColorChange?.(squareColor)}
+                className={css({
+                  border: isSelected ? '2px solid white' : '1px solid black',
+                  background: squareColor,
+                })}
+              />
+            );
+          })}
+        </div>
+      ))}
     </Box>
   );
 }
