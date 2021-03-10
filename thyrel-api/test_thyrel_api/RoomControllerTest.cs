@@ -28,18 +28,10 @@ namespace test_thyrel_api
         }
 
         [Test]
-        public async Task GetRoomWithIdentifier()
-        {
-            var room = Context.Room.First();
-            var actionResult = await _roomController.GetRoom(room.Identifier);
-            Assert.AreEqual(actionResult.Value.Id, room.Id);
-        }
-        
-        [Test]
         public async Task GetRoomWithId()
         {
             var room = Context.Room.First();
-            var actionResult = await _roomController.GetRoom(room.Id.ToString());
+            var actionResult = await _roomController.Get(room.Id);
             Assert.AreEqual(actionResult.Value.Id, room.Id);
         }
 
