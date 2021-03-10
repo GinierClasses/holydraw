@@ -43,10 +43,10 @@ namespace thyrel_api.Controllers
             }
 
             await _websocketHandler.SendMessageToSockets(
-                Json.JSON.Serialize(
+                JSON.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.PlayerFinished)), session.RoomId);
 
-            return Ok();
+            return Ok(element);
         }
 
         // Call this endpoint to get a room
