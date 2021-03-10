@@ -25,7 +25,7 @@ namespace thyrel_api.Controllers
         // Call this endpoint to get own player
         // POST: api/players/me
         [HttpGet("me")]
-        public async Task<ActionResult<Player>> Post()
+        public async Task<ActionResult<Player>> Get()
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player == null) return Unauthorized();

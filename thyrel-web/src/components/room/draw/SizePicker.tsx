@@ -23,10 +23,11 @@ export default function SizePicker({
       borderColor="#000000"
       alignItems="center"
       boxShadow={`0px 0px 4px ${bgFade(0.8)}`}>
-      {buttonSizes.map(size => {
+      {buttonSizes.map((size, i) => {
         const isCurrentSize = currentSize === size;
         return (
           <button
+            key={i}
             onClick={() => onSizeChange(size)}
             className={css({
               backgroundColor: 'transparent',

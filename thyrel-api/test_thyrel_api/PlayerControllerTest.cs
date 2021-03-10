@@ -17,7 +17,7 @@ namespace test_thyrel_api
             await SetupTest();
 
             var httpContext = new DefaultHttpContext();
-            var controller = new PlayerController(new WebsocketHandler(Context), Context)
+            var controller = new PlayerController(new WebsocketHandler(new MockScopeFactory()), Context)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -33,7 +33,7 @@ namespace test_thyrel_api
             var player = Context.Player.First();
             await ConnectApi(_playerController.HttpContext, player);
             
-            var actionResult = await _playerController.Post();
+            var actionResult = await _playerController.Get();
             Assert.AreEqual(player.Id, actionResult.Value.Id);
         }
     }
