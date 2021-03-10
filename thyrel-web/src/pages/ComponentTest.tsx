@@ -16,6 +16,72 @@ import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
 
+const testPlayerList = [
+  {
+    id: 1,
+    username: 'jeanmich',
+    avatarUrl: '0',
+    isOwner: true,
+    isPlaying: true,
+    createdAt: '',
+    roomId: 1,
+  },
+  {
+    id: 2,
+    username: 'Xx_plao',
+    avatarUrl: '1',
+    isOwner: false,
+    isPlaying: true,
+    createdAt: '',
+    roomId: 1,
+  },
+  {
+    id: 3,
+    username: 'AAAAAAHHHH',
+    avatarUrl: '2',
+    isOwner: false,
+    isPlaying: true,
+    createdAt: '',
+    roomId: 1,
+  },
+  {
+    id: 4,
+    username: 'Melvyn',
+    avatarUrl: '3',
+    isOwner: false,
+    isPlaying: true,
+    createdAt: '',
+    roomId: 1,
+  },
+  {
+    id: 5,
+    username: 'Ana',
+    avatarUrl: '4',
+    isOwner: false,
+    isPlaying: true,
+    createdAt: '',
+    roomId: 1,
+  },
+  {
+    id: 6,
+    username: 'Alex',
+    avatarUrl: '5',
+    isOwner: false,
+    isPlaying: true,
+    createdAt: '',
+    roomId: 1,
+  },
+  {
+    id: 7,
+    username: 'Luca',
+    avatarUrl: '6',
+    isOwner: false,
+    isPlaying: true,
+    createdAt: '',
+    roomId: 1,
+  },
+];
+
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [size, setSize] = useState(8);
@@ -23,72 +89,6 @@ export default function ComponentTest() {
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
-
-  const testPlayerList = [
-    {
-      id: 1,
-      username: 'jeanmich',
-      avatarUrl: profilesPictures[0],
-      isOwner: true,
-      isPlaying: true,
-      createdAt: '',
-      roomId: 1,
-    },
-    {
-      id: 2,
-      username: 'Xx_plao',
-      avatarUrl: profilesPictures[1],
-      isOwner: false,
-      isPlaying: true,
-      createdAt: '',
-      roomId: 1,
-    },
-    {
-      id: 3,
-      username: 'AAAAAAHHHH',
-      avatarUrl: profilesPictures[2],
-      isOwner: false,
-      isPlaying: true,
-      createdAt: '',
-      roomId: 1,
-    },
-    {
-      id: 4,
-      username: 'Melvyn',
-      avatarUrl: profilesPictures[3],
-      isOwner: false,
-      isPlaying: true,
-      createdAt: '',
-      roomId: 1,
-    },
-    {
-      id: 5,
-      username: 'Ana',
-      avatarUrl: profilesPictures[4],
-      isOwner: false,
-      isPlaying: true,
-      createdAt: '',
-      roomId: 1,
-    },
-    {
-      id: 6,
-      username: 'Alex',
-      avatarUrl: profilesPictures[5],
-      isOwner: false,
-      isPlaying: true,
-      createdAt: '',
-      roomId: 1,
-    },
-    {
-      id: 7,
-      username: 'Luca',
-      avatarUrl: profilesPictures[6],
-      isOwner: false,
-      isPlaying: true,
-      createdAt: '',
-      roomId: 1,
-    },
-  ];
 
   return (
     <Box>
@@ -126,7 +126,7 @@ export default function ComponentTest() {
           identifier={undefined}
           onClick={console.log}></ButtonModalJoin>
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
-        <BigInput value={'didier'} icon="apple" />
+        <BigInput onChange={() => void 0} value={'didier'} icon="apple" />
         <ShareRoomButton identifier="LH4AH3" />
         <PlayerCard
           id={1}
@@ -154,13 +154,7 @@ export default function ComponentTest() {
           sentence="Mémé fait des fucks à la police"
         />
 
-        <SizePicker
-          currentSize={size}
-          onSizeChange={size => {
-            console.log('Size is :', size);
-            setSize(size);
-          }}
-        />
+        <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
 
         <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
       </Box>
