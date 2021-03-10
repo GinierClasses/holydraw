@@ -17,7 +17,7 @@ export default function SizePicker({
     <Box
       padding={8}
       gap={8}
-      bg="#88006120"
+      bg={primaryFade(0.2)}
       borderRadius={4}
       borderWidth={1}
       borderColor="#000000"
