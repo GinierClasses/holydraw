@@ -31,7 +31,7 @@ const colors = [
   '#002FFF',
   '#FA00FF',
   '#A450AC',
-]
+];
 
 const testPlayerList = [
   {
@@ -116,16 +116,13 @@ export default function ComponentTest() {
         <DrawColorPicker
           colors={colors}
           currentColor={currentColor}
-          onColorChange={color => {
-            setCurrentColor(color);
-          }}
+          onColorChange={color => setCurrentColor(color)}
         />
 
         <Box display="block" width={100} height={100}>
           <StepTimer
             finishAt={new Date('2021-03-02T10:27:00')}
             timeDuration={100}
-            onFinish={() => console.log('finished')}
           />
         </Box>
         <ButtonModalJoin

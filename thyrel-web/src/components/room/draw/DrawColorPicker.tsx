@@ -1,7 +1,7 @@
 import Box from 'styles/Box';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
-import { baseColor } from 'styles/colors';
+import { primaryFade } from 'styles/colors';
 import React from 'react';
 
 type DrawColorPickerProps = {
@@ -55,41 +55,37 @@ export default function DrawColorPicker({
       display="flex"
       flexDirection="column"
       padding="8px"
-      borderRadius={5}
+      borderRadius={4}
+      gap={8}
+      borderWidth={1}
+      borderColor="#000000"
       justifyContent="center"
-      className={css({
-        background: baseColor,
-      })}>
-      {coupleColors.map((couple, index) => {
-        // let key = couple;
-        return (
-          <div
-            key={index}
-            className={css({
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingTop: '4px',
-              paddingBottom: '4px',
-              top: '248px',
-            })}>
-            {couple.map((squareColor, index) => {
-              const isSelected = squareColor === currentColor;
+      bg={primaryFade(0.2)}>
+      {coupleColors.map((couple, index) => (
+        <div
+          key={index}
+          className={css({
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            top: '248px',
+          })}>
+          {couple.map((squareColor, index) => {
+            const isSelected = squareColor === currentColor;
 
-              return (
-                <SquareButton
-                  key={index}
-                  onClick={() => onColorChange?.(squareColor)}
-                  className={css({
-                    border: isSelected ? '2px solid white' : '1px solid black',
-                    background: squareColor,
-                  })}
-                />
-              );
-            })}
-          </div>
-        );
-      })}
+            return (
+              <SquareButton
+                key={index}
+                onClick={() => onColorChange?.(squareColor)}
+                className={css({
+                  border: isSelected ? '2px solid white' : '1px solid black',
+                  background: squareColor,
+                })}
+              />
+            );
+          })}
+        </div>
+      ))}
     </Box>
   );
 }
