@@ -11,8 +11,7 @@ namespace test_thyrel_api
     {
         public IServiceScope CreateScope()
         {
-            var x = new ServiceScope();
-            return x;
+            return new ServiceScope();
         }
     }
 
@@ -23,9 +22,7 @@ namespace test_thyrel_api
             ServiceProvider = null;
         }
 
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
 
         public IServiceProvider ServiceProvider { get; }
     }
