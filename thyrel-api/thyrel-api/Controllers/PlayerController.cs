@@ -37,13 +37,20 @@ namespace thyrel_api.Controllers
         [HttpPatch("players/{id}/kick")]
         public async Task<ActionResult<Player>> Kick(int id)
         {
+            //TODO
+            /*var playerAutentified = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (playerAutentified == null) return Unauthorized();*/
+
             var playerDataProvider = new PlayerDataProvider(_context);
 
+            var playerToremove = await playerDataProvider.GetPlayer(id);//have to create a method GetPlayerRoom() ?
+            var roomId = playerToremove.RoomId;
+            //pass player en param
             var player = await playerDataProvider.KickPlayerFromRoomById(id);
 
             await _websocketHandler.SendMessageToSockets(
-                    JsonSerializer.Serialize(
-                        new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerKicked, player.Id)), id);
+            JSON.Serialize(
+                        new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerKicked, player.Id)), roomId);
 
             return player;
         }

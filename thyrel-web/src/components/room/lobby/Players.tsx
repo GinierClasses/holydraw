@@ -1,3 +1,4 @@
+import { client } from 'api/client';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
 import Box from 'styles/Box';
@@ -12,7 +13,7 @@ export function Players() {
   return (
     <Box flexDirection="column" alignItems="flex-end">
       {players?.length > 0 ? (
-        <PlayerCardList players={players} isKickable={player?.isOwner} />
+        <PlayerCardList players={players} isKickable={player?.isOwner} onKick={id => kickPlayer(id)}/>
       ) : (
         <Loading />
       )}
@@ -28,4 +29,9 @@ export function PlayerCountBox() {
       <PlayerCount count={players?.length || 0} max={12} />
     </Box>
   );
+}
+
+function kickPlayer(id:number){
+const url = `player/players/${id}/kick`;
+client(url, {method: "PATCH"}).then().catch(error => console.log(error));
 }

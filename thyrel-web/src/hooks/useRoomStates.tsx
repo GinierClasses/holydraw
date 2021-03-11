@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
 import Player from '../types/Player.type';
@@ -9,6 +10,7 @@ export function useRoomStates() {
   const [room, setRoom] = React.useState<Room>();
   const [players, setPlayers] = React.useState<Player[]>([]);
   const { player } = usePlayerContext();
+  const history = useHistory();
 
   const updateRoom = React.useCallback(() => {
     client<Room>(`room/${player?.roomId}`).then(setRoom);
@@ -22,6 +24,10 @@ export function useRoomStates() {
 
   const removePlayer = React.useCallback((playerId?: number) => {
     if (!playerId) return;
+    if(playerId === player?.id){
+      history?.push('/home');
+      window.alert("You have been kicked from the room 😓");
+    }
     setPlayers(prevPlayers => {
       const playerIndex = prevPlayers?.findIndex(p => p.id === playerId);
       if (playerIndex !== -1) {

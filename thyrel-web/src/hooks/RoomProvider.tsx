@@ -63,6 +63,9 @@ export function RoomContextProvider({
         case WebsocketEvent.SessionStart:
           history?.push('/r/start');
           break;
+        case WebsocketEvent.PlayerKicked:
+          removePlayer(websocketMessage.playerId);
+          break;
       }
     }
     if (websocket) {

@@ -64,7 +64,7 @@ export default function PlayerCard({
         ) : (
           isKickable && (
             <button
-              onClick={() => onKick?.(id)}
+              onClick={() => window.confirm(`Do you really want to kick ${name} ?`)&&onKick?.(id)}
               className={css({
                 backgroundColor: 'transparent',
                 outline: 'none',
