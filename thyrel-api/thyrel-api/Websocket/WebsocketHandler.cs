@@ -169,10 +169,9 @@ namespace thyrel_api.Websocket
         }
 
         private HolyDrawDbContext GetInjectedContext()
-        { 
-            using var scope = _scopeFactory.CreateScope();
-            var db = scope.ServiceProvider.GetService<HolyDrawDbContext>(); 
-            return db;
+        {
+            var scope = _scopeFactory.CreateScope();
+            return scope.ServiceProvider.GetRequiredService<HolyDrawDbContext>(); 
         }
     }
 }
