@@ -49,7 +49,8 @@ export default function SizePicker({
               border="1px solid #000000"
               bg="#000000"
               width={size}
-              height={size}></Box>
+              height={size}
+            />
           </button>
         );
       })}
