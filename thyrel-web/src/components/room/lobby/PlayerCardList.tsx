@@ -6,7 +6,7 @@ import profilesPictures from 'images/profiles/profiles-pictures';
 type PlayerCardListProps = {
   players?: Player[];
   isKickable?: boolean;
-  onKick?: (id: number) => void;
+  onKick?: (id: number, name: string) => void;
 };
 
 export default function PlayerCardList({
@@ -31,7 +31,7 @@ export default function PlayerCardList({
               avatar={profilesPictures[Number(player.avatarUrl)]}
               isOwner={player.isOwner}
               isKickable={isKickable}
-              onKick={(id, name) => window.confirm(`Do you really want to kick ${name} ?`) && onKick?.(id)}
+              onKick={(id, name) => onKick?.(id, name)}
               key={player.id}
             />
           );

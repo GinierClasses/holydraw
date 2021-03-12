@@ -14,7 +14,14 @@ export function Players() {
   return (
     <Box flexDirection="column" alignItems="flex-end">
       {players?.length > 0 ? (
-        <PlayerCardList players={players} isKickable={player?.isOwner} onKick={id => kickPlayer(id,player?.token?.tokenKey,)}/>
+        <PlayerCardList
+          players={players}
+          isKickable={player?.isOwner}
+          onKick={(id, name) =>
+            window.confirm(`Do you really want to kick ${name} ?`) &&
+            kickPlayer(id, player?.token?.tokenKey)
+          }
+        />
       ) : (
         <Loading />
       )}
@@ -32,25 +39,22 @@ export function PlayerCountBox() {
   );
 }
 
-function kickPlayer(id:number, tokenKey?:string){
-const url = `player/players/${id}/kick`;
-client(url, {
-  token: tokenKey,
-  method: "PATCH"
-})
-  .then(response =>{
-    Notification['success']({
-      title: 'Player successfully kicked.',
-      description: 'Play with the bests!',
+function kickPlayer(id: number, tokenKey?: string) {
+  const url = `player/players/${id}/kick`;
+  client(url, {
+    token: tokenKey,
+    method: 'PATCH',
+  })
+    .then(response => {
+      Notification['success']({
+        title: 'Player successfully kicked.',
+        description: 'Play with the bests!',
+      });
     })
-  }
-    
-    )
     .catch(error => {
       Notification['error']({
         title: 'An error occurred while trying to kick a player.',
         description: error,
-      })
-    }
-  );
+      });
+    });
 }
