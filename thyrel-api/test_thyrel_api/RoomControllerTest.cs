@@ -10,7 +10,7 @@ namespace test_thyrel_api
     public class RoomControllerTest : TestProvider
     {
         private RoomController _roomController;
-        
+
         [SetUp]
         public async Task Setup()
         {
@@ -28,18 +28,13 @@ namespace test_thyrel_api
         }
 
         [Test]
-        public async Task GetRoomWithIdentifier()
-        {
-            var room = Context.Room.First();
-            var actionResult = await _roomController.GetRoom(room.Identifier);
-            Assert.AreEqual(actionResult.Value.Id, room.Id);
-        }
-        
-        [Test]
         public async Task GetRoomWithId()
         {
             var room = Context.Room.First();
-            var actionResult = await _roomController.GetRoom(room.Id.ToString());
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id);
+            await ConnectApi(_roomController.HttpContext, player);
+
+            var actionResult = await _roomController.Get(room.Id);
             Assert.AreEqual(actionResult.Value.Id, room.Id);
         }
 
@@ -53,7 +48,7 @@ namespace test_thyrel_api
             var actionResult = await _roomController.GetPlayersByRoom(room.Id);
             Assert.AreEqual(actionResult.Value.Count, playersExpected.Count);
         }
-        
+
         [Test]
         public async Task GetPlayersByRoomUnAuthorize()
         {
