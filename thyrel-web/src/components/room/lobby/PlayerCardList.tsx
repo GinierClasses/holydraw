@@ -31,7 +31,7 @@ export default function PlayerCardList({
               avatar={profilesPictures[Number(player.avatarUrl)]}
               isOwner={player.isOwner}
               isKickable={isKickable}
-              onKick={onKick}
+              onKick={(id, name) => window.confirm(`Do you really want to kick ${name} ?`) && onKick?.(id)}
               key={player.id}
             />
           );

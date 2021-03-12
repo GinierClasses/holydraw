@@ -5,6 +5,7 @@ import Box from 'styles/Box';
 import Loading from '../../Loading';
 import PlayerCount from '../../room/PlayerCount';
 import PlayerCardList from './PlayerCardList';
+import { Notification } from 'rsuite';
 
 export function Players() {
   const { players } = useRoomContext();
@@ -13,7 +14,7 @@ export function Players() {
   return (
     <Box flexDirection="column" alignItems="flex-end">
       {players?.length > 0 ? (
-        <PlayerCardList players={players} isKickable={player?.isOwner} onKick={id => kickPlayer(id)}/>
+        <PlayerCardList players={players} isKickable={player?.isOwner} onKick={id => kickPlayer(id,player?.token?.tokenKey,)}/>
       ) : (
         <Loading />
       )}
@@ -31,7 +32,25 @@ export function PlayerCountBox() {
   );
 }
 
-function kickPlayer(id:number){
+function kickPlayer(id:number, tokenKey?:string){
 const url = `player/players/${id}/kick`;
-client(url, {method: "PATCH"}).then().catch(error => console.log(error));
+client(url, {
+  token: tokenKey,
+  method: "PATCH"
+})
+  .then(response =>{
+    Notification['success']({
+      title: 'Player successfully kicked.',
+      description: 'Play with the bests!',
+    })
+  }
+    
+    )
+    .catch(error => {
+      Notification['error']({
+        title: 'An error occurred while trying to kick a player.',
+        description: error,
+      })
+    }
+  );
 }

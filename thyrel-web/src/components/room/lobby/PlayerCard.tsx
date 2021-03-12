@@ -11,7 +11,7 @@ type PlayerCardProps = {
   avatar: string;
   isOwner?: boolean;
   isKickable?: boolean;
-  onKick?: (id: number) => void;
+  onKick?: (id: number, name: string) => void;
 };
 
 // Sets size for avatar component
@@ -64,7 +64,7 @@ export default function PlayerCard({
         ) : (
           isKickable && (
             <button
-              onClick={() => window.confirm(`Do you really want to kick ${name} ?`)&&onKick?.(id)}
+              onClick={() => onKick?.(id, name)}
               className={css({
                 backgroundColor: 'transparent',
                 outline: 'none',

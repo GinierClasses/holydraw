@@ -5,6 +5,7 @@ import { getToken } from '../api/player-provider';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { usePlayerContext } from './PlayerProvider';
+import { Notification } from 'rsuite';
 
 export function useRoomStates() {
   const [room, setRoom] = React.useState<Room>();
@@ -26,7 +27,10 @@ export function useRoomStates() {
     if (!playerId) return;
     if(playerId === player?.id){
       history?.push('/home');
-      window.alert("You have been kicked from the room 😓");
+      Notification['info']({
+        title: 'Bye bye.',
+        description: "You have been kicked from the room 😓",
+      })
     }
     setPlayers(prevPlayers => {
       const playerIndex = prevPlayers?.findIndex(p => p.id === playerId);
