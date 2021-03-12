@@ -121,10 +121,10 @@ namespace test_thyrel_api
         }
 
         [Test]
-        public async Task TestKickPlayerFromRoomById()
+        public async Task TestKickPlayerFromRoom()
         {
             var dbPlayer = Context.Player.First(p => p.RoomId != null);
-            var kickedPlayer = await _playerDataProvider.KickPlayerFromRoomById(dbPlayer.Id);
+            var kickedPlayer = await _playerDataProvider.KickPlayerFromRoom(dbPlayer);
             Assert.IsNull(kickedPlayer.RoomId);
         }
         
