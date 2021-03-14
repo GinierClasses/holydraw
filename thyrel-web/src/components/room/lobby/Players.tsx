@@ -11,10 +11,10 @@ export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
 
-  function kickPlayer(id: number, tokenKey?: string) {
+  function kickPlayer(id: number) {
     const url = `player/players/${id}/kick`;
     client(url, {
-      token: tokenKey,
+      token: player?.token?.tokenKey,
       method: 'PATCH',
     })
     .then(response => {
@@ -39,7 +39,7 @@ export function Players() {
           isKickable={player?.isOwner}
           onKick={(id, name) =>
             window.confirm(`Do you really want to kick ${name} ?`) &&
-            kickPlayer(id, player?.token?.tokenKey)
+            kickPlayer(id)
           }
         />
       ) : (
