@@ -6,7 +6,7 @@ import profilesPictures from 'images/profiles/profiles-pictures';
 type PlayerCardListProps = {
   players?: Player[];
   isKickable?: boolean;
-  onKick?: (id: number) => void;
+  onKick?: (id: number, name: string) => void;
 };
 
 export default function PlayerCardList({
