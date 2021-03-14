@@ -5,6 +5,7 @@ import { primaryFade } from 'styles/colors';
 import styled from '@emotion/styled';
 import { Tooltip, Whisper } from 'rsuite';
 import { css } from '@emotion/css';
+import profilesPictures from 'images/profiles/profiles-pictures';
 
 type BookPlayerListProps = {
   players: Player[];
@@ -33,22 +34,22 @@ export default function BookPlayerList({
       overflowX="scroll"
       alignItems="center"
       flexDirection="row">
-      {players.map(player => {
+      {players.map((player, i) => {
         const isPlayerSelected = playerId === player.id;
         return (
-          <div>
+          <div key={i}>
             <Whisper
               placement="top"
               trigger="hover"
               speaker={<Tooltip>{player.username}</Tooltip>}>
               <StyledAvatar
                 className={css({
-                  backgroundColor: isPlayerSelected
-                    ? primaryFade(0.6)
-                    : primaryFade(0.2),
+                  backgroundColor: `${
+                    isPlayerSelected ? primaryFade(0.6) : primaryFade(0.2)
+                  } !important`,
                 })}
                 circle={true}
-                src={player.avatarUrl}
+                src={profilesPictures[Number(player.avatarUrl)]}
                 size="lg"
               />
             </Whisper>
