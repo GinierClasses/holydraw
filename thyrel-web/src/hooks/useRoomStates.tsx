@@ -14,7 +14,9 @@ export function useRoomStates() {
   const history = useHistory();
 
   const updateRoom = React.useCallback(() => {
-    client<Room>(`room/${player?.roomId}`).then(setRoom);
+    client<Room>(`room/${player?.roomId}`,{
+      token: getToken(),
+    }).then(setRoom);
   }, [player?.roomId]);
 
   const updatePlayer = React.useCallback(() => {
@@ -28,8 +30,8 @@ export function useRoomStates() {
     if(playerId === player?.id){
       history?.push('/home');
       Notification['info']({
-        title: 'Bye bye.',
-        description: "You have been kicked from the room 😓",
+        title: 'You have been kicked from the room',
+        description: "they don't want to play with the best 😢",
       })
     }
     setPlayers(prevPlayers => {

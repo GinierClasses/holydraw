@@ -11,6 +11,26 @@ export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
 
+  function kickPlayer(id: number, tokenKey?: string) {
+    const url = `player/players/${id}/kick`;
+    client(url, {
+      token: tokenKey,
+      method: 'PATCH',
+    })
+    .then(response => {
+      Notification['success']({
+        title: 'Player successfully kicked.',
+        description: 'Play with the bests!',
+      });
+    })
+    .catch(error => {
+      Notification['error']({
+        title: 'An error occurred while trying to kick a player.',
+        description: error,
+      });
+    });
+  }
+
   return (
     <Box flexDirection="column" alignItems="flex-end">
       {players?.length > 0 ? (
@@ -37,24 +57,4 @@ export function PlayerCountBox() {
       <PlayerCount count={players?.length || 0} max={12} />
     </Box>
   );
-}
-
-function kickPlayer(id: number, tokenKey?: string) {
-  const url = `player/players/${id}/kick`;
-  client(url, {
-    token: tokenKey,
-    method: 'PATCH',
-  })
-    .then(response => {
-      Notification['success']({
-        title: 'Player successfully kicked.',
-        description: 'Play with the bests!',
-      });
-    })
-    .catch(error => {
-      Notification['error']({
-        title: 'An error occurred while trying to kick a player.',
-        description: error,
-      });
-    });
 }
