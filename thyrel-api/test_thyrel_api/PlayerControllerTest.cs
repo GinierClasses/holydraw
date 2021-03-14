@@ -36,5 +36,18 @@ namespace test_thyrel_api
             var actionResult = await _playerController.Get();
             Assert.AreEqual(player.Id, actionResult.Value.Id);
         }
+
+        [Test]
+        public async Task KickTest()
+        {
+            var room = Context.Room.First();
+            var owner = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && p.IsOwner);
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && !p.IsOwner);
+            
+            await ConnectApi(_playerController.HttpContext, owner);
+
+            var actionResult = await _playerController.Kick(player.Id);
+            Assert.AreEqual(player.Id, actionResult.Value.Id);
+        }
     }
 }
