@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace test_thyrel_api
         public async Task Setup()
         {
             await SetupTest();
-            _elementDataProvider = new ElementDataProvider(Options);
+            _elementDataProvider = new ElementDataProvider(Context);
         }
 
         [Test]
@@ -25,6 +26,26 @@ namespace test_thyrel_api
             Assert.IsNotNull(newElement);
             Assert.AreEqual(ElementType.Sentence, newElement.Type);
             Assert.AreEqual(1, newElement.CreatorId);
+        }
+
+        [Test]
+        public async Task AddElementsFunctionCreateList()
+        {
+
+            var elements = new List<Element>
+            {
+                new (1, 1, 1, 1, "element-sentence-1"),
+                new (1, 2, 2, 1, "element-sentence-2"),
+                new (1, 3, 3, 1, "element-sentence-3"),
+                new (1, 4, 4, 1, "element-sentence-4"),
+                new (1, 6, 6, 1, "element-sentence-5"),
+                new (1, 7, 7, 1, "element-sentence-6"),
+            };
+            var elementCount = Context.Element.Count();
+
+            await _elementDataProvider.AddElements(elements);
+
+            Assert.AreEqual(elementCount + elements.Count, Context.Element.Count());           
         }
 
         [Test]

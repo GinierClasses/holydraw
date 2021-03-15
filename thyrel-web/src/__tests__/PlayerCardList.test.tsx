@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import PlayerCardList from '../components/lobby/PlayerCardList';
+import PlayerCardList from '../components/room/lobby/PlayerCardList';
 
 const data = [
   {
@@ -41,6 +41,6 @@ describe('PlayerCardList', () => {
     userEvent.click(screen.getByRole('button'));
 
     expect(onKick).toHaveBeenCalledTimes(1);
-    expect(onKick).toHaveBeenCalledWith(data[0].id);
+    expect(onKick).toHaveBeenCalledWith(data[0].id, data[0].username);
   });
 });

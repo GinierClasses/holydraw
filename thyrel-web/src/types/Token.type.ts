@@ -1,11 +1,11 @@
-import Player from "./Player.type";
+import Player from './Player.type';
 
 type Token = {
-  id: number,
-  tokenKey: string,
-  discardAt: string,
-  createdAt: string,
-  players?: Player[]
-}
+  id: number;
+  tokenKey: string;
+  discardAt: string;
+  createdAt: string;
+  players?: Player[];
+};
 
-export default Token
+export default Token;

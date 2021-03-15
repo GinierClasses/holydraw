@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import PlayerCard from '../components/lobby/PlayerCard';
+import PlayerCard from '../components/room/lobby/PlayerCard';
 
 describe('PlayerCard', () => {
   test('default props work', () => {
@@ -58,6 +58,6 @@ describe('PlayerCard', () => {
     // with `jest.fn()` I can know if function is called 1 times
     expect(onKick).toHaveBeenCalledTimes(1);
     // and with which data
-    expect(onKick).toHaveBeenCalledWith(data.id);
+    expect(onKick).toHaveBeenCalledWith(data.id, data.name);
   });
 });

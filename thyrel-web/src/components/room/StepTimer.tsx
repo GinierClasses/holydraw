@@ -1,6 +1,8 @@
+import React from 'react';
 import { Progress } from 'rsuite';
 import { baseColor } from '../../styles/colors';
-import React from 'react';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { MediaQuery } from '../../styles/breakpoint';
 
 type StepTimerProps = {
   finishAt: Date;
@@ -14,6 +16,7 @@ export default function StepTimer({
   onFinish,
 }: StepTimerProps) {
   const [progress, setProgress] = React.useState(0);
+  const isDeviceSM = useMediaQuery(MediaQuery.SM);
   const [timerInterval, setTimerInterval] = React.useState<NodeJS.Timeout>();
 
   React.useEffect(() => {
@@ -38,7 +41,7 @@ export default function StepTimer({
       strokeColor={baseColor}
       percent={progress}
       showInfo={progress >= 100}
-      strokeWidth={12}
+      strokeWidth={isDeviceSM ? 12 : 6}
       status={progress >= 100 ? 'success' : 'active'}
     />
   );

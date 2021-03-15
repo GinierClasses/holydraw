@@ -1,9 +1,9 @@
 import { Avatar } from 'rsuite';
 import { css } from '@emotion/css';
 import styled from '@emotion/styled';
-import Box from '../../styles/Box';
+import Box from 'styles/Box';
 import { Icon } from 'rsuite';
-import { baseColor, bgColor } from '../../styles/colors';
+import { baseColor, bgColor } from 'styles/colors';
 
 type PlayerCardProps = {
   id: number;
@@ -11,7 +11,7 @@ type PlayerCardProps = {
   avatar: string;
   isOwner?: boolean;
   isKickable?: boolean;
-  onKick?: (id: number) => void;
+  onKick?: (id: number, name: string) => void;
 };
 
 // Sets size for avatar component
@@ -64,10 +64,11 @@ export default function PlayerCard({
         ) : (
           isKickable && (
             <button
-              onClick={() => onKick?.(id)}
+              onClick={() => onKick?.(id, name)}
               className={css({
                 backgroundColor: 'transparent',
                 outline: 'none',
+                padding: 0,
               })}>
               <Icon icon="close" />
             </button>

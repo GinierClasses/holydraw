@@ -1,16 +1,15 @@
 import { css } from '@emotion/css';
-import BigButton from '../../components/BigButton';
-import BigInput from '../../components/lobby/BigInput';
-import Box from '../../styles/Box';
-import GymGuy from '../../images/gym-guy.svg';
-import GameBar from '../../components/GameBar';
+import BigButton from 'components/BigButton';
+import BigInput from 'components/BigInput';
+import Box from 'styles/Box';
+import GymGuy from 'images/gym-guy.svg';
+import GameBar from 'components/GameBar';
 
 export default function Start() {
   return (
-    <Box padding="25px" flexDirection="column" gap={42}>
+    <Box padding={32} flexDirection="column" gap={42}>
       <GameBar
-        count={6}
-        max={7}
+        max={12}
         finishAt={new Date('2021-02-10T15:15:00')}
         timeDuration={1000}
         onFinish={() => console.log('Finished?')}
@@ -30,7 +29,7 @@ export default function Start() {
       </Box>
 
       <Box gap={16} flexDirection="column" alignItems="center">
-        <BigInput value={'A grandma ate my father'} icon="edit" />
+        <BigInput placeholder="A grandma ate my father" icon="edit" />
         <BigButton icon="check">Save</BigButton>
       </Box>
     </Box>

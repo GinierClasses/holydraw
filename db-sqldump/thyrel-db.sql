@@ -63,7 +63,7 @@ CREATE TABLE `Player` (
   `IsOwner` tinyint(1) NOT NULL DEFAULT '0',
   `DisableAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `RoomId` int NOT NULL,
+  `RoomId` int,
   `IsPlaying` tinyint(1) NOT NULL DEFAULT '0',
   `IsConnected` tinyint(1) NOT NULL DEFAULT '1',
   `TokenId` int NOT NULL

@@ -1,5 +1,5 @@
-import { MediaQuery } from './../styles/breakpoint';
 import React from 'react';
+import { MediaQuery } from './../styles/breakpoint';
 
 const Mq: Record<MediaQuery, string> = {
   XS: '(min-width: 0px)',

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
 
@@ -20,6 +21,16 @@ namespace test_thyrel_api
             var mock = new MockDatabase(options);
             await mock.AddMockData();
             Context = mock.Context;
+        }
+
+        protected async Task ConnectApi(HttpContext httpContext, Player player)
+        {
+            var newToken = new Token("temp_connect_key");
+            await Context.Token.AddAsync(newToken);
+            await Context.SaveChangesAsync();
+            player.TokenId = newToken.Id;
+            await Context.SaveChangesAsync();
+            httpContext.Request.Headers["Authorization"] = $"Bearer {newToken.TokenKey}";
         }
     }
 }

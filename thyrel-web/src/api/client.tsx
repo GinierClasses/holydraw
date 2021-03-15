@@ -4,7 +4,7 @@ const apiURL = process.env.REACT_APP_API_URL || testApiUrl;
 
 type config = {
   data?: any;
-  token?: string;
+  token?: string | null;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 'PATCH';
   headers?: HeadersInit;
   // if you want all possibility of `fetch`

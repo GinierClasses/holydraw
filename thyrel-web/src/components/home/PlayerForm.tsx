@@ -7,8 +7,11 @@ import profilesPictures from '../../images/profiles/profiles-pictures';
 import Box from '../../styles/Box';
 import Player from '../../types/Player.type';
 import BigButton from '../BigButton';
-import BigInput from '../lobby/BigInput';
+import BigInput from '../BigInput';
+import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
+
+const defaultUsername = 'Bgros';
 
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
@@ -20,7 +23,10 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
 
   function onStart() {
     client<Player>('room', {
-      data: { username, avatarUrl: String(ppIndex) },
+      data: {
+        username: username || defaultUsername,
+        avatarUrl: String(ppIndex),
+      },
     }).then((player: Player) => {
       if (player.token?.tokenKey) {
         Notification['success']({
@@ -34,9 +40,12 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
     });
   }
 
-  function onJoin() {
+  function onJoin(identifier: string) {
     client<Player>(`room/join/${identifier}`, {
-      data: { username, avatarUrl: String(ppIndex) },
+      data: {
+        username: username || defaultUsername,
+        avatarUrl: String(ppIndex),
+      },
       method: 'PATCH',
     }).then((player: Player) => {
       if (player.token?.tokenKey) {
@@ -59,13 +68,11 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         icon={'edit'}
         value={username}
         onChange={e => setUsername(e.target.value)}
-        placeholder="pseudo de bg"
+        placeholder="MonPseudo"
       />
 
       <Box flexDirection="column" alignItems="center" width="100%" gap={12}>
-        <BigButton icon="angle-double-up" size="lg" onClick={onJoin}>
-          Join
-        </BigButton>
+        <ButtonModalJoin identifier={identifier} onClick={onJoin} />
 
         {!identifier && (
           <BigButton icon="angle-double-right" size="lg" onClick={onStart}>
