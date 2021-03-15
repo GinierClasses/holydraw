@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using thyrel_api.Controllers;
+using static thyrel_api.Controllers.RoomController;
 
 namespace test_thyrel_api
 {
@@ -62,6 +63,7 @@ namespace test_thyrel_api
         [Test]
         public async Task JoinRoom()
         {
+            // good for the futur : move Body Class to BodyClass file class
             var body = new PlayerRoomBody();
             body.AvatarUrl = "3";
             body.Username = "playertest";
