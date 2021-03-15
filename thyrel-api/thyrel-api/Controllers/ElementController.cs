@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using thyrel_api.DataProvider;
+using thyrel_api.Handler;
 using thyrel_api.Json;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
@@ -51,12 +52,24 @@ namespace thyrel_api.Controllers
 
         // Call this endpoint to get a room
         // GET : api/room/identifier
-        [HttpGet("get/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Element>> GetElement(int id)
         {
             var element = await new ElementDataProvider(_context).GetElement(id);
             return element;
         }
+        
+        // Call this endpoint to get a room
+        // GET : api/room/identifier
+        [HttpGet("current")]
+        public async Task<ActionResult<object>> GetCurrentElement()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
+            return new ElementDataProvider(_context).GetCurrentElement(player.Id);
+        }
+
 
         public class ElementBody
         {

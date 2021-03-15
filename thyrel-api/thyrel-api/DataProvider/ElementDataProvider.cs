@@ -148,6 +148,31 @@ namespace thyrel_api.DataProvider
             return await _holyDrawDbContext.Element.FindAsync(elementId);
         }
 
+
+        /// <summary>
+        ///     Get one element by those ID
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public object GetCurrentElement(int playerId)
+        {
+            var result = (from e in _holyDrawDbContext.Element
+                orderby e.Step descending
+                where e.CreatorId == playerId
+                select new {e.Id, e.SessionId, e.Type, e.DrawingId, e.FinishAt, e.Step, e.CreatedAt}).First();
+
+            return result;            
+        }
+
+        public Task<Element> GetNextElement(Player player)
+        {
+            var element = (from e in _holyDrawDbContext.Element
+                orderby e.Step descending
+                where e.InitiatorId != player.Id && e.CreatorId != player.Id
+                select e);
+        }
+
+        
         private async Task SaveChanges()
         {
             await _holyDrawDbContext.SaveChangesAsync();

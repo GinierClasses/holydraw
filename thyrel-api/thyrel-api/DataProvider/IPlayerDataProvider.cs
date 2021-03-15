@@ -46,10 +46,10 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Handle isPlayer (when session start) column
         /// </summary>
-        /// <param name="playerId"></param>
+        /// <param name="roomId"></param>
         /// <param name="isPlaying"></param>
         /// <returns></returns>
-        Task<Player> SetIsPlaying(int playerId, bool isPlaying);
+        Task SetIsPlaying(int roomId, bool isPlaying);
 
         /// <summary>
         ///     Handle isConnected (when user left) column

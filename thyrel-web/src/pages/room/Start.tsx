@@ -8,12 +8,7 @@ import GameBar from 'components/GameBar';
 export default function Start() {
   return (
     <Box padding={32} flexDirection="column" gap={42}>
-      <GameBar
-        max={12}
-        finishAt={new Date('2021-02-10T15:15:00')}
-        timeDuration={1000}
-        onFinish={() => console.log('Finished?')}
-      />
+      <GameBar max={12} onFinish={() => console.log('Finished?')} />
 
       <Box flexDirection="column" alignItems="center">
         <img src={GymGuy} alt="" width={256}></img>

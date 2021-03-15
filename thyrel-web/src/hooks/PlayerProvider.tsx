@@ -14,10 +14,7 @@ type PlayerContextProps = {
 
 const PlayerContext = React.createContext<PlayerContextProps>({});
 
-type PlayerContextProviderProps = {
-  children: React.ReactElement;
-  onMessage?: (message: string) => void;
-};
+type PlayerContextProviderProps = { children: React.ReactElement };
 
 export function PlayerContextProvider({
   children,
@@ -46,9 +43,10 @@ export function PlayerContextProvider({
 
   React.useEffect(() => {
     let deleted = false;
-    client<Player>('player/me', { token: getToken() || '' }).then(
+    client<Player>('player/me', { token: getToken() }).then(
       player => {
         if (deleted) return;
+        console.log("i'm here");
         setPlayer(player);
       },
       () =>

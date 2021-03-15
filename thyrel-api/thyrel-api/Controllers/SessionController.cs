@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
+using thyrel_api.Handler;
 using thyrel_api.Json;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
@@ -21,34 +24,38 @@ namespace thyrel_api.Controllers
             _context = context;
         }
 
-        public class StartBody
-        {
-            public int RoomId;
-        }
-
         // Call this endpoint to create a Session
         // POST: api/session
         [HttpPost]
-        public async Task<ActionResult<Session>> Start([FromBody] StartBody body)
+        public async Task<ActionResult<Session>> Start()
         {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null || !player.IsOwner) return Unauthorized();
+
+            var roomId = (int) player.RoomId;
+            
             var sessionDataProvider = new SessionDataProvider(_context);
-            var playerDataProvider = new PlayerDataProvider(_context);
-            var elementDataProvider = new ElementDataProvider(_context);
-            var addedSession = await sessionDataProvider.Add(body.RoomId);
-
-            if (addedSession == null)
+            var session = await sessionDataProvider.StartSession(roomId);
+            if (session == null)
                 return NotFound();
-
-            var players = await playerDataProvider.GetPlayersByRoom(body.RoomId);
-            var elements = new List<Element>();
-            players.ForEach(p => elements.Add(new Element(1, p.Id, p.Id, addedSession.Id, "")));
-            await elementDataProvider.AddElements(elements);
             
             await _websocketHandler.SendMessageToSockets(
                 JSON.Serialize(
-                    new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), body.RoomId);
+                    new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), roomId);
 
-            return addedSession;
+            return session;
         }
+
+        // Get the current session
+        // GET: api/session/current
+        [HttpGet("current")]
+        public async Task<ActionResult<Session>> Get()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+            
+            return await new SessionDataProvider(_context).GetCurrentSessionByRoomId((int) player.RoomId);
+        }
+
     }
 }

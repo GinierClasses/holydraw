@@ -105,18 +105,16 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Handle isPlayer (when session start) column
         /// </summary>
-        /// <param name="playerId"></param>
+        /// <param name="roomId"></param>
         /// <param name="isPlaying"></param>
         /// <returns></returns>
-        public async Task<Player> SetIsPlaying(int playerId, bool isPlaying)
+        public async Task SetIsPlaying(int roomId, bool isPlaying = true)
         {
-            var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
-            if (dbPlayer == null)
-                return null;
-
-            dbPlayer.IsPlaying = isPlaying;
+            var players = (from p in _holyDrawDbContext.Player
+                where p.RoomId == roomId & p.IsConnected
+                select p).ForEachAsync(p => p.IsPlaying = isPlaying);
+            players.Wait();
             await SaveChanges();
-            return dbPlayer;
         }
 
         /// <summary>

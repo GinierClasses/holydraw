@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace test_thyrel_api
         public async Task AddSessionTest()
         {
             var sessionCount = Context.Session.Count();
-            await _sessionDataProvider.Add(1);
+            await _sessionDataProvider.Add(1, DateTime.Now.AddMinutes(1), 10);
             Assert.AreEqual(sessionCount + 1, Context.Session.Count());
         }
         
@@ -43,6 +44,12 @@ namespace test_thyrel_api
 
             var sessionNull = await _sessionDataProvider.GetSessionById(-2);
             Assert.IsNull(sessionNull);            
+        }
+         
+        [Test]
+        public async Task GetCurrentSessionByRoomIdTest()
+        {
+            throw new Exception("Not implemented");
         }
     }
 }

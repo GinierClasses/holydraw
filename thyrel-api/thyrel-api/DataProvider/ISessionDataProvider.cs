@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using thyrel_api.Models;
 
@@ -9,7 +10,9 @@ namespace thyrel_api.DataProvider
         ///     Create a new Session
         /// </summary>
         /// <param name="roomId"></param>
-        Task<Session> Add(int roomId);
+        /// <param name="stepFinishAt"></param>
+        /// <param name="timeDuration"></param>
+        Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration);
 
         /// <summary>
         ///     Set finishAt to DateTime.Now
@@ -23,5 +26,12 @@ namespace thyrel_api.DataProvider
         /// <param name="sessionId"></param>
         /// <returns></returns>
         Task<Session> GetSessionById(int sessionId);
+
+        /// <summary>
+        /// Get current session of a room
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        Task<Session> GetCurrentSessionByRoomId(int roomId);
     }
 }
