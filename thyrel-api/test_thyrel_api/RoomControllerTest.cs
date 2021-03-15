@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using thyrel_api.Controllers;
-using static thyrel_api.Controllers.RoomController;
 
 namespace test_thyrel_api
 {
