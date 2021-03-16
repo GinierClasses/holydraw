@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -154,25 +155,35 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>
-        public object GetCurrentElement(int playerId)
+        public async Task<ElementDto> GetCurrentElement(int playerId)
         {
-            var result = (from e in _holyDrawDbContext.Element
-                orderby e.Step descending
-                where e.CreatorId == playerId
-                select new {e.Id, e.SessionId, e.Type, e.DrawingId, e.FinishAt, e.Step, e.CreatedAt}).First();
+            var result = await _holyDrawDbContext.Element
+                .OrderByDescending(e => e.Step)
+                .Where(e => e.CreatorId == playerId)
+                .Select(e => new ElementDto
+                {
+                    Id = e.Id,
+                    Step = e.Step,
+                    Type = e.Type,
+                    Text = e.Text,
+                    DrawingId = e.DrawingId,
+                    FinishAt = e.FinishAt,
+                    CreatedAt = e.CreatedAt,
+                    SessionId = e.SessionId
+                }).FirstAsync();
 
-            return result;            
+            return result;
         }
 
-        public Task<Element> GetNextElement(Player player)
+        public async Task<List<Element>> GetNextCandidateElements(Player player, int step)
         {
-            var element = (from e in _holyDrawDbContext.Element
-                orderby e.Step descending
-                where e.InitiatorId != player.Id && e.CreatorId != player.Id
-                select e);
+            var elements = await _holyDrawDbContext.Element.Include(e => e.Creator)
+                .Where(e => e.CreatorId != player.Id && e.InitiatorId != player.Id &&
+                            e.Creator.RoomId == player.RoomId).ToListAsync();
+            return elements;
         }
 
-        
+
         private async Task SaveChanges()
         {
             await _holyDrawDbContext.SaveChangesAsync();

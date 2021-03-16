@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -64,7 +65,7 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        Task<List<Player>> GetPlayersByRoom(int roomId);
+        Task<List<PlayerDto>> GetPlayersByRoom(int roomId);
         
         /// <summary>
         /// Kick a player from his room using his ID

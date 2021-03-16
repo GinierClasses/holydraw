@@ -80,11 +80,11 @@ namespace thyrel_api.DataProvider
         {
             const int duration = 70;
             const int step = 1;
-            
+
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
             var elementDataProvider = new ElementDataProvider(_holyDrawDbContext);
             var addedSession = await Add(roomId, DateTime.Now.AddSeconds(duration), duration);
-            
+
             if (addedSession == null)
                 return null;
 
@@ -96,42 +96,64 @@ namespace thyrel_api.DataProvider
             return addedSession;
         }
 
+        /// <summary>
+        ///     Handle the next step.
+        /// </summary>
+        /// <param name="session">Session given from Context</param>
+        /// <returns>The edited session</returns>
+        /// <exception cref="Exception">If no element candidate.</exception>
         public async Task<Session> NextStep(Session session)
         {
-            var playerProvider = new PlayerDataProvider(_holyDrawDbContext);
             var elementProvider = new ElementDataProvider(_holyDrawDbContext);
-            var result = (from p in _holyDrawDbContext.Player
-                where p.RoomId == session.RoomId & p.IsPlaying
-                select p).ToList();
+            var players = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == session.RoomId && p.IsPlaying).ToListAsync();
+
+            // element for the next step
+            var nextStep = session.ActualStep + 1;
+            if (nextStep == players.Count)
+            {
+                // the game is finish, go to album
+                session.StepType = SessionStepType.Book;
+            }
+
+            session.ActualStep = nextStep;
 
             var elements = new List<Element>();
-            var nextStep = session.ActualStep + 1;
-            
+            players.ForEach(async p =>
+            {
+                // get prev elements candidate for the player
+                var candidates = await elementProvider.GetNextCandidateElements(p, session.ActualStep);
+                // Choose an prev element that has not yet been chosen by another player.
+                var candidate = candidates
+                    .FirstOrDefault(c => elements.All(e => e.InitiatorId != c.InitiatorId));
+                if (candidate == null)
+                    throw new Exception("No element candidate valid.");
+                var element = new Element(nextStep, p.Id, candidate.InitiatorId, session.Id, 1);
+                elements.Add(element);
+            });
+            await elementProvider.AddElements(elements);
+
             switch (session.StepType)
             {
                 case SessionStepType.Start:
-                    Console.WriteLine("Start case");
-                    
-                    result.ForEach(p =>
-                    {
-                        var element = new Element(nextStep, 2, p.Id, session.Id, 1);
-                    });
+                    session.StepFinishAt = DateTime.Now.AddMinutes(1);
                     session.StepType = SessionStepType.Draw;
                     break;
-                
                 case SessionStepType.Draw:
-                    Console.WriteLine("Draw case");
+                    session.StepType = SessionStepType.Write;
+                    break;
+                case SessionStepType.Write:
                     session.StepType = SessionStepType.Draw;
                     break;
-                
-                case SessionStepType.Write:
-                    Console.WriteLine("Write case");
-                    break;
-                
                 case SessionStepType.Book:
-                    Console.WriteLine("Start case");
+                    Console.WriteLine("Book case");
                     break;
+                default:
+                    throw new Exception("Impossible switch case");
             }
+
+            // update session
+            await SaveChanges();
 
             return session;
         }

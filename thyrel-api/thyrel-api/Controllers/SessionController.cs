@@ -38,11 +38,14 @@ namespace thyrel_api.Controllers
             var session = await sessionDataProvider.StartSession(roomId);
             if (session == null)
                 return NotFound();
+
+            new SessionStepTimeout(session.ActualStep, session.Id, _context, _websocketHandler).RunTimeout(session.TimeDuration);
             
             await _websocketHandler.SendMessageToSockets(
                 JSON.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), roomId);
 
+            
             return session;
         }
 

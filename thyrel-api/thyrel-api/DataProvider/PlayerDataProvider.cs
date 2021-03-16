@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -65,11 +66,22 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        public async Task<List<Player>> GetPlayersByRoom(int roomId)
+        public async Task<List<PlayerDto>> GetPlayersByRoom(int roomId)
         {
-            var player = await _holyDrawDbContext.Player
-                .Where(p => p.RoomId == roomId && p.IsConnected).ToListAsync();
-            return player;
+            var players = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == roomId && p.IsConnected).Select(p => new PlayerDto()
+                {
+                    Id = p.Id,
+                    Username = p.Username,
+                    AvatarUrl = p.AvatarUrl,
+                    IsOwner = p.IsOwner,
+                    IsPlaying = p.IsPlaying,
+                    IsConnected = p.IsConnected,
+                    CreatedAt = p.CreatedAt,
+                    DisableAt = p.DisableAt,
+                    RoomId = p.RoomId
+                }).ToListAsync();
+            return players;
         }
 
         /// <summary>
@@ -90,7 +102,7 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the Player as Owner
         /// </summary>
-        /// <param name="playerId"></param>
+        /// <param name="player"></param>
         /// <param name="isOwner"></param>
         public async Task<Player> SetOwner(Player player, bool isOwner = true)
         {
@@ -151,7 +163,8 @@ namespace thyrel_api.DataProvider
             return dbPlayer;
         }
 
-        /// Find a new owner for a room
+        /// <summary>
+        ///     Find a new owner for a room
         /// </summary>
         /// <param name="roomId">Room to find a owner</param>
         /// <returns></returns>

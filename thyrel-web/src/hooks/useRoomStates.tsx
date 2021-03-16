@@ -11,7 +11,7 @@ export function useRoomStates() {
   const { player } = usePlayerContext();
 
   const updateRoom = React.useCallback(() => {
-    client<Room>(`room/${player?.roomId}`).then(setRoom);
+    client<Room>(`room/${player?.roomId}`, { token: getToken() }).then(setRoom);
   }, [player?.roomId]);
 
   const updatePlayer = React.useCallback(() => {

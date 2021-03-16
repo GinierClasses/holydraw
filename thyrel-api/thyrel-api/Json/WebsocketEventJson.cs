@@ -1,3 +1,4 @@
+using System;
 using thyrel_api.Models;
 
 namespace thyrel_api.Json
@@ -19,6 +20,22 @@ namespace thyrel_api.Json
         public PlayerWebsocketEventJson(WebsocketEvent websocketEvent, Player player) : base(websocketEvent)
         {
             Player = player;
+        }
+    }
+    
+    public class SessionWebsocketEventJson : BaseWebsocketEventJson
+    {
+        public int Step { get; }
+        public SessionStepType StepType { get; }
+        public DateTime? StepFinishAt { get; }
+        public int TimeDuration { get; }
+        
+        public SessionWebsocketEventJson(WebsocketEvent websocketEvent, int step, SessionStepType stepType, DateTime? stepFinishAt, int timeDuration) : base(websocketEvent)
+        {
+            Step = step;
+            StepType = stepType;
+            StepFinishAt = stepFinishAt;
+            TimeDuration = timeDuration;
         }
     }
 }
