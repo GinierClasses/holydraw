@@ -32,32 +32,25 @@ export default function SizePicker({
             className={css({
               backgroundColor: 'transparent',
               outline: 'none',
+              border: '2px solid #000000',
               borderRadius: '50%',
               width: 40,
               height: 40,
               alignItems: 'center',
               justifyContent: 'center',
+              display: 'flex',
               flexDirection: 'column',
               boxShadow: isCurrentSize
                 ? `0 0 0 2px ${primaryFade(0.8)}`
                 : undefined,
-              boxSizing: 'border-box',
             })}>
             <Box
               borderRadius="50%"
-              border="2px solid #000000"
-              width={40}
-              height={40}
-              alignItems="center"
-              justifyContent="center"
-              flexDirection="column">
-              <Box
-                borderRadius="50%"
-                border="1px solid #000000"
-                bg="#000000"
-                width={size}
-                height={size}></Box>
-            </Box>
+              border="1px solid #000000"
+              bg="#000000"
+              width={size}
+              height={size}
+            />
           </button>
         );
       })}

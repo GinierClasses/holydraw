@@ -37,7 +37,7 @@ namespace thyrel_api.Controllers
             return await playerDataProvider.GetPlayer(player.Id);
         }
 
-        // Call this endpoint to create a room
+        // Call this endpoint to join a room
         // PATCH: api/room/join/roomidentifier
         [HttpPatch("join/{identifier}")]
         public async Task<ActionResult<Player>> Join(string identifier, [FromBody] PlayerRoomBody body)
@@ -55,13 +55,13 @@ namespace thyrel_api.Controllers
 
         // Call this endpoint to get a room
         // GET : api/room/identifier
-        [HttpGet("{identifier}")]
-        public async Task<ActionResult<Room>> GetRoom(string identifier)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Room>> Get(int id)
         {
-            var isId = int.TryParse(identifier, out var roomId);
-            var room = isId
-                ? await new RoomDataProvider(_context).GetRoom(roomId)
-                : await new RoomDataProvider(_context).GetRoom(identifier);
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player == null || player.RoomId != id) return Unauthorized();
+            
+            var room = await new RoomDataProvider(_context).GetRoom(id);
             return room;
         }
 

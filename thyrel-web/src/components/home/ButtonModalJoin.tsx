@@ -31,7 +31,7 @@ export default function ModalJoin({
         keyboard={true}
         onHide={() => setOpen(false)}>
         <Modal.Header>
-          <Modal.Title>Join a game</Modal.Title>
+          <Modal.Title>Join a game 👨‍🎨</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Input
@@ -42,10 +42,10 @@ export default function ModalJoin({
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => onClick(identifier)} appearance="primary">
-            Join the
+            Join 🥳
           </Button>
           <Button onClick={() => setOpen(false)} appearance="subtle">
-            Cancel
+            Cancel 👋
           </Button>
         </Modal.Footer>
       </Modal>

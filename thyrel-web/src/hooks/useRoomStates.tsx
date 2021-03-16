@@ -1,14 +1,17 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { usePlayerContext } from './PlayerProvider';
+import { Notification } from 'rsuite';
 
 export function useRoomStates() {
   const [room, setRoom] = React.useState<Room>();
   const [players, setPlayers] = React.useState<Player[]>([]);
   const { player } = usePlayerContext();
+  const history = useHistory();
 
   const updateRoom = React.useCallback(() => {
     client<Room>(`room/${player?.roomId}`, { token: getToken() }).then(setRoom);
@@ -22,6 +25,13 @@ export function useRoomStates() {
 
   const removePlayer = React.useCallback((playerId?: number) => {
     if (!playerId) return;
+    if(playerId === player?.id){
+      history?.push('/home');
+      Notification['info']({
+        title: 'You have been kicked from the room',
+        description: "they don't want to play with the best 😢",
+      })
+    }
     setPlayers(prevPlayers => {
       const playerIndex = prevPlayers?.findIndex(p => p.id === playerId);
       if (playerIndex !== -1) {
