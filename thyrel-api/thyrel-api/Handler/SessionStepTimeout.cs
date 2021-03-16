@@ -1,4 +1,8 @@
+using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using thyrel_api.DataProvider;
 using thyrel_api.Json;
 using thyrel_api.Models;
@@ -10,7 +14,7 @@ namespace thyrel_api.Handler
     {
         private readonly int _step;
         private readonly int _sessionId;
-        private readonly HolyDrawDbContext _context;
+        private readonly string _connexionString;
         private readonly IWebsocketHandler _websocketHandler;
 
 
@@ -19,7 +23,8 @@ namespace thyrel_api.Handler
         {
             _step = step;
             _sessionId = sessionId;
-            _context = context;
+            // need connexion string because current context will be soon disposed
+            _connexionString = context.Database.GetConnectionString();
             _websocketHandler = websocketHandler;
         }
 
@@ -27,17 +32,29 @@ namespace thyrel_api.Handler
         {
             Task.Delay(delay * 1000).ContinueWith(async _ =>
             {
-                var sessionProvider = new SessionDataProvider(_context);
+                var context = GetContext();
+                var sessionProvider = new SessionDataProvider(context);
                 var session = await sessionProvider.GetSessionById(_sessionId);
                 // test if step is already finish
                 if (session?.ActualStep != _step) return;
                 session = await sessionProvider.NextStep(session);
 
                 await _websocketHandler.SendMessageToSockets(
-                    JSON.Serialize(
-                        new SessionWebsocketEventJson(WebsocketEvent.SessionStart, session.ActualStep, session.StepType,
+                    JsonBase.Serialize(
+                        new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep, session.StepType,
                             session.StepFinishAt, session.TimeDuration)), session.RoomId);
             });
+        }
+
+        private HolyDrawDbContext GetContext()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
+            optionsBuilder.UseMySql(
+                _connexionString,
+                new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
+                mySqlOptions => mySqlOptions
+                    .CharSetBehavior(CharSetBehavior.NeverAppend));
+            return new HolyDrawDbContext(optionsBuilder.Options);
         }
     }
 }

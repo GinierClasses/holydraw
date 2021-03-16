@@ -1,3 +1,4 @@
+import Loading from 'components/Loading';
 import React from 'react';
 import { Notification } from 'rsuite';
 import HolyElement from 'types/HolyElement.type';
@@ -21,12 +22,9 @@ type SessionContextProviderProps = { children: React.ReactElement };
 export function SessionContextProvider({
   children,
 }: SessionContextProviderProps) {
-  const { session } = useSessionStates();
+  const { session, setSession } = useSessionStates();
   const [currentElement, setCurrentElement] = React.useState<HolyElement>();
   const { websocket } = useWebsocketContext();
-
-  console.log('SESSION', session);
-  console.log('CURRENT ELEMENT', currentElement);
 
   React.useEffect(() => {
     function onMessage(event: { data: string }) {
@@ -34,7 +32,9 @@ export function SessionContextProvider({
       if (!websocketMessage) return;
 
       switch (websocketMessage.websocketEvent) {
-        case WebsocketEvent.NewOwnerPlayer:
+        case WebsocketEvent.SessionUpdate:
+          const session = websocketMessage.session;
+          setSession(prev => prev && { ...prev, ...session });
           break;
       }
     }
@@ -42,7 +42,7 @@ export function SessionContextProvider({
       websocket.addEventListener('message', onMessage);
       return () => websocket.removeEventListener('message', onMessage);
     }
-  }, [session, websocket]);
+  }, [session, setSession, websocket]);
 
   React.useEffect(() => {
     if (!session?.actualStep) return;
@@ -65,7 +65,9 @@ export function SessionContextProvider({
   const values = { session, currentElement };
 
   return (
-    <SessionContext.Provider value={values}>{children}</SessionContext.Provider>
+    <SessionContext.Provider value={values}>
+      {session ? children : <Loading />}
+    </SessionContext.Provider>
   );
 }
 

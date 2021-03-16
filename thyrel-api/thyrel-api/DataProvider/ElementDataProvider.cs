@@ -175,11 +175,10 @@ namespace thyrel_api.DataProvider
             return result;
         }
 
-        public async Task<List<Element>> GetNextCandidateElements(Player player, int step)
+        public async Task<List<Element>> GetNextCandidateElements(int sessionId)
         {
-            var elements = await _holyDrawDbContext.Element.Include(e => e.Creator)
-                .Where(e => e.CreatorId != player.Id && e.InitiatorId != player.Id &&
-                            e.Creator.RoomId == player.RoomId).ToListAsync();
+            var elements = await _holyDrawDbContext.Element
+                .Where(e => e.SessionId == sessionId).ToListAsync();
             return elements;
         }
 

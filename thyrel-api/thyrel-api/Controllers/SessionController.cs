@@ -42,7 +42,7 @@ namespace thyrel_api.Controllers
             new SessionStepTimeout(session.ActualStep, session.Id, _context, _websocketHandler).RunTimeout(session.TimeDuration);
             
             await _websocketHandler.SendMessageToSockets(
-                JSON.Serialize(
+                JsonBase.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), roomId);
 
             

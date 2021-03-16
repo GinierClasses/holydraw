@@ -1,5 +1,6 @@
 using System;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.Json
 {
@@ -22,20 +23,21 @@ namespace thyrel_api.Json
             Player = player;
         }
     }
-    
+
     public class SessionWebsocketEventJson : BaseWebsocketEventJson
     {
-        public int Step { get; }
-        public SessionStepType StepType { get; }
-        public DateTime? StepFinishAt { get; }
-        public int TimeDuration { get; }
-        
-        public SessionWebsocketEventJson(WebsocketEvent websocketEvent, int step, SessionStepType stepType, DateTime? stepFinishAt, int timeDuration) : base(websocketEvent)
+        public SessionSocketDto Session { get; }
+
+        public SessionWebsocketEventJson(WebsocketEvent websocketEvent, int step, SessionStepType stepType,
+            DateTime? stepFinishAt, int timeDuration) : base(websocketEvent)
         {
-            Step = step;
-            StepType = stepType;
-            StepFinishAt = stepFinishAt;
-            TimeDuration = timeDuration;
+            Session = new SessionSocketDto
+            {
+                ActualStep = step,
+                StepFinishAt = stepFinishAt,
+                TimeDuration = timeDuration,
+                StepType = stepType
+            };
         }
     }
 }

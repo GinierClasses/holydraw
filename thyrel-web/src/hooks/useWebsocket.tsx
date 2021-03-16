@@ -1,3 +1,4 @@
+import { Session } from 'inspector';
 import React from 'react';
 import { Notification } from 'rsuite';
 import { getToken } from '../api/player-provider';
@@ -31,6 +32,7 @@ export type WebsocketMessage = {
   websocketEvent: WebsocketEvent;
   player?: Player;
   playerId?: number;
+  session?: Partial<Session>
 };
 
 export function useWebsocket() {

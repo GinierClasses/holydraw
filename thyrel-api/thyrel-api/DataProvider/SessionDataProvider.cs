@@ -78,7 +78,7 @@ namespace thyrel_api.DataProvider
 
         public async Task<Session> StartSession(int roomId)
         {
-            const int duration = 70;
+            const int duration = 10;
             const int step = 1;
 
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
@@ -109,26 +109,32 @@ namespace thyrel_api.DataProvider
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).ToListAsync();
 
             // element for the next step
-            var nextStep = session.ActualStep + 1;
-            if (nextStep == players.Count)
+            if (session.ActualStep == players.Count)
             {
                 // the game is finish, go to album
                 session.StepType = SessionStepType.Book;
             }
 
+            var nextStep = session.ActualStep + 1;
             session.ActualStep = nextStep;
 
             var elements = new List<Element>();
-            players.ForEach(async p =>
+            var candidates = await elementProvider.GetNextCandidateElements(session.Id);
+
+            players.ForEach(player =>
             {
                 // get prev elements candidate for the player
-                var candidates = await elementProvider.GetNextCandidateElements(p, session.ActualStep);
+                // var candidates = await elementProvider.GetNextCandidateElements(p, session.ActualStep);
+                var playerCandidates = candidates.Where(e => e.CreatorId != player.Id && e.InitiatorId != player.Id);
+
                 // Choose an prev element that has not yet been chosen by another player.
-                var candidate = candidates
+                var candidate = playerCandidates
                     .FirstOrDefault(c => elements.All(e => e.InitiatorId != c.InitiatorId));
                 if (candidate == null)
                     throw new Exception("No element candidate valid.");
-                var element = new Element(nextStep, p.Id, candidate.InitiatorId, session.Id, 1);
+                
+                // TODO : handle drawing or text, currently only create drawing for the first step
+                var element = new Element(nextStep, player.Id, candidate.InitiatorId, session.Id, 1);
                 elements.Add(element);
             });
             await elementProvider.AddElements(elements);
@@ -136,7 +142,8 @@ namespace thyrel_api.DataProvider
             switch (session.StepType)
             {
                 case SessionStepType.Start:
-                    session.StepFinishAt = DateTime.Now.AddMinutes(1);
+                    // TODO : define a time for Drawing and Text, currently 3 minutes for drawing
+                    session.StepFinishAt = DateTime.Now.AddMinutes(3);
                     session.StepType = SessionStepType.Draw;
                     break;
                 case SessionStepType.Draw:
