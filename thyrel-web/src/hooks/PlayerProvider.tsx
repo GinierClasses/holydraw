@@ -44,11 +44,7 @@ export function PlayerContextProvider({
   React.useEffect(() => {
     let deleted = false;
     client<Player>('player/me', { token: getToken() }).then(
-      player => {
-        if (deleted) return;
-        console.log("i'm here");
-        setPlayer(player);
-      },
+      player => !deleted && setPlayer(player),
       () =>
         Notification.error({
           title: 'Player error',
