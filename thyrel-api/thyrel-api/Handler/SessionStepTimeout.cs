@@ -46,7 +46,7 @@ namespace thyrel_api.Handler
                         new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep,
                             session.StepType,
                             session.StepFinishAt, session.TimeDuration)), session.RoomId);
-                
+
                 new SessionStepTimeout(session.ActualStep, session.Id, context, _websocketHandler).RunTimeout(
                     session.TimeDuration);
 
@@ -63,7 +63,7 @@ namespace thyrel_api.Handler
             var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
             optionsBuilder.UseMySql(
                 _connexionString,
-                new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
+                new MySqlServerVersion(new Version(8, 0, 23)),
                 mySqlOptions => mySqlOptions
                     .CharSetBehavior(CharSetBehavior.NeverAppend));
             return new HolyDrawDbContext(optionsBuilder.Options);

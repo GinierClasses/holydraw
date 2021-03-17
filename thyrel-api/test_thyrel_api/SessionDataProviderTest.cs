@@ -115,6 +115,7 @@ namespace test_thyrel_api
             var elements = await new ElementDataProvider(Context).GetNextCandidateElements(session.Id);
             var elementsCreated = _sessionDataProvider.GetNextCandidatesElements(players, elements, session.ActualStep + 1, session.Id, ElementType.Drawing);
             Assert.AreEqual(elementsCreated.Count, players.Count);
+            Assert.AreEqual(elementsCreated.First().Type, ElementType.Drawing);
             Assert.AreEqual(elementsCreated.First().Step, session.ActualStep + 1);
             Assert.AreEqual(elementsCreated.First().SessionId, session.Id);
             var isAnySameCreatorAndInitiator = elementsCreated.Any(e => e.InitiatorId == e.CreatorId);

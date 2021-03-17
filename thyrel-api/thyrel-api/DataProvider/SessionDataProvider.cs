@@ -184,8 +184,7 @@ namespace thyrel_api.DataProvider
                 if (candidate == null)
                     throw new Exception("No element candidate valid.");
 
-                // TODO : handle drawing or text, currently only create drawing for the first step
-                var element = new Element(nextStep, player.Id, candidate.InitiatorId, sessionId, 1);
+                var element = new Element(nextStep, player.Id, candidate.InitiatorId, sessionId, type);
                 elements.Add(element);
             });
             return elements;
