@@ -1,14 +1,11 @@
-﻿using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Json;
 using thyrel_api.Models;
 using thyrel_api.Models.DTO;
 using thyrel_api.Websocket;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace thyrel_api.Controllers
 {
@@ -64,7 +61,7 @@ namespace thyrel_api.Controllers
         // Call this endpoint to get a room
         // GET : api/element/current
         [HttpGet("current")]
-        public async Task<ActionResult<ElementDto>> GetCurrentElement()
+        public async Task<ActionResult<ElementDto>> GetCurrent()
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();

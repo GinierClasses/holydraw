@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using thyrel_api.DataProvider;
@@ -17,7 +16,6 @@ namespace thyrel_api.Handler
         private readonly string _connexionString;
         private readonly IWebsocketHandler _websocketHandler;
 
-
         public SessionStepTimeout(int step, int sessionId, HolyDrawDbContext context,
             IWebsocketHandler websocketHandler)
         {
@@ -28,6 +26,10 @@ namespace thyrel_api.Handler
             _websocketHandler = websocketHandler;
         }
 
+        /// <summary>
+        ///     Run timeout of delay. At end, is Session step is not already finish this will be automatically finish 
+        /// </summary>
+        /// <param name="delay"></param>
         public void RunTimeout(int delay)
         {
             Task.Delay(delay * 1000).ContinueWith(async _ =>
@@ -41,11 +43,21 @@ namespace thyrel_api.Handler
 
                 await _websocketHandler.SendMessageToSockets(
                     JsonBase.Serialize(
-                        new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep, session.StepType,
+                        new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep,
+                            session.StepType,
                             session.StepFinishAt, session.TimeDuration)), session.RoomId);
+                
+                new SessionStepTimeout(session.ActualStep, session.Id, context, _websocketHandler).RunTimeout(
+                    session.TimeDuration);
+
+                await context.DisposeAsync();
             });
         }
 
+        /// <summary>
+        ///     Create the context with the connection string
+        /// </summary>
+        /// <returns>The context created</returns>
         private HolyDrawDbContext GetContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -26,8 +28,9 @@ namespace thyrel_api.DataProvider
         {
             var sessionToAdd = new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start);
 
+            // test if no session is already start
             if (await _holyDrawDbContext.Session.AnyAsync(s => s.RoomId == roomId && s.FinishAt == null))
-                return null; // return la session start
+                return null;
 
             var entity = await _holyDrawDbContext.Session.AddAsync(sessionToAdd);
             await SaveChanges();
@@ -76,6 +79,11 @@ namespace thyrel_api.DataProvider
             return session;
         }
 
+        /// <summary>
+        ///     Start a session for a room
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
         public async Task<Session> StartSession(int roomId)
         {
             const int duration = 10;
@@ -108,36 +116,14 @@ namespace thyrel_api.DataProvider
             var players = await _holyDrawDbContext.Player
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).ToListAsync();
 
-            // element for the next step
+            // test if game is finish to go to the album
             if (session.ActualStep == players.Count)
-            {
-                // the game is finish, go to album
                 session.StepType = SessionStepType.Book;
-            }
 
             var nextStep = session.ActualStep + 1;
             session.ActualStep = nextStep;
 
-            var elements = new List<Element>();
             var candidates = await elementProvider.GetNextCandidateElements(session.Id);
-
-            players.ForEach(player =>
-            {
-                // get prev elements candidate for the player
-                // var candidates = await elementProvider.GetNextCandidateElements(p, session.ActualStep);
-                var playerCandidates = candidates.Where(e => e.CreatorId != player.Id && e.InitiatorId != player.Id);
-
-                // Choose an prev element that has not yet been chosen by another player.
-                var candidate = playerCandidates
-                    .FirstOrDefault(c => elements.All(e => e.InitiatorId != c.InitiatorId));
-                if (candidate == null)
-                    throw new Exception("No element candidate valid.");
-                
-                // TODO : handle drawing or text, currently only create drawing for the first step
-                var element = new Element(nextStep, player.Id, candidate.InitiatorId, session.Id, 1);
-                elements.Add(element);
-            });
-            await elementProvider.AddElements(elements);
 
             switch (session.StepType)
             {
@@ -159,10 +145,50 @@ namespace thyrel_api.DataProvider
                     throw new Exception("Impossible switch case");
             }
 
-            // update session
-            await SaveChanges();
+            if (session.StepType != SessionStepType.Book)
+            {
+                var elements = GetNextCandidatesElements(players, candidates, nextStep, session.Id,
+                    session.StepType == SessionStepType.Write ? ElementType.Sentence : ElementType.Drawing);
+                await elementProvider.AddElements(elements);
+            }
 
+            await SaveChanges();
             return session;
+        }
+
+        /// <summary>
+        ///     Generate future candidates for each players
+        /// </summary>
+        /// <param name="players">players in session</param>
+        /// <param name="candidates">all elements from the session</param>
+        /// <param name="nextStep">number of the next step</param>
+        /// <param name="sessionId">id of the session</param>
+        /// <param name="type">Type of element</param>
+        /// <returns>future elements candidate</returns>
+        /// <exception cref="Exception">if no candidate can be created</exception>
+        public List<Element> GetNextCandidatesElements(List<Player> players,
+            List<ElementCandidateDto> candidates, int nextStep, int sessionId, ElementType type)
+        {
+            var elements = new List<Element>();
+
+            players.ForEach(player =>
+            {
+                // get valid elements candidates
+                var bannedCandidates = candidates.Where(e => e.CreatorId == player.Id);
+
+                // choose an prev element that has not yet been chosen by another player.
+                var candidate = candidates
+                    .LastOrDefault(c =>
+                        elements.All(e => e.InitiatorId != c.InitiatorId) &&
+                        bannedCandidates.All(e => e.InitiatorId != c.InitiatorId));
+                if (candidate == null)
+                    throw new Exception("No element candidate valid.");
+
+                // TODO : handle drawing or text, currently only create drawing for the first step
+                var element = new Element(nextStep, player.Id, candidate.InitiatorId, sessionId, 1);
+                elements.Add(element);
+            });
+            return elements;
         }
 
         private async Task SaveChanges()

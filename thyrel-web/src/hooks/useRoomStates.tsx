@@ -23,25 +23,28 @@ export function useRoomStates() {
     }).then(setPlayers);
   }, [player?.roomId]);
 
-  const removePlayer = React.useCallback((playerId?: number) => {
-    if (!playerId) return;
-    if(playerId === player?.id){
-      history?.push('/home');
-      Notification['info']({
-        title: 'You have been kicked from the room',
-        description: "they don't want to play with the best 😢",
-      })
-    }
-    setPlayers(prevPlayers => {
-      const playerIndex = prevPlayers?.findIndex(p => p.id === playerId);
-      if (playerIndex !== -1) {
-        const playersCopy = [...prevPlayers];
-        playersCopy.splice(playerIndex, 1);
-        return playersCopy;
+  const removePlayer = React.useCallback(
+    (playerId?: number) => {
+      if (!playerId) return;
+      if (playerId === player?.id) {
+        history?.push('/home');
+        Notification['info']({
+          title: 'You have been kicked from the room',
+          description: "they don't want to play with the best 😢",
+        });
       }
-      return prevPlayers;
-    });
-  }, []);
+      setPlayers(prevPlayers => {
+        const playerIndex = prevPlayers?.findIndex(p => p.id === playerId);
+        if (playerIndex !== -1) {
+          const playersCopy = [...prevPlayers];
+          playersCopy.splice(playerIndex, 1);
+          return playersCopy;
+        }
+        return prevPlayers;
+      });
+    },
+    [history, player?.id],
+  );
 
   const addPlayer = React.useCallback((player?: Player) => {
     if (!player) return;

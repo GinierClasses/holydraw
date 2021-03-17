@@ -12,6 +12,18 @@ namespace thyrel_api.Models
             InitiatorId = initiatorId;
             SessionId = sessionId;
         }
+        
+        private Element(int step, int creatorId, int initiatorId, int sessionId, ElementType type)
+        {
+            Step = step;
+            CreatedAt = DateTime.Now;
+            CreatorId = creatorId;
+            InitiatorId = initiatorId;
+            SessionId = sessionId;
+            Type = type;
+            if (type == ElementType.Sentence)
+                Text = "";
+        }
 
         public Element(int step, int creatorId, int initiatorId, int sessionId, int? drawingId = null)
             : this(step, creatorId, initiatorId, sessionId)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
@@ -39,8 +36,9 @@ namespace thyrel_api.Controllers
             if (session == null)
                 return NotFound();
 
-            new SessionStepTimeout(session.ActualStep, session.Id, _context, _websocketHandler).RunTimeout(session.TimeDuration);
-            
+            new SessionStepTimeout(session.ActualStep, session.Id, _context, _websocketHandler)
+                .RunTimeout(session.TimeDuration);
+
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), roomId);
@@ -52,7 +50,7 @@ namespace thyrel_api.Controllers
         // Get the current session
         // GET: api/session/current
         [HttpGet("current")]
-        public async Task<ActionResult<Session>> Get()
+        public async Task<ActionResult<Session>> GetCurrent()
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();

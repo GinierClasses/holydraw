@@ -27,26 +27,29 @@ function useSessionStates() {
     };
   }, [history]);
 
-
   // handling page with the Session
   React.useEffect(() => {
+    const pathname = history.location.pathname;
+    let newPathname = '';
     switch (session?.stepType) {
       case SessionStepType.Start:
-        history.push('/r/start');
+        newPathname = '/r/start';
         break;
       case SessionStepType.Write:
-        history.push('/r/write');
+        newPathname = '/r/write';
         break;
       case SessionStepType.Draw:
-        history.push('/r/draw');
+        newPathname = '/r/draw';
         break;
       case SessionStepType.Book:
-        history.push('/r/book');
+        newPathname = '/r/book';
         break;
     }
+    // change only if pathname is different than before
+    if (newPathname && pathname !== newPathname) history.push(newPathname);
   }, [session?.stepType, history]);
 
-  return {session, setSession}
+  return { session, setSession };
 }
 
-export default useSessionStates
+export default useSessionStates;

@@ -26,11 +26,11 @@ export function SessionContextProvider({
   const [currentElement, setCurrentElement] = React.useState<HolyElement>();
   const { websocket } = useWebsocketContext();
 
+  console.log('rerender', session?.id, currentElement?.id);
   React.useEffect(() => {
     function onMessage(event: { data: string }) {
       const websocketMessage = parseJson<WebsocketMessage>(event.data);
       if (!websocketMessage) return;
-
       switch (websocketMessage.websocketEvent) {
         case WebsocketEvent.SessionUpdate:
           const session = websocketMessage.session;

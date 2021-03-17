@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.Controllers;
 using thyrel_api.Handler;
@@ -68,11 +69,8 @@ namespace test_thyrel_api
         public async Task PlayerNotAuthenticatedCantKick()
         {
             var room = Context.Room.First();
-            var playerNotAuthentified = Context.Player.FirstOrDefault(p => p.RoomId == room.Id);
-            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && !p.IsOwner);
-            playerNotAuthentified.Token = null;
+            var player = await Context.Player.FirstAsync(p => p.RoomId == room.Id && !p.IsOwner);
 
-            await ConnectApi(_playerController.HttpContext, playerNotAuthentified);
             var actionResult = await _playerController.Kick(player.Id);
             Assert.IsNull(actionResult.Value);
         }
