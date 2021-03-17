@@ -1,15 +1,19 @@
 import { client } from 'api/client';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
+import { useMediaQuery } from 'hooks/useMediaQuery';
 import Box from 'styles/Box';
+import { MediaQuery } from 'styles/breakpoint';
 import Loading from '../../Loading';
 import PlayerCount from '../../room/PlayerCount';
+import BookPlayerList from '../book/BookPlayerList';
 import PlayerCardList from './PlayerCardList';
 import { Notification } from 'rsuite';
 
 export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
+  const isDeviceSM = useMediaQuery(MediaQuery.SM);
 
   function kickPlayer(id: number) {
     const url = `player/players/${id}/kick`;
@@ -42,6 +46,7 @@ export function Players() {
             kickPlayer(id)
           }
         />
+        isDeviceSM ? (<PlayerCardList players={players} isKickable={player?.isOwner} />) : (<BookPlayerList players={players} />)  
       ) : (
         <Loading />
       )}
