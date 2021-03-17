@@ -2,14 +2,12 @@ import AppTitle from 'components/AppTitle';
 import LobbyStartButton from 'components/room/lobby/LobbyStartAction';
 import { Players, PlayerCountBox } from 'components/room/lobby/Players';
 import SettingsMenu from 'components/room/lobby/SettingsMenu';
-import { useMediaQuery } from 'hooks/useMediaQuery';
 import Box from 'styles/Box';
-import { MediaQuery } from 'styles/breakpoint';
 import { bgFade } from 'styles/colors';
+import { css } from '@emotion/css';
+import Mq from 'styles/breakpoint';
 
 export default function Lobby() {
-  const isDeviceSM = useMediaQuery(MediaQuery.SM);
-
   return (
     <Box flexDirection="column" height="100vh" alignItems="center" width="100%">
       <Box p={32} mb={24} width="100%">
@@ -30,12 +28,19 @@ export default function Lobby() {
           <PlayerCountBox />
           <Box
             justifyContent="space-between"
-            alignItems="flex-start"
-            width="100%">
+            width="100%"
+            className={css({
+              alignItems: 'center',
+              flexDirection: 'column',
+              gap: 64,
+              [Mq.SM]: {
+                alignItems: 'flex-start',
+                flexDirection: 'row',
+              },
+            })}>
             <SettingsMenu />
-            {isDeviceSM && <Players />}
+            <Players />
           </Box>
-          {!isDeviceSM && <Players />}
         </Box>
         <LobbyStartButton />
       </Box>
