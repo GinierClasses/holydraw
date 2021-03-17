@@ -47,8 +47,9 @@ namespace thyrel_api.Handler
                             session.StepType,
                             session.StepFinishAt, session.TimeDuration)), session.RoomId);
 
-                new SessionStepTimeout(session.ActualStep, session.Id, context, _websocketHandler).RunTimeout(
-                    session.TimeDuration);
+                if (session.StepType != SessionStepType.Book)
+                    new SessionStepTimeout(session.ActualStep, session.Id, context, _websocketHandler).RunTimeout(
+                        session.TimeDuration);
 
                 await context.DisposeAsync();
             });
