@@ -122,9 +122,8 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task SetIsPlaying(int roomId, bool isPlaying = true)
         {
-            var players = (from p in _holyDrawDbContext.Player
-                where p.RoomId == roomId & p.IsConnected
-                select p).ForEachAsync(p => p.IsPlaying = isPlaying);
+            var players = _holyDrawDbContext.Player.Where(p => p.RoomId == roomId && p.IsConnected)
+                .ForEachAsync(p => p.IsPlaying = isPlaying);
             players.Wait();
             await SaveChanges();
         }
@@ -142,7 +141,7 @@ namespace thyrel_api.DataProvider
                 return null;
 
             dbPlayer.IsConnected = isConnected;
-            
+
             await SaveChanges();
             return dbPlayer;
         }

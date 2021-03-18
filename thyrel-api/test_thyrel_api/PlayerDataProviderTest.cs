@@ -119,6 +119,16 @@ namespace test_thyrel_api
             var playerEdited = await _playerDataProvider.GetPlayer(playerNotPlaying.Id);
             Assert.IsTrue(playerEdited.IsPlaying);
         }
+        [Test]
+        public async Task TestSetIsPlayingFalse()
+        {
+            var playerNotPlaying = Context.Player.First(p => !p.IsPlaying);
+            Assert.IsFalse(playerNotPlaying.IsPlaying);
+            if (playerNotPlaying.RoomId != null)
+                await _playerDataProvider.SetIsPlaying((int) playerNotPlaying.RoomId, false);
+            var playerEdited = await _playerDataProvider.GetPlayer(playerNotPlaying.Id);
+            Assert.IsFalse(playerEdited.IsPlaying);
+        }
 
         [Test]
         public async Task TestKickPlayerFromRoom()
