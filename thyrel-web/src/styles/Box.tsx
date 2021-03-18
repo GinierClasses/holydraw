@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { baseColor } from './colors';
+import { baseColor, bgFade } from './colors';
 
 // TODO : add multi
 // const multi: number = 8;
@@ -20,6 +20,7 @@ type BoxType = {
   maxHeight?: number | string;
   minWidth?: number | string;
   maxWidth?: number | string;
+  shadow?: 1;
   height?: number | string;
   borderColor?: string | 'baseColor';
   className?: string;
@@ -113,6 +114,7 @@ const Box = styled.div<BoxType>(
     width,
     gap,
     boxShadow,
+    shadow,
     height,
     borderColor,
     bg,
@@ -141,6 +143,7 @@ const Box = styled.div<BoxType>(
       width,
       gap,
       boxShadow,
+      shadow,
       overflowY,
       overflowX,
       overflow,
@@ -171,6 +174,11 @@ const Box = styled.div<BoxType>(
           borderColor || baseColor
         }`;
       }
+    }
+
+    switch (shadow) {
+      case 1:
+        styles.boxShadow = `0 0 4px 0.4rem ${bgFade(0.4)}`;
     }
 
     // display style

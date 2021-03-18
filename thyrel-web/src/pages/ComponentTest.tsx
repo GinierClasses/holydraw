@@ -12,9 +12,11 @@ import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
 import DrawColorPicker from '../components/room/draw/DrawColorPicker';
 import SizePicker from '../components/room/draw/SizePicker';
+import CanvasDraw from '../components/room/draw/CanvasDraw';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
+import { Divider } from 'rsuite';
 
 const colors = [
   '#FF0000',
@@ -101,7 +103,7 @@ const testPlayerList = [
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
-  const [currentColor, setCurrentColor] = useState(colors[0]);
+  const [currentColor, setCurrentColor] = useState(colors[5]);
   const [size, setSize] = useState(8);
 
   const nextPp = () => {
@@ -109,58 +111,62 @@ export default function ComponentTest() {
   };
 
   return (
-    <Box>
-      <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
-        <AppTitle />
+    <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
+      <AppTitle />
 
+      <CanvasDraw size={size} color={currentColor} />
+      <Divider />
+
+      <Box display="flex">
         <DrawColorPicker
           colors={colors}
           currentColor={currentColor}
           onColorChange={color => setCurrentColor(color)}
         />
-
-        <Box display="block" width={100} height={100}>
-          <StepTimer
-            finishAt={new Date('2021-03-02T10:27:00')}
-            timeDuration={100}
-          />
-        </Box>
-        <ButtonModalJoin
-          identifier={undefined}
-          onClick={console.log}></ButtonModalJoin>
-        <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
-        <BigInput onChange={() => void 0} value={'didier'} icon="apple" />
-        <ShareRoomButton identifier="LH4AH3" />
-        <PlayerCard
-          id={1}
-          name="John Doe"
-          avatar={profilesPictures[ppIndex]}
-          isOwner={true}
-          isKickable={false}
-          onKick={id => console.log('User id is :', id)}
-        />
-
-        <BigButton icon="star" onClick={nextPp}>
-          Test
-        </BigButton>
-
-        <PlayerCardList
-          players={testPlayerList}
-          isKickable={true}
-          onKick={id => console.log('id is', id)}
-        />
-
-        <PlayerCount count={8} max={12} />
-
-        <DirectiveLabel
-          directive="Time to draw"
-          sentence="Mémé fait des fucks à la police"
-        />
-
-        <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
-
-        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
+        <div>
+          <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
+        </div>
       </Box>
+
+      <Box display="block" width={100} height={100}>
+        <StepTimer
+          finishAt={new Date('2021-03-02T10:27:00')}
+          timeDuration={100}
+        />
+      </Box>
+      <ButtonModalJoin
+        identifier={undefined}
+        onClick={console.log}></ButtonModalJoin>
+      <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+      <BigInput onChange={() => void 0} value={'didier'} icon="apple" />
+      <ShareRoomButton identifier="LH4AH3" />
+      <PlayerCard
+        id={1}
+        name="John Doe"
+        avatar={profilesPictures[ppIndex]}
+        isOwner={true}
+        isKickable={false}
+        onKick={id => console.log('User id is :', id)}
+      />
+
+      <BigButton icon="star" onClick={nextPp}>
+        Test
+      </BigButton>
+
+      <PlayerCardList
+        players={testPlayerList}
+        isKickable={true}
+        onKick={id => console.log('id is', id)}
+      />
+
+      <PlayerCount count={8} max={12} />
+
+      <DirectiveLabel
+        directive="Time to draw"
+        sentence="Mémé fait des fucks à la police"
+      />
+
+      <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
     </Box>
   );
 }
