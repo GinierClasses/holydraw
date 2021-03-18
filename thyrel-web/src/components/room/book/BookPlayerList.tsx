@@ -1,9 +1,9 @@
 import Box from 'styles/Box';
 import Player from 'types/Player.type';
 import { Avatar } from 'rsuite';
-import { primaryFade } from 'styles/colors';
+import { baseColor, primaryFade } from 'styles/colors';
 import styled from '@emotion/styled';
-import { Tooltip, Whisper } from 'rsuite';
+import { Icon, Tooltip, Whisper } from 'rsuite';
 import { css } from '@emotion/css';
 import profilesPictures from 'images/profiles/profiles-pictures';
 import Mq, { MediaQuery } from 'styles/breakpoint';
@@ -31,6 +31,19 @@ const StyledAvatar = styled(Avatar)({
   },
 });
 
+const StyledBox = styled(Box)({
+  width: 20,
+  height: 20,
+  borderRadius: '50%',
+  backgroundColor: baseColor,
+  alignItems: 'center',
+  justifyContent: 'center',
+  display: 'flex',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+});
+
 export default function BookPlayerList({
   players,
   playerId,
@@ -41,7 +54,7 @@ export default function BookPlayerList({
   return (
     <Box
       gap={8}
-      maxWidth={isDeviceSM ? 200 : 300}
+      maxWidth={isDeviceSM ? 200 : 285}
       overflowX="scroll"
       alignItems="center"
       flexDirection="row">
@@ -56,24 +69,41 @@ export default function BookPlayerList({
                 alignItems: 'center',
               },
             })}>
-            <Whisper
-              placement="top"
-              trigger="hover"
-              speaker={<Tooltip>{player.username}</Tooltip>}>
-              <button
-                onClick={
-                  isKickable
-                    ? () => onClick?.(player.id, player.username)
-                    : undefined
-                }
-                className={css({
-                  backgroundColor: 'transparent',
-                  outline: 'none',
-                  padding: 0,
-                  [Mq.SM]: {
-                    pointerEvents: 'none',
-                  },
-                })}>
+            <Box
+              className={css({
+                [Mq.XS]: {
+                  position: 'relative',
+                },
+              })}>
+              {!isDeviceSM &&
+                (player.isOwner ? (
+                  <StyledBox>
+                    <Icon icon="twinkle-star" />
+                  </StyledBox>
+                ) : (
+                  isKickable && (
+                    <button
+                      onClick={
+                        !player.isOwner && isKickable
+                          ? () => onClick?.(player.id, player.username)
+                          : undefined
+                      }
+                      className={css({
+                        backgroundColor: 'transparent',
+                        outline: 'none',
+                        padding: 0,
+                      })}>
+                      <StyledBox>
+                        <Icon icon="close" />
+                      </StyledBox>
+                    </button>
+                  )
+                ))}
+
+              <Whisper
+                placement="top"
+                trigger="hover"
+                speaker={<Tooltip>{player.username}</Tooltip>}>
                 <StyledAvatar
                   className={css({
                     backgroundColor: `${
@@ -84,8 +114,8 @@ export default function BookPlayerList({
                   src={profilesPictures[Number(player.avatarUrl)]}
                   size="lg"
                 />
-              </button>
-            </Whisper>
+              </Whisper>
+            </Box>
             {!isDeviceSM && (
               <p
                 className={css({
@@ -93,6 +123,7 @@ export default function BookPlayerList({
                   fontSize: 16,
                   fontWeight: 'bold',
                   overflow: 'hidden',
+                  flexDirection: 'row',
                   maxWidth: 64,
                 })}>
                 {player.username}
