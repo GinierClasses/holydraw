@@ -5,10 +5,12 @@ import BigButton from '../BigButton';
 type ModalJoinProps = {
   identifier?: string;
   onClick: (identifier: string) => void;
+  loading?: boolean;
 };
 
 export default function ModalJoin({
   identifier: urlIdentifier,
+  loading,
   onClick,
 }: ModalJoinProps) {
   const [open, setOpen] = React.useState(false);
@@ -18,6 +20,7 @@ export default function ModalJoin({
       <BigButton
         icon="angle-double-up"
         size="lg"
+        loading={loading}
         onClick={() =>
           urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
         }>
@@ -41,7 +44,10 @@ export default function ModalJoin({
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => onClick(identifier)} appearance="primary">
+          <Button
+            onClick={() => onClick(identifier)}
+            appearance="primary"
+            loading={loading}>
             Join 🥳
           </Button>
           <Button onClick={() => setOpen(false)} appearance="subtle">
