@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using thyrel_api.Controllers;
+using static thyrel_api.Controllers.RoomController;
 
 namespace test_thyrel_api
 {
@@ -57,6 +58,24 @@ namespace test_thyrel_api
             var actionResult = await _roomController.GetPlayersByRoom(room.Id);
             // return null if player is not authorize
             Assert.IsNull(actionResult.Value);
+        }
+
+        [Test]
+        public async Task JoinRoom()
+        {
+            // good for the futur : move Body Class to BodyClass file class
+            var body = new PlayerRoomBody();
+            body.AvatarUrl = "3";
+            body.Username = "playertest";
+
+            await _roomController.Join(Context.Room.Last().Identifier, body);
+
+            var player = Context.Player.Last();
+            var token = Context.Token.Last();
+
+            Assert.AreEqual(player.Username, body.Username);
+            Assert.AreEqual(player.AvatarUrl, body.AvatarUrl);
+            Assert.AreEqual(player.TokenId, token.Id);
         }
     }
 }
