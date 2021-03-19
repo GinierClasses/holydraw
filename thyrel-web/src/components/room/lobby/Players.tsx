@@ -16,8 +16,7 @@ export function Players() {
   const { player } = usePlayerContext();
 
   function onKick(id: number, name: string) {
-    window.confirm(`Do you really want to kick ${name} ?`);
-    kickPlayer(id);
+    window.confirm(`Do you really want to kick ${name} ?`) && kickPlayer(id);
   }
 
   function kickPlayer(id: number) {

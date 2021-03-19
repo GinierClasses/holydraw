@@ -25,9 +25,10 @@ const StyledAvatar = styled(Avatar)({
   },
   overflow: 'visible',
   '> img': {
-    height: '32px !important',
+    height: '64px !important',
     width: 'auto !important',
     margin: 'auto',
+    position: 'unset',
   },
 });
 
