@@ -1,45 +1,19 @@
 import React from 'react';
+import { Coordinate, Line } from 'types/canvas.types';
 
 type useCanvasMouseProps = {
-  paint: (event: MouseEvent) => void;
-  stopPaint: (event: MouseEvent) => void;
-  startPaint: (event: MouseEvent) => void;
-  canvasRef: React.RefObject<HTMLCanvasElement>
+  color: string;
+  size: string;
 };
 
-function useCanvasMouseEvent({
-  paint,
-  stopPaint,
-  startPaint,
-  canvasRef
-}: useCanvasMouseProps) {
-  React.useEffect(() => {
-    if (!canvasRef.current) {
-      return;
-    }
-    const canvas: HTMLCanvasElement = canvasRef.current;
-    canvas.addEventListener('mousemove', paint);
-    return () => {
-      canvas.removeEventListener('mousemove', paint);
-    };
-  }, [canvasRef, paint]);
-
-  React.useEffect(() => {
-    if (!canvasRef.current) {
-      return;
-    }
-    const canvas: HTMLCanvasElement = canvasRef.current;
-    canvas.addEventListener('mousedown', startPaint);
-    canvas.addEventListener('mouseup', stopPaint);
-    canvas.addEventListener('mouseleave', stopPaint);
-    return () => {
-      canvas.removeEventListener('mousedown', startPaint);
-      canvas.removeEventListener('mouseup', stopPaint);
-      canvas.removeEventListener('mouseleave', stopPaint);
-    };
-  }, [canvasRef, startPaint, stopPaint]);
-
-  return canvasRef;
+function useCanvasMouseEvent({ color, size }: useCanvasMouseProps) {
+  // const mouseCoordinate = React.useRef<Coordinate>({
+  //   x: 0,
+  //   y: 0,
+  // });
+  // const lines = React.useRef<Line[]>([]);
+  // const;
+  // const getLastLine = () => lines.current[lines.current.length - 1];
 }
 
 export default useCanvasMouseEvent;
