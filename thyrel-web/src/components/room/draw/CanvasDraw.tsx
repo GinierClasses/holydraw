@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { css } from '@emotion/css';
 import React from 'react';
@@ -5,9 +6,25 @@ import { Button } from 'rsuite';
 import Box from 'styles/Box';
 import { bgFade } from 'styles/colors';
 
+/* // TODO :
+ * premierclick affiche un cercle
+ */
+
 type Coordinate = {
   x: number;
   y: number;
+};
+
+enum LineType {
+  LINE = 0,
+}
+
+type Line = {
+  id?: number;
+  type: LineType;
+  color: string;
+  size: number;
+  points: Coordinate[];
 };
 
 type CanvasDrawProps = {
@@ -15,67 +32,78 @@ type CanvasDrawProps = {
   size?: number;
 };
 
+const scale = 2;
+
 export default function CanvasDraw({
   color = '#900050',
   size = 4,
 }: CanvasDrawProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const boxRef = React.useRef<HTMLDivElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
   const mousePosition = React.useRef<Coordinate>({
     x: 0,
     y: 0,
   });
-  const positions = React.useRef<Coordinate[]>([]);
+  const lines = React.useRef<Line[]>([]);
 
-  const startPaint = React.useCallback((event: MouseEvent) => {
-    const coordinates = getCoordinates(event, canvasRef.current);
-    if (coordinates) {
-      setIsPainting(true);
-      mousePosition.current = coordinates;
-      positions.current.push(coordinates);
-    }
-  }, []);
+  const getLastLine = () => lines.current[lines.current.length - 1];
 
-  const drawLine = React.useCallback(() => {
+  const startPaint = React.useCallback(
+    (event: MouseEvent, isNewLine: boolean = true) => {
+      const coordinates = getCoordinates(event, canvasRef.current);
+      if (coordinates) {
+        setIsPainting(true);
+        mousePosition.current = coordinates;
+        if (isNewLine) {
+          lines.current.push({
+            type: LineType.LINE,
+            color,
+            size,
+            points: [coordinates],
+          });
+        } else getLastLine()?.points.push(coordinates);
+      }
+    },
+    [color, size],
+  );
+
+  const drawLine = React.useCallback((lastLine: Line) => {
     if (!canvasRef.current) {
       return;
     }
     const canvas: HTMLCanvasElement = canvasRef.current;
     const context = canvas.getContext('2d');
     if (!context) return;
-    if (positions.current.length > 3) {
-      const [lastPoint, prevPoint] = positions.current.slice(-2);
-      const controlPoint = lastPoint;
-      const endPoint = {
-        x: (lastPoint.x + prevPoint.x) / 2,
-        y: (lastPoint.y + prevPoint.y) / 2,
-      };
+    if (lastLine.points.length > 3) {
+      const { controlPoint, endPoint } = getQuadraticCurvePoints(
+        lastLine.points,
+      );
+
       drawLineOnContext(
         context,
         mousePosition.current,
         controlPoint,
         endPoint,
         {
-          color,
-          size,
+          color: lastLine.color,
+          size: lastLine.size,
         },
       );
       mousePosition.current = endPoint;
     }
-  }, [color, size]);
+  }, []);
 
   const stopPaint = React.useCallback(event => {
     setIsPainting(false);
     const position = getCoordinates(event);
     if (!position) return;
-    positions.current.push(position);
+    getLastLine().points.push(position);
     mousePosition.current = position;
   }, []);
 
   const mouseEnter = React.useCallback(
     event => {
-      if (isPainting) startPaint(event);
+      if (isPainting) startPaint(event, false);
     },
     [isPainting, startPaint],
   );
@@ -86,9 +114,10 @@ export default function CanvasDraw({
         const newMousePosition = getCoordinates(event, canvasRef.current);
 
         if (mousePosition && newMousePosition) {
-          positions.current.push(newMousePosition);
+          const lastLine = getLastLine();
+          lastLine.points.push(newMousePosition);
 
-          drawLine();
+          drawLine(lastLine);
         }
       }
     },
@@ -126,14 +155,29 @@ export default function CanvasDraw({
     };
   }, [startPaint, stopPaint]);
 
+  React.useEffect(() => {
+    if (!canvasRef.current) return;
+    const canvas: HTMLCanvasElement = canvasRef.current;
+
+    canvas.width = 512 * scale;
+    canvas.height = 320 * scale;
+  }, [canvasRef]);
+
+  function undolastpoint() {
+    if (!canvasRef.current) return;
+    const canvas: HTMLCanvasElement = canvasRef.current;
+    console.log('undo last point');
+    lines.current.pop();
+    rerenderDraw(canvas, lines.current);
+  }
+
   return (
-    <Box ref={boxRef} borderWidth={4} shadow={1}>
+    <Box flexDirection="column" borderWidth={4} shadow={1}>
       <canvas
         ref={canvasRef}
-        className={css({ backgroundColor: '#EEEEEE' })}
-        width={512}
-        height={384}
+        className={css({ backgroundColor: '#EEEEEE', width: 512, height: 320 })}
       />
+      <Button onClick={undolastpoint}>Undo last point</Button>
     </Box>
   );
 }
@@ -144,9 +188,36 @@ const getCoordinates = (
 ): Coordinate | undefined => {
   if (!canvas) return;
   return {
-    x: event.pageX - canvas.offsetLeft,
-    y: event.pageY - canvas.offsetTop,
+    x: (event.pageX - canvas.offsetLeft) * scale,
+    y: (event.pageY - canvas.offsetTop) * scale,
   };
+};
+
+const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
+  const context = canvas.getContext('2d');
+  if (!context) return;
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  lines &&
+    lines.forEach(line => {
+      let currentPosition: Coordinate = line.points[0];
+      let positionCopy: Coordinate[] = [];
+      line.points.forEach(coordinate => {
+        positionCopy.push(coordinate);
+        if (positionCopy.length > 3) {
+          const { controlPoint, endPoint } = getQuadraticCurvePoints(
+            positionCopy,
+          );
+
+          drawLineOnContext(context, currentPosition, controlPoint, endPoint, {
+            color: line.color,
+            size: line.size,
+          });
+          currentPosition = endPoint;
+        }
+      });
+    });
 };
 
 const drawLineOnContext = (
@@ -154,13 +225,7 @@ const drawLineOnContext = (
   beginPosition: Coordinate,
   controlPosition: Coordinate,
   endPosition: Coordinate,
-  {
-    color = '#900050',
-    size = 4,
-  }: {
-    color: string;
-    size: number;
-  },
+  { color = '#900050', size = 4 }: Required<CanvasDrawProps>,
 ) => {
   ctx.strokeStyle = color;
   ctx.lineJoin = 'round';
@@ -178,3 +243,14 @@ const drawLineOnContext = (
   ctx.stroke();
   ctx.closePath();
 };
+
+function getQuadraticCurvePoints(positions: Coordinate[]) {
+  const [lastPoint, prevPoint] = positions.slice(-2);
+  const controlPoint = lastPoint;
+  const endPoint = {
+    x: (lastPoint.x + prevPoint.x) / 2,
+    y: (lastPoint.y + prevPoint.y) / 2,
+  };
+
+  return { controlPoint, endPoint };
+}
