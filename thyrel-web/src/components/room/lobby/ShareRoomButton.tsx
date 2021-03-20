@@ -24,14 +24,14 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 export default function ShareRoomButton({ identifier }: ShareRoomButtonProps) {
-  function copyOnlyIfIdentifier() {
+  function onShared() {
     if (identifier) {
       copyToClipboard(`${window.location.origin}/join/${identifier}`);
       Notification.success({ title: 'URL successfully copied 😎' });
     }
   }
   return (
-    <StyledButton onClick={copyOnlyIfIdentifier}>
+    <StyledButton onClick={onShared}>
       <Box alignItems="center">
         <Icon icon="key" size="2x" />
         <span
