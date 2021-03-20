@@ -36,7 +36,7 @@ const localStorageMock = localStorageMockStarter();
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: (query: any) => ({
+  value: jest.fn((query: any) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -45,7 +45,7 @@ Object.defineProperty(window, 'matchMedia', {
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
-  }),
+  })),
 });
 
 beforeAll(() => server.listen());
