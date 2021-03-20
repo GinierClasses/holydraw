@@ -151,13 +151,13 @@ namespace thyrel_api.DataProvider
 
 
         /// <summary>
-        ///     Get one element by those ID
+        /// Get The Current Element Of a player
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>
-        public async Task<ElementDto> GetCurrentElement(int playerId)
+        public async Task<ElementStepDto> GetCurrentElement(int playerId)
         {
-            var result = await _holyDrawDbContext.Element
+            var elementWithParent = await _holyDrawDbContext.Element
                 .OrderByDescending(e => e.Step)
                 .Where(e => e.CreatorId == playerId)
                 .Select(e => new ElementDto
@@ -169,8 +169,19 @@ namespace thyrel_api.DataProvider
                     DrawingId = e.DrawingId,
                     FinishAt = e.FinishAt,
                     CreatedAt = e.CreatedAt,
-                    SessionId = e.SessionId
-                }).FirstAsync();
+                    SessionId = e.SessionId,
+                })
+                .Take(2)
+                .ToListAsync();
+
+            var children = elementWithParent[0];
+            ElementDto parent = null;
+            if (elementWithParent.Count() > 1)
+            {
+                parent = elementWithParent[1];
+            }
+
+            var result = new ElementStepDto(children, parent);
 
             return result;
         }
