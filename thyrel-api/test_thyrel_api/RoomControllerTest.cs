@@ -77,5 +77,24 @@ namespace test_thyrel_api
             Assert.AreEqual(player.AvatarUrl, body.AvatarUrl);
             Assert.AreEqual(player.TokenId, token.Id);
         }
+
+        [Test]
+        public async Task PostRoomTest()
+        {
+            var body = new PlayerRoomBody();
+            body.AvatarUrl = "3";
+            body.Username = "playertest";
+
+            var nRooms = Context.Room.Count();
+            await _roomController.Post(body);
+            Assert.AreEqual(Context.Room.Count(), nRooms + 1);
+
+            var player = Context.Player.Last();
+            var token = Context.Token.Last();
+
+            Assert.AreEqual(player.Username, body.Username);
+            Assert.AreEqual(player.AvatarUrl, body.AvatarUrl);
+            Assert.AreEqual(player.TokenId, token.Id);
+        }
     }
 }
