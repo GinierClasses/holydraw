@@ -5,21 +5,16 @@ import Box from '../styles/Box';
 import { css } from '@emotion/css';
 import Mq from '../styles/breakpoint';
 import { useRoomContext } from '../hooks/RoomProvider';
+import { useSessionContext } from 'hooks/SessionProvider';
 
 type GameBarProps = {
   max: number;
-  finishAt: Date;
-  timeDuration: number;
   onFinish?: () => void;
 };
 
-export default function GameBar({
-  max,
-  finishAt,
-  timeDuration,
-  onFinish,
-}: GameBarProps) {
+export default function GameBar({ max, onFinish }: GameBarProps) {
   const { players } = useRoomContext();
+  const { session } = useSessionContext();
 
   return (
     <Box
@@ -53,8 +48,8 @@ export default function GameBar({
             },
           })}>
           <StepTimer
-            finishAt={finishAt}
-            timeDuration={timeDuration}
+            finishAt={new Date(session?.stepFinishAt || '')}
+            timeDuration={session?.timeDuration || 60}
             onFinish={onFinish}
           />
         </Box>
