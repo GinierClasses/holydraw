@@ -33,8 +33,8 @@ namespace thyrel_api.Models
         public int? RoomId { get; set; }
         public virtual Room Room { get; set; }
 
-        public int TokenId { get; set; }
-        public Token Token { get; set; }
+        public int? TokenId { get; set; }
+        public virtual Token Token { get; set; }
 
         public virtual List<Element> AlbumElements { get; set; }
         public virtual List<Element> CreatedElements { get; set; }
