@@ -9,7 +9,6 @@ type BigButtonProps = ButtonProps & {
   children?: React.ReactNode;
   icon?: IconProps['icon'];
   size?: 'md' | 'lg';
-  loading?: boolean;
   onClick?: () => void;
 };
 
@@ -30,7 +29,6 @@ export default function BigButton({
   children,
   icon,
   size,
-  loading,
   onClick,
   ...props
 }: BigButtonProps) {
@@ -40,7 +38,6 @@ export default function BigButton({
       appearance="primary"
       bg={baseColor}
       size={size}
-      loading={loading}
       {...props}>
       <Box alignItems="center">
         {icon ? (
