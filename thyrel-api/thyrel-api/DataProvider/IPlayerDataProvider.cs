@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -46,10 +47,10 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Handle isPlayer (when session start) column
         /// </summary>
-        /// <param name="playerId"></param>
+        /// <param name="roomId"></param>
         /// <param name="isPlaying"></param>
         /// <returns></returns>
-        Task<Player> SetIsPlaying(int playerId, bool isPlaying);
+        Task SetIsPlaying(int roomId, bool isPlaying);
 
         /// <summary>
         ///     Handle isConnected (when user left) column
@@ -64,7 +65,7 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        Task<List<Player>> GetPlayersByRoom(int roomId);
+        Task<List<PlayerDto>> GetPlayersByRoom(int roomId);
 
         /// <summary>
         /// Kick a player from his room using his ID
