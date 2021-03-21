@@ -1,6 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { css } from '@emotion/css';
+import useCanvasPaint from 'hooks/useCanvasPaint';
 import React from 'react';
 import { Button } from 'rsuite';
 import Box from 'styles/Box';
@@ -34,60 +35,31 @@ export default function CanvasDraw({
 }: CanvasDrawProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
-  const mouseCoordinate = React.useRef<Coordinate>({
-    x: 0,
-    y: 0,
+  const { paintLine, createLine, addLastLine } = useCanvasPaint({
+    color,
+    size,
+    canvasRef,
   });
-  const lines = React.useRef<Line[]>([]);
-
-  const getLastLine = () => lines.current[lines.current.length - 1];
 
   const startPaint = React.useCallback(
     (event: MouseEvent, isNewLine: boolean = true) => {
       const coordinates = getCoordinates(event, canvasRef.current);
-      if (coordinates) {
-        setIsPainting(true);
-        mouseCoordinate.current = coordinates;
-        if (isNewLine) {
-          lines.current.push({
-            type: LineType.LINE,
-            color,
-            size,
-            points: [coordinates],
-          });
-        } else getLastLine()?.points.push(coordinates);
-      }
+      if (!coordinates) return;
+      setIsPainting(true);
+
+      createLine(coordinates, isNewLine);
     },
-    [color, size],
+    [createLine],
   );
 
-  const drawLine = React.useCallback((lastLine: Line) => {
-    if (!canvasRef.current) return;
-    const context = canvasRef.current.getContext('2d');
-    if (!context) return;
-    // if (lastLine.points.length <= 1) return;
-
-    const { controlPoint, endPoint } = getQuadraticCurveCoordinates(
-      lastLine.points,
-    );
-
-    drawCanvasLine(
-      context,
-      mouseCoordinate.current,
-      controlPoint,
-      endPoint,
-      lastLine,
-    );
-    mouseCoordinate.current = endPoint;
-  }, []);
-
-  const stopPaint = React.useCallback(event => {
-    setIsPainting(false);
-    const coordinate = getCoordinates(event);
-    if (!coordinate) return;
-    getLastLine().points.push(coordinate);
-    mouseCoordinate.current = coordinate;
-  }, []);
+  const stopPaint = React.useCallback(
+    event => {
+      setIsPainting(false);
+      const coordinate = getCoordinates(event);
+      addLastLine(coordinate);
+    },
+    [addLastLine],
+  );
 
   const mouseEnter = React.useCallback(
     event => {
@@ -98,15 +70,11 @@ export default function CanvasDraw({
 
   const paint = React.useCallback(
     (event: MouseEvent) => {
-      if (!isPainting) return;
+      if (!isPainting || !canvasRef.current) return;
       const newMousePosition = getCoordinates(event, canvasRef.current);
-      if (!mouseCoordinate || !newMousePosition) return;
-
-      const lastLine = getLastLine();
-      lastLine.points.push(newMousePosition);
-      drawLine(lastLine);
+      paintLine(newMousePosition);
     },
-    [drawLine, isPainting],
+    [isPainting, paintLine],
   );
 
   React.useEffect(() => {
@@ -148,23 +116,16 @@ export default function CanvasDraw({
     canvas.height = canvasWidth.height * canvasScale;
   }, [canvasRef]);
 
-  function undolastpoint() {
-    if (!canvasRef.current) return;
-    lines.current.pop();
-    rerenderDraw(canvasRef.current, lines.current);
-  }
-
   return (
     <Box flexDirection="column" borderWidth={4} shadow={1}>
       <canvas
         ref={canvasRef}
         className={css({
-          backgroundColor: '#000000',
+          backgroundColor: '#DDDDDD',
           width: canvasWidth.width,
           height: canvasWidth.height,
         })}
       />
-      <Button onClick={undolastpoint}>Undo last point</Button>
     </Box>
   );
 }

@@ -19,20 +19,23 @@ import ButtonModalJoin from '../components/home/ButtonModalJoin';
 import { Divider } from 'rsuite';
 
 const colors = [
-  '#FF0000',
-  '#FFC700',
-  '#24FF00',
-  '#001AAF',
-  '#005A5F',
-  '#6564A6',
-  '#759F81',
-  '#FFFA8A',
-  '#8C33D2',
-  '#FF8A00',
-  '#00FFC2',
-  '#002FFF',
+  '#000000',
+  '#7f8c8d',
+  '#bdc3c7',
+  '#ecf0f1',
+  '#00a8ff',
+  '#1e3799',
+  '#2ecc71',
+  '#009432',
+  '#e74c3c',
+  '#c0392b',
+  '#691506',
   '#FA00FF',
-  '#A450AC',
+  '#FDA7DF',
+  '#FEAFA8',
+  '#CB5A57',
+  '#FFC312',
+  '#F79F1F',
 ];
 
 const testPlayerList = [
