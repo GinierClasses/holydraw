@@ -14,9 +14,7 @@ export function useRoomStates() {
   const history = useHistory();
 
   const updateRoom = React.useCallback(() => {
-    client<Room>(`room/${player?.roomId}`, {
-      token: getToken(),
-    }).then(setRoom);
+    client<Room>(`room/${player?.roomId}`, { token: getToken() }).then(setRoom);
   }, [player?.roomId]);
 
   const updatePlayer = React.useCallback(() => {
@@ -44,7 +42,6 @@ export function useRoomStates() {
         }
         return prevPlayers;
       });
-      // ne pas push ce changement
     },
     [history, player?.id],
   );

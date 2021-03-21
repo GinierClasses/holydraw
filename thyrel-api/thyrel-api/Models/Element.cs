@@ -13,6 +13,14 @@ namespace thyrel_api.Models
             SessionId = sessionId;
         }
 
+        public Element(int step, int creatorId, int initiatorId, int sessionId, ElementType type)
+            : this(step, creatorId, initiatorId, sessionId)
+        {
+            Type = type;
+            if (type == ElementType.Sentence)
+                Text = "";
+        }
+
         public Element(int step, int creatorId, int initiatorId, int sessionId, int? drawingId = null)
             : this(step, creatorId, initiatorId, sessionId)
         {

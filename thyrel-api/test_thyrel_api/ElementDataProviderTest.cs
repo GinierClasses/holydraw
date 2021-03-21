@@ -31,21 +31,20 @@ namespace test_thyrel_api
         [Test]
         public async Task AddElementsFunctionCreateList()
         {
-
             var elements = new List<Element>
             {
-                new (1, 1, 1, 1, "element-sentence-1"),
-                new (1, 2, 2, 1, "element-sentence-2"),
-                new (1, 3, 3, 1, "element-sentence-3"),
-                new (1, 4, 4, 1, "element-sentence-4"),
-                new (1, 6, 6, 1, "element-sentence-5"),
-                new (1, 7, 7, 1, "element-sentence-6"),
+                new(1, 1, 1, 1, "element-sentence-1"),
+                new(1, 2, 2, 1, "element-sentence-2"),
+                new(1, 3, 3, 1, "element-sentence-3"),
+                new(1, 4, 4, 1, "element-sentence-4"),
+                new(1, 6, 6, 1, "element-sentence-5"),
+                new(1, 7, 7, 1, "element-sentence-6"),
             };
             var elementCount = Context.Element.Count();
 
             await _elementDataProvider.AddElements(elements);
 
-            Assert.AreEqual(elementCount + elements.Count, Context.Element.Count());           
+            Assert.AreEqual(elementCount + elements.Count, Context.Element.Count());
         }
 
         [Test]
@@ -76,7 +75,7 @@ namespace test_thyrel_api
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newId, dbElement.DrawingId);
         }
-        
+
         [Test]
         public async Task HandleFinishChangeTheFinish()
         {
@@ -87,7 +86,7 @@ namespace test_thyrel_api
             var element2 = await _elementDataProvider.GetElement(1);
             Assert.IsNull(element2.FinishAt);
         }
-        
+
         [Test]
         public async Task TestGetAlbum()
         {
@@ -95,7 +94,7 @@ namespace test_thyrel_api
             var album = await _elementDataProvider.GetAlbum(1);
             Assert.AreEqual(elementExpected, album.Count);
         }
-        
+
         [Test]
         public async Task TestGetElement()
         {
@@ -103,6 +102,26 @@ namespace test_thyrel_api
             var expectedElement = await Context.Element.SingleAsync(e => e.Id == 1);
             Assert.AreEqual(expectedElement.Id, element.Id);
             Assert.AreEqual(expectedElement.Text, element.Text);
+        }
+
+        [Test]
+        public async Task TestGetNextCandidatesElement()
+        {
+            var session = await Context.Session.FirstAsync();
+            var candidates = await _elementDataProvider.GetNextCandidateElements(session.Id);
+
+            Assert.AreEqual(candidates.Count, Context.Element.Count(e => e.SessionId == session.Id));
+            Assert.AreEqual((await Context.Element.FindAsync(candidates.First().Id)).SessionId, session.Id);
+        }
+        
+        [Test]
+        public async Task TestGetCurrentElement()
+        {
+            var player = await Context.Player.FindAsync(1);
+            var expected = await Context.Element.OrderByDescending(e => e.Step).FirstOrDefaultAsync(e => e.CreatorId == player.Id);
+            var current = await _elementDataProvider.GetCurrentElement(player.Id);
+            Assert.AreEqual(current.Step, expected.Step);
+            Assert.AreEqual(current.Id, expected.Id);
         }
     }
 }
