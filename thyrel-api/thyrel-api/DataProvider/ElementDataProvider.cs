@@ -151,7 +151,7 @@ namespace thyrel_api.DataProvider
 
 
         /// <summary>
-        /// Get The Current Element Of a player
+        ///   Get The Current Element Of a player
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>
