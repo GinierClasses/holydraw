@@ -29,18 +29,21 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         username: username || defaultUsername,
         avatarUrl: String(ppIndex),
       },
-    }).then((player: Player) => {
-      setLoading(false);
-      if (player.token?.tokenKey) {
-        Notification['success']({
-          title: 'Room successfully created.',
-          description: 'Invite your friends.',
-        });
-        setToken(player.token.tokenKey);
-        // to redirect to an other page
-        history?.push('/r/lobby');
-      }
-    });
+    }).then(
+      (player: Player) => {
+        setLoading(false);
+        if (player.token?.tokenKey) {
+          Notification['success']({
+            title: 'Room successfully created.',
+            description: 'Invite your friends.',
+          });
+          setToken(player.token.tokenKey);
+          // to redirect to an other page
+          history?.push('/r/lobby');
+        }
+      },
+      () => setLoading(false),
+    );
   }
 
   function onJoin(identifier: string) {
@@ -51,18 +54,21 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         avatarUrl: String(ppIndex),
       },
       method: 'PATCH',
-    }).then((player: Player) => {
-      setLoading(false);
-      if (player.token?.tokenKey) {
-        Notification['success']({
-          title: 'Room successfully created.',
-          description: 'Invite your friends.',
-        });
-        setToken(player.token.tokenKey);
-        // to redirect to an other page
-        history?.push('/r/lobby');
-      }
-    });
+    }).then(
+      (player: Player) => {
+        setLoading(false);
+        if (player.token?.tokenKey) {
+          Notification['success']({
+            title: 'Room successfully created.',
+            description: 'Invite your friends.',
+          });
+          setToken(player.token.tokenKey);
+          // to redirect to an other page
+          history?.push('/r/lobby');
+        }
+      },
+      () => setLoading(false),
+    );
   }
 
   return (
