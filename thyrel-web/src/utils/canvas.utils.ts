@@ -6,7 +6,7 @@ export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
   const context = canvas.getContext('2d');
   if (!context) return;
 
-  context.clearRect(0, 0, canvas.width, canvas.height);
+  clearDraw(canvas, context);
 
   lines &&
     lines.forEach(line => {
@@ -30,6 +30,13 @@ export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
         }
       });
     });
+};
+
+export const clearDraw = (
+  canvas: HTMLCanvasElement,
+  context?: CanvasRenderingContext2D | null,
+) => {
+  context?.clearRect(0, 0, canvas.width, canvas.height);
 };
 
 export const drawCanvasLine = (

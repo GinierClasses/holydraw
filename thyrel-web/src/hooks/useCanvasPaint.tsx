@@ -1,6 +1,7 @@
 import React from 'react';
 import { Coordinate, Line, LineType } from 'types/canvas.types';
 import {
+  clearDraw,
   drawCanvasLine,
   getQuadraticCurveCoordinates,
   rerenderDraw,
@@ -74,6 +75,11 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
     rerenderDraw(canvasRef.current, lines.current);
   }, [canvasRef]);
 
+  const clearCanvas = React.useCallback(() => {
+    if (!canvasRef.current) return;
+    clearDraw(canvasRef.current, canvasRef.current.getContext('2d'));
+  }, [canvasRef]);
+
   React.useEffect(() => {
     if (!canvasRef.current) return;
     const onKeyDown = (event: any) => {
@@ -91,6 +97,7 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
     undoLastLine,
     lines,
     mouseCoordinate,
+    clearCanvas,
   };
 }
 

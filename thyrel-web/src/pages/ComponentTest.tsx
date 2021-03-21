@@ -12,11 +12,10 @@ import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
 import DrawColorPicker from '../components/room/draw/DrawColorPicker';
 import SizePicker from '../components/room/draw/SizePicker';
-import CanvasDraw from '../components/room/draw/CanvasDraw';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
-import { Divider } from 'rsuite';
+import CanvasDraw from 'components/room/draw/CanvasDraw';
 
 const colors = [
   '#000000',
@@ -29,7 +28,6 @@ const colors = [
   '#009432',
   '#e74c3c',
   '#c0392b',
-  '#691506',
   '#FA00FF',
   '#FDA7DF',
   '#FEAFA8',
@@ -106,7 +104,7 @@ const testPlayerList = [
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
-  const [currentColor, setCurrentColor] = useState(colors[5]);
+  const [color, setColor] = useState(colors[5]);
   const [size, setSize] = useState(8);
 
   const nextPp = () => {
@@ -117,18 +115,16 @@ export default function ComponentTest() {
     <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
       <AppTitle />
 
-      <CanvasDraw size={size} color={currentColor} />
-      <Divider />
-
-      <Box display="flex">
-        <DrawColorPicker
-          colors={colors}
-          currentColor={currentColor}
-          onColorChange={color => setCurrentColor(color)}
-        />
-        <div>
-          <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
-        </div>
+      <Box display="flex" flexDirection="column">
+        <Box display="flex">
+          <DrawColorPicker
+            colors={colors}
+            currentColor={color}
+            onColorChange={color => setColor(color)}
+          />
+          <CanvasDraw size={size} color={color} />
+        </Box>
+        <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
       </Box>
 
       <Box display="block" width={100} height={100}>

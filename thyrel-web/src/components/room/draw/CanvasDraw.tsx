@@ -3,17 +3,9 @@
 import { css } from '@emotion/css';
 import useCanvasPaint from 'hooks/useCanvasPaint';
 import React from 'react';
-import { Button } from 'rsuite';
+import { Button, Icon } from 'rsuite';
 import Box from 'styles/Box';
-import { bgFade } from 'styles/colors';
-import { Coordinate, Line, LineType } from 'types/canvas.types';
-import {
-  canvasScale,
-  drawCanvasLine,
-  getCoordinates,
-  getQuadraticCurveCoordinates,
-  rerenderDraw,
-} from 'utils/canvas.utils';
+import { canvasScale, getCoordinates } from 'utils/canvas.utils';
 
 /* // TODO :
  * premierclick affiche un cercle
@@ -35,11 +27,13 @@ export default function CanvasDraw({
 }: CanvasDrawProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
-  const { paintLine, createLine, addLastLine } = useCanvasPaint({
-    color,
-    size,
-    canvasRef,
-  });
+  const {
+    paintLine,
+    createLine,
+    addLastLine,
+    clearCanvas,
+    undoLastLine,
+  } = useCanvasPaint({ color, size, canvasRef });
 
   const startPaint = React.useCallback(
     (event: MouseEvent, isNewLine: boolean = true) => {
@@ -117,15 +111,32 @@ export default function CanvasDraw({
   }, [canvasRef]);
 
   return (
-    <Box flexDirection="column" borderWidth={4} shadow={1}>
-      <canvas
-        ref={canvasRef}
+    <>
+      <Box
         className={css({
-          backgroundColor: '#DDDDDD',
-          width: canvasWidth.width,
-          height: canvasWidth.height,
+          width: canvasWidth.width + 4 * 2,
+          height: canvasWidth.height + 4 * 2,
         })}
-      />
-    </Box>
+        borderWidth={4}
+        shadow={1}>
+        <canvas
+          ref={canvasRef}
+          className={css({
+            backgroundColor: '#DDDDDD',
+            width: canvasWidth.width,
+            height: canvasWidth.height,
+          })}
+        />
+      </Box>
+
+      <Box display="flex" flexDirection="column">
+        <Button onClick={clearCanvas}>
+          <Icon icon="trash" />
+        </Button>
+        <Button onClick={undoLastLine}>
+          <Icon icon="undo" />
+        </Button>
+      </Box>
+    </>
   );
 }
