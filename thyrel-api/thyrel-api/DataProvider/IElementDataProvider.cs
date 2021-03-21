@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -72,5 +73,19 @@ namespace thyrel_api.DataProvider
         /// <param name="elementId"></param>
         /// <returns></returns>
         Task<Element> GetElement(int elementId);
+
+        /// <summary>
+        ///     Get candidates from Sessions
+        /// </summary>
+        /// <param name="sessionId">Id of session</param>
+        /// <returns>Element Candidates of Session</returns>
+        Task<List<ElementCandidateDto>> GetNextCandidateElements(int sessionId);
+
+        /// <summary>
+        ///     Get current by playerId
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        Task<ElementDto> GetCurrentElement(int playerId);
     }
 }

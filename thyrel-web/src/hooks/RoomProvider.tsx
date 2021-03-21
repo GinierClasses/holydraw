@@ -19,10 +19,7 @@ const RoomContext = React.createContext<RoomSocketContextProps>({
   players: [],
 });
 
-type RoomSocketContextProviderProps = {
-  children: React.ReactElement;
-  onMessage?: (message: string) => void;
-};
+type RoomSocketContextProviderProps = { children: React.ReactElement };
 
 export function RoomContextProvider({
   children,
