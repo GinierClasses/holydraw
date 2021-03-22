@@ -1,4 +1,5 @@
 import React from 'react';
+
 const usernames = [
   'Dieu',
   'JeSuisCovid',
@@ -16,6 +17,7 @@ const usernames = [
   'Con',
   'hhhhhhhhhh',
 ];
+
 const getRandomUsername = () =>
   usernames[Math.floor(Math.random() * usernames.length)];
 
