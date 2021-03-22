@@ -29,6 +29,9 @@ const StyledAvatar = styled(Avatar)({
     width: 'auto !important',
     margin: 'auto',
     position: 'unset',
+    [Mq.SM]: {
+      height: '32px !important',
+    },
   },
 });
 
