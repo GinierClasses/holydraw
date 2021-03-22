@@ -46,7 +46,8 @@ CREATE TABLE `Element` (
   `DrawingId` int DEFAULT NULL,
   `FinishAt` datetime DEFAULT NULL,
   `Step` int NOT NULL,
-  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DrawImage` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
@@ -54,16 +55,16 @@ CREATE TABLE `Element` (
 -- Dumping data for table `Element`
 --
 
-INSERT INTO `Element` (`id`, `SessionId`, `CreatorId`, `InitiatorId`, `Type`, `Text`, `DrawingId`, `FinishAt`, `Step`, `CreatedAt`) VALUES
-(1, 9, 26, 26, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53'),
-(2, 9, 27, 27, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53'),
-(3, 9, 28, 28, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53'),
-(4, 9, 26, 28, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03'),
-(5, 9, 27, 26, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03'),
-(6, 9, 28, 27, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03'),
-(7, 9, 26, 27, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13'),
-(8, 9, 27, 28, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13'),
-(9, 9, 28, 26, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13');
+INSERT INTO `Element` (`id`, `SessionId`, `CreatorId`, `InitiatorId`, `Type`, `Text`, `DrawingId`, `FinishAt`, `Step`, `CreatedAt`, `DrawImage`) VALUES
+(1, 9, 26, 26, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53', NULL),
+(2, 9, 27, 27, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53', NULL),
+(3, 9, 28, 28, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53', NULL),
+(4, 9, 26, 28, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03', NULL),
+(5, 9, 27, 26, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03', NULL),
+(6, 9, 28, 27, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03', NULL),
+(7, 9, 26, 27, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13', NULL),
+(8, 9, 27, 28, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13', NULL),
+(9, 9, 28, 26, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13', NULL);
 
 -- --------------------------------------------------------
 
