@@ -35,7 +35,7 @@ const StyledAvatar = styled(Avatar)({
   },
 });
 
-const StyledBox = styled(Box)({
+const Badge = styled.div({
   width: 20,
   height: 20,
   borderRadius: '50%',
@@ -73,7 +73,7 @@ export default function BookPlayerList({
                 alignItems: 'center',
               },
             })}>
-            <Box
+            <div
               className={css({
                 [Mq.XS]: {
                   position: 'relative',
@@ -81,9 +81,9 @@ export default function BookPlayerList({
               })}>
               {!isDeviceSM &&
                 (player.isOwner ? (
-                  <StyledBox>
+                  <Badge>
                     <Icon data-testid="star-icon" icon="twinkle-star" />
-                  </StyledBox>
+                  </Badge>
                 ) : (
                   isKickable && (
                     <button
@@ -97,9 +97,9 @@ export default function BookPlayerList({
                         outline: 'none',
                         padding: 0,
                       })}>
-                      <StyledBox>
+                      <Badge>
                         <Icon data-testid="kick-icon" icon="close" />
-                      </StyledBox>
+                      </Badge>
                     </button>
                   )
                 ))}
@@ -119,7 +119,7 @@ export default function BookPlayerList({
                   size="lg"
                 />
               </Whisper>
-            </Box>
+            </div>
             {!isDeviceSM && (
               <p
                 className={css({
