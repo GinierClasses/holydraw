@@ -11,6 +11,7 @@ type PlayerCardProps = {
   avatar: string;
   isOwner?: boolean;
   isKickable?: boolean;
+  isCurrentPlayer?: boolean;
   onKick?: (id: number, name: string) => void;
 };
 
@@ -25,8 +26,22 @@ const StyledAvatar = styled(Avatar)({
     // `!important` is awful in CSS but I don't have the choice
     height: '48px !important',
     width: 'auto !important',
+    position: 'unset',
     margin: 'auto',
   },
+});
+
+const Badge = styled.div({
+  width: 20,
+  height: 20,
+  borderRadius: '50%',
+  backgroundColor: baseColor,
+  alignItems: 'center',
+  justifyContent: 'center',
+  display: 'flex',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
 });
 
 export default function PlayerCard({
@@ -35,6 +50,7 @@ export default function PlayerCard({
   avatar,
   isOwner,
   isKickable,
+  isCurrentPlayer,
   onKick,
 }: PlayerCardProps) {
   return (
@@ -47,7 +63,18 @@ export default function PlayerCard({
       alignItems="center"
       justifyContent="space-between"
       bg={bgColor}>
-      <StyledAvatar circle={true} src={avatar} size="lg" />
+      <div
+        className={css({
+          position: 'relative',
+        })}>
+        {isCurrentPlayer && (
+          <Badge>
+            <Icon data-testid="user-icon" icon="user" />
+          </Badge>
+        )}
+        <StyledAvatar circle={true} src={avatar} size="lg" />
+      </div>
+
       <p
         className={css({
           fontFamily: 'Work Sans',
