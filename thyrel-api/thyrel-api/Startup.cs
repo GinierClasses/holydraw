@@ -57,7 +57,7 @@ namespace thyrel_api
                 dbContextOptions => dbContextOptions
                     .UseMySql(
                         _configuration.GetConnectionString("thyrel_db"),
-                        new MySqlServerVersion(new Version(8, 0, 23)), // use MariaDbServerVersion for MariaDB
+                        new MySqlServerVersion(new Version(8, 0, 23)),
                         mySqlOptions => mySqlOptions
                             .CharSetBehavior(CharSetBehavior.NeverAppend))
                     .EnableSensitiveDataLogging()

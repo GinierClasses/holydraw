@@ -55,7 +55,7 @@ namespace thyrel_api.Websocket
                 // if no matching token or no token
                 if (player == null)
                 {
-                    await SendMessageToSocket(connection, Json.JSON.Serialize(
+                    await SendMessageToSocket(connection, Json.JsonBase.Serialize(
                         new BaseWebsocketEventJson(WebsocketEvent.Invalid)));
                     continue;
                 }
@@ -70,7 +70,7 @@ namespace thyrel_api.Websocket
 
                 // inform room that a new player join
                 await SendMessageToSockets(
-                    JSON.Serialize(
+                    JsonBase.Serialize(
                         new PlayerWebsocketEventJson(WebsocketEvent.PlayerJoin, player)), player.RoomId);
             }
         }
@@ -144,7 +144,7 @@ namespace thyrel_api.Websocket
                     foreach (var closedSocket in closedSockets.Where(closedSocket => openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                     {
                         await SendMessageToSockets(
-                            JSON.Serialize(
+                            JsonBase.Serialize(
                                 new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerLeft, closedSocket.PlayerId)), closedSocket.RoomId);
                         if (closedSocket.PlayerId == null) continue;
 
@@ -159,7 +159,7 @@ namespace thyrel_api.Websocket
                         
                         await playerDataProvider.SetOwner(player, false);
                         await SendMessageToSockets(
-                            JSON.Serialize(
+                            JsonBase.Serialize(
                                 new PlayerWebsocketEventJson(WebsocketEvent.NewOwnerPlayer, newOwnerPlayer)), closedSocket.RoomId);
                     }
 

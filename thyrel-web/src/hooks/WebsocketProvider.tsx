@@ -10,10 +10,7 @@ const WebsocketContext = React.createContext<WebsocketContextProps>({
   wsState: WsStates.IDLE,
 });
 
-type WebsocketContextProviderProps = {
-  children: React.ReactElement;
-  onMessage?: (message: string) => void;
-};
+type WebsocketContextProviderProps = { children: React.ReactElement };
 
 export function WebsocketProvider({ children }: WebsocketContextProviderProps) {
   const { wsState, websocket } = useWebsocket();

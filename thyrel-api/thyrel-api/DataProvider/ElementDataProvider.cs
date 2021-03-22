@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -147,6 +148,51 @@ namespace thyrel_api.DataProvider
         {
             return await _holyDrawDbContext.Element.FindAsync(elementId);
         }
+
+
+        /// <summary>
+        ///     Get one element by those ID
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public async Task<ElementDto> GetCurrentElement(int playerId)
+        {
+            var result = await _holyDrawDbContext.Element
+                .OrderByDescending(e => e.Step)
+                .Where(e => e.CreatorId == playerId)
+                .Select(e => new ElementDto
+                {
+                    Id = e.Id,
+                    Step = e.Step,
+                    Type = e.Type,
+                    Text = e.Text,
+                    DrawingId = e.DrawingId,
+                    FinishAt = e.FinishAt,
+                    CreatedAt = e.CreatedAt,
+                    SessionId = e.SessionId
+                }).FirstAsync();
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Get candidates from Sessions
+        /// </summary>
+        /// <param name="sessionId">Id of session</param>
+        /// <returns>Element Candidates of Session</returns>
+        public async Task<List<ElementCandidateDto>> GetNextCandidateElements(int sessionId)
+        {
+            var elements = await _holyDrawDbContext.Element
+                .Where(e => e.SessionId == sessionId).Select(e => new ElementCandidateDto
+                {
+                    Id = e.Id,
+                    Step = e.Step,
+                    InitiatorId = e.InitiatorId,
+                    CreatorId = e.CreatorId
+                }).ToListAsync();
+            return elements;
+        }
+
 
         private async Task SaveChanges()
         {

@@ -7,7 +7,7 @@ import { Notification } from 'rsuite';
 import { copyToClipboard } from 'utils/clipboard';
 
 type ShareRoomButtonProps = {
-  identifier: string;
+  identifier?: string;
 };
 
 const StyledButton = styled(Button)(() => ({
@@ -24,12 +24,14 @@ const StyledButton = styled(Button)(() => ({
 }));
 
 export default function ShareRoomButton({ identifier }: ShareRoomButtonProps) {
+  function onShared() {
+    if (identifier) {
+      copyToClipboard(`${window.location.origin}/join/${identifier}`);
+      Notification.success({ title: 'URL successfully copied 😎' });
+    }
+  }
   return (
-    <StyledButton
-      onClick={() => {
-        copyToClipboard(`${window.location.origin}/join/${identifier}`);
-        Notification.success({ title: 'URL successfully copied 😎' });
-      }}>
+    <StyledButton onClick={onShared}>
       <Box alignItems="center">
         <Icon icon="key" size="2x" />
         <span
@@ -39,7 +41,7 @@ export default function ShareRoomButton({ identifier }: ShareRoomButtonProps) {
             width: '100%',
             color: '#BDBDBD',
           })}>
-          {identifier}
+          {identifier || 'loading...'}
         </span>
       </Box>
     </StyledButton>
