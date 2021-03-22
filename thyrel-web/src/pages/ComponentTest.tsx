@@ -15,6 +15,7 @@ import SizePicker from '../components/room/draw/SizePicker';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
+import testPlayerList from '__tests__/json/players.json';
 
 const colors = [
   '#FF0000',
@@ -31,72 +32,6 @@ const colors = [
   '#002FFF',
   '#FA00FF',
   '#A450AC',
-];
-
-const testPlayerList = [
-  {
-    id: 1,
-    username: 'jeanmich',
-    avatarUrl: '0',
-    isOwner: true,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 2,
-    username: 'Xx_plao',
-    avatarUrl: '1',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 3,
-    username: 'AAAAAAHHHH',
-    avatarUrl: '2',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 4,
-    username: 'Melvyn',
-    avatarUrl: '3',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 5,
-    username: 'Ana',
-    avatarUrl: '4',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 6,
-    username: 'Alex',
-    avatarUrl: '5',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 7,
-    username: 'Luca',
-    avatarUrl: '6',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
 ];
 
 export default function ComponentTest() {
@@ -159,7 +94,11 @@ export default function ComponentTest() {
 
         <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
 
-        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
+        <Box m={64}>
+          <BookPlayerList
+            players={testPlayerList}
+            playerId={2}></BookPlayerList>
+        </Box>
       </Box>
     </Box>
   );
