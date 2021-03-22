@@ -52,6 +52,7 @@ export function Players() {
         ) : (
           <BookPlayerList
             players={players}
+            playerId={player?.id}
             isKickable={player?.isOwner}
             onClick={(id, name) => onKick(id, name)}
           />

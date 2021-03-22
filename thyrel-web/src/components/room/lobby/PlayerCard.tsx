@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import styled from '@emotion/styled';
 import Box from 'styles/Box';
 import { Icon } from 'rsuite';
-import { baseColor, bgColor, primaryFade } from 'styles/colors';
+import { baseColor, bgColor } from 'styles/colors';
 
 type PlayerCardProps = {
   id: number;
@@ -26,8 +26,22 @@ const StyledAvatar = styled(Avatar)({
     // `!important` is awful in CSS but I don't have the choice
     height: '48px !important',
     width: 'auto !important',
+    position: 'unset',
     margin: 'auto',
   },
+});
+
+const StyledBox = styled(Box)({
+  width: 20,
+  height: 20,
+  borderRadius: '50%',
+  backgroundColor: baseColor,
+  alignItems: 'center',
+  justifyContent: 'center',
+  display: 'flex',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
 });
 
 export default function PlayerCard({
@@ -48,8 +62,19 @@ export default function PlayerCard({
       padding={8}
       alignItems="center"
       justifyContent="space-between"
-      bg={isCurrentPlayer ? primaryFade(0.2) : bgColor}>
-      <StyledAvatar circle={true} src={avatar} size="lg" />
+      bg={bgColor}>
+      <Box
+        className={css({
+          position: 'relative',
+        })}>
+        {isCurrentPlayer && (
+          <StyledBox>
+            <Icon data-testid="user-icon" icon="user" />
+          </StyledBox>
+        )}
+        <StyledAvatar circle={true} src={avatar} size="lg" />
+      </Box>
+
       <p
         className={css({
           fontFamily: 'Work Sans',
