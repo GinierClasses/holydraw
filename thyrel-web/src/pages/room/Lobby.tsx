@@ -4,6 +4,8 @@ import { Players, PlayerCountBox } from 'components/room/lobby/Players';
 import SettingsMenu from 'components/room/lobby/SettingsMenu';
 import Box from 'styles/Box';
 import { bgFade } from 'styles/colors';
+import { css } from '@emotion/css';
+import Mq from 'styles/breakpoint';
 
 export default function Lobby() {
   return (
@@ -26,8 +28,16 @@ export default function Lobby() {
           <PlayerCountBox />
           <Box
             justifyContent="space-between"
-            alignItems="flex-start"
-            width="100%">
+            width="100%"
+            className={css({
+              alignItems: 'center',
+              flexDirection: 'column',
+              gap: 64,
+              [Mq.SM]: {
+                alignItems: 'flex-start',
+                flexDirection: 'row',
+              },
+            })}>
             <SettingsMenu />
             <Players />
           </Box>

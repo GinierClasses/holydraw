@@ -114,17 +114,27 @@ namespace test_thyrel_api
         {
             var playerNotPlaying = Context.Player.First(p => !p.IsPlaying);
             Assert.IsFalse(playerNotPlaying.IsPlaying);
-            var playerPlaying = await _playerDataProvider.SetIsPlaying(playerNotPlaying.Id, true);
-            Assert.IsNotNull(playerPlaying);
+            if (playerNotPlaying.RoomId != null)
+                await _playerDataProvider.SetIsPlaying((int) playerNotPlaying.RoomId, true);
             var playerEdited = await _playerDataProvider.GetPlayer(playerNotPlaying.Id);
             Assert.IsTrue(playerEdited.IsPlaying);
         }
+        [Test]
+        public async Task TestSetIsPlayingFalse()
+        {
+            var playerNotPlaying = Context.Player.First(p => !p.IsPlaying);
+            Assert.IsFalse(playerNotPlaying.IsPlaying);
+            if (playerNotPlaying.RoomId != null)
+                await _playerDataProvider.SetIsPlaying((int) playerNotPlaying.RoomId, false);
+            var playerEdited = await _playerDataProvider.GetPlayer(playerNotPlaying.Id);
+            Assert.IsFalse(playerEdited.IsPlaying);
+        }
 
         [Test]
-        public async Task TestKickPlayerFromRoomById()
+        public async Task TestKickPlayerFromRoom()
         {
             var dbPlayer = Context.Player.First(p => p.RoomId != null);
-            var kickedPlayer = await _playerDataProvider.KickPlayerFromRoomById(dbPlayer.Id);
+            var kickedPlayer = await _playerDataProvider.KickPlayerFromRoom(dbPlayer);
             Assert.IsNull(kickedPlayer.RoomId);
         }
         

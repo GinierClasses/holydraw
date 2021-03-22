@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.Controllers
 {
@@ -36,7 +36,7 @@ namespace thyrel_api.Controllers
             return await playerDataProvider.GetPlayer(player.Id);
         }
 
-        // Call this endpoint to create a room
+        // Call this endpoint to join a room
         // PATCH: api/room/join/roomidentifier
         [HttpPatch("join/{identifier}")]
         public async Task<ActionResult<Player>> Join(string identifier, [FromBody] PlayerRoomBody body)
@@ -67,7 +67,7 @@ namespace thyrel_api.Controllers
         // Call this endpoint to get players of a room
         // GET : api/room/{id}/players
         [HttpGet("{roomId}/players")]
-        public async Task<ActionResult<List<Player>>> GetPlayersByRoom(int roomId)
+        public async Task<ActionResult<List<PlayerDto>>> GetPlayersByRoom(int roomId)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player == null || player.RoomId != roomId) return Unauthorized();

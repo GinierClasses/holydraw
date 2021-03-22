@@ -41,6 +41,6 @@ describe('PlayerCardList', () => {
     userEvent.click(screen.getByRole('button'));
 
     expect(onKick).toHaveBeenCalledTimes(1);
-    expect(onKick).toHaveBeenCalledWith(data[0].id);
+    expect(onKick).toHaveBeenCalledWith(data[0].id, data[0].username);
   });
 });
