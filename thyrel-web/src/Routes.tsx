@@ -12,6 +12,7 @@ import Start from 'pages/room/Start';
 import Write from 'pages/room/Write';
 import TestAPI from 'pages/TestAPI';
 import { WebsocketProvider } from 'hooks/WebsocketProvider';
+import { SessionContextProvider } from 'hooks/SessionProvider';
 
 export default function Routes() {
   return (
@@ -40,16 +41,25 @@ function RoomRoutes() {
       <PlayerContextProvider>
         <RoomContextProvider>
           <Switch>
-            <Route path="/r/start" component={Start} />
-            <Route path="/r/draw" component={Draw} />
-            <Route path="/r/write" component={Write} />
-            <Route path="/r/book" component={Book} />
-
             <Route path="/r/lobby" component={Lobby} />
-            <Route path="/r" component={Lobby} />
+            <Route path="/r" component={SessionRoutes} />
           </Switch>
         </RoomContextProvider>
       </PlayerContextProvider>
     </WebsocketProvider>
+  );
+}
+
+function SessionRoutes() {
+  return (
+    <SessionContextProvider>
+      <Switch>
+        <Route path="/r/start" component={Start} />
+        <Route path="/r/draw" component={Draw} />
+        <Route path="/r/write" component={Write} />
+        <Route path="/r/book" component={Book} />
+        <Route path="/r/lobby" component={Lobby} />
+      </Switch>
+    </SessionContextProvider>
   );
 }

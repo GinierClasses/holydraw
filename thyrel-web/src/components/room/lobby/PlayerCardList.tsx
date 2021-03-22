@@ -5,12 +5,14 @@ import profilesPictures from 'images/profiles/profiles-pictures';
 
 type PlayerCardListProps = {
   players?: Player[];
+  playerId?: number;
   isKickable?: boolean;
-  onKick?: (id: number) => void;
+  onKick?: (id: number, name: string) => void;
 };
 
 export default function PlayerCardList({
   players,
+  playerId,
   isKickable,
   onKick,
 }: PlayerCardListProps) {
@@ -24,6 +26,7 @@ export default function PlayerCardList({
       pr={8}>
       {players &&
         players.map(player => {
+          const isPlayerSelected = playerId === player.id;
           return (
             <PlayerCard
               id={player.id}
@@ -31,6 +34,7 @@ export default function PlayerCardList({
               avatar={profilesPictures[Number(player.avatarUrl)]}
               isOwner={player.isOwner}
               isKickable={isKickable}
+              isCurrentPlayer={isPlayerSelected}
               onKick={onKick}
               key={player.id}
             />

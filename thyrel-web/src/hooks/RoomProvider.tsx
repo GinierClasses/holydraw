@@ -19,10 +19,7 @@ const RoomContext = React.createContext<RoomSocketContextProps>({
   players: [],
 });
 
-type RoomSocketContextProviderProps = {
-  children: React.ReactElement;
-  onMessage?: (message: string) => void;
-};
+type RoomSocketContextProviderProps = { children: React.ReactElement };
 
 export function RoomContextProvider({
   children,
@@ -62,6 +59,9 @@ export function RoomContextProvider({
           break;
         case WebsocketEvent.SessionStart:
           history?.push('/r/start');
+          break;
+        case WebsocketEvent.PlayerKicked:
+          removePlayer(websocketMessage.playerId);
           break;
       }
     }
