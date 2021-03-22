@@ -22,7 +22,7 @@ export default function SettingsMenu() {
         })}>
         {wsState}
       </p>
-      <ShareRoomButton identifier={room?.identifier || 'loading...'} />
+      <ShareRoomButton identifier={room?.identifier} />
     </Box>
   );
 }
