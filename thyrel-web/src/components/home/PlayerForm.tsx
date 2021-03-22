@@ -42,7 +42,10 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
           history?.push('/r/lobby');
         }
       },
-      () => setLoading(false),
+      () => {
+        setLoading(false);
+        Notification.error({ title: 'An error occured' });
+      },
     );
   }
 
@@ -67,7 +70,10 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
           history?.push('/r/lobby');
         }
       },
-      () => setLoading(false),
+      () => {
+        setLoading(false);
+        Notification.error({ title: 'An error occured' });
+      },
     );
   }
 
