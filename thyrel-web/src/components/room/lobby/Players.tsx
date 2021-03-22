@@ -45,6 +45,7 @@ export function Players() {
         isDeviceSM ? (
           <PlayerCardList
             players={players}
+            playerId={player?.id}
             isKickable={player?.isOwner}
             onKick={(id, name) => onKick(id, name)}
           />

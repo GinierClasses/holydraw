@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import styled from '@emotion/styled';
 import Box from 'styles/Box';
 import { Icon } from 'rsuite';
-import { baseColor, bgColor } from 'styles/colors';
+import { baseColor, bgColor, primaryFade } from 'styles/colors';
 
 type PlayerCardProps = {
   id: number;
@@ -11,6 +11,7 @@ type PlayerCardProps = {
   avatar: string;
   isOwner?: boolean;
   isKickable?: boolean;
+  isCurrentPlayer?: boolean;
   onKick?: (id: number, name: string) => void;
 };
 
@@ -35,6 +36,7 @@ export default function PlayerCard({
   avatar,
   isOwner,
   isKickable,
+  isCurrentPlayer,
   onKick,
 }: PlayerCardProps) {
   return (
@@ -46,7 +48,7 @@ export default function PlayerCard({
       padding={8}
       alignItems="center"
       justifyContent="space-between"
-      bg={bgColor}>
+      bg={isCurrentPlayer ? primaryFade(0.2) : bgColor}>
       <StyledAvatar circle={true} src={avatar} size="lg" />
       <p
         className={css({

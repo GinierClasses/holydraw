@@ -146,6 +146,7 @@ export default function ComponentTest() {
 
         <PlayerCardList
           players={testPlayerList}
+          playerId={3}
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
