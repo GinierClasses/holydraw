@@ -31,7 +31,7 @@ const StyledAvatar = styled(Avatar)({
   },
 });
 
-const StyledBox = styled(Box)({
+const Badge = styled.div({
   width: 20,
   height: 20,
   borderRadius: '50%',
@@ -63,17 +63,17 @@ export default function PlayerCard({
       alignItems="center"
       justifyContent="space-between"
       bg={bgColor}>
-      <Box
+      <div
         className={css({
           position: 'relative',
         })}>
         {isCurrentPlayer && (
-          <StyledBox>
+          <Badge>
             <Icon data-testid="user-icon" icon="user" />
-          </StyledBox>
+          </Badge>
         )}
         <StyledAvatar circle={true} src={avatar} size="lg" />
-      </Box>
+      </div>
 
       <p
         className={css({
