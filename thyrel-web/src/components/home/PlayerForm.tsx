@@ -16,48 +16,65 @@ const defaultUsername = 'Bgros';
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
   const [ppIndex, setPpIndex] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   const history = useHistory();
   const nextPp = () => {
     setPpIndex((p: number) => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
 
   function onStart() {
+    setLoading(true);
     client<Player>('room', {
       data: {
         username: username || defaultUsername,
         avatarUrl: String(ppIndex),
       },
-    }).then((player: Player) => {
-      if (player.token?.tokenKey) {
-        Notification['success']({
-          title: 'Room successfully created.',
-          description: 'Invite your friends.',
-        });
-        setToken(player.token.tokenKey);
-        // to redirect to an other page
-        history?.push('/r/lobby');
-      }
-    });
+    }).then(
+      (player: Player) => {
+        setLoading(false);
+        if (player.token?.tokenKey) {
+          Notification['success']({
+            title: 'Room successfully created.',
+            description: 'Invite your friends.',
+          });
+          setToken(player.token.tokenKey);
+          // to redirect to an other page
+          history?.push('/r/lobby');
+        }
+      },
+      () => {
+        setLoading(false);
+        Notification.error({ title: 'An error occured' });
+      },
+    );
   }
 
   function onJoin(identifier: string) {
+    setLoading(true);
     client<Player>(`room/join/${identifier}`, {
       data: {
         username: username || defaultUsername,
         avatarUrl: String(ppIndex),
       },
       method: 'PATCH',
-    }).then((player: Player) => {
-      if (player.token?.tokenKey) {
-        Notification['success']({
-          title: 'Room successfully created.',
-          description: 'Invite your friends.',
-        });
-        setToken(player.token.tokenKey);
-        // to redirect to an other page
-        history?.push('/r/lobby');
-      }
-    });
+    }).then(
+      (player: Player) => {
+        setLoading(false);
+        if (player.token?.tokenKey) {
+          Notification['success']({
+            title: 'Room successfully created.',
+            description: 'Invite your friends.',
+          });
+          setToken(player.token.tokenKey);
+          // to redirect to an other page
+          history?.push('/r/lobby');
+        }
+      },
+      () => {
+        setLoading(false);
+        Notification.error({ title: 'An error occured' });
+      },
+    );
   }
 
   return (
@@ -72,10 +89,18 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       />
 
       <Box flexDirection="column" alignItems="center" width="100%" gap={12}>
-        <ButtonModalJoin identifier={identifier} onClick={onJoin} />
+        <ButtonModalJoin
+          identifier={identifier}
+          onClick={onJoin}
+          loading={loading}
+        />
 
         {!identifier && (
-          <BigButton icon="angle-double-right" size="lg" onClick={onStart}>
+          <BigButton
+            icon="angle-double-right"
+            size="lg"
+            onClick={onStart}
+            loading={loading}>
             Start
           </BigButton>
         )}
