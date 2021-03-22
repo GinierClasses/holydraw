@@ -174,14 +174,7 @@ namespace thyrel_api.DataProvider
                 .Take(2)
                 .ToListAsync();
 
-            var children = elementWithParent[0];
-            ElementDto parent = null;
-            if (elementWithParent.Count() > 1)
-            {
-                parent = elementWithParent[1];
-            }
-
-            var result = new ElementStepDto(children, parent);
+            var result = new ElementStepDto(elementWithParent[0], elementWithParent.Count() > 1? elementWithParent[1]:null);
 
             return result;
         }
