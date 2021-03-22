@@ -82,15 +82,15 @@ export default function BookPlayerList({
               {!isDeviceSM &&
                 (player.isOwner ? (
                   <StyledBox>
-                    <Icon icon="twinkle-star" />
+                    <Icon data-testid="star-icon" icon="twinkle-star" />
                   </StyledBox>
                 ) : (
                   isKickable && (
                     <button
-                      onClick={
-                        !player.isOwner && isKickable
-                          ? () => onClick?.(player.id, player.username)
-                          : undefined
+                      onClick={() =>
+                        !player.isOwner &&
+                        isKickable &&
+                        onClick?.(player.id, player.username)
                       }
                       className={css({
                         backgroundColor: 'transparent',
@@ -98,7 +98,7 @@ export default function BookPlayerList({
                         padding: 0,
                       })}>
                       <StyledBox>
-                        <Icon icon="close" />
+                        <Icon data-testid="kick-icon" icon="close" />
                       </StyledBox>
                     </button>
                   )

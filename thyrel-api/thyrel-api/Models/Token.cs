@@ -12,9 +12,7 @@ namespace thyrel_api.Models
         /// <summary>
         ///     Only this constructor. A token never will be initialized with other data
         /// </summary>
-        /// <param name="id">id</param>
         /// <param name="tokenKey">key</param>
-        /// <param name="playerId">playerId</param>
         public Token(string tokenKey)
         {
             TokenKey = tokenKey;
@@ -26,6 +24,6 @@ namespace thyrel_api.Models
         public DateTime? DiscardAt { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public List<Player> Players { get; set; }
+        public virtual List<Player> Players { get; set; }
     }
 }

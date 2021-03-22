@@ -1,10 +1,10 @@
-﻿using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using thyrel_api.DataProvider;
+using thyrel_api.Handler;
 using thyrel_api.Json;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
@@ -43,20 +43,32 @@ namespace thyrel_api.Controllers
             }
 
             await _websocketHandler.SendMessageToSockets(
-                JSON.Serialize(
+                JsonBase.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.PlayerFinished)), session.RoomId);
 
             return Ok(element);
         }
 
         // Call this endpoint to get a room
-        // GET : api/room/identifier
-        [HttpGet("get/{id}")]
+        // GET : api/element/4
+        [HttpGet("{id}")]
         public async Task<ActionResult<Element>> GetElement(int id)
         {
             var element = await new ElementDataProvider(_context).GetElement(id);
             return element;
         }
+        
+        // Call this endpoint to get a room
+        // GET : api/element/current
+        [HttpGet("current")]
+        public async Task<ActionResult<ElementDto>> GetCurrent()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
+            return await new ElementDataProvider(_context).GetCurrentElement(player.Id);
+        }
+
 
         public class ElementBody
         {
