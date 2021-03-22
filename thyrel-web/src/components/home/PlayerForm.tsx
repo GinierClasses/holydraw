@@ -1,3 +1,4 @@
+import { useRandomUsername } from 'hooks/useRandomUsername';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Notification } from 'rsuite';
@@ -11,12 +12,11 @@ import BigInput from '../BigInput';
 import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
 
-const defaultUsername = 'Bgros';
-
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
   const [ppIndex, setPpIndex] = React.useState(0);
   const history = useHistory();
+  const defaultUsername = useRandomUsername();
   const nextPp = () => {
     setPpIndex((p: number) => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
@@ -68,7 +68,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         icon={'edit'}
         value={username}
         onChange={e => setUsername(e.target.value)}
-        placeholder="MonPseudo"
+        placeholder={defaultUsername}
       />
 
       <Box flexDirection="column" alignItems="center" width="100%" gap={12}>
