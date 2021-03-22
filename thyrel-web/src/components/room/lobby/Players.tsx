@@ -45,12 +45,14 @@ export function Players() {
         isDeviceSM ? (
           <PlayerCardList
             players={players}
+            playerId={player?.id}
             isKickable={player?.isOwner}
             onKick={(id, name) => onKick(id, name)}
           />
         ) : (
           <BookPlayerList
             players={players}
+            playerId={player?.id}
             isKickable={player?.isOwner}
             onClick={(id, name) => onKick(id, name)}
           />
