@@ -1,12 +1,13 @@
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Notification } from 'rsuite';
 import Session, { SessionStepType } from 'types/Session.type';
 
 function useSessionStates() {
   const [session, setSession] = React.useState<Session>();
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
 
   React.useEffect(() => {
@@ -14,10 +15,7 @@ function useSessionStates() {
     client<Session>('session/current', { token: getToken() }).then(
       session => !deleted && setSession(session),
       () => {
-        Notification.error({
-          title: 'Session error',
-          description: 'Go on Home or refresh the page...',
-        });
+        enqueueSnackbar('Sorry 😅 An error occured', { variant: 'error' });
         history.push('/r/lobby');
       },
     );
@@ -25,7 +23,7 @@ function useSessionStates() {
     return () => {
       deleted = true;
     };
-  }, [history]);
+  }, [enqueueSnackbar, history]);
 
   // handling page with the Session
   React.useEffect(() => {

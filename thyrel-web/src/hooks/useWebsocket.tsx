@@ -1,6 +1,6 @@
 import { Session } from 'inspector';
+import { useSnackbar } from 'notistack';
 import React from 'react';
-import { Notification } from 'rsuite';
 import { getToken } from '../api/player-provider';
 import { testApiUrl } from '../test/data';
 import Player from '../types/Player.type';
@@ -32,12 +32,13 @@ export type WebsocketMessage = {
   websocketEvent: WebsocketEvent;
   player?: Player;
   playerId?: number;
-  session?: Partial<Session>
+  session?: Partial<Session>;
 };
 
 export function useWebsocket() {
   const [websocket, setWebsocket] = React.useState<WebSocket>();
   const [wsState, setWsState] = React.useState<WsStates>(WsStates.IDLE);
+  const { enqueueSnackbar } = useSnackbar();
 
   const connect = React.useCallback(() => {
     const url = `wss://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
@@ -56,15 +57,11 @@ export function useWebsocket() {
     socket.onclose = function () {
       setWsState(WsStates.CLOSED);
 
-      isOpen &&
-        Notification.warning({
-          title: 'Connexion lost 😥 !',
-          description: 'We try to reconnect',
-        });
+      isOpen && enqueueSnackbar('Connexion lost ⚡️', { variant: 'error' });
       // set to undefined to reload the useEffect and rerun connection
       isOpen && setWebsocket(undefined);
     };
-  }, []);
+  }, [enqueueSnackbar]);
 
   React.useEffect(() => {
     if (websocket) {

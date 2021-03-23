@@ -1,9 +1,8 @@
-import { css } from '@emotion/css';
+import { Box, Typography, useTheme } from '@material-ui/core';
 import BigButton from 'components/BigButton';
 import SpinnerIcon from 'components/SpinnerIcon';
-import Box from 'styles/Box';
-import { secondaryText } from 'styles/colors';
 import Player from 'types/Player.type';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 type StartButtonProps = {
   player?: Player;
@@ -11,25 +10,30 @@ type StartButtonProps = {
 };
 
 export default function StartButton({ player, onStart }: StartButtonProps) {
+  const theme = useTheme();
   return (
-    <Box m={24} flexDirection="column" alignItems="center">
-      <p className={css({ textAlign: 'center', color: secondaryText })}>
+    <Box m={3} display="flex" flexDirection="column" alignItems="center">
+      <Box display="flex" alignItems="center">
         {!player?.isOwner && (
-          <SpinnerIcon icon="spinner" className={css({ marginRight: 8 })} />
+          <SpinnerIcon
+            style={{ color: theme.palette.text.secondary, marginRight: 4 }}
+          />
         )}
-        {player?.isOwner
-          ? "you're the owner, click here to start the party"
-          : 'Waiting for the host to start the game.'}
-      </p>
+        <Typography variant="body2" color="textSecondary">
+          {player?.isOwner
+            ? "you're the owner, click here to start the party"
+            : 'Waiting for the host to start the game.'}
+        </Typography>
+      </Box>
       {player?.isOwner && (
-        <div>
+        <Box mt={2}>
           <BigButton
             onClick={onStart}
-            className={css({ marginTop: 12 })}
-            icon="angle-double-right">
+            size="large"
+            startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}>
             Start
           </BigButton>
-        </div>
+        </Box>
       )}
     </Box>
   );

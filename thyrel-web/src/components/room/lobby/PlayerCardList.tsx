@@ -1,7 +1,7 @@
-import Box from 'styles/Box';
 import PlayerCard from './PlayerCard';
 import Player from 'types/Player.type';
 import profilesPictures from 'images/profiles/profiles-pictures';
+import { Box } from '@material-ui/core';
 
 type PlayerCardListProps = {
   players?: Player[];
@@ -18,12 +18,13 @@ export default function PlayerCardList({
 }: PlayerCardListProps) {
   return (
     <Box
-      gap={16}
+      display="flex"
+      gridGap={16}
       height={384}
-      overflowY="scroll"
       alignItems="center"
       flexDirection="column"
-      pr={8}>
+      style={{ overflowY: 'scroll' }}
+      pr={1}>
       {players &&
         players.map(player => {
           const isPlayerSelected = playerId === player.id;

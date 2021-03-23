@@ -1,13 +1,15 @@
-import Box from 'styles/Box';
 import Player from 'types/Player.type';
-import { Avatar } from 'rsuite';
-import { baseColor, primaryFade } from 'styles/colors';
-import styled from '@emotion/styled';
-import { Icon, Tooltip, Whisper } from 'rsuite';
-import { css } from '@emotion/css';
-import profilesPictures from 'images/profiles/profiles-pictures';
-import Mq, { MediaQuery } from 'styles/breakpoint';
-import { useMediaQuery } from 'hooks/useMediaQuery';
+import {
+  Box,
+  makeStyles,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
+import StarIcon from '@material-ui/icons/Star';
+import CloseIcon from '@material-ui/icons/Close';
+import BookPlayerAvatar from './BookPlayerAvatar';
 
 type BookPlayerListProps = {
   players: Player[];
@@ -16,37 +18,32 @@ type BookPlayerListProps = {
   onClick?: (id: number, username: string) => void;
 };
 
-const StyledAvatar = styled(Avatar)({
-  height: 64,
-  width: 64,
-  [Mq.SM]: {
-    height: 32,
-    width: 32,
+const useStyles = makeStyles(theme => ({
+  badge: {
+    width: 20,
+    height: 20,
+    borderRadius: '50%',
+    backgroundColor: theme.palette.secondary.main,
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
   },
-  overflow: 'visible',
-  '> img': {
-    height: '64px !important',
-    width: 'auto !important',
-    margin: 'auto',
-    position: 'unset',
-    [Mq.SM]: {
-      height: '32px !important',
-    },
+  container: {
+    overflowX: 'scroll',
   },
-});
-
-const Badge = styled.div({
-  width: 20,
-  height: 20,
-  borderRadius: '50%',
-  backgroundColor: baseColor,
-  alignItems: 'center',
-  justifyContent: 'center',
-  display: 'flex',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-});
+  username: {
+    overflow: 'hidden',
+    maxWidth: 64,
+  },
+  button: {
+    backgroundColor: 'transparent',
+    outline: 'none',
+    padding: 0,
+  },
+}));
 
 export default function BookPlayerList({
   players,
@@ -54,86 +51,62 @@ export default function BookPlayerList({
   onClick,
   isKickable,
 }: BookPlayerListProps) {
-  const isDeviceSM = useMediaQuery(MediaQuery.SM);
+  const theme = useTheme();
+  const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
+  const classes = useStyles();
+
   return (
     <Box
-      gap={8}
+      display="flex"
+      gridGap={8}
       maxWidth={isDeviceSM ? 200 : 285}
-      overflowX="scroll"
+      className={classes.container}
       alignItems="center"
       flexDirection="row">
       {players.map((player, i) => {
         const isPlayerSelected = playerId === player.id;
         return (
-          <Box
-            key={i}
-            className={css({
-              [Mq.XS]: {
-                flexDirection: 'column',
-                alignItems: 'center',
-              },
-            })}>
-            <div
-              className={css({
-                [Mq.XS]: {
-                  position: 'relative',
-                },
-              })}>
-              {!isDeviceSM &&
-                (player.isOwner ? (
-                  <Badge>
-                    <Icon data-testid="star-icon" icon="twinkle-star" />
-                  </Badge>
-                ) : (
-                  isKickable && (
-                    <button
-                      onClick={() =>
-                        !player.isOwner &&
-                        isKickable &&
-                        onClick?.(player.id, player.username)
-                      }
-                      className={css({
-                        backgroundColor: 'transparent',
-                        outline: 'none',
-                        padding: 0,
-                      })}>
-                      <Badge>
-                        <Icon data-testid="kick-icon" icon="close" />
-                      </Badge>
-                    </button>
-                  )
-                ))}
-
-              <Whisper
-                placement="top"
-                trigger="hover"
-                speaker={<Tooltip>{player.username}</Tooltip>}>
-                <StyledAvatar
-                  className={css({
-                    backgroundColor: `${
-                      isPlayerSelected ? primaryFade(0.6) : primaryFade(0.2)
-                    } !important`,
-                  })}
-                  circle={true}
-                  src={profilesPictures[Number(player.avatarUrl)]}
-                  size="lg"
+          <Tooltip title={player.username} placement="top">
+            <Box key={i} flexDirection="column" alignItems="center" zIndex={4}>
+              <Box position={{ xs: 'relative', sm: 'initial' }}>
+                {!isDeviceSM &&
+                  (player.isOwner ? (
+                    <div className={classes.badge}>
+                      <StarIcon
+                        data-testid="star-icon"
+                        style={{ fontSize: 32 }}
+                      />
+                    </div>
+                  ) : (
+                    isKickable && (
+                      <button
+                        onClick={() =>
+                          !player.isOwner &&
+                          isKickable &&
+                          onClick?.(player.id, player.username)
+                        }
+                        className={classes.button}>
+                        <div className={classes.badge}>
+                          <CloseIcon
+                            data-testid="kick-icon"
+                            style={{ fontSize: 32 }}
+                          />
+                        </div>
+                      </button>
+                    )
+                  ))}
+                <BookPlayerAvatar
+                  isSelected={isPlayerSelected}
+                  avatarUrl={player.avatarUrl}
                 />
-              </Whisper>
-            </div>
-            {!isDeviceSM && (
-              <p
-                className={css({
-                  fontFamily: 'Work Sans',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  overflow: 'hidden',
-                  flexDirection: 'row',
-                  maxWidth: 64,
-                })}>
-                {player.username}
-              </p>
-            )}
-          </Box>
+              </Box>
+              {!isDeviceSM && (
+                <Typography className={classes.username} variant="subtitle1">
+                  {player.username}
+                </Typography>
+              )}
+            </Box>
+          </Tooltip>
         );
       })}
     </Box>
