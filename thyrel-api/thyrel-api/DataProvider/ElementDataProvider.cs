@@ -96,7 +96,6 @@ namespace thyrel_api.DataProvider
         ///     Handle finish State
         /// </summary>
         /// <param name="elementId">elementId to handle</param>
-        /// <param name="isFinish">true = element finish, false = element not finish</param>
         /// <returns>Edited element</returns>
         public async Task<Element> HandleFinish(int elementId)
         {
