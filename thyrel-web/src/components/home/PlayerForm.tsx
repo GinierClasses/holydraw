@@ -1,3 +1,4 @@
+import { useRandomUsername } from 'hooks/useRandomUsername';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { client } from 'api/client';
@@ -12,7 +13,6 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import CreateIcon from '@material-ui/icons/Create';
 import { Box } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-const defaultUsername = 'Bgros';
 
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
@@ -20,6 +20,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
+  const defaultUsername = useRandomUsername();
   const nextPp = () => {
     setPpIndex((p: number) => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
@@ -87,7 +88,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         startIcon={<CreateIcon />}
         value={username}
         onChange={e => setUsername(e.target.value)}
-        placeholder="MonPseudo"
+        placeholder={defaultUsername}
       />
 
       <Box
