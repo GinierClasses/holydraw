@@ -66,8 +66,8 @@ export default function BookPlayerList({
       {players.map((player, i) => {
         const isPlayerSelected = playerId === player.id;
         return (
-          <Tooltip title={player.username} placement="top">
-            <Box key={i} flexDirection="column" alignItems="center" zIndex={4}>
+          <Tooltip key={player.id} title={player.username} placement="top">
+            <Box flexDirection="column" alignItems="center" zIndex={4}>
               <Box position={{ xs: 'relative', sm: 'initial' }}>
                 {!isDeviceSM &&
                   (player.isOwner ? (

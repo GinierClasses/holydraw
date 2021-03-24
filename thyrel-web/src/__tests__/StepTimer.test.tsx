@@ -1,55 +1,45 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import useTimerInterval, {
+  UseTimerIntervalProps,
+} from 'hooks/useTimerInterval';
 import { act } from 'react-dom/test-utils';
-import StepTimer from '../components/room/StepTimer';
+
+const TestComponent = (props: UseTimerIntervalProps) => {
+  const { progress } = useTimerInterval(props);
+  return <p data-testid="progress-info">{progress}</p>;
+};
 
 describe('StepTimer', () => {
   test('style change all second', async () => {
-    const { container } = render(
-      <StepTimer
+    render(
+      <TestComponent
         finishAt={new Date(new Date().getTime() + 10000)}
         timeDuration={3}
       />,
     );
 
-    const child = container.children[0].children[0].children[1];
-    const style: any = getComputedStyle(child);
-    const strokeBeforeUpdate = style['stroke-dasharray'];
+    const strokeBeforeUpdate = screen.getByTestId('progress-info').textContent;
 
     await act(async () => {
       await new Promise(r => setTimeout(r, 1000));
     });
 
-    const style2: any = getComputedStyle(child);
-    const strokeAfterUpdate = style2['stroke-dasharray'];
+    const strokeAfterUpdate = screen.getByTestId('progress-info').textContent;
 
     expect(strokeBeforeUpdate).not.toEqual(strokeAfterUpdate);
   });
 
   test('style do not change all second if time is raised', async () => {
-    const { container } = render(
-      <StepTimer finishAt={new Date()} timeDuration={3} />,
-    );
+    render(<TestComponent finishAt={new Date()} timeDuration={3} />);
 
-    const child = container.children[0].children[1].children[1];
-
-    const style: any = getComputedStyle(child);
-    const strokeBeforeUpdate = style['stroke-dasharray'];
+    const strokeBeforeUpdate = screen.getByTestId('progress-info').textContent;
 
     await act(async () => {
       await new Promise(r => setTimeout(r, 1000));
     });
 
-    const style2: any = getComputedStyle(child);
-    const strokeAfterUpdate = style2['stroke-dasharray'];
+    const strokeAfterUpdate = screen.getByTestId('progress-info').textContent;
 
     expect(strokeBeforeUpdate).toEqual(strokeAfterUpdate);
-  });
-
-  test('finish icon is display on finish', async () => {
-    const { container } = render(
-      <StepTimer finishAt={new Date()} timeDuration={3} />,
-    );
-    const child = container.children[0].children[0].children[0];
-    expect(child).toHaveClass('rs-progress-icon-success');
   });
 });

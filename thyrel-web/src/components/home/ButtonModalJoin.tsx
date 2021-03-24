@@ -49,7 +49,7 @@ export default function ModalJoin({
             autoFocus
             margin="dense"
             id="name"
-            label="Email Address"
+            label="Identifier"
             type="email"
             value={identifier}
             onChange={event => setIdentifier(event.target.value)}

@@ -51,7 +51,7 @@ const useStyles = makeStyles<Theme, { isCurrentSize: boolean }>(() => ({
     display: 'flex',
     flexDirection: 'column',
     boxShadow: props =>
-      props.isCurrentSize ? `0 0 0 2px ${primaryFade(0.8)}` : '',
+      props.isCurrentSize ? `0 0 0 2px ${primaryFade(0.8)}` : undefined,
   },
 }));
 

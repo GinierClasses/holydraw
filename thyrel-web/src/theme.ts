@@ -1,8 +1,8 @@
 import { responsiveFontSizes, createMuiTheme, fade } from '@material-ui/core';
 import createPalette, { Palette } from '@material-ui/core/styles/createPalette';
 
-const PRIMARY = '#9c27b0';
-const SECONDARY = '#880061';
+export const PRIMARY = '#9c27b0';
+export const SECONDARY = '#880061';
 
 function createBaseTheme(palette: Palette) {
   return createMuiTheme({
@@ -85,24 +85,6 @@ function createBaseTheme(palette: Palette) {
           fontSize: 32,
         },
       },
-      MuiOutlinedInput: {
-        root: {
-          borderRadius: 4,
-          backgroundColor: palette.background.default,
-          '&:hover': {
-            borderColor: palette.primary.dark,
-          },
-          '&:hover $notchedOutline': {
-            borderColor: palette.primary.dark,
-            boxShadow: `${fade(palette.primary.dark, 0.125)} 0 0 0 1px`,
-          },
-          '&:focus $notchedOutline': {
-            borderColor: palette.primary.main,
-            boxShadow: `${fade(palette.primary.main, 0.25)} 0 0 0 2px`,
-          },
-        },
-        focused: {},
-      },
       MuiSwitch: {
         root: {
           width: 54,
@@ -143,12 +125,6 @@ function createBaseTheme(palette: Palette) {
         checked: {},
       },
     },
-
-    props: {
-      MuiButtonBase: {
-        // The default props to change
-      },
-    },
   });
 }
 
@@ -161,15 +137,6 @@ let theme = createBaseTheme(
     secondary: {
       main: SECONDARY,
     },
-    warning: {
-      main: '#cd6133',
-    },
-    error: {
-      light: '##ef9a9a',
-      main: '#ce667a',
-      dark: '#af0025',
-      contrastText: '#7e7e7e',
-    },
     background: {
       default: '#0f131a',
       paper: '#1a1d24',
@@ -178,4 +145,5 @@ let theme = createBaseTheme(
 );
 
 theme = responsiveFontSizes(theme);
+
 export default theme;

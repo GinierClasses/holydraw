@@ -1,17 +1,16 @@
 import { client } from 'api/client';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
-import { useMediaQuery } from 'hooks/useMediaQuery';
-import { MediaQuery } from 'styles/breakpoint';
 import Loading from '../../Loading';
 import PlayerCount from '../../room/PlayerCount';
 import BookPlayerList from '../book/BookPlayerList';
 import PlayerCardList from './PlayerCardList';
-import { Box } from '@material-ui/core';
+import { Box, useMediaQuery, useTheme } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
 export function Players() {
-  const isDeviceSM = useMediaQuery(MediaQuery.SM);
+  const theme = useTheme();
+  const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();

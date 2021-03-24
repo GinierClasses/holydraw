@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     left: 0,
     bottom: 0,
+    cursor: 'pointer',
     border: 'none',
     width: 48,
     display: 'flex',
@@ -41,7 +42,7 @@ export default function PlayerAvatar({ image, onShuffle }: PlayerAvatarProps) {
   return (
     <Box alignItems="center" width={256} position="relative" height={256}>
       <button className={classes.button} onClick={onShuffle}>
-        <ShuffleIcon />
+        <ShuffleIcon style={{ color: '#FFFFFF' }} />
       </button>
       <Box
         border={2}

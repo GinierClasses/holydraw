@@ -48,7 +48,7 @@ const useStyles = makeStyles<Theme, ContainerProps>(theme => ({
     boxShadow: props =>
       props.focus
         ? `0 0 2px 0.2rem ${fade(theme.palette.secondary.main, 0.4)}`
-        : '',
+        : undefined,
   },
   icon: {
     width: 32,
@@ -72,7 +72,11 @@ export default function BigInput({
 
   return (
     <div className={classes.container}>
-      {startIcon && React.cloneElement(startIcon, { className: classes.icon })}
+      {startIcon &&
+        React.cloneElement(startIcon, {
+          className: classes.icon,
+          'data-testid': 'biginput-icon',
+        })}
       <input
         className={classes.input}
         onFocus={() => setFocus(true)}
