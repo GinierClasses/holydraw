@@ -86,6 +86,6 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>
-        Task<ElementDto> GetCurrentElement(int playerId);
+        Task<ElementStepDto> GetCurrentElement(int playerId);
     }
 }

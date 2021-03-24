@@ -61,7 +61,7 @@ namespace thyrel_api.Controllers
         // Call this endpoint to get a room
         // GET : api/element/current
         [HttpGet("current")]
-        public async Task<ActionResult<ElementDto>> GetCurrent()
+        public async Task<ActionResult<ElementStepDto>> GetCurrent()
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
