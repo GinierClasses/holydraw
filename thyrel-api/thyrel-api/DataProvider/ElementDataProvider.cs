@@ -24,11 +24,8 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
-        /// <param name="drawImage"></param>
-        /// <param name="drawingId"></param>
         /// <returns></returns>
-        public async Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId,
-            string drawImage = null, int? drawingId = null)
+        public async Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId)
         {
             var element = new Element(step, creatorId, initiatorId, sessionId, ElementType.Drawing);
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
@@ -93,24 +90,6 @@ namespace thyrel_api.DataProvider
 
             element.DrawImage = drawImage;
             await SaveChanges();
-        }
-
-        /// <summary>
-        ///     Set the DrawingId into a Element
-        /// </summary>
-        /// <param name="elementId"></param>
-        /// <param name="drawingId"></param>
-        /// <returns></returns>
-        public async Task<Element> SetDrawingId(int elementId, int drawingId)
-        {
-            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
-
-            if (element == null)
-                return null;
-
-            element.DrawingId = drawingId;
-            await SaveChanges();
-            return element;
         }
 
         /// <summary>

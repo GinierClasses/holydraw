@@ -17,7 +17,7 @@ namespace thyrel_api.DataProvider
         /// <param name="drawImage"></param>
         /// <param name="drawingId"></param>
         /// <returns></returns>
-        Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId, string drawImage = null, int? drawingId = null);
+        Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId);
 
         /// <summary>
         ///     Create a Sentence Element
