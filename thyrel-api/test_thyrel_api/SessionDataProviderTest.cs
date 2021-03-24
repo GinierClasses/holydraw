@@ -79,7 +79,7 @@ namespace test_thyrel_api
             var elementsCount = await Context.Element
                 .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null).CountAsync();
 
-            var result = await _sessionDataProvider.GetIfStepFinished(session);
+            var result = await _sessionDataProvider.GetPlayerStatus(session);
 
             Assert.AreEqual(result.PlayerCount, playersCount);
             Assert.AreEqual(result.PlayerFinished, elementsCount);

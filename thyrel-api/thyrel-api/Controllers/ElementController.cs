@@ -32,15 +32,15 @@ namespace thyrel_api.Controllers
             var sessionDataProvider = new SessionDataProvider(_context);
             var element = await elementDataProvider.GetElement(id);
             var session = await sessionDataProvider.GetSessionById(element.SessionId);
+            
             var finishState = await elementDataProvider.HandleFinish(id);
-            var stepState = await sessionDataProvider.GetIfStepFinished(element.Session);
-
             if (finishState.FinishAt != null)
                 if (element.Type == ElementType.Sentence)
-                    await elementDataProvider.SetSentence(id, body.Text);
+                    await elementDataProvider.SetSentence(element, body.Text);
                 else
-                    await elementDataProvider.SetDrawing(id, body.DrawImage);
-
+                    await elementDataProvider.SetDrawing(element, body.DrawImage);
+            
+            var stepState = await sessionDataProvider.GetPlayerStatus(element.Session);
             if (stepState.PlayerCount == stepState.PlayerFinished)
                 await sessionDataProvider.NextStep(session);
 

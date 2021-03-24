@@ -33,12 +33,12 @@ namespace test_thyrel_api
         {
             var elements = new List<Element>
             {
-                new(1, 1, 1, 1, "element-sentence-1"),
-                new(1, 2, 2, 1, "element-sentence-2"),
-                new(1, 3, 3, 1, "element-sentence-3"),
-                new(1, 4, 4, 1, "element-sentence-4"),
-                new(1, 6, 6, 1, "element-sentence-5"),
-                new(1, 7, 7, 1, "element-sentence-6"),
+                new(1, 1, 1, 1, ElementType.Sentence),
+                new(1, 2, 2, 1, ElementType.Sentence),
+                new(1, 3, 3, 1, ElementType.Sentence),
+                new(1, 4, 4, 1, ElementType.Sentence),
+                new(1, 6, 6, 1, ElementType.Sentence),
+                new(1, 7, 7, 1, ElementType.Sentence),
             };
             var elementCount = Context.Element.Count();
 
@@ -60,8 +60,9 @@ namespace test_thyrel_api
         public async Task SetSentenceEditValueOfText()
         {
             const string newText = "yow";
-            var newElement = await _elementDataProvider.SetSentence(1, newText);
-            Assert.AreEqual(newText, newElement.Text);
+            var element = Context.Element.First();
+            await _elementDataProvider.SetSentence(element, newText);
+            Assert.AreEqual(newText, element.Text);
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newText, dbElement.Text);
         }
@@ -70,8 +71,10 @@ namespace test_thyrel_api
         public async Task SetDrawingEditValueOfDrawImage()
         {
             const string newImage = "http://imageexample.com/image.png";
-            var newElement = await _elementDataProvider.SetDrawing(1, newImage);
-            Assert.AreEqual(newImage, newElement.DrawImage);
+            var element = Context.Element.First();
+
+            await _elementDataProvider.SetDrawing(element, newImage);
+            Assert.AreEqual(newImage, element.DrawImage);
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newImage, dbElement.DrawImage);
         }

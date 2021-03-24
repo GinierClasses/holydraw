@@ -40,18 +40,18 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
-        /// <param name="elementId"></param>
+        /// <param name="element"></param>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        Task<Element> SetSentence(int elementId, string sentence);
+        Task SetSentence(Element element, string sentence);
 
         /// <summary>
         ///     Set the DrawImage into a Element
         /// </summary>
-        /// <param name="elementId"></param>
+        /// <param name="element"></param>
         /// <param name="drawImage"></param>
         /// <returns></returns>
-        Task<Element> SetDrawing(int elementId, string drawImage);
+        Task SetDrawing(Element element, string drawImage);
 
         /// <summary>
         ///     Handle finish State

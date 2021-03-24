@@ -41,7 +41,7 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        Task<PlayerStatusDto> GetIfStepFinished(Session session);
+        Task<PlayerStatusDto> GetPlayerStatus(Session session);
 
         /// <summary>
         ///     Start a session for a room

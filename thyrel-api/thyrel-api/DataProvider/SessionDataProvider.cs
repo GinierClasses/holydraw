@@ -84,7 +84,7 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        public async Task<PlayerStatusDto> GetIfStepFinished(Session session)
+        public async Task<PlayerStatusDto> GetPlayerStatus(Session session)
         {
             var playersCount = await _holyDrawDbContext.Player
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).CountAsync();
@@ -120,7 +120,7 @@ namespace thyrel_api.DataProvider
             await playerDataProvider.SetIsPlaying(roomId);
             var players = await playerDataProvider.GetPlayersByRoom(roomId);
             var elements = new List<Element>();
-            players.ForEach(p => elements.Add(new Element(step, p.Id, p.Id, addedSession.Id, "")));
+            players.ForEach(p => elements.Add(new Element(step, p.Id, p.Id, addedSession.Id, ElementType.Sentence)));
             await elementDataProvider.AddElements(elements);
             return addedSession;
         }
