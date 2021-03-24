@@ -29,18 +29,20 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
         {
             var elementDataProvider = new ElementDataProvider(_context);
+            var sessionDataProvider = new SessionDataProvider(_context);
             var element = await elementDataProvider.GetElement(id);
-            var session = await new SessionDataProvider(_context).GetSessionById(element.SessionId);
-            await elementDataProvider.HandleFinish(id, true);
+            var session = await sessionDataProvider.GetSessionById(element.SessionId);
+            var finishState = await elementDataProvider.HandleFinish(id);
+            var stepState = await sessionDataProvider.GetIfStepFinished(element.Session);
 
-            if (element.Type == ElementType.Sentence)
-            {
-                await elementDataProvider.SetSentence(id, body.Text);
-            }
-            else
-            {
-                await elementDataProvider.SetDrawing(id, body.DrawingId ?? 0);
-            }
+            if (finishState.FinishAt != null)
+                if (element.Type == ElementType.Sentence)
+                    await elementDataProvider.SetSentence(id, body.Text);
+                else
+                    await elementDataProvider.SetDrawing(id, body.DrawImage);
+
+            if (stepState.PlayerCount == stepState.PlayerFinished)
+                await sessionDataProvider.NextStep(session);
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
@@ -73,7 +75,7 @@ namespace thyrel_api.Controllers
         public class ElementBody
         {
             public string Text;
-            public int? DrawingId;
+            public string DrawImage;
         }
     }
 }

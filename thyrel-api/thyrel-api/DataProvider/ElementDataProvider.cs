@@ -24,12 +24,13 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
+        /// <param name="drawImage"></param>
         /// <param name="drawingId"></param>
         /// <returns></returns>
         public async Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId,
-            int? drawingId = null)
+            string drawImage = null, int? drawingId = null)
         {
-            var element = new Element(step, creatorId, initiatorId, sessionId, drawingId);
+            var element = new Element(step, creatorId, initiatorId, sessionId, drawImage, drawingId);
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;
@@ -86,12 +87,30 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
+        ///     Set the DrawImage into a Element
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="drawImage"></param>
+        /// <returns></returns>
+        public async Task<Element> SetDrawing(int elementId, string drawImage)
+        {
+            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
+
+            if (element == null)
+                return null;
+
+            element.DrawImage = drawImage;
+            await SaveChanges();
+            return element;
+        }
+
+        /// <summary>
         ///     Set the DrawingId into a Element
         /// </summary>
         /// <param name="elementId"></param>
         /// <param name="drawingId"></param>
         /// <returns></returns>
-        public async Task<Element> SetDrawing(int elementId, int drawingId)
+        public async Task<Element> SetDrawingId(int elementId, int drawingId)
         {
             var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
@@ -109,14 +128,14 @@ namespace thyrel_api.DataProvider
         /// <param name="elementId">elementId to handle</param>
         /// <param name="isFinish">true = element finish, false = element not finish</param>
         /// <returns>Edited element</returns>
-        public async Task<Element> HandleFinish(int elementId, bool isFinish)
+        public async Task<Element> HandleFinish(int elementId)
         {
             var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
             if (element == null)
                 return null;
 
-            if (isFinish)
+            if (element.FinishAt == null)
                 element.FinishAt = DateTime.Now;
             else
                 element.FinishAt = null;

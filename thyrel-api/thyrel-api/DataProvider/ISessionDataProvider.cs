@@ -37,6 +37,13 @@ namespace thyrel_api.DataProvider
         Task<Session> GetCurrentSessionByRoomId(int roomId);
 
         /// <summary>
+        /// Checks if current step is finished
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        Task<PlayerStatusDto> GetIfStepFinished(Session session);
+
+        /// <summary>
         ///     Start a session for a room
         /// </summary>
         /// <param name="roomId"></param>

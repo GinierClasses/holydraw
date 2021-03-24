@@ -69,6 +69,24 @@ namespace test_thyrel_api
         }
 
         [Test]
+        public async Task GetIfStepFinishedTest()
+        {
+            var session = await Context.Session.FirstAsync();
+
+            var playersCount = await Context.Player
+                .Where(p => p.RoomId == session.RoomId && p.IsPlaying).CountAsync();
+
+            var elementsCount = await Context.Element
+                .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null).CountAsync();
+
+            var result = await _sessionDataProvider.GetIfStepFinished(session);
+
+            Assert.AreEqual(result.PlayerCount, playersCount);
+            Assert.AreEqual(result.PlayerFinished, elementsCount);
+
+        }
+
+        [Test]
         public async Task RunNextStepSessionTest()
         {
             var session = await Context.Session.FirstAsync();

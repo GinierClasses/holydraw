@@ -80,6 +80,27 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
+        /// Checks if current step is finished
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        public async Task<PlayerStatusDto> GetIfStepFinished(Session session)
+        {
+            var playersCount = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == session.RoomId && p.IsPlaying).CountAsync();
+
+            var elementsCount = await _holyDrawDbContext.Element
+                .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null).CountAsync();
+
+            var playerStatusCount = new PlayerStatusDto() {
+                PlayerFinished = elementsCount,
+                PlayerCount = playersCount
+            };
+
+            return playerStatusCount;
+        }
+
+        /// <summary>
         ///     Start a session for a room
         /// </summary>
         /// <param name="roomId"></param>

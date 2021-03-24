@@ -67,22 +67,22 @@ namespace test_thyrel_api
         }
 
         [Test]
-        public async Task SetDrawingEditValueOfDrawingId()
+        public async Task SetDrawingEditValueOfDrawImage()
         {
-            const int newId = 2;
-            var newElement = await _elementDataProvider.SetDrawing(1, newId);
-            Assert.AreEqual(newId, newElement.DrawingId);
+            const string newImage = "http://imageexample.com/image.png";
+            var newElement = await _elementDataProvider.SetDrawing(1, newImage);
+            Assert.AreEqual(newImage, newElement.DrawImage);
             var dbElement = await _elementDataProvider.GetElement(1);
-            Assert.AreEqual(newId, dbElement.DrawingId);
+            Assert.AreEqual(newImage, dbElement.DrawImage);
         }
 
         [Test]
         public async Task HandleFinishChangeTheFinish()
         {
-            await _elementDataProvider.HandleFinish(1, true);
+            await _elementDataProvider.HandleFinish(1);
             var element1 = await _elementDataProvider.GetElement(1);
             Assert.IsNotNull(element1.FinishAt);
-            await _elementDataProvider.HandleFinish(1, false);
+            await _elementDataProvider.HandleFinish(1);
             var element2 = await _elementDataProvider.GetElement(1);
             Assert.IsNull(element2.FinishAt);
         }

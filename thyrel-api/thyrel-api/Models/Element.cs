@@ -21,10 +21,11 @@ namespace thyrel_api.Models
                 Text = "";
         }
 
-        public Element(int step, int creatorId, int initiatorId, int sessionId, int? drawingId = null)
+        public Element(int step, int creatorId, int initiatorId, int sessionId, string drawImage = null, int? drawingId = null)
             : this(step, creatorId, initiatorId, sessionId)
         {
             Type = ElementType.Drawing;
+            DrawImage = drawImage;
             DrawingId = drawingId;
         }
 
@@ -39,6 +40,7 @@ namespace thyrel_api.Models
         public int Step { get; set; }
         public ElementType Type { get; set; }
         public string Text { get; set; }
+        public string DrawImage { get; set; }
         public int? DrawingId { get; set; }
         public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
