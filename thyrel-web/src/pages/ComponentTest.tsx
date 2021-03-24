@@ -16,6 +16,7 @@ import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
 import CanvasDraw from 'components/room/draw/CanvasDraw';
+import testPlayerList from '__tests__/json/players.json';
 
 const colors = [
   '#000000',
@@ -34,72 +35,6 @@ const colors = [
   '#CB5A57',
   '#FFC312',
   '#F79F1F',
-];
-
-const testPlayerList = [
-  {
-    id: 1,
-    username: 'jeanmich',
-    avatarUrl: '0',
-    isOwner: true,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 2,
-    username: 'Xx_plao',
-    avatarUrl: '1',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 3,
-    username: 'AAAAAAHHHH',
-    avatarUrl: '2',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 4,
-    username: 'Melvyn',
-    avatarUrl: '3',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 5,
-    username: 'Ana',
-    avatarUrl: '4',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 6,
-    username: 'Alex',
-    avatarUrl: '5',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 7,
-    username: 'Luca',
-    avatarUrl: '6',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
 ];
 
 export default function ComponentTest() {

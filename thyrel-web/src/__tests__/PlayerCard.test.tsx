@@ -9,6 +9,7 @@ describe('PlayerCard', () => {
 
     expect(screen.getByText(data.name)).toBeInTheDocument();
     expect(screen.getByRole('img')).toHaveAttribute('src', data.avatar);
+    expect(screen.queryByTestId('user-icon')).not.toBeInTheDocument();
   });
 
   test('display star if isOwner', () => {
@@ -19,6 +20,24 @@ describe('PlayerCard', () => {
 
     // testId it's useful when it's impossible to get the tag
     expect(screen.getByTestId('star-icon')).toBeInTheDocument();
+  });
+
+  test('display user icon if is current user', () => {
+    const data = {
+      id: 1,
+      name: 'jean',
+      isPlayer: true,
+      avatar: 'AVATAR-URL.com',
+    };
+    render(
+      <PlayerCard
+        id={data.id}
+        isCurrentPlayer={data.isPlayer}
+        name={data.name}
+        avatar={data.avatar}></PlayerCard>,
+    );
+
+    expect(screen.getByTestId('user-icon')).toBeInTheDocument();
   });
 
   test('display star if isOwner and isKickable', () => {
