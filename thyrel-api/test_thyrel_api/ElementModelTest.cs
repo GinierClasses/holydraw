@@ -11,7 +11,7 @@ namespace test_thyrel_api
         [Test]
         public void DrawingElementConstructor()
         {
-            var element = new Element(2, 1, 1, 1, 1);
+            var element = new Element(2, 1, 1, 1, "http://test.com/test.png", 1);
             Assert.AreEqual(ElementType.Drawing, element.Type);
         }
         

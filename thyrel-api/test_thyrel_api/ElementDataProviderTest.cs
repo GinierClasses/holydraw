@@ -50,7 +50,7 @@ namespace test_thyrel_api
         [Test]
         public async Task AddDrawingFunctionCreateSentence()
         {
-            var newElement = await _elementDataProvider.AddDrawing(1, 2, 2, 1, 1);
+            var newElement = await _elementDataProvider.AddDrawing(1, 2, 2, 1, "http://test/test.png" ,1);
             Assert.IsNotNull(newElement);
             Assert.AreEqual(ElementType.Drawing, newElement.Type);
             Assert.AreEqual(1, newElement.CreatorId);
