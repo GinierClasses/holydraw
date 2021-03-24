@@ -3,6 +3,7 @@ import { Coordinate, Line, LineType } from 'types/canvas.types';
 import {
   clearDraw,
   drawCanvasLine,
+  canvasScale,
   getQuadraticCurveCoordinates,
   rerenderDraw,
 } from 'utils/canvas.utils';
@@ -61,7 +62,7 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
         lines.current.push({
           type: LineType.LINE,
           color,
-          size,
+          size: size * canvasScale,
           points: [coordinate],
         });
       else paintLine(coordinate);
