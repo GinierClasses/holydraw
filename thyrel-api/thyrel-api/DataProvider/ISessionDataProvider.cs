@@ -34,7 +34,7 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        Task<Session> GetCurrentSessionByRoomId(int roomId);
+        Task<SessionDto> GetCurrentSessionByRoomId(int roomId);
 
         /// <summary>
         ///     Start a session for a room

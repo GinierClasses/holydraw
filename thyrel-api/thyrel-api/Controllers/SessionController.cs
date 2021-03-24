@@ -4,6 +4,7 @@ using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Json;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
@@ -50,7 +51,7 @@ namespace thyrel_api.Controllers
         // Get the current session
         // GET: api/session/current
         [HttpGet("current")]
-        public async Task<ActionResult<Session>> GetCurrent()
+        public async Task<ActionResult<SessionDto>> GetCurrent()
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
