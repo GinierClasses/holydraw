@@ -28,7 +28,7 @@ namespace test_thyrel_api
             };
             _elementController = controller;
         }
-        
+
         [Test]
         public async Task GetCurrentElementTest()
         {
@@ -40,6 +40,6 @@ namespace test_thyrel_api
 
             Assert.IsNotNull(player.RoomId);
             Assert.AreEqual(actionResult.Value.Id, expected.Id);
-        }   
+        }
     }
 }

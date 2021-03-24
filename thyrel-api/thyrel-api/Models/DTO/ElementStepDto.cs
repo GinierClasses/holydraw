@@ -7,7 +7,7 @@ namespace thyrel_api.Models.DTO
 {
     public class ElementStepDto
     {
-        public ElementStepDto(ElementDto element, ElementDto parent)
+        public ElementStepDto(ElementDto element, ElementDto parent = null)
         {
             Id = element.Id;
             Step = element.Step;
@@ -17,11 +17,9 @@ namespace thyrel_api.Models.DTO
             FinishAt = element.FinishAt;
             CreatedAt = element.CreatedAt;
             SessionId = element.SessionId;
-            if (parent != null)
-            {
-                Parent = parent;
-            }
+            Parent = parent;
         }
+
         public int Id { get; set; }
         public int Step { get; set; }
         public ElementType Type { get; set; }
@@ -30,6 +28,6 @@ namespace thyrel_api.Models.DTO
         public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public int SessionId { get; set; }
-        public ElementDto Parent{ get; set; }
+        public ElementDto Parent { get; set; }
     }
 }

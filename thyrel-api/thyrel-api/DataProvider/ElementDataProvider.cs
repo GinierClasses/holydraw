@@ -174,7 +174,8 @@ namespace thyrel_api.DataProvider
                 .Take(2)
                 .ToListAsync();
 
-            var result = new ElementStepDto(elementWithParent[0], elementWithParent.Count() > 1? elementWithParent[1]:null);
+            var result = new ElementStepDto(elementWithParent[0],
+                elementWithParent.Count > 1 ? elementWithParent[1] : null);
 
             return result;
         }
