@@ -7,7 +7,7 @@ namespace thyrel_api.Models.DTO
 {
     public class SessionDto
     {
-        public SessionDto(Session session, int totalPlayers)
+        public SessionDto(Session session, int playersNumber)
         {
             Id = session.Id;
             FinishAt = session.FinishAt;
@@ -17,7 +17,7 @@ namespace thyrel_api.Models.DTO
             ActualStep = session.ActualStep;
             StepType = session.StepType;
             RoomId = session.RoomId;
-            TotalPlayers = totalPlayers;
+            PlayersNumber = playersNumber;
         }
 
         public int Id { get; set; }
@@ -28,7 +28,7 @@ namespace thyrel_api.Models.DTO
         public int ActualStep { get; set; }
         public SessionStepType StepType { get; set; }
         public int RoomId { get; set; }
-        public int TotalPlayers { get; set; }
+        public int PlayersNumber { get; set; }
 
     }
 }
