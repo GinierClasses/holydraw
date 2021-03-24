@@ -50,7 +50,7 @@ export function SessionContextProvider({
     let deleted = false;
     client<HolyElement>('element/current', { token: getToken() }).then(
       session => !deleted && setCurrentElement(session),
-      () => enqueueSnackbar('Sorry 😅 An error occured', { variant: 'error' }),
+      () => enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
     );
 
     return () => {

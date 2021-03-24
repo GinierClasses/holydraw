@@ -46,7 +46,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       },
       () => {
         setLoading(false);
-        enqueueSnackbar('Sorry 😅 An error occured', { variant: 'error' });
+        enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' });
       },
     );
   }
@@ -70,7 +70,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       },
       () => {
         setLoading(false);
-        enqueueSnackbar('Sorry 😅 An error occured', { variant: 'error' });
+        enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' });
       },
     );
   }

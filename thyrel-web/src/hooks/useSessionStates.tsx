@@ -15,7 +15,7 @@ function useSessionStates() {
     client<Session>('session/current', { token: getToken() }).then(
       session => !deleted && setSession(session),
       () => {
-        enqueueSnackbar('Sorry 😅 An error occured', { variant: 'error' });
+        enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' });
         history.push('/r/lobby');
       },
     );

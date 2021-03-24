@@ -1,4 +1,4 @@
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 import React from 'react';
 
 type AppLayoutProps = {
@@ -15,16 +15,17 @@ const useStyles = makeStyles(theme => ({
 export default function AppLayout({ children }: AppLayoutProps) {
   const classes = useStyles();
   return (
-    <Box
-      bgcolor="background.paper"
-      display="block"
-      margin="auto"
-      width="100%"
-      maxWidth={1000}
-      minWidth={320}
-      minHeight="100vh"
-      className={classes.container}>
-      {children}
-    </Box>
+    <Container maxWidth="lg">
+      <Box
+        bgcolor="background.paper"
+        display="block"
+        margin="auto"
+        width="100%"
+        minWidth={320}
+        minHeight="100vh"
+        className={classes.container}>
+        {children}
+      </Box>
+    </Container>
   );
 }
