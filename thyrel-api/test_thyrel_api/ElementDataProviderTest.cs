@@ -116,15 +116,45 @@ namespace test_thyrel_api
             Assert.AreEqual(candidates.Count, Context.Element.Count(e => e.SessionId == session.Id));
             Assert.AreEqual((await Context.Element.FindAsync(candidates.First().Id)).SessionId, session.Id);
         }
-        
+
         [Test]
         public async Task TestGetCurrentElement()
         {
             var player = await Context.Player.FindAsync(1);
-            var expected = await Context.Element.OrderByDescending(e => e.Step).FirstOrDefaultAsync(e => e.CreatorId == player.Id);
+            var expected = await Context.Element.OrderByDescending(e => e.Step)
+                .FirstOrDefaultAsync(e => e.CreatorId == player.Id);
             var current = await _elementDataProvider.GetCurrentElement(player.Id);
             Assert.AreEqual(current.Step, expected.Step);
             Assert.AreEqual(current.Id, expected.Id);
+        }
+
+        [Test]
+        public async Task TestGetCurrentElementWithParent()
+        {
+            var newElementWithParent = new Element(2, 1, 2, 1, "element-sentence-8");
+            await Context.Element.AddAsync(newElementWithParent);
+            await Context.SaveChangesAsync();
+
+            var player = await Context.Player.FindAsync(1);
+            var expected = await Context.Element.OrderByDescending(e => e.Step)
+                .FirstOrDefaultAsync(e => (e.CreatorId == player.Id) && (e.InitiatorId != player.Id));
+            var expectedWithParent = await _elementDataProvider.GetCurrentElement(expected.CreatorId);
+            var current = await _elementDataProvider.GetCurrentElement(player.Id);
+            Assert.AreEqual(expectedWithParent.Parent.Id, current.Parent.Id);
+            Assert.AreEqual(current.Step, expected.Step);
+            Assert.AreEqual(current.Id, expected.Id);
+        }
+
+        [Test]
+        public async Task TestGetCurrentElementWithNoParent()
+        {
+            var playerId = 33;
+            var newElement = new Element(1, playerId, playerId, 9, "element-sentence-1");
+            await Context.Element.AddAsync(newElement);
+            await Context.SaveChangesAsync();
+
+            var expectedWithParent = await _elementDataProvider.GetCurrentElement(playerId);
+            Assert.IsNull(expectedWithParent.Parent);
         }
     }
 }

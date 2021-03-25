@@ -23,7 +23,7 @@ namespace thyrel_api.Controllers
         }
 
 
-        // Call this endpoint to update the element with the finished result from the player
+         // Call this endpoint to update the element with the finished result from the player
         // PATCH: api/element/:id
         [HttpPatch("{id}")]
         public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
@@ -63,7 +63,7 @@ namespace thyrel_api.Controllers
         // Call this endpoint to get a room
         // GET : api/element/current
         [HttpGet("current")]
-        public async Task<ActionResult<ElementDto>> GetCurrent()
+        public async Task<ActionResult<ElementStepDto>> GetCurrent()
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
@@ -75,7 +75,7 @@ namespace thyrel_api.Controllers
         public class ElementBody
         {
             public string Text;
-            public string DrawImage;
+            public int? DrawingId;
         }
     }
 }
