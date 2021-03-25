@@ -19,11 +19,13 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        ///     Create a new Session
+        /// Create new Session
         /// </summary>
         /// <param name="roomId"></param>
         /// <param name="stepFinishAt"></param>
         /// <param name="timeDuration"></param>
+        /// <param name="playerCount"></param>
+        /// <returns></returns>
         public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount)
         {
             var sessionToAdd = new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
@@ -79,10 +81,7 @@ namespace thyrel_api.DataProvider
                 .OrderBy(s => s.CreatedAt)
                 .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
 
-            var roomPlayers = await playerDataProvider.GetPlayersByRoom(roomId);
-            var numberOfPlayersInRoom = roomPlayers.Count();
-
-            var sessionDto = new SessionDto(session, numberOfPlayersInRoom);
+            var sessionDto = new SessionDto(session);
             
             return sessionDto;
         }
