@@ -1,21 +1,24 @@
 import { useRandomUsername } from 'hooks/useRandomUsername';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Notification } from 'rsuite';
-import { client } from '../../api/client';
-import { setToken } from '../../api/player-provider';
-import profilesPictures from '../../images/profiles/profiles-pictures';
-import Box from '../../styles/Box';
-import Player from '../../types/Player.type';
+import { client } from 'api/client';
+import { setToken } from 'api/player-provider';
+import profilesPictures from 'images/profiles/profiles-pictures';
+import Player from 'types/Player.type';
 import BigButton from '../BigButton';
 import BigInput from '../BigInput';
 import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import CreateIcon from '@material-ui/icons/Create';
+import { Box } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
   const [ppIndex, setPpIndex] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const defaultUsername = useRandomUsername();
   const nextPp = () => {
@@ -33,9 +36,8 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       (player: Player) => {
         setLoading(false);
         if (player.token?.tokenKey) {
-          Notification['success']({
-            title: 'Room successfully created.',
-            description: 'Invite your friends.',
+          enqueueSnackbar('Room successfully created 🙌 Invite your friends.', {
+            variant: 'success',
           });
           setToken(player.token.tokenKey);
           // to redirect to an other page
@@ -44,7 +46,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       },
       () => {
         setLoading(false);
-        Notification.error({ title: 'An error occured' });
+        enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' });
       },
     );
   }
@@ -61,34 +63,39 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       (player: Player) => {
         setLoading(false);
         if (player.token?.tokenKey) {
-          Notification['success']({
-            title: 'Room successfully created.',
-            description: 'Invite your friends.',
-          });
+          enqueueSnackbar("You've joined the room!", { variant: 'success' });
           setToken(player.token.tokenKey);
-          // to redirect to an other page
           history?.push('/r/lobby');
         }
       },
       () => {
         setLoading(false);
-        Notification.error({ title: 'An error occured' });
+        enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' });
       },
     );
   }
 
   return (
-    <Box flexDirection="column" alignItems="center" width="100%" gap={24}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      width="100%"
+      gridGap={24}>
       <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
 
       <BigInput
-        icon={'edit'}
+        startIcon={<CreateIcon />}
         value={username}
         onChange={e => setUsername(e.target.value)}
         placeholder={defaultUsername}
       />
 
-      <Box flexDirection="column" alignItems="center" width="100%" gap={12}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gridGap={12}>
         <ButtonModalJoin
           identifier={identifier}
           onClick={onJoin}
@@ -97,8 +104,8 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
 
         {!identifier && (
           <BigButton
-            icon="angle-double-right"
-            size="lg"
+            size="large"
+            startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
             onClick={onStart}
             loading={loading}>
             Start

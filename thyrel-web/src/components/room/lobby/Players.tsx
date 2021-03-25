@@ -1,19 +1,19 @@
 import { client } from 'api/client';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
-import { useMediaQuery } from 'hooks/useMediaQuery';
-import Box from 'styles/Box';
-import { MediaQuery } from 'styles/breakpoint';
 import Loading from '../../Loading';
 import PlayerCount from '../../room/PlayerCount';
 import BookPlayerList from '../book/BookPlayerList';
 import PlayerCardList from './PlayerCardList';
-import { Notification } from 'rsuite';
+import { Box, useMediaQuery, useTheme } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 
 export function Players() {
-  const isDeviceSM = useMediaQuery(MediaQuery.SM);
+  const theme = useTheme();
+  const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   function onKick(id: number, name: string) {
     window.confirm(`Do you really want to kick ${name} ?`) && kickPlayer(id);
@@ -24,23 +24,14 @@ export function Players() {
     client(url, {
       token: player?.token?.tokenKey,
       method: 'PATCH',
-    })
-      .then(response => {
-        Notification['success']({
-          title: 'Player successfully kicked.',
-          description: 'Play with the bests!',
-        });
-      })
-      .catch(error => {
-        Notification['error']({
-          title: 'An error occurred while trying to kick a player.',
-          description: error,
-        });
-      });
+    }).then(
+      () => enqueueSnackbar('Player kicked 😎', { variant: 'success' }),
+      () => enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
+    );
   }
 
   return (
-    <Box flexDirection="column" alignItems="flex-end">
+    <Box display="flex" flexDirection="column" alignItems="flex-end">
       {players?.length > 0 ? (
         isDeviceSM ? (
           <PlayerCardList

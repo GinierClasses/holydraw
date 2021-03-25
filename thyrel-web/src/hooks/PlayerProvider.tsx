@@ -1,5 +1,5 @@
+import { useSnackbar } from 'notistack';
 import React from 'react';
-import { Notification } from 'rsuite';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
 import Loading from '../components/Loading';
@@ -20,6 +20,7 @@ export function PlayerContextProvider({
   children,
 }: PlayerContextProviderProps) {
   const [player, setPlayer] = React.useState<Player>();
+  const { enqueueSnackbar } = useSnackbar();
   const { websocket } = useWebsocketContext();
 
   React.useEffect(() => {
@@ -46,16 +47,15 @@ export function PlayerContextProvider({
     client<Player>('player/me', { token: getToken() }).then(
       player => !deleted && setPlayer(player),
       () =>
-        Notification.error({
-          title: 'Player error',
-          description: 'Go on Home or refresh the page...',
+        enqueueSnackbar("We couldn't get you back online.", {
+          variant: 'error',
         }),
     );
 
     return () => {
       deleted = true;
     };
-  }, []);
+  }, [enqueueSnackbar]);
 
   const values = { player };
 

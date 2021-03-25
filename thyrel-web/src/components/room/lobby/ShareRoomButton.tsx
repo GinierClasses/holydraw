@@ -1,49 +1,48 @@
-import { css } from '@emotion/css';
-import styled from '@emotion/styled';
-import { Button, Icon } from 'rsuite';
-import Box from 'styles/Box';
-import { bgFade } from 'styles/colors';
-import { Notification } from 'rsuite';
 import { copyToClipboard } from 'utils/clipboard';
+import { Box, Button, makeStyles } from '@material-ui/core';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { useSnackbar } from 'notistack';
 
 type ShareRoomButtonProps = {
   identifier?: string;
 };
 
-const StyledButton = styled(Button)(() => ({
-  height: 58,
-  fontSize: 24,
-  padding: '8px 16px',
-  minWidth: 192,
-  boxShadow: `0px 8px 1px ${bgFade(0.8)}`,
-  position: 'relative',
-  '&:active': {
-    top: 8,
-    boxShadow: 'none',
+const useStyles = makeStyles(theme => ({
+  identifierText: {
+    marginLeft: 16,
+    fontWeight: 'bold',
+    width: '100%',
+    color: theme.palette.text.primary,
+  },
+  img: {
+    height: 256,
+    width: 'auto',
+    margin: 'auto',
+  },
+  icon: {
+    fontSize: 32,
+    color: theme.palette.text.primary,
   },
 }));
 
 export default function ShareRoomButton({ identifier }: ShareRoomButtonProps) {
+  const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+
   function onShared() {
     if (identifier) {
       copyToClipboard(`${window.location.origin}/join/${identifier}`);
-      Notification.success({ title: 'URL successfully copied 😎' });
+      enqueueSnackbar('URL successfully copied 😎', { variant: 'success' });
     }
   }
   return (
-    <StyledButton onClick={onShared}>
-      <Box alignItems="center">
-        <Icon icon="key" size="2x" />
-        <span
-          className={css({
-            marginLeft: 16,
-            fontWeight: 'bold',
-            width: '100%',
-            color: '#BDBDBD',
-          })}>
+    <Button onClick={onShared} size="large" variant="contained">
+      <Box display="flex" alignItems="center">
+        <VpnKeyIcon className={classes.icon} />
+        <span className={classes.identifierText}>
           {identifier || 'loading...'}
         </span>
       </Box>
-    </StyledButton>
+    </Button>
   );
 }
