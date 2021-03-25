@@ -128,15 +128,16 @@ CREATE TABLE `Session` (
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL,
   `TimeDuration` int NOT NULL,
-  `StepType` int NOT NULL
+  `StepType` int NOT NULL,
+  `PlayerCount` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Session`
 --
 
-INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`, `TimeDuration`, `StepType`) VALUES
-(9, NULL, NULL, 2, '2021-02-17 18:00:18', 23, 120, 12);
+INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`, `TimeDuration`, `StepType`, `PlayerCount`) VALUES
+(9, NULL, NULL, 2, '2021-02-17 18:00:18', 23, 120, 12, 3);
 
 -- --------------------------------------------------------
 

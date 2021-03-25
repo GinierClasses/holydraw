@@ -24,9 +24,9 @@ namespace thyrel_api.DataProvider
         /// <param name="roomId"></param>
         /// <param name="stepFinishAt"></param>
         /// <param name="timeDuration"></param>
-        public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration)
+        public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount)
         {
-            var sessionToAdd = new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start);
+            var sessionToAdd = new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
 
             // test if no session is already start
             if (await _holyDrawDbContext.Session.AnyAsync(s => s.RoomId == roomId && s.FinishAt == null))
@@ -99,7 +99,10 @@ namespace thyrel_api.DataProvider
 
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
             var elementDataProvider = new ElementDataProvider(_holyDrawDbContext);
-            var addedSession = await Add(roomId, DateTime.Now.AddSeconds(duration), duration);
+
+            var playerCount = playerDataProvider.GetPlayersByRoom(roomId).Result.Count();
+
+            var addedSession = await Add(roomId, DateTime.Now.AddSeconds(duration), duration, playerCount);
 
             if (addedSession == null)
                 return null;
