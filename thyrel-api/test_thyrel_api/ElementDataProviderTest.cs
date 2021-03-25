@@ -131,7 +131,7 @@ namespace test_thyrel_api
         [Test]
         public async Task TestGetCurrentElementWithParent()
         {
-            var newElementWithParent = new Element(2, 1, 2, 1, "element-sentence-8");
+            var newElementWithParent = new Element(2, 1, 2, 1, ElementType.Sentence);
             await Context.Element.AddAsync(newElementWithParent);
             await Context.SaveChangesAsync();
 
@@ -149,7 +149,7 @@ namespace test_thyrel_api
         public async Task TestGetCurrentElementWithNoParent()
         {
             var playerId = 33;
-            var newElement = new Element(1, playerId, playerId, 9, "element-sentence-1");
+            var newElement = new Element(1, playerId, playerId, 9, ElementType.Drawing);
             await Context.Element.AddAsync(newElement);
             await Context.SaveChangesAsync();
 

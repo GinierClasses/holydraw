@@ -75,7 +75,7 @@ namespace thyrel_api.Controllers
         public class ElementBody
         {
             public string Text;
-            public int? DrawingId;
+            public string DrawImage;
         }
     }
 }
