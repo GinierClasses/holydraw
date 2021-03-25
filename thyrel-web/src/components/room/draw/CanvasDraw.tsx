@@ -7,10 +7,6 @@ import { Button, Icon } from 'rsuite';
 import Box from 'styles/Box';
 import { canvasScale, getCoordinates } from 'utils/canvas.utils';
 
-/* // TODO :
- * premierclick affiche un cercle
- */
-
 const canvasWidth = {
   width: 512,
   height: 320,
