@@ -107,36 +107,20 @@ export default function ComponentTest() {
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
+        <DirectiveLabel sentence="Salzt" directive="bonsoir" />
+
+        <SpinnerIcon />
+
+        <PlayerCount count={8} max={12} />
+
+        <PlayerCardList
+          players={testPlayerList}
+          isKickable={true}
+          onKick={id => console.log('id is', id)}
+        />
+
+        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
       </Box>
-      <ButtonModalJoin
-        identifier={undefined}
-        onClick={console.log}></ButtonModalJoin>
-      <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
-      <DirectiveLabel sentence="Salzt" directive="bonsoir" />
-      <BigInput onChange={() => void 0} value={'didier'} />
-      <ShareRoomButton identifier="LH4AH3" />
-      <PlayerCard
-        id={1}
-        name="John Doe"
-        avatar={profilesPictures[ppIndex]}
-        isOwner={true}
-        isKickable={false}
-        onKick={id => console.log('User id is :', id)}
-      />
-
-      <SpinnerIcon />
-
-      <PlayerCount count={8} max={12} />
-
-      <PlayerCardList
-        players={testPlayerList}
-        isKickable={true}
-        onKick={id => console.log('id is', id)}
-      />
-
-      <PlayerCount count={8} max={12} />
-
-      <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
     </Box>
   );
 }
