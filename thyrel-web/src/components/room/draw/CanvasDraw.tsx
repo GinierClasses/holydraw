@@ -1,15 +1,14 @@
-/* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { css } from '@emotion/css';
-import useCanvasPaint from 'hooks/useCanvasPaint';
+import { Box, makeStyles } from '@material-ui/core';
+import useCanvasEventListener from 'components/room/draw/useCanvasEventListener';
+import useCanvasPaint from './useCanvasPaint';
 import React from 'react';
-import { Button, Icon } from 'rsuite';
-import Box from 'styles/Box';
 import { canvasScale, getCoordinates } from 'utils/canvas.utils';
+import CanvasDrawActions from './CanvasDrawActions';
 
 const canvasWidth = {
   width: 512,
   height: 320,
+  border: 4,
 };
 
 type CanvasDrawProps = {
@@ -17,33 +16,41 @@ type CanvasDrawProps = {
   size?: number;
 };
 
+const useStyles = makeStyles(theme => ({
+  canvas: {
+    backgroundColor: '#DDDDDD',
+    width: canvasWidth.width,
+    height: canvasWidth.height,
+    cursor: 'crosshair',
+  },
+}));
+
 export default function CanvasDraw({
   color = '#900050',
   size = 4,
 }: CanvasDrawProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
-  const {
-    paintLine,
-    createLine,
-    addLastLine,
-    clearCanvas,
-    undoLastLine,
-  } = useCanvasPaint({ color, size, canvasRef });
+  const { paint, create, addLastLine, clear, undo } = useCanvasPaint({
+    color,
+    size,
+    canvasRef,
+  });
+  const classes = useStyles();
 
-  const startPaint = React.useCallback(
+  const onMouseDown = React.useCallback(
     (event: MouseEvent, isNewLine: boolean = true) => {
       const coordinates = getCoordinates(event, canvasRef.current);
       if (!coordinates) return;
       setIsPainting(true);
 
-      createLine(coordinates, isNewLine);
+      create(coordinates, isNewLine);
     },
-    [createLine],
+    [create],
   );
 
-  const stopPaint = React.useCallback(
-    event => {
+  const onMouseUp = React.useCallback(
+    (event: MouseEvent) => {
       setIsPainting(false);
       const coordinate = getCoordinates(event);
       addLastLine(coordinate);
@@ -51,52 +58,30 @@ export default function CanvasDraw({
     [addLastLine],
   );
 
-  const mouseEnter = React.useCallback(
-    event => {
-      if (isPainting) startPaint(event, false);
+  const onMouseEnter = React.useCallback(
+    (event: MouseEvent) => {
+      if (isPainting) onMouseDown(event, false);
     },
-    [isPainting, startPaint],
+    [isPainting, onMouseDown],
   );
 
-  const paint = React.useCallback(
+  const onMouseMove = React.useCallback(
     (event: MouseEvent) => {
       if (!isPainting || !canvasRef.current) return;
       const newMousePosition = getCoordinates(event, canvasRef.current);
-      paintLine(newMousePosition);
+      paint(newMousePosition);
     },
-    [isPainting, paintLine],
+    [isPainting, paint],
   );
 
-  React.useEffect(() => {
-    if (!isPainting) return;
-
-    window.document.addEventListener('mousemove', paint);
-    return () => {
-      window.document.removeEventListener('mousemove', paint);
-    };
-  }, [isPainting, paint]);
-
-  React.useEffect(() => {
-    if (!canvasRef.current) return;
-    const canvas: HTMLCanvasElement = canvasRef.current;
-
-    canvas.addEventListener('mouseenter', mouseEnter);
-    return () => {
-      canvas.removeEventListener('mouseenter', mouseEnter);
-    };
-  }, [mouseEnter]);
-
-  React.useEffect(() => {
-    if (!canvasRef.current) return;
-    const canvas: HTMLCanvasElement = canvasRef.current;
-
-    canvas.addEventListener('mousedown', startPaint);
-    window.document.addEventListener('mouseup', stopPaint);
-    return () => {
-      canvas.removeEventListener('mousedown', startPaint);
-      window.document.removeEventListener('mouseup', stopPaint);
-    };
-  }, [startPaint, stopPaint]);
+  useCanvasEventListener({
+    canvasRef,
+    onMouseDown,
+    onMouseUp,
+    onMouseEnter,
+    onMouseMove,
+    isPainting,
+  });
 
   React.useEffect(() => {
     if (!canvasRef.current) return;
@@ -109,30 +94,15 @@ export default function CanvasDraw({
   return (
     <>
       <Box
-        className={css({
-          width: canvasWidth.width + 4 * 2,
-          height: canvasWidth.height + 4 * 2,
-        })}
-        borderWidth={4}
-        shadow={1}>
-        <canvas
-          ref={canvasRef}
-          className={css({
-            backgroundColor: '#DDDDDD',
-            width: canvasWidth.width,
-            height: canvasWidth.height,
-          })}
-        />
+        width={canvasWidth.width + canvasWidth.border * canvasScale}
+        height={canvasWidth.height + canvasWidth.border * canvasScale}
+        border={canvasWidth.border}
+        borderColor="secondary.main"
+        boxShadow={1}>
+        <canvas ref={canvasRef} className={classes.canvas} />
       </Box>
 
-      <Box display="flex" flexDirection="column">
-        <Button onClick={clearCanvas}>
-          <Icon icon="trash" />
-        </Button>
-        <Button onClick={undoLastLine}>
-          <Icon icon="undo" />
-        </Button>
-      </Box>
+      <CanvasDrawActions onClear={clear} onUndo={undo} />
     </>
   );
 }

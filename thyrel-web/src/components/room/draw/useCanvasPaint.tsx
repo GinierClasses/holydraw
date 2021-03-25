@@ -29,7 +29,7 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
     mouseCoordinate.current = coordinate;
   }, []);
 
-  const paintLine = React.useCallback(
+  const paint = React.useCallback(
     (newMousePosition?: Coordinate) => {
       if (!newMousePosition || !mouseCoordinate || !canvasRef.current) return;
 
@@ -55,7 +55,7 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
     [canvasRef],
   );
 
-  const createLine = React.useCallback(
+  const create = React.useCallback(
     (coordinate: Coordinate, isNewLine?: boolean) => {
       mouseCoordinate.current = coordinate;
       if (isNewLine)
@@ -65,18 +65,18 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
           size: size * canvasScale,
           points: [coordinate],
         });
-      else paintLine(coordinate);
+      else paint(coordinate);
     },
-    [color, paintLine, size],
+    [color, paint, size],
   );
 
-  const undoLastLine = React.useCallback(() => {
+  const undo = React.useCallback(() => {
     if (!canvasRef.current) return;
     lines.current.pop();
     rerenderDraw(canvasRef.current, lines.current);
   }, [canvasRef]);
 
-  const clearCanvas = React.useCallback(() => {
+  const clear = React.useCallback(() => {
     if (!canvasRef.current) return;
     clearDraw(canvasRef.current, canvasRef.current.getContext('2d'));
   }, [canvasRef]);
@@ -84,21 +84,20 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
   React.useEffect(() => {
     if (!canvasRef.current) return;
     const onKeyDown = (event: any) => {
-      if (event.keyCode === 90 && (event.ctrlKey || event.metaKey))
-        undoLastLine();
+      if (event.keyCode === 90 && (event.ctrlKey || event.metaKey)) undo();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [canvasRef, undoLastLine]);
+  }, [canvasRef, undo]);
 
   return {
-    paintLine,
-    createLine,
+    paint,
+    create,
     addLastLine,
-    undoLastLine,
+    undo,
     lines,
     mouseCoordinate,
-    clearCanvas,
+    clear,
   };
 }
 
