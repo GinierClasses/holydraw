@@ -33,12 +33,12 @@ namespace test_thyrel_api
         {
             var elements = new List<Element>
             {
-                new(1, 1, 1, 1, "element-sentence-1"),
-                new(1, 2, 2, 1, "element-sentence-2"),
-                new(1, 3, 3, 1, "element-sentence-3"),
-                new(1, 4, 4, 1, "element-sentence-4"),
-                new(1, 6, 6, 1, "element-sentence-5"),
-                new(1, 7, 7, 1, "element-sentence-6"),
+                new(1, 1, 1, 1, ElementType.Sentence),
+                new(1, 2, 2, 1, ElementType.Sentence),
+                new(1, 3, 3, 1, ElementType.Sentence),
+                new(1, 4, 4, 1, ElementType.Sentence),
+                new(1, 6, 6, 1, ElementType.Sentence),
+                new(1, 7, 7, 1, ElementType.Sentence),
             };
             var elementCount = Context.Element.Count();
 
@@ -50,7 +50,7 @@ namespace test_thyrel_api
         [Test]
         public async Task AddDrawingFunctionCreateSentence()
         {
-            var newElement = await _elementDataProvider.AddDrawing(1, 2, 2, 1, 1);
+            var newElement = await _elementDataProvider.AddDrawing(1, 2, 2, 1);
             Assert.IsNotNull(newElement);
             Assert.AreEqual(ElementType.Drawing, newElement.Type);
             Assert.AreEqual(1, newElement.CreatorId);
@@ -60,29 +60,32 @@ namespace test_thyrel_api
         public async Task SetSentenceEditValueOfText()
         {
             const string newText = "yow";
-            var newElement = await _elementDataProvider.SetSentence(1, newText);
-            Assert.AreEqual(newText, newElement.Text);
+            var element = Context.Element.First();
+            await _elementDataProvider.SetSentence(element, newText);
+            Assert.AreEqual(newText, element.Text);
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newText, dbElement.Text);
         }
 
         [Test]
-        public async Task SetDrawingEditValueOfDrawingId()
+        public async Task SetDrawingEditValueOfDrawImage()
         {
-            const int newId = 2;
-            var newElement = await _elementDataProvider.SetDrawing(1, newId);
-            Assert.AreEqual(newId, newElement.DrawingId);
+            const string newImage = "http://imageexample.com/image.png";
+            var element = Context.Element.First();
+
+            await _elementDataProvider.SetDrawing(element, newImage);
+            Assert.AreEqual(newImage, element.DrawImage);
             var dbElement = await _elementDataProvider.GetElement(1);
-            Assert.AreEqual(newId, dbElement.DrawingId);
+            Assert.AreEqual(newImage, dbElement.DrawImage);
         }
 
         [Test]
         public async Task HandleFinishChangeTheFinish()
         {
-            await _elementDataProvider.HandleFinish(1, true);
+            await _elementDataProvider.HandleFinish(1);
             var element1 = await _elementDataProvider.GetElement(1);
             Assert.IsNotNull(element1.FinishAt);
-            await _elementDataProvider.HandleFinish(1, false);
+            await _elementDataProvider.HandleFinish(1);
             var element2 = await _elementDataProvider.GetElement(1);
             Assert.IsNull(element2.FinishAt);
         }
@@ -128,7 +131,7 @@ namespace test_thyrel_api
         [Test]
         public async Task TestGetCurrentElementWithParent()
         {
-            var newElementWithParent = new Element(2, 1, 2, 1, "element-sentence-8");
+            var newElementWithParent = new Element(2, 1, 2, 1, ElementType.Sentence);
             await Context.Element.AddAsync(newElementWithParent);
             await Context.SaveChangesAsync();
 
@@ -146,7 +149,7 @@ namespace test_thyrel_api
         public async Task TestGetCurrentElementWithNoParent()
         {
             var playerId = 33;
-            var newElement = new Element(1, playerId, playerId, 9, "element-sentence-1");
+            var newElement = new Element(1, playerId, playerId, 9, ElementType.Drawing);
             await Context.Element.AddAsync(newElement);
             await Context.SaveChangesAsync();
 
