@@ -23,24 +23,26 @@ namespace thyrel_api.Controllers
         }
 
 
-        // Call this endpoint to update the element with the finished result from the player
+         // Call this endpoint to update the element with the finished result from the player
         // PATCH: api/element/:id
         [HttpPatch("{id}")]
         public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
         {
             var elementDataProvider = new ElementDataProvider(_context);
+            var sessionDataProvider = new SessionDataProvider(_context);
             var element = await elementDataProvider.GetElement(id);
-            var session = await new SessionDataProvider(_context).GetSessionById(element.SessionId);
-            await elementDataProvider.HandleFinish(id, true);
-
-            if (element.Type == ElementType.Sentence)
-            {
-                await elementDataProvider.SetSentence(id, body.Text);
-            }
-            else
-            {
-                await elementDataProvider.SetDrawing(id, body.DrawingId ?? 0);
-            }
+            var session = await sessionDataProvider.GetSessionById(element.SessionId);
+            
+            var finishState = await elementDataProvider.HandleFinish(id);
+            if (finishState.FinishAt != null)
+                if (element.Type == ElementType.Sentence)
+                    await elementDataProvider.SetSentence(element, body.Text);
+                else
+                    await elementDataProvider.SetDrawing(element, body.DrawImage);
+            
+            var stepState = await sessionDataProvider.GetPlayerStatus(element.Session);
+            if (stepState.PlayerCount == stepState.PlayerFinished)
+                await sessionDataProvider.NextStep(session);
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
@@ -73,7 +75,7 @@ namespace thyrel_api.Controllers
         public class ElementBody
         {
             public string Text;
-            public int? DrawingId;
+            public string DrawImage;
         }
     }
 }
