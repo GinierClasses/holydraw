@@ -28,7 +28,7 @@ namespace test_thyrel_api
             };
             _elementController = controller;
         }
-        
+
         [Test]
         public async Task GetCurrentElementTest()
         {
