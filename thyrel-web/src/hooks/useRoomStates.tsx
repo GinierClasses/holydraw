@@ -29,7 +29,7 @@ export function useRoomStates() {
       if (!playerId) return;
       if (playerId === player?.id) {
         history?.push('/home');
-        enqueueSnackbar('You have been kicked from the room 😅', {
+        enqueueSnackbar("Seems like you've been kicked from the room 😅", {
           variant: 'info',
         });
       }
