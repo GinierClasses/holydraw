@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
@@ -32,6 +33,7 @@ namespace thyrel_api.Controllers
             var sessionDataProvider = new SessionDataProvider(_context);
             var element = await elementDataProvider.GetElement(id);
             var session = await sessionDataProvider.GetSessionById(element.SessionId);
+            TimeSpan remainingStepTime = (TimeSpan)(session.StepFinishAt - DateTime.Now);
             
             var finishState = await elementDataProvider.HandleFinish(id);
             if (finishState.FinishAt != null)
@@ -41,7 +43,7 @@ namespace thyrel_api.Controllers
                     await elementDataProvider.SetDrawing(element, body.DrawImage);
             
             var stepState = await sessionDataProvider.GetPlayerStatus(element.Session);
-            if (stepState.PlayerCount == stepState.PlayerFinished)
+            if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
                 await sessionDataProvider.NextStep(session);
 
             await _websocketHandler.SendMessageToSockets(
