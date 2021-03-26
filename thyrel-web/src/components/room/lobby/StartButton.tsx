@@ -21,7 +21,7 @@ export default function StartButton({ player, onStart }: StartButtonProps) {
         )}
         <Typography variant="body2" color="textSecondary">
           {player?.isOwner
-            ? "you're the owner, click here to start the party"
+            ? "you're the owner, click here to start the game"
             : 'Waiting for the host to start the game.'}
         </Typography>
       </Box>
