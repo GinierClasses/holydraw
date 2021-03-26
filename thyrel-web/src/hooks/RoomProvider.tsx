@@ -44,7 +44,7 @@ export function RoomContextProvider({
       switch (websocketMessage.websocketEvent) {
         case WebsocketEvent.Invalid:
           enqueueSnackbar(
-            'You are not playing, we redirect you on Home page.',
+            "You are not playing, we'll redirect you on Home page.",
             { variant: 'error' },
           );
           history.push('/home');
