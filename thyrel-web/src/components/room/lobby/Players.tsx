@@ -59,7 +59,7 @@ export function PlayerCountBox() {
   const { players } = useRoomContext();
 
   return (
-    <Box pr={{ xs: 1, md: 1.5 }}>
+    <Box pr={{ xs: 1, md: 2 }}>
       <PlayerCount count={players?.length || 0} max={12} />
     </Box>
   );

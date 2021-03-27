@@ -11,8 +11,21 @@ import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import CreateIcon from '@material-ui/icons/Create';
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    '&>*': {
+      marginBottom: theme.spacing(4),
+    },
+  },
+  buttonContainer: {
+    '&>*': {
+      marginBottom: theme.spacing(2),
+    },
+  },
+}));
 
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
@@ -21,9 +34,17 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const defaultUsername = useRandomUsername();
+  const classes = useStyles();
+
   const nextPp = () => {
-    setPpIndex((p: number) => (p > profilesPictures.length - 2 ? 0 : p + 1));
+    setPpIndex((p: number) => (p >= profilesPictures.length - 1 ? 0 : p + 1));
   };
+
+  function onConnect(token: string, text: string, isSuccess: boolean = true) {
+    enqueueSnackbar(text, { variant: isSuccess ? 'success' : 'error' });
+    setToken(token);
+    history?.push('/r/lobby');
+  }
 
   function onStart() {
     setLoading(true);
@@ -32,23 +53,16 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         username: username || defaultUsername,
         avatarUrl: String(ppIndex),
       },
-    }).then(
-      (player: Player) => {
-        setLoading(false);
-        if (player.token?.tokenKey) {
-          enqueueSnackbar('Room successfully created 🙌', {
-            variant: 'success',
-          });
-          setToken(player.token.tokenKey);
-          // to redirect to an other page
-          history?.push('/r/lobby');
-        }
-      },
-      () => {
-        setLoading(false);
-        enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' });
-      },
-    );
+    })
+      .then(
+        player => {
+          if (player.token?.tokenKey)
+            onConnect(player.token?.tokenKey, 'Room successfully created 🙌');
+        },
+        () =>
+          enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
+      )
+      .finally(() => setLoading(false));
   }
 
   function onJoin(identifier: string) {
@@ -59,20 +73,16 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         avatarUrl: String(ppIndex),
       },
       method: 'PATCH',
-    }).then(
-      (player: Player) => {
-        setLoading(false);
-        if (player.token?.tokenKey) {
-          enqueueSnackbar("You've joined the room!", { variant: 'success' });
-          setToken(player.token.tokenKey);
-          history?.push('/r/lobby');
-        }
-      },
-      () => {
-        setLoading(false);
-        enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' });
-      },
-    );
+    })
+      .then(
+        player => {
+          if (player.token?.tokenKey)
+            onConnect(player.token?.tokenKey, "You've joined the room!", false);
+        },
+        () =>
+          enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
+      )
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -81,7 +91,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       flexDirection="column"
       alignItems="center"
       width="100%"
-      gridGap={24}>
+      className={classes.container}>
       <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
 
       <BigInput
@@ -95,7 +105,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        gridGap={12}>
+        className={classes.buttonContainer}>
         <ButtonModalJoin
           identifier={identifier}
           onClick={onJoin}

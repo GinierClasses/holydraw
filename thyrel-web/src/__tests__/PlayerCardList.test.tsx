@@ -28,7 +28,7 @@ describe('PlayerCardList', () => {
     const { container } = render(
       <PlayerCardList players={data} isKickable={false} />,
     );
-    const size = container.children[0].children.length;
+    const size = container.children[0].children[0].children.length;
 
     expect(size).toEqual(data.length);
   });
