@@ -61,7 +61,6 @@ function createBaseTheme(palette: Palette) {
         contained: {
           height: 42,
           fontSize: 16,
-          lineHeight: 1,
           color: palette.common.white,
           fontFamily: 'Work Sans',
           backgroundColor: palette.divider,
