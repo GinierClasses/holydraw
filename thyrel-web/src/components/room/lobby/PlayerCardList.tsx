@@ -17,11 +17,7 @@ export default function PlayerCardList({
   onKick,
 }: PlayerCardListProps) {
   return (
-    <Box
-      height={384}
-      width={262}
-      overflow="hidden scroll"
-      mr={{ xs: 0.5, md: 0.75 }}>
+    <Box height={384} width={256 + 8 + 8} overflow="hidden scroll">
       <Grid container spacing={2} alignItems="flex-end">
         {players &&
           players.map(player => {
