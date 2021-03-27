@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     bottom: 0,
     left: 0,
+    zIndex: 2,
   },
   container: {
     overflowX: 'scroll',
@@ -74,7 +75,7 @@ export default function BookPlayerList({
                     <div className={classes.badge}>
                       <StarIcon
                         data-testid="star-icon"
-                        style={{ fontSize: 32 }}
+                        style={{ fontSize: 16 }}
                       />
                     </div>
                   ) : (
@@ -89,7 +90,7 @@ export default function BookPlayerList({
                         <div className={classes.badge}>
                           <CloseIcon
                             data-testid="kick-icon"
-                            style={{ fontSize: 32 }}
+                            style={{ fontSize: 16 }}
                           />
                         </div>
                       </button>
