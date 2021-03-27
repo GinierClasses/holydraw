@@ -4,16 +4,17 @@ import React from 'react';
 import { getToken } from '../api/player-provider';
 import { testApiUrl } from '../test/data';
 import Player from '../types/Player.type';
+import useSafeMounted from 'hooks/useSafeMounted';
 
 const apiURL = process.env.REACT_APP_API_URL || testApiUrl;
 const domainRegExp = /\b(?:(?:https?|ftp):\/\/)?([^/\n]+)\/?/;
+const url = `wss://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
 
 export enum WsStates {
-  IDLE = 'IDLE TIME',
-  CONNECTING = 'CONNECTION STARTED',
-  CONNECTED = 'CONNECTION SUCCESSFUL',
-  SENDING = 'MESSAGE IS SENDING',
-  CLOSED = 'CONNECTION IS CLOSE',
+  IDLE = 'Loading...',
+  CONNECTING = 'You will be connected',
+  CONNECTED = 'You are connected',
+  CLOSED = "You're disconnected",
 }
 
 export enum WebsocketEvent {
@@ -40,28 +41,35 @@ export function useWebsocket() {
   const [wsState, setWsState] = React.useState<WsStates>(WsStates.IDLE);
   const { enqueueSnackbar } = useSnackbar();
 
+  const onCloseCallback = React.useCallback(
+    (isSocketOpened: boolean) => {
+      setWsState(WsStates.CLOSED);
+      if (isSocketOpened) {
+        enqueueSnackbar('Connexion lost ⚡️', { variant: 'error' });
+        setWebsocket(undefined);
+      }
+    },
+    [enqueueSnackbar],
+  );
+  const safeOnClose = useSafeMounted(onCloseCallback);
+
   const connect = React.useCallback(() => {
-    const url = `wss://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
     const socket = new WebSocket(url);
-    let isOpen = false;
+    let isSocketOpened = false;
     setWsState(WsStates.CONNECTING);
     setWebsocket(socket);
 
     socket.onopen = function () {
-      isOpen = true;
+      isSocketOpened = true;
       // identifie the request
       socket.send(JSON.stringify({ PlayerToken: getToken() }));
       setWsState(WsStates.CONNECTED);
     };
 
     socket.onclose = function () {
-      setWsState(WsStates.CLOSED);
-
-      isOpen && enqueueSnackbar('Connexion lost ⚡️', { variant: 'error' });
-      // set to undefined to reload the useEffect and rerun connection
-      isOpen && setWebsocket(undefined);
+      safeOnClose(isSocketOpened);
     };
-  }, [enqueueSnackbar]);
+  }, [safeOnClose]);
 
   React.useEffect(() => {
     if (websocket) {

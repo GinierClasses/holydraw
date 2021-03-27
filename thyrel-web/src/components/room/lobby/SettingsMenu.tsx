@@ -12,6 +12,7 @@ export default function SettingsMenu() {
       height="auto"
       display="flex"
       flexDirection="column"
+      alignItems={{ xs: 'center', sm: 'flex-start' }}
       gridGap={24}>
       <Typography variant="h5">{wsState}</Typography>
       <ShareRoomButton identifier={room?.identifier} />

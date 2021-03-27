@@ -2,7 +2,7 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { client } from '../api/client';
-import { getToken } from '../api/player-provider';
+import { destroy, getToken } from '../api/player-provider';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { usePlayerContext } from './PlayerProvider';
@@ -28,7 +28,8 @@ export function useRoomStates() {
     (playerId?: number) => {
       if (!playerId) return;
       if (playerId === player?.id) {
-        history?.push('/home');
+        history.push('/home');
+        destroy();
         enqueueSnackbar("Seems like you've been kicked from the room 😅", {
           variant: 'info',
         });
@@ -56,9 +57,13 @@ export function useRoomStates() {
   }, []);
 
   React.useEffect(() => {
+    if (!player?.roomId) {
+      history.push('/home');
+      return;
+    }
     updateRoom();
     updatePlayer();
-  }, [updatePlayer, updateRoom]);
+  }, [history, player?.roomId, updatePlayer, updateRoom]);
 
   return { updatePlayer, updateRoom, removePlayer, addPlayer, room, players };
 }
