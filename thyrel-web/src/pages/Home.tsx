@@ -9,16 +9,11 @@ export default function Home(
   const identifier = props.match.params.identifier;
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      width="100%"
-      gridGap={24}>
-      <Box p={2} width="100%">
+    <Box display="flex" flexDirection="column" alignItems="center" width="100%">
+      <Box p={{ xs: 1, sm: 2 }} width="100%">
         <AppTitle />
       </Box>
-      <Box mt={1}>
+      <Box mt={{ xs: 1, sm: 2 }}>
         <PlayerForm identifier={identifier} />
       </Box>
     </Box>

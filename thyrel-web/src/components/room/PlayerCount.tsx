@@ -7,7 +7,7 @@ type PlayerCountProps = {
 
 export default function PlayerCount({ count, max }: PlayerCountProps) {
   return (
-    <Box p={1}>
+    <Box py={1}>
       <Typography variant="subtitle1">
         {count}/{max}
       </Typography>
