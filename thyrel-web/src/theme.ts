@@ -60,8 +60,8 @@ function createBaseTheme(palette: Palette) {
         },
         contained: {
           height: 42,
-          padding: '4px 8px',
-          fontSize: 18,
+          fontSize: 16,
+          color: palette.common.white,
           fontFamily: 'Work Sans',
           backgroundColor: palette.divider,
           boxShadow: `0px 8px 1px ${fade('#000000', 0.8)}`,
@@ -78,6 +78,9 @@ function createBaseTheme(palette: Palette) {
             top: 8,
             boxShadow: 'none',
           },
+        },
+        iconSizeLarge: {
+          marginLeft: 0,
         },
         containedSizeLarge: {
           height: 58,

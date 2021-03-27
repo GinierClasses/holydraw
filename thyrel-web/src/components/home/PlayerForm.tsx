@@ -36,7 +36,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       (player: Player) => {
         setLoading(false);
         if (player.token?.tokenKey) {
-          enqueueSnackbar('Room successfully created 🙌 Invite your friends.', {
+          enqueueSnackbar('Room successfully created 🙌', {
             variant: 'success',
           });
           setToken(player.token.tokenKey);

@@ -27,21 +27,29 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
+    border: 0,
     position: 'absolute',
     bottom: 0,
     left: 0,
+    zIndex: 2,
   },
   container: {
     overflowX: 'scroll',
   },
   username: {
     overflow: 'hidden',
+    textAlign: 'center',
     maxWidth: 64,
+    whiteSpace: 'nowrap',
   },
   button: {
     backgroundColor: 'transparent',
     outline: 'none',
     padding: 0,
+  },
+  icon: {
+    fontSize: 16,
+    color: theme.palette.common.white,
   },
 }));
 
@@ -74,7 +82,7 @@ export default function BookPlayerList({
                     <div className={classes.badge}>
                       <StarIcon
                         data-testid="star-icon"
-                        style={{ fontSize: 32 }}
+                        className={classes.icon}
                       />
                     </div>
                   ) : (
@@ -85,13 +93,13 @@ export default function BookPlayerList({
                           isKickable &&
                           onClick?.(player.id, player.username)
                         }
-                        className={classes.button}>
-                        <div className={classes.badge}>
-                          <CloseIcon
-                            data-testid="kick-icon"
-                            style={{ fontSize: 32 }}
-                          />
-                        </div>
+                        className={classes.badge}>
+                        {/* <div className={classes.badge}> */}
+                        <CloseIcon
+                          data-testid="kick-icon"
+                          className={classes.icon}
+                        />
+                        {/* </div> */}
                       </button>
                     )
                   ))}
@@ -101,7 +109,10 @@ export default function BookPlayerList({
                 />
               </Box>
               {!isDeviceSM && (
-                <Typography className={classes.username} variant="subtitle1">
+                <Typography
+                  className={classes.username}
+                  component="p"
+                  variant="subtitle1">
                   {player.username}
                 </Typography>
               )}

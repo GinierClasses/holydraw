@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
-import theme from './theme';
-import Routes from './Routes';
+import theme from 'theme';
+import Routes from 'Routes';
 import { SnackbarProvider } from 'notistack';
 
 /*

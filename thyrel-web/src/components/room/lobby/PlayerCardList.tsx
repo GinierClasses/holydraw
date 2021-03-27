@@ -24,7 +24,7 @@ export default function PlayerCardList({
       alignItems="center"
       flexDirection="column"
       style={{ overflowY: 'scroll' }}
-      pr={1}>
+      pr={{ xs: 1, md: 1.5 }}>
       {players &&
         players.map(player => {
           const isPlayerSelected = playerId === player.id;

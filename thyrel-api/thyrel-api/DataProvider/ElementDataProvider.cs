@@ -24,12 +24,10 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
-        /// <param name="drawingId"></param>
         /// <returns></returns>
-        public async Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId,
-            int? drawingId = null)
+        public async Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId)
         {
-            var element = new Element(step, creatorId, initiatorId, sessionId, drawingId);
+            var element = new Element(step, creatorId, initiatorId, sessionId, ElementType.Drawing);
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;
@@ -47,8 +45,7 @@ namespace thyrel_api.DataProvider
         public async Task<Element> AddSentence(int creatorId, int initiatorId, int step, int sessionId,
             string text = "")
         {
-            var element = new Element(step, creatorId, initiatorId, sessionId, text);
-
+            var element = new Element(step, creatorId, initiatorId, sessionId, ElementType.Sentence);
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;
@@ -70,53 +67,44 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
-        /// <param name="elementId"></param>
+        /// <param name="element"></param>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        public async Task<Element> SetSentence(int elementId, string sentence)
+        public async Task SetSentence(Element element, string sentence)
         {
-            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
-
-            if (element == null)
-                return null;
+            if (element == null) return;
 
             element.Text = sentence;
             await SaveChanges();
-            return element;
         }
 
         /// <summary>
-        ///     Set the DrawingId into a Element
+        ///     Set the DrawImage into a Element
         /// </summary>
-        /// <param name="elementId"></param>
-        /// <param name="drawingId"></param>
+        /// <param name="element"></param>
+        /// <param name="drawImage"></param>
         /// <returns></returns>
-        public async Task<Element> SetDrawing(int elementId, int drawingId)
+        public async Task SetDrawing(Element element, string drawImage)
         {
-            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
+            if (element == null) return;
 
-            if (element == null)
-                return null;
-
-            element.DrawingId = drawingId;
+            element.DrawImage = drawImage;
             await SaveChanges();
-            return element;
         }
 
         /// <summary>
         ///     Handle finish State
         /// </summary>
         /// <param name="elementId">elementId to handle</param>
-        /// <param name="isFinish">true = element finish, false = element not finish</param>
         /// <returns>Edited element</returns>
-        public async Task<Element> HandleFinish(int elementId, bool isFinish)
+        public async Task<Element> HandleFinish(int elementId)
         {
             var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
             if (element == null)
                 return null;
 
-            if (isFinish)
+            if (element.FinishAt == null)
                 element.FinishAt = DateTime.Now;
             else
                 element.FinishAt = null;

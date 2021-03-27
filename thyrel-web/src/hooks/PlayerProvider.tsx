@@ -1,5 +1,6 @@
 import { useSnackbar } from 'notistack';
 import React from 'react';
+import { useHistory } from 'react-router';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
 import Loading from '../components/Loading';
@@ -22,6 +23,7 @@ export function PlayerContextProvider({
   const [player, setPlayer] = React.useState<Player>();
   const { enqueueSnackbar } = useSnackbar();
   const { websocket } = useWebsocketContext();
+  const history = useHistory();
 
   React.useEffect(() => {
     function onMessage(event: { data: string }) {
@@ -46,16 +48,18 @@ export function PlayerContextProvider({
     let deleted = false;
     client<Player>('player/me', { token: getToken() }).then(
       player => !deleted && setPlayer(player),
-      () =>
+      () => {
         enqueueSnackbar("We couldn't get you back online.", {
           variant: 'error',
-        }),
+        });
+        history.push('/home');
+      },
     );
 
     return () => {
       deleted = true;
     };
-  }, [enqueueSnackbar]);
+  }, [enqueueSnackbar, history]);
 
   const values = { player };
 

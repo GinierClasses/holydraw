@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from '@material-ui/core';
 import BigButton from 'components/BigButton';
 import SpinnerIcon from 'components/SpinnerIcon';
 import Player from 'types/Player.type';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 
 type StartButtonProps = {
   player?: Player;
@@ -21,7 +21,7 @@ export default function StartButton({ player, onStart }: StartButtonProps) {
         )}
         <Typography variant="body2" color="textSecondary">
           {player?.isOwner
-            ? "you're the owner, click here to start the party"
+            ? "you're the owner, click here to start the game"
             : 'Waiting for the host to start the game.'}
         </Typography>
       </Box>
@@ -30,7 +30,7 @@ export default function StartButton({ player, onStart }: StartButtonProps) {
           <BigButton
             onClick={onStart}
             size="large"
-            startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}>
+            startIcon={<PlayArrowRoundedIcon style={{ fontSize: 48 }} />}>
             Start
           </BigButton>
         </Box>
