@@ -77,11 +77,10 @@ namespace thyrel_api.DataProvider
         {
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
 
-            var session = await _holyDrawDbContext.Session
+            var sessionDto = await _holyDrawDbContext.Session
                 .OrderBy(s => s.CreatedAt)
+                .Select(s => new SessionDto(s))
                 .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
-
-            var sessionDto = new SessionDto(session);
             
             return sessionDto;
         }
@@ -120,7 +119,8 @@ namespace thyrel_api.DataProvider
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
             var elementDataProvider = new ElementDataProvider(_holyDrawDbContext);
 
-            var playerCount = playerDataProvider.GetPlayersByRoom(roomId).Result.Count();
+            var playerCount = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == roomId && p.IsConnected).CountAsync();
 
             var addedSession = await Add(roomId, DateTime.Now.AddSeconds(duration), duration, playerCount);
 
