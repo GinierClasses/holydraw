@@ -25,15 +25,21 @@ namespace thyrel_api.Controllers
 
          // Call this endpoint to update the element with the finished result from the player
         // PATCH: api/element/:id
-        [HttpPatch("{id}")]
-        public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
+        /*[HttpPatch("{id}")]*/
+        [HttpPatch("finish")]
+        /*public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)*/
+        public async Task<ActionResult<Element>> Finish([FromBody] ElementBody body)
         {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
             var elementDataProvider = new ElementDataProvider(_context);
             var sessionDataProvider = new SessionDataProvider(_context);
-            var element = await elementDataProvider.GetElement(id);
+            var currentElementDto = await new ElementDataProvider(_context).GetCurrentElement(player.Id);
+            var element = await elementDataProvider.GetElement(currentElementDto.Id);
+            /*var element = await elementDataProvider.GetElement(id);*/
             var session = await sessionDataProvider.GetSessionById(element.SessionId);
             
-            var finishState = await elementDataProvider.HandleFinish(id);
+            var finishState = await elementDataProvider.HandleFinish(currentElementDto.Id);
             if (finishState.FinishAt != null)
                 if (element.Type == ElementType.Sentence)
                     await elementDataProvider.SetSentence(element, body.Text);
@@ -51,7 +57,33 @@ namespace thyrel_api.Controllers
             return Ok(element);
         }
 
-        // Call this endpoint to get a room
+        [HttpPatch("finishCurrent")]
+        public async Task<ActionResult<Element>> FinishCurrent([FromBody] ElementBody body)
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
+            var elementDataProvider = new ElementDataProvider(_context);
+            var sessionDataProvider = new SessionDataProvider(_context);
+
+            var currentElementDto =  await new ElementDataProvider(_context).GetCurrentElement(player.Id);
+            var currentElement = await elementDataProvider.GetElement(currentElementDto.Id);
+
+            var finishState = await elementDataProvider.HandleFinish(currentElement.Id);
+            if (finishState.FinishAt != null)
+                if (currentElement.Type == ElementType.Sentence)
+                    await elementDataProvider.SetSentence(currentElement, body.Text);
+                else
+                    await elementDataProvider.SetDrawing(currentElement, body.DrawImage);
+
+            await _websocketHandler.SendMessageToSockets(
+                            JsonBase.Serialize(
+                                new BaseWebsocketEventJson(WebsocketEvent.PlayerFinished)), player.RoomId);
+
+            return Ok(currentElement);
+        }
+
+        // Call this endpoint to get an Element by Id
         // GET : api/element/4
         [HttpGet("{id}")]
         public async Task<ActionResult<Element>> GetElement(int id)
@@ -60,7 +92,7 @@ namespace thyrel_api.Controllers
             return element;
         }
         
-        // Call this endpoint to get a room
+        // Call this endpoint to get the current Element of the player that call the api
         // GET : api/element/current
         [HttpGet("current")]
         public async Task<ActionResult<ElementStepDto>> GetCurrent()

@@ -16,6 +16,7 @@ import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
 import testPlayerList from '__tests__/json/players.json';
+import Start from './room/Start';
 
 const colors = [
   '#FF0000',
@@ -47,6 +48,8 @@ export default function ComponentTest() {
     <Box>
       <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
         <AppTitle />
+
+        <Start></Start>
 
         <DrawColorPicker
           colors={colors}
