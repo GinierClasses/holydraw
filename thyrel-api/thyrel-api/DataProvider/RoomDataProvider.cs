@@ -23,7 +23,7 @@ namespace thyrel_api.DataProvider
             const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
             var random = new Random();
             var givenIdentifier = new string(
-                Enumerable.Repeat(allChar, 16)
+                Enumerable.Repeat(allChar, 12)
                     .Select(identifier => identifier[random.Next(identifier.Length)]).ToArray());
 
             var room = new Room(givenIdentifier, null);

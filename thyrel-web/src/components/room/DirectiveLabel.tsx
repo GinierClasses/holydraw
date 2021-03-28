@@ -1,45 +1,44 @@
-import { css } from '@emotion/css';
-import Box from '../../styles/Box';
-import { bgFade } from '../../styles/colors';
+import { Box, fade, makeStyles, Typography } from '@material-ui/core';
 
 type DirectiveLabelProps = {
   directive: string;
   sentence?: string;
 };
 
+const useStyles = makeStyles(theme => ({
+  sentence: {
+    textAlign: 'center',
+  },
+  container: {
+    backgroundColor: fade(theme.palette.secondary.main, 0.8),
+    boxShadow: `0px 0px 4px ${fade(theme.palette.background.default, 0.8)}`,
+  },
+}));
+
 export default function DirectiveLabel({
   directive,
   sentence,
 }: DirectiveLabelProps) {
+  const classes = useStyles();
   return (
     <Box
       width={470}
-      padding={8}
-      bg="#88006180"
+      display="flex"
+      padding={1}
       borderRadius={4}
       alignItems="center"
       flexDirection="column"
-      boxShadow={`0px 0px 4px ${bgFade(0.8)}`}>
-      <p
-        className={css({
-          fontFamily: 'Work Sans',
-          fontWeight: 'bold',
-          fontSize: 16,
-          color: '#BDBDBD',
-        })}>
+      className={classes.container}>
+      <Typography variant="subtitle1" color="textSecondary">
         {directive}
-      </p>
+      </Typography>
       {sentence && (
-        <p
-          className={css({
-            fontFamily: 'Work Sans',
-            fontWeight: 'bold',
-            fontSize: 32,
-            color: '#FFFFFF',
-            textAlign: 'center',
-          })}>
+        <Typography
+          variant="h4"
+          color="textPrimary"
+          className={classes.sentence}>
           {sentence}
-        </p>
+        </Typography>
       )}
     </Box>
   );

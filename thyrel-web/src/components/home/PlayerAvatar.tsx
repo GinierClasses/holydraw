@@ -1,54 +1,59 @@
-import { Icon } from 'rsuite';
-import { baseColor, bgColor, bgFade } from '../../styles/colors';
-import Box from '../../styles/Box';
-import { css } from '@emotion/css';
-import styled from '@emotion/styled';
+import { Box, fade, makeStyles } from '@material-ui/core';
+import ShuffleIcon from '@material-ui/icons/Shuffle';
 
 type PlayerAvatarProps = {
   image: string;
   onShuffle?: () => void;
 };
 
-const ShuffleButton = styled.button({
-  backgroundColor: baseColor,
-  outline: 'none',
-  borderRadius: '50%',
-  position: 'absolute',
-  left: '0',
-  bottom: '0',
-  width: '48px',
-  height: '48px',
-  boxShadow: `0px 4px 1px ${bgFade(0.8)}`,
-  '&:active': {
-    bottom: -4,
-    boxShadow: 'none',
+const useStyles = makeStyles(theme => ({
+  button: {
+    backgroundColor: theme.palette.secondary.main,
+    outline: 'none',
+    borderRadius: '50%',
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    cursor: 'pointer',
+    border: 'none',
+    width: 48,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 48,
+    boxShadow: `0px 4px 1px ${fade(theme.palette.background.default, 0.8)}`,
+    '&:active': {
+      bottom: -4,
+      boxShadow: 'none',
+    },
   },
-});
+  imgBox: {
+    boxShadow: `0px 4px 1px ${fade(theme.palette.background.default, 0.8)}`,
+  },
+  img: {
+    height: 256,
+    width: 'auto',
+    margin: 'auto',
+  },
+}));
 
 export default function PlayerAvatar({ image, onShuffle }: PlayerAvatarProps) {
+  const classes = useStyles();
   return (
-    <Box
-      alignItems="center"
-      width={256}
-      height={256}
-      className={css({
-        position: 'relative',
-      })}>
-      <ShuffleButton onClick={onShuffle}>
-        <Icon icon="random" />
-      </ShuffleButton>
+    <Box alignItems="center" width={256} position="relative" height={256}>
+      <button className={classes.button} onClick={onShuffle}>
+        <ShuffleIcon style={{ color: '#FFFFFF' }} />
+      </button>
       <Box
-        borderWidth={2}
+        border={2}
+        display="flex"
+        borderColor="secondary.main"
         borderRadius="50%"
         width={256}
         height={256}
-        bg={bgColor}
-        className={css({ boxShadow: `0px 4px 1px ${bgFade(0.8)}` })}>
-        <img
-          src={image}
-          className={css({ height: 256, width: 'auto', margin: 'auto' })}
-          alt="Avatar"
-        />
+        bgcolor="background.default"
+        className={classes.imgBox}>
+        <img src={image} className={classes.img} alt="Avatar" />
       </Box>
     </Box>
   );
