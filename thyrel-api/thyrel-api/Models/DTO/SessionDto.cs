@@ -17,7 +17,7 @@ namespace thyrel_api.Models.DTO
             ActualStep = session.ActualStep;
             StepType = session.StepType;
             RoomId = session.RoomId;
-            PlayerCount = session.PlayerCount;
+            TotalPLayers = session.TotalPlayers;
         }
 
         public int Id { get; set; }
@@ -28,7 +28,7 @@ namespace thyrel_api.Models.DTO
         public int ActualStep { get; set; }
         public SessionStepType StepType { get; set; }
         public int RoomId { get; set; }
-        public int PlayerCount { get; set; }
+        public int TotalPLayers { get; set; }
 
     }
 }
