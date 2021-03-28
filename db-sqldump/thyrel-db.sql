@@ -136,7 +136,7 @@ CREATE TABLE `Session` (
 -- Dumping data for table `Session`
 --
 
-INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`, `TimeDuration`, `StepType`, `TotalSteps`) VALUES
+INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`, `TimeDuration`, `StepType`, `TotalPlayers``) VALUES
 (9, NULL, NULL, 2, '2021-02-17 18:00:18', 23, 120, 12, 3);
 
 -- --------------------------------------------------------
