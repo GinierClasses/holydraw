@@ -76,11 +76,11 @@ namespace thyrel_api.DataProvider
         public async Task<SessionDto> GetCurrentSessionByRoomId(int roomId)
         {
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
-
+            /*SessionDto sessionDto;*/
             var sessionDto = await _holyDrawDbContext.Session
                 .OrderBy(s => s.CreatedAt)
-                .Select(s => new SessionDto(s))
-                .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
+                .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null)
+                .ContinueWith(s => new SessionDto(s.Result));
             
             return sessionDto;
         }
