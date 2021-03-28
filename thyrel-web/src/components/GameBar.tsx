@@ -1,52 +1,42 @@
 import PlayerCount from './room/PlayerCount';
 import AppTitle from './AppTitle';
 import StepTimer from './room/StepTimer';
-import Box from '../styles/Box';
-import { css } from '@emotion/css';
-import Mq from '../styles/breakpoint';
 import { useRoomContext } from '../hooks/RoomProvider';
 import { useSessionContext } from 'hooks/SessionProvider';
+import { Box, makeStyles } from '@material-ui/core';
 
 type GameBarProps = {
   max: number;
   onFinish?: () => void;
 };
 
+const useStyles = makeStyles(theme => ({
+  infoContainer: {
+    [theme.breakpoints.up('sm')]: {
+      top: -64,
+      position: 'relative',
+    },
+  },
+}));
+
 export default function GameBar({ max, onFinish }: GameBarProps) {
   const { players } = useRoomContext();
   const { session } = useSessionContext();
+  const classes = useStyles();
 
   return (
-    <Box
-      className={css({
-        flexDirection: 'column',
-        alignItems: 'center',
-      })}
-      width="100%">
+    <Box display="flex" flexDirection="column" alignItems="center" width="100%">
       <AppTitle />
 
       <Box
-        className={css({
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
-          [Mq.SM]: {
-            position: 'relative',
-            top: '-64px',
-          },
-        })}>
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        width="100%"
+        className={classes.infoContainer}>
         <PlayerCount count={players?.length || 0} max={max} />
 
-        <Box
-          display="block"
-          className={css({
-            height: 64,
-            width: 64,
-            [Mq.SM]: {
-              height: 100,
-              width: 100,
-            },
-          })}>
+        <Box display="block">
           <StepTimer
             finishAt={new Date(session?.stepFinishAt || '')}
             timeDuration={session?.timeDuration || 60}

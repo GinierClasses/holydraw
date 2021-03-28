@@ -1,7 +1,7 @@
-import Box from 'styles/Box';
 import PlayerCard from './PlayerCard';
 import Player from 'types/Player.type';
 import profilesPictures from 'images/profiles/profiles-pictures';
+import { Box, Grid } from '@material-ui/core';
 
 type PlayerCardListProps = {
   players?: Player[];
@@ -17,29 +17,26 @@ export default function PlayerCardList({
   onKick,
 }: PlayerCardListProps) {
   return (
-    <Box
-      gap={16}
-      height={384}
-      overflowY="scroll"
-      alignItems="center"
-      flexDirection="column"
-      pr={8}>
-      {players &&
-        players.map(player => {
-          const isPlayerSelected = playerId === player.id;
-          return (
-            <PlayerCard
-              id={player.id}
-              name={player.username}
-              avatar={profilesPictures[Number(player.avatarUrl)]}
-              isOwner={player.isOwner}
-              isKickable={isKickable}
-              isCurrentPlayer={isPlayerSelected}
-              onKick={onKick}
-              key={player.id}
-            />
-          );
-        })}
+    <Box height={384} width={256 + 8 + 8} overflow="hidden scroll">
+      <Grid container spacing={2} alignItems="flex-end">
+        {players &&
+          players.map(player => {
+            const isPlayerSelected = playerId === player.id;
+            return (
+              <Grid item xs={12} key={player.id}>
+                <PlayerCard
+                  id={player.id}
+                  name={player.username}
+                  avatar={profilesPictures[Number(player.avatarUrl)]}
+                  isOwner={player.isOwner}
+                  isKickable={isKickable}
+                  isCurrentPlayer={isPlayerSelected}
+                  onKick={onKick}
+                />
+              </Grid>
+            );
+          })}
+      </Grid>
     </Box>
   );
 }
