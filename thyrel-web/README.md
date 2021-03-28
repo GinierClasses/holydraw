@@ -15,74 +15,51 @@ npm run start
 
 ## Style
 
-We use [rsuits](https://rsuitejs.com) for UI styles. Please use this component
-for Button, Input and all element given for us.
+We use [material-i](https://material-ui.com) for UI styles. Please use this
+component for Button, Input and all element given for us.
 
 To style a `div` or `p` :
 
 ```js
-import styled from '@emotion/styled';
+import { makeStyles } from '@material-ui/core';
 
-const MyCustomDiv = styled.div(
-  // style not depend on props
-  {
-    display: 'flex',
-    alignItems: 'center',
+const useStyles = makeStyles(theme => ({
+  div: {
+    backgroundColor: 'red',
   },
-  // style depent on props with function
-  // give the props
-  props => ({
-    backgroundColor: props.color,
-  }),
-);
+}));
 
 function Test() {
+  const classes = useStyles();
   return (
     // pass the props
-    <MyCustomDiv color="red">
-      <p>My element</p>
-    </MyCustomDiv>
-  );
-}
-```
-
-OR
-
-```js
-// warn : import must be exactly like this
-// @emtion/core export too a css, but not the correct
-import { css } from '@emotion/css';
-
-function Test() {
-  return (
-    // create a class with this css values
-    <div
-      className={css({
-        display: 'flex',
-        alignItems: 'center',
-      })}>
+    <div className={classes.div} color="red">
       <p>My element</p>
     </div>
   );
 }
 ```
 
-To style a `Button`, `Input` etc... from `rsuite` :
+OR with propre
 
-```js
-import styled from '@emotion/styled';
-import { Button } from 'rsuite';
+```tsx
+import { makeStyles, Theme } from '@material-ui/core';
 
-const StyledButton = styled(Button)({
-  fontSize: 18,
-});
+const useStyles = makeStyles<Theme, { isSelected: boolean }>(theme => ({
+  div: {
+    backgroundColor: props => (props.isSelected ? 'red' : 'green'),
+    // theme has all style for the app stored on `theme.ts`
+    border: theme.palette.primary.main,
+  },
+}));
 
-function Test() {
+function Test({ isSelected }) {
+  const classes = useStyles({ isSelected });
   return (
-    <StyledButton /* props of `Button` can be used here https://rsuitejs.com/components/button/*/
-    >
-      My button
-    </StyledButton>
+    // pass the props
+    <div className={classes.div} color="red">
+      <p>My element</p>
+    </div>
   );
 }
 ```

@@ -2,42 +2,55 @@ import AppTitle from 'components/AppTitle';
 import LobbyStartButton from 'components/room/lobby/LobbyStartAction';
 import { Players, PlayerCountBox } from 'components/room/lobby/Players';
 import SettingsMenu from 'components/room/lobby/SettingsMenu';
-import Box from 'styles/Box';
-import { bgFade } from 'styles/colors';
-import { css } from '@emotion/css';
-import Mq from 'styles/breakpoint';
+import { Box, fade, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  playersContainer: {
+    alignItems: 'center',
+    flexDirection: 'column',
+    gap: 64,
+    [theme.breakpoints.up('sm')]: {
+      alignItems: 'flex-start',
+      flexDirection: 'row',
+    },
+  },
+  container: {
+    backgroundColor: fade(theme.palette.background.default, 0.8),
+  },
+}));
 
 export default function Lobby() {
+  const classes = useStyles();
   return (
-    <Box flexDirection="column" height="100vh" alignItems="center" width="100%">
-      <Box p={32} mb={24} width="100%">
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100vh"
+      alignItems="center"
+      width="100%">
+      <Box p={4} mb={3} width="100%">
         <AppTitle />
       </Box>
       <Box
+        display="flex"
         justifyContent="space-between"
         width="100%"
-        m={24}
+        m={3}
         height="100vh"
         alignItems="center"
         flexDirection="column">
         <Box
-          bg={bgFade(0.8)}
+          display="flex"
+          className={classes.container}
           flexDirection="column"
           alignItems="flex-end"
           width="100%">
           <PlayerCountBox />
           <Box
+            display="flex"
             justifyContent="space-between"
             width="100%"
-            className={css({
-              alignItems: 'center',
-              flexDirection: 'column',
-              gap: 64,
-              [Mq.SM]: {
-                alignItems: 'flex-start',
-                flexDirection: 'row',
-              },
-            })}>
+            className={classes.playersContainer}>
             <SettingsMenu />
             <Players />
           </Box>

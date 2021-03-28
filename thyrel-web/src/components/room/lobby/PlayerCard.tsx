@@ -1,9 +1,9 @@
-import { Avatar } from 'rsuite';
-import { css } from '@emotion/css';
-import styled from '@emotion/styled';
-import Box from 'styles/Box';
-import { Icon } from 'rsuite';
 import { baseColor, bgColor } from 'styles/colors';
+import { Avatar, Box, makeStyles, Typography } from '@material-ui/core';
+import PersonIcon from '@material-ui/icons/Person';
+import StarIcon from '@material-ui/icons/Star';
+import CloseIcon from '@material-ui/icons/Close';
+import clsx from 'clsx';
 
 type PlayerCardProps = {
   id: number;
@@ -15,34 +15,52 @@ type PlayerCardProps = {
   onKick?: (id: number, name: string) => void;
 };
 
-// Sets size for avatar component
-const StyledAvatar = styled(Avatar)({
-  width: 48,
-  height: 48,
-  backgroundColor: 'transparent',
-  border: `1px solid ${baseColor}`,
-  overflow: 'visible',
-  '> img': {
-    // `!important` is awful in CSS but I don't have the choice
-    height: '48px !important',
-    width: 'auto !important',
-    position: 'unset',
-    margin: 'auto',
+const useStyles = makeStyles(theme => ({
+  avatar: {
+    width: 48,
+    height: 48,
+    backgroundColor: 'transparent',
+    border: `1px solid ${theme.palette.secondary.main}`,
+    overflow: 'visible',
+    '&> img': {
+      height: 48,
+      width: 'auto',
+      margin: 'auto',
+      position: 'unset',
+    },
   },
-});
-
-const Badge = styled.div({
-  width: 20,
-  height: 20,
-  borderRadius: '50%',
-  backgroundColor: baseColor,
-  alignItems: 'center',
-  justifyContent: 'center',
-  display: 'flex',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-});
+  badge: {
+    width: 20,
+    height: 20,
+    borderRadius: '50%',
+    backgroundColor: baseColor,
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  icon: {
+    color: '#ffffff',
+  },
+  badgeIcon: {
+    width: 16,
+    height: 16,
+  },
+  username: {
+    fontFamily: 'Work Sans',
+    fontSize: 20,
+    fontWeight: 'bold',
+    overflow: 'hidden',
+    maxWidth: 128,
+    whiteSpace: 'nowrap',
+  },
+  kickButton: {
+    cursor: 'pointer',
+  },
+}));
 
 export default function PlayerCard({
   id,
@@ -53,55 +71,52 @@ export default function PlayerCard({
   isCurrentPlayer,
   onKick,
 }: PlayerCardProps) {
+  const classes = useStyles();
   return (
     <Box
-      borderWidth={1}
+      border={1}
       width={256}
       height={64}
       borderRadius={4}
-      padding={8}
+      padding={1}
+      display="flex"
       alignItems="center"
+      borderColor="secondary.main"
       justifyContent="space-between"
-      bg={bgColor}>
-      <div
-        className={css({
-          position: 'relative',
-        })}>
+      bgcolor={bgColor}>
+      <Box position="relative">
         {isCurrentPlayer && (
-          <Badge>
-            <Icon data-testid="user-icon" icon="user" />
-          </Badge>
+          <div className={classes.badge}>
+            <PersonIcon
+              className={clsx(classes.icon, classes.badgeIcon)}
+              data-testid="user-icon"
+            />
+          </div>
         )}
-        <StyledAvatar circle={true} src={avatar} size="lg" />
-      </div>
+        <Avatar src={avatar} className={classes.avatar} />
+      </Box>
 
-      <p
-        className={css({
-          fontFamily: 'Work Sans',
-          fontSize: 20,
-          fontWeight: 'bold',
-          overflow: 'hidden',
-          maxWidth: 128,
-        })}>
+      <Typography color="textPrimary" className={classes.username}>
         {name}
-      </p>
-      <div>
+      </Typography>
+      <Box display="flex" alignItems="center">
         {isOwner ? (
-          <Icon data-testid="star-icon" icon="twinkle-star" />
+          <StarIcon className={classes.icon} data-testid="star-icon" />
         ) : (
           isKickable && (
-            <button
+            <Box
+              component="button"
+              padding={0}
+              border={0}
+              className={classes.kickButton}
+              height={24}
               onClick={() => onKick?.(id, name)}
-              className={css({
-                backgroundColor: 'transparent',
-                outline: 'none',
-                padding: 0,
-              })}>
-              <Icon icon="close" />
-            </button>
+              bgcolor="transparent">
+              <CloseIcon className={classes.icon} />
+            </Box>
           )
         )}
-      </div>
+      </Box>
     </Box>
   );
 }
