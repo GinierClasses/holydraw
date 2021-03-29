@@ -38,7 +38,7 @@ namespace thyrel_api.Handler
                 var sessionProvider = new SessionDataProvider(context);
                 var session = await sessionProvider.GetSessionById(_sessionId);
                 // test if step is already finish
-                if (session?.ActualStep != _step || session.StepFinishAt != null) return;
+                if (session?.ActualStep != _step && session?.FinishAt != null) return;
                 session = await sessionProvider.NextStep(session);
 
                 await _websocketHandler.SendMessageToSockets(
