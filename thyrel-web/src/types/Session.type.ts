@@ -10,6 +10,8 @@ type Session = {
   roomId: number;
   room?: Room;
   stepType: SessionStepType;
+  totalPlayers: number;
+  playersFinished: number;
 };
 
 export enum SessionStepType {

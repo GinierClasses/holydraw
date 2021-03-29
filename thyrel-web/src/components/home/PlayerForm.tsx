@@ -41,7 +41,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   };
 
   function onConnect(token: string, text: string, isSuccess: boolean = true) {
-    enqueueSnackbar(text, { variant: isSuccess ? 'success' : 'error' });
+    enqueueSnackbar(text, { variant: 'success' });
     setToken(token);
     history?.push('/r/lobby');
   }
@@ -60,7 +60,9 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
             onConnect(player.token?.tokenKey, 'Room successfully created 🙌');
         },
         () =>
-          enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
+          enqueueSnackbar('Sorry, an error occured 😕 [Room-POST]', {
+            variant: 'error',
+          }),
       )
       .finally(() => setLoading(false));
   }
@@ -77,10 +79,12 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       .then(
         player => {
           if (player.token?.tokenKey)
-            onConnect(player.token?.tokenKey, "You've joined the room!", false);
+            onConnect(player.token?.tokenKey, "You've joined the room!");
         },
         () =>
-          enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
+          enqueueSnackbar('Sorry, an error occured 😕 [Room-PATCH]', {
+            variant: 'error',
+          }),
       )
       .finally(() => setLoading(false));
   }

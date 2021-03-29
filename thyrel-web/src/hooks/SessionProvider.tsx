@@ -1,6 +1,7 @@
 import Loading from 'components/Loading';
 import { useSnackbar } from 'notistack';
 import React from 'react';
+import StepElement from 'types/HolyElement.type';
 import HolyElement from 'types/HolyElement.type';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
@@ -23,9 +24,11 @@ export function SessionContextProvider({
   children,
 }: SessionContextProviderProps) {
   const { session, setSession } = useSessionStates();
-  const [currentElement, setCurrentElement] = React.useState<HolyElement>();
+  const [currentElement, setCurrentElement] = React.useState<StepElement>();
   const { websocket } = useWebsocketContext();
   const { enqueueSnackbar } = useSnackbar();
+
+  console.log(session);
 
   React.useEffect(() => {
     function onMessage(event: { data: string }) {
@@ -50,7 +53,10 @@ export function SessionContextProvider({
     let deleted = false;
     client<HolyElement>('element/current', { token: getToken() }).then(
       session => !deleted && setCurrentElement(session),
-      () => enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
+      () =>
+        enqueueSnackbar('Sorry, an error occured 😕 [Element-GET]', {
+          variant: 'error',
+        }),
     );
 
     return () => {

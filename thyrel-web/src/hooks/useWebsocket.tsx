@@ -45,7 +45,7 @@ export function useWebsocket() {
     (isSocketOpened: boolean) => {
       setWsState(WsStates.CLOSED);
       if (isSocketOpened) {
-        enqueueSnackbar('Connexion lost ⚡️', { variant: 'error' });
+        enqueueSnackbar('Connexion lost ⚡️ [ws]', { variant: 'error' });
         setWebsocket(undefined);
       }
     },
