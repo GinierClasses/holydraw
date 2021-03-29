@@ -17,5 +17,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "config-override.ts"]
+  "include": ["src", "config-override.ts", "src/components/room/draw/.tsx"]
 }

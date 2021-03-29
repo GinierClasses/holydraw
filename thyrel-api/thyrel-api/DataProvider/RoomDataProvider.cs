@@ -63,12 +63,20 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        public async Task<Room> Finish(int roomId)
+        public async Task<Room> Finish(int? roomId)
         {
             var dbRoom = await _holyDrawDbContext.Room
                 .FindAsync(roomId);
             if (dbRoom == null)
                 return null;
+            
+            await _holyDrawDbContext.Session
+                .Where(s => s.RoomId == roomId && s.FinishAt == null)
+                .ForEachAsync(s =>
+                {
+                    s.FinishAt = DateTime.Now;
+                    s.StepFinishAt = null;
+                });
 
             dbRoom.FinishAt = DateTime.Now;
             await SaveChanges();

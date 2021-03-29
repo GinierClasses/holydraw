@@ -20,6 +20,10 @@ namespace thyrel_api.Models.DTO
             TotalPLayers = session.TotalPlayers;
         }
 
+        public SessionDto()
+        {
+        }
+
         public int Id { get; set; }
         public DateTime? FinishAt { get; set; }
         public DateTime? StepFinishAt { get; set; }
