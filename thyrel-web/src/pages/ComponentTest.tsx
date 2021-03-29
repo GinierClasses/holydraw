@@ -56,8 +56,6 @@ export default function ComponentTest() {
         gridGap={32}>
         <AppTitle />
 
-        <Start></Start>
-
         <DrawColorPicker
           colors={colors}
           currentColor={currentColor}

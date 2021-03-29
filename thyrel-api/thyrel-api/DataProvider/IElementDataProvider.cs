@@ -40,18 +40,18 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        Task SetSentence(Element element, string sentence);
+        Task SetSentence(int id, string sentence);
 
         /// <summary>
-        ///     Set the DrawImage into a Element
+        /// ///     Set the DrawImage into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="drawImage"></param>
         /// <returns></returns>
-        Task SetDrawing(Element element, string drawImage);
+        Task SetDrawing(int id, string drawImage);
 
         /// <summary>
         ///     Handle finish State
@@ -73,7 +73,7 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="elementId"></param>
         /// <returns></returns>
-        Task<Element> GetElement(int elementId);
+        Task<ElementDto> GetElement(int elementId);
 
         /// <summary>
         ///     Get candidates from Sessions

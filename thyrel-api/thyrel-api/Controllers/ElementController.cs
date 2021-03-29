@@ -24,31 +24,37 @@ namespace thyrel_api.Controllers
         }
 
 
-         // Call this endpoint to update the element with the finished result from the player
+        // Call this endpoint to update the element with the finished result from the player
         // PATCH: api/element/:id
-        /*[HttpPatch("{id}")]*/
-        [HttpPatch("finish")]
-        /*public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)*/
-        public async Task<ActionResult<Element>> Finish([FromBody] ElementBody body)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
+
             var elementDataProvider = new ElementDataProvider(_context);
             var sessionDataProvider = new SessionDataProvider(_context);
-            var currentElementDto = await new ElementDataProvider(_context).GetCurrentElement(player.Id);
-            var element = await elementDataProvider.GetElement(currentElementDto.Id);
-            /*var element = await elementDataProvider.GetElement(id);*/
+
+            var element = await elementDataProvider.GetElement(id);
+            if (element.CreatorId != player.Id) return Unauthorized();
+
             var session = await sessionDataProvider.GetSessionById(element.SessionId);
             TimeSpan remainingStepTime = (TimeSpan)(session.StepFinishAt - DateTime.Now);
             
-            var finishState = await elementDataProvider.HandleFinish(currentElementDto.Id);
+            var finishState = await elementDataProvider.HandleFinish(id);
             if (finishState.FinishAt != null)
-                if (element.Type == ElementType.Sentence)
-                    await elementDataProvider.SetSentence(element, body.Text);
+                if (finishState.Type == ElementType.Sentence)
+                { 
+                    await elementDataProvider.SetSentence(finishState.Id, body.Text);
+                    finishState.Text = body.Text;
+                }
                 else
-                    await elementDataProvider.SetDrawing(element, body.DrawImage);
-            
-            var stepState = await sessionDataProvider.GetPlayerStatus(element.Session);
+                {
+                    await elementDataProvider.SetDrawing(element.Id, body.DrawImage);
+                    finishState.DrawImage = body.DrawImage;
+                }
+
+            var stepState = await sessionDataProvider.GetPlayerStatus(session);
             if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
                 await sessionDataProvider.NextStep(session);
 
@@ -56,11 +62,11 @@ namespace thyrel_api.Controllers
                 JsonBase.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.PlayerFinished)), session.RoomId);
 
-            return Ok(element);
+            return Ok(finishState);
         }
 
         [HttpPatch("finishCurrent")]
-        public async Task<ActionResult<Element>> FinishCurrent([FromBody] ElementBody body)
+        public async Task<ActionResult<ElementDto>> FinishCurrent([FromBody] ElementBody body)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
@@ -74,9 +80,9 @@ namespace thyrel_api.Controllers
             var finishState = await elementDataProvider.HandleFinish(currentElement.Id);
             if (finishState.FinishAt != null)
                 if (currentElement.Type == ElementType.Sentence)
-                    await elementDataProvider.SetSentence(currentElement, body.Text);
+                    await elementDataProvider.SetSentence(currentElement.Id, body.Text);
                 else
-                    await elementDataProvider.SetDrawing(currentElement, body.DrawImage);
+                    await elementDataProvider.SetDrawing(currentElement.Id, body.DrawImage);
 
             await _websocketHandler.SendMessageToSockets(
                             JsonBase.Serialize(
@@ -88,7 +94,7 @@ namespace thyrel_api.Controllers
         // Call this endpoint to get an Element by Id
         // GET : api/element/4
         [HttpGet("{id}")]
-        public async Task<ActionResult<Element>> GetElement(int id)
+        public async Task<ActionResult<ElementDto>> GetElement(int id)
         {
             var element = await new ElementDataProvider(_context).GetElement(id);
             return element;
