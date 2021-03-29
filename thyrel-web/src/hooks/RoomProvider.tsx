@@ -1,6 +1,6 @@
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Notification } from 'rsuite';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { parseJson } from '../utils/json';
@@ -19,10 +19,7 @@ const RoomContext = React.createContext<RoomSocketContextProps>({
   players: [],
 });
 
-type RoomSocketContextProviderProps = {
-  children: React.ReactElement;
-  onMessage?: (message: string) => void;
-};
+type RoomSocketContextProviderProps = { children: React.ReactElement };
 
 export function RoomContextProvider({
   children,
@@ -36,6 +33,7 @@ export function RoomContextProvider({
   } = useRoomStates();
   const history = useHistory();
   const { wsState, websocket } = useWebsocketContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     function onMessage(event: { data: string }) {
@@ -45,10 +43,10 @@ export function RoomContextProvider({
 
       switch (websocketMessage.websocketEvent) {
         case WebsocketEvent.Invalid:
-          Notification.error({
-            title: "You're not in a game.",
-            description: 'You will go back to the home.',
-          });
+          enqueueSnackbar(
+            "You are not playing, we'll redirect you on Home page.",
+            { variant: 'error' },
+          );
           history.push('/home');
           break;
         case WebsocketEvent.PlayerJoin:
@@ -72,7 +70,14 @@ export function RoomContextProvider({
       websocket.addEventListener('message', onMessage);
       return () => websocket.removeEventListener('message', onMessage);
     }
-  }, [addPlayer, history, removePlayer, updatePlayer, websocket]);
+  }, [
+    addPlayer,
+    enqueueSnackbar,
+    history,
+    removePlayer,
+    updatePlayer,
+    websocket,
+  ]);
 
   const values = { room, wsState, players };
 

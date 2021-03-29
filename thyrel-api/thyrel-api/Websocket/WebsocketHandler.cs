@@ -53,9 +53,9 @@ namespace thyrel_api.Websocket
 
                 var player = playerToken == null ? null : await playerDataProvider.GetPlayerByToken(playerToken);
                 // if no matching token or no token
-                if (player == null)
+                if (player == null || player?.Room.FinishAt != null)
                 {
-                    await SendMessageToSocket(connection, Json.JSON.Serialize(
+                    await SendMessageToSocket(connection, Json.JsonBase.Serialize(
                         new BaseWebsocketEventJson(WebsocketEvent.Invalid)));
                     continue;
                 }
@@ -70,7 +70,7 @@ namespace thyrel_api.Websocket
 
                 // inform room that a new player join
                 await SendMessageToSockets(
-                    JSON.Serialize(
+                    JsonBase.Serialize(
                         new PlayerWebsocketEventJson(WebsocketEvent.PlayerJoin, player)), player.RoomId);
             }
         }
@@ -144,22 +144,27 @@ namespace thyrel_api.Websocket
                     foreach (var closedSocket in closedSockets.Where(closedSocket => openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                     {
                         await SendMessageToSockets(
-                            JSON.Serialize(
+                            JsonBase.Serialize(
                                 new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerLeft, closedSocket.PlayerId)), closedSocket.RoomId);
                         if (closedSocket.PlayerId == null) continue;
 
-                        var playerDataProvider = new PlayerDataProvider(GetInjectedContext());
+                        var context = GetInjectedContext();
+                        var playerDataProvider = new PlayerDataProvider(context);
                         
                         var player = await playerDataProvider.SetIsConnected(
                             (int) closedSocket.PlayerId, false);
                         if (!player.IsOwner || player.RoomId == null) continue;
                         
-                        var newOwnerPlayer = await playerDataProvider.FindNewOwner((int )player.RoomId);
-                        if (newOwnerPlayer == null) continue;
-                        
+                        var newOwnerPlayer = await playerDataProvider.FindNewOwner((int)player.RoomId);
+                        if (newOwnerPlayer == null)
+                        {
+                            await new RoomDataProvider(context).Finish(player.RoomId);
+                            continue;
+                        }
+
                         await playerDataProvider.SetOwner(player, false);
                         await SendMessageToSockets(
-                            JSON.Serialize(
+                            JsonBase.Serialize(
                                 new PlayerWebsocketEventJson(WebsocketEvent.NewOwnerPlayer, newOwnerPlayer)), closedSocket.RoomId);
                     }
 

@@ -46,9 +46,25 @@ CREATE TABLE `Element` (
   `DrawingId` int DEFAULT NULL,
   `FinishAt` datetime DEFAULT NULL,
   `Step` int NOT NULL,
-  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `DrawImage` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
+--
+-- Dumping data for table `Element`
+--
+
+INSERT INTO `Element` (`id`, `SessionId`, `CreatorId`, `InitiatorId`, `Type`, `Text`, `DrawingId`, `FinishAt`, `Step`, `CreatedAt`, `DrawImage`) VALUES
+(1, 9, 26, 26, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53', NULL),
+(2, 9, 27, 27, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53', NULL),
+(3, 9, 28, 28, 0, '', NULL, NULL, 1, '2021-03-17 18:52:53', NULL),
+(4, 9, 26, 28, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03', NULL),
+(5, 9, 27, 26, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03', NULL),
+(6, 9, 28, 27, 1, NULL, NULL, NULL, 2, '2021-03-17 18:53:03', NULL),
+(7, 9, 26, 27, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13', NULL),
+(8, 9, 27, 28, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13', NULL),
+(9, 9, 28, 26, 0, '', NULL, NULL, 3, '2021-03-17 18:53:13', NULL);
 
 -- --------------------------------------------------------
 
@@ -74,11 +90,9 @@ CREATE TABLE `Player` (
 --
 
 INSERT INTO `Player` (`Id`, `Username`, `AvatarUrl`, `IsOwner`, `DisableAt`, `CreatedAt`, `RoomId`, `IsPlaying`, `IsConnected`, `TokenId`) VALUES
-(21, 'Mathieu', '1', 1, NULL, '2021-02-17 11:38:59', 22, 0, 1, 44),
-(22, 'Alexogros', '0', 1, NULL, '2021-02-17 14:42:34', 22, 0, 1, 45),
-(23, 'LeDrogay', '4', 1, NULL, '2021-02-17 14:49:40', 22, 0, 1, 46),
-(24, 'Melvynien', '6', 1, NULL, '2021-02-17 14:50:12', 22, 0, 1, 47),
-(25, 'SuperPower', '1', 1, NULL, '2021-02-17 14:51:24', 22, 0, 1, 48);
+(26, 'Didier', '0', 1, NULL, '2021-03-17 18:52:31', 23, 1, 1, 49),
+(27, 'Patrick', '0', 0, NULL, '2021-03-17 18:52:39', 23, 1, 1, 50),
+(28, 'Jean', '0', 0, NULL, '2021-03-17 18:52:49', 23, 1, 1, 51);
 
 -- --------------------------------------------------------
 
@@ -98,7 +112,7 @@ CREATE TABLE `Room` (
 --
 
 INSERT INTO `Room` (`Id`, `Identifier`, `FinishAt`, `CreatedAt`) VALUES
-(22, 'Vy0nWtXyTJ7JipVz', NULL, '2021-02-17 11:38:58');
+(23, 'Vy0nWtXyTJ7JipVz', NULL, '2021-02-17 11:38:58');
 
 -- --------------------------------------------------------
 
@@ -112,15 +126,18 @@ CREATE TABLE `Session` (
   `StepFinishAt` datetime DEFAULT NULL,
   `ActualStep` int DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `RoomId` int NOT NULL
+  `RoomId` int NOT NULL,
+  `TimeDuration` int NOT NULL,
+  `StepType` int NOT NULL,
+  `TotalPlayers` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Session`
 --
 
-INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`) VALUES
-(8, NULL, NULL, 2, '2021-02-17 18:00:18', 22);
+INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`, `TimeDuration`, `StepType`, `TotalPlayers`) VALUES
+(9, NULL, NULL, 2, '2021-02-17 18:00:18', 23, 120, 12, 3);
 
 -- --------------------------------------------------------
 
@@ -140,14 +157,9 @@ CREATE TABLE `Token` (
 --
 
 INSERT INTO `Token` (`Id`, `DiscardAt`, `CreatedAt`, `TokenKey`) VALUES
-(41, 'cgx2QLoJHdwHNJ1V', NULL, '2021-02-07 11:48:45'),
-(42, 'g-S2VA-h3yBJIrf5', NULL, '2021-02-07 11:54:41'),
-(43, '7TVlYbudEIMQf5pw', NULL, '2021-02-17 11:35:12'),
-(44, 'u0vJ0wB0nhDOKnQb', NULL, '2021-02-17 11:38:59'),
-(45, 'ixhEcnWDVmXLlhc3', NULL, '2021-02-17 14:42:33'),
-(46, 'n..m.4vB8I0rnyFu', NULL, '2021-02-17 14:49:40'),
-(47, 'wqAihfmHw6AJKx8c', NULL, '2021-02-17 14:50:12'),
-(48, '4ruOuZyHbfFMZF7E', NULL, '2021-02-17 14:51:24');
+(49, NULL, '2021-03-17 18:52:31', 'UcHRAOTuuQR03AyP'),
+(50, NULL, '2021-03-17 18:52:39', 'ibEhpN19Uro3mt5Y'),
+(51, NULL, '2021-03-17 18:52:49', 'XZ4bnf2C53WxdiZO');
 
 --
 -- Indexes for dumped tables
@@ -199,31 +211,31 @@ ALTER TABLE `Token`
 -- AUTO_INCREMENT for table `Element`
 --
 ALTER TABLE `Element`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `Player`
 --
 ALTER TABLE `Player`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `Room`
 --
 ALTER TABLE `Room`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `Session`
 --
 ALTER TABLE `Session`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `Token`
 --
 ALTER TABLE `Token`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- Constraints for dumped tables

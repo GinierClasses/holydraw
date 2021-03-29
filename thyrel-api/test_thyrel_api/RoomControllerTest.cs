@@ -63,12 +63,33 @@ namespace test_thyrel_api
         [Test]
         public async Task JoinRoom()
         {
-            // good for the futur : move Body Class to BodyClass file class
+            // good for the future : move Body Class to BodyClass file class
+            var body = new PlayerRoomBody();
+            body.AvatarUrl = "3";
+            body.Username = "playertest";
+            var room = Context.Room.Last();
+
+            await _roomController.Join(room.Identifier, body);
+
+            var player = Context.Player.Last();
+            var token = Context.Token.Last();
+
+            Assert.AreEqual(player.Username, body.Username);
+            Assert.AreEqual(player.AvatarUrl, body.AvatarUrl);
+            Assert.AreEqual(player.TokenId, token.Id);
+            Assert.AreEqual(player.RoomId, room.Id);
+        }
+
+        [Test]
+        public async Task PostRoomTest()
+        {
             var body = new PlayerRoomBody();
             body.AvatarUrl = "3";
             body.Username = "playertest";
 
-            await _roomController.Join(Context.Room.Last().Identifier, body);
+            var nRooms = Context.Room.Count();
+            await _roomController.Post(body);
+            Assert.AreEqual(Context.Room.Count(), nRooms + 1);
 
             var player = Context.Player.Last();
             var token = Context.Token.Last();

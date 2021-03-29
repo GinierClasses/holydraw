@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -23,12 +24,10 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
-        /// <param name="drawingId"></param>
         /// <returns></returns>
-        public async Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId,
-            int? drawingId = null)
+        public async Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId)
         {
-            var element = new Element(step, creatorId, initiatorId, sessionId, drawingId);
+            var element = new Element(step, creatorId, initiatorId, sessionId, ElementType.Drawing);
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;
@@ -46,8 +45,7 @@ namespace thyrel_api.DataProvider
         public async Task<Element> AddSentence(int creatorId, int initiatorId, int step, int sessionId,
             string text = "")
         {
-            var element = new Element(step, creatorId, initiatorId, sessionId, text);
-
+            var element = new Element(step, creatorId, initiatorId, sessionId, ElementType.Sentence);
             var entity = await _holyDrawDbContext.Element.AddAsync(element);
             await SaveChanges();
             return entity.Entity;
@@ -69,53 +67,44 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
-        /// <param name="elementId"></param>
+        /// <param name="element"></param>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        public async Task<Element> SetSentence(int elementId, string sentence)
+        public async Task SetSentence(Element element, string sentence)
         {
-            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
-
-            if (element == null)
-                return null;
+            if (element == null) return;
 
             element.Text = sentence;
             await SaveChanges();
-            return element;
         }
 
         /// <summary>
-        ///     Set the DrawingId into a Element
+        ///     Set the DrawImage into a Element
         /// </summary>
-        /// <param name="elementId"></param>
-        /// <param name="drawingId"></param>
+        /// <param name="element"></param>
+        /// <param name="drawImage"></param>
         /// <returns></returns>
-        public async Task<Element> SetDrawing(int elementId, int drawingId)
+        public async Task SetDrawing(Element element, string drawImage)
         {
-            var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
+            if (element == null) return;
 
-            if (element == null)
-                return null;
-
-            element.DrawingId = drawingId;
+            element.DrawImage = drawImage;
             await SaveChanges();
-            return element;
         }
 
         /// <summary>
         ///     Handle finish State
         /// </summary>
         /// <param name="elementId">elementId to handle</param>
-        /// <param name="isFinish">true = element finish, false = element not finish</param>
         /// <returns>Edited element</returns>
-        public async Task<Element> HandleFinish(int elementId, bool isFinish)
+        public async Task<Element> HandleFinish(int elementId)
         {
             var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
             if (element == null)
                 return null;
 
-            if (isFinish)
+            if (element.FinishAt == null)
                 element.FinishAt = DateTime.Now;
             else
                 element.FinishAt = null;
@@ -147,6 +136,56 @@ namespace thyrel_api.DataProvider
         {
             return await _holyDrawDbContext.Element.FindAsync(elementId);
         }
+
+
+        /// <summary>
+        ///   Get The Current Element Of a player
+        /// </summary>
+        /// <param name="playerId"></param>
+        /// <returns></returns>
+        public async Task<ElementStepDto> GetCurrentElement(int playerId)
+        {
+            var elementWithParent = await _holyDrawDbContext.Element
+                .OrderByDescending(e => e.Step)
+                .Where(e => e.CreatorId == playerId)
+                .Select(e => new ElementDto
+                {
+                    Id = e.Id,
+                    Step = e.Step,
+                    Type = e.Type,
+                    Text = e.Text,
+                    DrawingId = e.DrawingId,
+                    FinishAt = e.FinishAt,
+                    CreatedAt = e.CreatedAt,
+                    SessionId = e.SessionId,
+                })
+                .Take(2)
+                .ToListAsync();
+
+            var result = new ElementStepDto(elementWithParent[0],
+                elementWithParent.Count > 1 ? elementWithParent[1] : null);
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Get candidates from Sessions
+        /// </summary>
+        /// <param name="sessionId">Id of session</param>
+        /// <returns>Element Candidates of Session</returns>
+        public async Task<List<ElementCandidateDto>> GetNextCandidateElements(int sessionId)
+        {
+            var elements = await _holyDrawDbContext.Element
+                .Where(e => e.SessionId == sessionId).Select(e => new ElementCandidateDto
+                {
+                    Id = e.Id,
+                    Step = e.Step,
+                    InitiatorId = e.InitiatorId,
+                    CreatorId = e.CreatorId
+                }).ToListAsync();
+            return elements;
+        }
+
 
         private async Task SaveChanges()
         {

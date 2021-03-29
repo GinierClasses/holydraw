@@ -7,7 +7,6 @@ import PlayerCard from '../components/room/lobby/PlayerCard';
 import PlayerCardList from '../components/room/lobby/PlayerCardList';
 import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
-import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
 import DrawColorPicker from '../components/room/draw/DrawColorPicker';
@@ -15,94 +14,43 @@ import SizePicker from '../components/room/draw/SizePicker';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
+import CanvasDraw from 'components/room/draw/CanvasDraw';
+import testPlayerList from '__tests__/json/players.json';
+import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
+import { Box } from '@material-ui/core';
+import SpinnerIcon from 'components/SpinnerIcon';
+import StartButton from 'components/room/lobby/StartButton';
+import StepProgress from 'components/room/StepProgress';
+import { Slider } from '@material-ui/core';
 
 const colors = [
-  '#FF0000',
-  '#FFC700',
-  '#24FF00',
-  '#001AAF',
-  '#005A5F',
-  '#6564A6',
-  '#759F81',
-  '#FFFA8A',
-  '#8C33D2',
-  '#FF8A00',
-  '#00FFC2',
-  '#002FFF',
+  '#000000',
+  '#7f8c8d',
+  '#bdc3c7',
+  '#ecf0f1',
+  '#00a8ff',
+  '#1e3799',
+  '#2ecc71',
+  '#009432',
+  '#e74c3c',
+  '#c0392b',
   '#FA00FF',
-  '#A450AC',
-];
-
-const testPlayerList = [
-  {
-    id: 1,
-    username: 'jeanmich',
-    avatarUrl: '0',
-    isOwner: true,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 2,
-    username: 'Xx_plao',
-    avatarUrl: '1',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 3,
-    username: 'AAAAAAHHHH',
-    avatarUrl: '2',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 4,
-    username: 'Melvyn',
-    avatarUrl: '3',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 5,
-    username: 'Ana',
-    avatarUrl: '4',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 6,
-    username: 'Alex',
-    avatarUrl: '5',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
-  {
-    id: 7,
-    username: 'Luca',
-    avatarUrl: '6',
-    isOwner: false,
-    isPlaying: true,
-    createdAt: '',
-    roomId: 1,
-  },
+  '#FDA7DF',
+  '#FEAFA8',
+  '#CB5A57',
+  '#FFC312',
+  '#F79F1F',
 ];
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
-  const [currentColor, setCurrentColor] = useState(colors[0]);
+  const [color, setColor] = useState(colors[5]);
   const [size, setSize] = useState(8);
+  const [progress, setProgress] = React.useState<number>(1);
+
+  const handleChange = (event: any, newValue: any) => {
+    setProgress(newValue);
+  };
 
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
@@ -110,26 +58,40 @@ export default function ComponentTest() {
 
   return (
     <Box>
-      <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        gridGap={32}>
         <AppTitle />
 
-        <DrawColorPicker
-          colors={colors}
-          currentColor={currentColor}
-          onColorChange={color => setCurrentColor(color)}
-        />
-
-        <Box display="block" width={100} height={100}>
-          <StepTimer
-            finishAt={new Date('2021-03-02T10:27:00')}
-            timeDuration={100}
-          />
+        <Box display="flex" flexDirection="column">
+          <Box display="flex">
+            <DrawColorPicker
+              colors={colors}
+              currentColor={color}
+              onColorChange={color => setColor(color)}
+            />
+            <CanvasDraw size={size} color={color} />
+          </Box>
+          <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
         </Box>
+
+        <StepTimer
+          finishAt={new Date('2021-03-02T10:27:00')}
+          timeDuration={100}
+        />
         <ButtonModalJoin
+          loading={false}
           identifier={undefined}
           onClick={console.log}></ButtonModalJoin>
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
-        <BigInput onChange={() => void 0} value={'didier'} icon="apple" />
+        <BigInput
+          onChange={() => void 0}
+          value={'didier'}
+          startIcon={<AccessibilityNewIcon />}
+        />
         <ShareRoomButton identifier="LH4AH3" />
         <PlayerCard
           id={1}
@@ -140,9 +102,23 @@ export default function ComponentTest() {
           onKick={id => console.log('User id is :', id)}
         />
 
-        <BigButton icon="star" onClick={nextPp}>
+        <BigButton size="large" onClick={nextPp}>
           Test
         </BigButton>
+
+        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
+
+        <PlayerCardList
+          players={testPlayerList}
+          playerId={3}
+          isKickable={true}
+          onKick={id => console.log('id is', id)}
+        />
+        <DirectiveLabel sentence="Salzt" directive="bonsoir" />
+
+        <SpinnerIcon />
+
+        <PlayerCount count={8} max={12} />
 
         <PlayerCardList
           players={testPlayerList}
@@ -150,16 +126,19 @@ export default function ComponentTest() {
           onKick={id => console.log('id is', id)}
         />
 
-        <PlayerCount count={8} max={12} />
+        <BookPlayerList players={testPlayerList} playerId={2} />
 
-        <DirectiveLabel
-          directive="Time to draw"
-          sentence="Mémé fait des fucks à la police"
+        <Slider
+          defaultValue={progress}
+          onChange={handleChange}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={1}
+          min={1}
+          max={7}
         />
 
-        <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
-
-        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
+        <StepProgress stepActual={progress} stepMax={7} />
       </Box>
     </Box>
   );

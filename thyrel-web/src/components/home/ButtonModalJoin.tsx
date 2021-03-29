@@ -1,54 +1,75 @@
 import React from 'react';
-import { Button, Input, Modal } from 'rsuite';
 import BigButton from '../BigButton';
+import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from '@material-ui/core';
 
 type ModalJoinProps = {
   identifier?: string;
   onClick: (identifier: string) => void;
+  loading?: boolean;
+  className?: string;
 };
 
 export default function ModalJoin({
   identifier: urlIdentifier,
+  loading,
   onClick,
+  className,
 }: ModalJoinProps) {
   const [open, setOpen] = React.useState(false);
   const [identifier, setIdentifier] = React.useState('');
   return (
     <>
       <BigButton
-        icon="angle-double-up"
-        size="lg"
+        startIcon={<PlayForWorkIcon style={{ fontSize: 32 }} />}
+        loading={loading}
+        className={className}
+        size="large"
         onClick={() =>
           urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
         }>
         Join
       </BigButton>
 
-      <Modal
-        show={open}
-        closeButton={true}
-        backdrop={true}
-        keyboard={true}
-        onHide={() => setOpen(false)}>
-        <Modal.Header>
-          <Modal.Title>Join a game 👨‍🎨</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Input
+      <Dialog
+        fullWidth
+        maxWidth="xs"
+        open={open}
+        onClose={() => setOpen(false)}>
+        <DialogTitle>Join a game 👨‍🎨</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Identifier"
+            type="email"
             value={identifier}
-            onChange={(value: string) => setIdentifier(value)}
-            placeholder="Code of the room you're trying to join"
+            onChange={event => setIdentifier(event.target.value)}
+            fullWidth
           />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => onClick(identifier)} appearance="primary">
-            Join 🥳
-          </Button>
-          <Button onClick={() => setOpen(false)} appearance="subtle">
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="primary">
             Cancel 👋
           </Button>
-        </Modal.Footer>
-      </Modal>
+          <Button
+            onClick={() => {
+              onClick(identifier);
+              setOpen(false);
+            }}
+            color="primary">
+            Join 🥳
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

@@ -1,5 +1,6 @@
+import { useSnackbar } from 'notistack';
 import React from 'react';
-import { Notification } from 'rsuite';
+import { useHistory } from 'react-router';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
 import Loading from '../components/Loading';
@@ -14,16 +15,15 @@ type PlayerContextProps = {
 
 const PlayerContext = React.createContext<PlayerContextProps>({});
 
-type PlayerContextProviderProps = {
-  children: React.ReactElement;
-  onMessage?: (message: string) => void;
-};
+type PlayerContextProviderProps = { children: React.ReactElement };
 
 export function PlayerContextProvider({
   children,
 }: PlayerContextProviderProps) {
   const [player, setPlayer] = React.useState<Player>();
+  const { enqueueSnackbar } = useSnackbar();
   const { websocket } = useWebsocketContext();
+  const history = useHistory();
 
   React.useEffect(() => {
     function onMessage(event: { data: string }) {
@@ -46,22 +46,20 @@ export function PlayerContextProvider({
 
   React.useEffect(() => {
     let deleted = false;
-    client<Player>('player/me', { token: getToken() || '' }).then(
-      player => {
-        if (deleted) return;
-        setPlayer(player);
+    client<Player>('player/me', { token: getToken() }).then(
+      player => !deleted && setPlayer(player),
+      () => {
+        enqueueSnackbar("We couldn't get you back online.", {
+          variant: 'error',
+        });
+        history.push('/home');
       },
-      () =>
-        Notification.error({
-          title: 'Player error',
-          description: 'Go on Home or refresh the page...',
-        }),
     );
 
     return () => {
       deleted = true;
     };
-  }, []);
+  }, [enqueueSnackbar, history]);
 
   const values = { player };
 

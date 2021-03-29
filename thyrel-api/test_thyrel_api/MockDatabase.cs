@@ -33,12 +33,13 @@ namespace test_thyrel_api
         {
             var elements = new List<Element>
             {
-                new (1, 1, 1, 1, "element-sentence-1"),
-                new (1, 2, 2, 1, "element-sentence-2"),
-                new (1, 3, 3, 1, "element-sentence-3"),
-                new (1, 4, 4, 1, "element-sentence-4"),
-                new (1, 6, 6, 1, "element-sentence-5"),
-                new (1, 7, 7, 1, "element-sentence-6"),
+                new (1, 1, 1, 1, ElementType.Sentence),
+                new (2, 2, 1, 1, ElementType.Sentence),
+                new (1, 2, 2, 1, ElementType.Sentence),
+                new (1, 3, 3, 1, ElementType.Sentence),
+                new (1, 4, 4, 1, ElementType.Sentence),
+                new (1, 6, 6, 1, ElementType.Sentence),
+                new (1, 7, 7, 1, ElementType.Sentence),
             };
             
             await Context.Element.AddRangeAsync(elements);
@@ -49,8 +50,8 @@ namespace test_thyrel_api
         {
             var sessions = new List<Session>
             {
-                new(null, 1),
-                new(null, 2),
+                new(null, 1, DateTime.Now, 100, SessionStepType.Book, 3),
+                new(null, 2, DateTime.Now, 100, SessionStepType.Draw, 3),
             };
             
             await Context.Session.AddRangeAsync(sessions);

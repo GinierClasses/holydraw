@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -56,6 +57,7 @@ namespace thyrel_api.DataProvider
         {
             var player = await _holyDrawDbContext.Player
                 .Include(p => p.Token)
+                .Include(p => p.Room)
                 .SingleOrDefaultAsync(p => p.Token.TokenKey == tokenKey);
             return player;
         }
@@ -65,11 +67,22 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        public async Task<List<Player>> GetPlayersByRoom(int roomId)
+        public async Task<List<PlayerDto>> GetPlayersByRoom(int roomId)
         {
-            var player = await _holyDrawDbContext.Player
-                .Where(p => p.RoomId == roomId && p.IsConnected).ToListAsync();
-            return player;
+            var players = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == roomId && p.IsConnected).Select(p => new PlayerDto()
+                {
+                    Id = p.Id,
+                    Username = p.Username,
+                    AvatarUrl = p.AvatarUrl,
+                    IsOwner = p.IsOwner,
+                    IsPlaying = p.IsPlaying,
+                    IsConnected = p.IsConnected,
+                    CreatedAt = p.CreatedAt,
+                    DisableAt = p.DisableAt,
+                    RoomId = p.RoomId
+                }).ToListAsync();
+            return players;
         }
 
         /// <summary>
@@ -90,7 +103,7 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the Player as Owner
         /// </summary>
-        /// <param name="playerId"></param>
+        /// <param name="player"></param>
         /// <param name="isOwner"></param>
         public async Task<Player> SetOwner(Player player, bool isOwner = true)
         {
@@ -105,18 +118,15 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Handle isPlayer (when session start) column
         /// </summary>
-        /// <param name="playerId"></param>
+        /// <param name="roomId"></param>
         /// <param name="isPlaying"></param>
         /// <returns></returns>
-        public async Task<Player> SetIsPlaying(int playerId, bool isPlaying)
+        public async Task SetIsPlaying(int roomId, bool isPlaying = true)
         {
-            var dbPlayer = await _holyDrawDbContext.Player.FindAsync(playerId);
-            if (dbPlayer == null)
-                return null;
-
-            dbPlayer.IsPlaying = isPlaying;
+            var players = _holyDrawDbContext.Player.Where(p => p.RoomId == roomId && p.IsConnected)
+                .ForEachAsync(p => p.IsPlaying = isPlaying);
+            players.Wait();
             await SaveChanges();
-            return dbPlayer;
         }
 
         /// <summary>
@@ -132,7 +142,7 @@ namespace thyrel_api.DataProvider
                 return null;
 
             dbPlayer.IsConnected = isConnected;
-            
+
             await SaveChanges();
             return dbPlayer;
         }
@@ -152,7 +162,8 @@ namespace thyrel_api.DataProvider
             return player;
         }
 
-        /// Find a new owner for a room
+        /// <summary>
+        ///     Find a new owner for a room
         /// </summary>
         /// <param name="roomId">Room to find a owner</param>
         /// <returns></returns>
