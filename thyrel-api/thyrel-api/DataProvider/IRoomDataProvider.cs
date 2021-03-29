@@ -29,6 +29,6 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        Task<Room> Finish(int roomId);
+        Task<Room> Finish(int? roomId);
     }
 }
