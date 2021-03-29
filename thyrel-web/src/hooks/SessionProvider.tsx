@@ -30,15 +30,13 @@ export function SessionContextProvider({
   const { websocket } = useWebsocketContext();
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log(currentElement);
   function onSave(content: string) {
     const elementId = currentElement?.id;
-    const url = `element/${elementId}`;
 
     const elementContent =
-      currentElement?.type == 1 ? { drawimage: content } : { text: content };
+      currentElement?.type === 1 ? { drawimage: content } : { text: content };
 
-    client<HolyElement>(url, {
+    client<HolyElement>(`element/${elementId}`, {
       token: getToken(),
       method: 'PATCH',
       data: elementContent,
