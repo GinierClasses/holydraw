@@ -11,12 +11,14 @@ namespace test_thyrel_api
     public class SessionDataProviderTest : TestProvider
     {
         private ISessionDataProvider _sessionDataProvider;
+        private IPlayerDataProvider _playerDataProvider;
 
         [SetUp]
         public async Task Setup()
         {
             await SetupTest();
             _sessionDataProvider = new SessionDataProvider(Context);
+            _playerDataProvider = new PlayerDataProvider(Context);
         }
 
         [Test]
@@ -84,6 +86,19 @@ namespace test_thyrel_api
             Assert.AreEqual(result.PlayerCount, playersCount);
             Assert.AreEqual(result.PlayerFinished, elementsCount);
 
+        }
+
+        [Test]
+        public async Task RunStartSession()
+        {
+            var room = await Context.Room.LastAsync();
+            var expectedElementCount = Context.Element.Count() + (await _playerDataProvider.GetPlayersByRoom(room.Id)).Count;
+            var sessionsCount = Context.Session.Count();
+
+            await _sessionDataProvider.StartSession(room.Id);
+
+            Assert.AreEqual(expectedElementCount, Context.Element.Count());
+            Assert.AreEqual(sessionsCount + 1, Context.Session.Count());
         }
 
         [Test]
