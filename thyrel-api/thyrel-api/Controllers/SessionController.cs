@@ -4,6 +4,7 @@ using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Json;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
@@ -24,7 +25,7 @@ namespace thyrel_api.Controllers
         // Call this endpoint to create a Session
         // POST: api/session
         [HttpPost]
-        public async Task<ActionResult<Session>> Start()
+        public async Task<ActionResult<SessionDto>> Start()
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null || !player.IsOwner) return Unauthorized();
@@ -43,14 +44,14 @@ namespace thyrel_api.Controllers
                 JsonBase.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.SessionStart)), roomId);
 
-            
-            return session;
+            var sessionDto = new SessionDto(session);
+            return sessionDto;
         }
 
         // Get the current session
         // GET: api/session/current
         [HttpGet("current")]
-        public async Task<ActionResult<Session>> GetCurrent()
+        public async Task<ActionResult<SessionDto>> GetCurrent()
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();

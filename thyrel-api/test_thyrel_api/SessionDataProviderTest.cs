@@ -26,7 +26,7 @@ namespace test_thyrel_api
         {
             var lastRoom = await Context.Room.LastAsync();
             var sessionCount = Context.Session.Count();
-            await _sessionDataProvider.Add(lastRoom.Id, DateTime.Now.AddMinutes(1), 10);
+            await _sessionDataProvider.Add(lastRoom.Id, DateTime.Now.AddMinutes(1), 10, 3);
             Assert.AreEqual(sessionCount + 1, Context.Session.Count());
         }
 
@@ -35,7 +35,7 @@ namespace test_thyrel_api
         {
             var lastRoom = await Context.Room.FirstAsync();
             var sessionCount = Context.Session.Count();
-            await _sessionDataProvider.Add(lastRoom.Id, DateTime.Now.AddMinutes(1), 10);
+            await _sessionDataProvider.Add(lastRoom.Id, DateTime.Now.AddMinutes(1), 10, 3);
             Assert.AreEqual(sessionCount, Context.Session.Count());
         }
 

@@ -19,14 +19,16 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        ///     Create a new Session
+        /// Create new Session
         /// </summary>
         /// <param name="roomId"></param>
         /// <param name="stepFinishAt"></param>
         /// <param name="timeDuration"></param>
-        public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration)
+        /// <param name="playerCount"></param>
+        /// <returns></returns>
+        public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount)
         {
-            var sessionToAdd = new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start);
+            var sessionToAdd = new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
 
             // test if no session is already start
             if (await _holyDrawDbContext.Session.AnyAsync(s => s.RoomId == roomId && s.FinishAt == null))
@@ -71,12 +73,24 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        public async Task<Session> GetCurrentSessionByRoomId(int roomId)
+        public async Task<SessionDto> GetCurrentSessionByRoomId(int roomId)
         {
-            var session = await _holyDrawDbContext.Session
+            var sessionDto = await _holyDrawDbContext.Session
                 .OrderBy(s => s.CreatedAt)
+                .Select(s => new SessionDto
+                {
+                    ActualStep = s.ActualStep,
+                    RoomId = s.RoomId,
+                    CreatedAt = s.CreatedAt,
+                    FinishAt = s.FinishAt,
+                    Id = s.Id,
+                    StepFinishAt = s.StepFinishAt,
+                    StepType = s.StepType,
+                    TotalPLayers = s.TotalPlayers
+                })
                 .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
-            return session;
+            
+            return sessionDto;
         }
 
         /// <summary>
@@ -112,7 +126,11 @@ namespace thyrel_api.DataProvider
 
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
             var elementDataProvider = new ElementDataProvider(_holyDrawDbContext);
-            var addedSession = await Add(roomId, DateTime.Now.AddSeconds(duration), duration);
+
+            var playerCount = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == roomId && p.IsConnected).CountAsync();
+
+            var addedSession = await Add(roomId, DateTime.Now.AddSeconds(duration), duration, playerCount);
 
             if (addedSession == null)
                 return null;
