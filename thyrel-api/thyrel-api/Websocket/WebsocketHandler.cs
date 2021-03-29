@@ -148,15 +148,17 @@ namespace thyrel_api.Websocket
                                 new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerLeft, closedSocket.PlayerId)), closedSocket.RoomId);
                         if (closedSocket.PlayerId == null) continue;
 
-                        var playerDataProvider = new PlayerDataProvider(GetInjectedContext());
+                        var context = GetInjectedContext();
+                        var playerDataProvider = new PlayerDataProvider(context);
                         
                         var player = await playerDataProvider.SetIsConnected(
                             (int) closedSocket.PlayerId, false);
                         if (!player.IsOwner || player.RoomId == null) continue;
                         
-                        var newOwnerPlayer = await playerDataProvider.FindNewOwner((int )player.RoomId);
-                        if (newOwnerPlayer == null) continue;
-                        
+                        var newOwnerPlayer = await playerDataProvider.FindNewOwner((int)player.RoomId);
+                        if (newOwnerPlayer == null)
+                            await new RoomDataProvider(context).Finish(player.RoomId);
+
                         await playerDataProvider.SetOwner(player, false);
                         await SendMessageToSockets(
                             JsonBase.Serialize(
