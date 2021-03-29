@@ -20,6 +20,8 @@ import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
 import { Box } from '@material-ui/core';
 import SpinnerIcon from 'components/SpinnerIcon';
 import StartButton from 'components/room/lobby/StartButton';
+import StepProgress from 'components/room/StepProgress';
+import { Slider } from '@material-ui/core';
 
 const colors = [
   '#000000',
@@ -44,6 +46,11 @@ export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
   const [size, setSize] = useState(8);
+  const [progress, setProgress] = React.useState<number>(1);
+
+  const handleChange = (event: any, newValue: any) => {
+    setProgress(newValue);
+  };
 
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
@@ -119,7 +126,19 @@ export default function ComponentTest() {
           onKick={id => console.log('id is', id)}
         />
 
-        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
+        <BookPlayerList players={testPlayerList} playerId={2} />
+
+        <Slider
+          defaultValue={progress}
+          onChange={handleChange}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={1}
+          min={1}
+          max={7}
+        />
+
+        <StepProgress stepActual={progress} stepMax={7} />
       </Box>
     </Box>
   );
