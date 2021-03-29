@@ -1,22 +1,12 @@
-import Box from 'styles/Box';
-import { css } from '@emotion/css';
-import styled from '@emotion/styled';
 import { primaryFade } from 'styles/colors';
 import React from 'react';
+import { Box } from '@material-ui/core';
 
 type DrawColorPickerProps = {
   colors: string[];
   onColorChange?: (color: string) => void;
   currentColor: string;
 };
-
-const SquareButton = styled.button({
-  outline: 'none',
-  borderRadius: '4px',
-  width: '32px',
-  height: '32px',
-  padding: '0',
-});
 
 function getCoupleColors(colors: string[]) {
   return colors.reduce(
@@ -56,35 +46,36 @@ export default function DrawColorPicker({
       flexDirection="column"
       padding="8px"
       borderRadius={4}
-      gap={8}
-      borderWidth={1}
+      gridGap={8}
+      border={1}
       borderColor="#000000"
       justifyContent="center"
-      bg={primaryFade(0.2)}>
+      bgcolor={primaryFade(0.2)}>
       {coupleColors.map((couple, index) => (
-        <div
+        <Box
           key={index}
-          className={css({
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            top: '248px',
-          })}>
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          top={248}>
           {couple.map((squareColor, index) => {
             const isSelected = squareColor === currentColor;
 
             return (
-              <SquareButton
+              <Box
+                component="button"
                 key={index}
                 onClick={() => onColorChange?.(squareColor)}
-                className={css({
-                  border: isSelected ? '2px solid white' : '1px solid black',
-                  background: squareColor,
-                })}
+                border={isSelected ? 2 : 1}
+                bgcolor={squareColor}
+                borderColor={isSelected ? '#FFFFFF' : '#000000'}
+                width={32}
+                height={32}
+                borderRadius={4}
               />
             );
           })}
-        </div>
+        </Box>
       ))}
     </Box>
   );

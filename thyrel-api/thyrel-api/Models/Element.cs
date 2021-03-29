@@ -19,26 +19,15 @@ namespace thyrel_api.Models
             Type = type;
             if (type == ElementType.Sentence)
                 Text = "";
-        }
-
-        public Element(int step, int creatorId, int initiatorId, int sessionId, int? drawingId = null)
-            : this(step, creatorId, initiatorId, sessionId)
-        {
-            Type = ElementType.Drawing;
-            DrawingId = drawingId;
-        }
-
-        public Element(int step, int creatorId, int initiatorId, int sessionId, string text = null)
-            : this(step, creatorId, initiatorId, sessionId)
-        {
-            Type = ElementType.Sentence;
-            Text = text;
+            else if (type == ElementType.Drawing)
+                DrawImage = "";
         }
 
         public int Id { get; set; }
         public int Step { get; set; }
         public ElementType Type { get; set; }
         public string Text { get; set; }
+        public string DrawImage { get; set; }
         public int? DrawingId { get; set; }
         public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }

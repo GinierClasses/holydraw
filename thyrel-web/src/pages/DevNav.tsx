@@ -1,27 +1,36 @@
-import { Nav } from 'rsuite';
-import Box from '../styles/Box';
+import { Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 export default function DevNav() {
   return (
-    <Box p={16} flexDirection="column" alignItems="center">
+    <Box p={2} display="flex" flexDirection="column" alignItems="center">
       <h1>You're in DevNav</h1>
-      <Box justifyContent="space-between">
-        <Nav appearance="tabs" activeKey="devnav">
-          {/* With react-router-dom it's not a good practive do don't use
+      {/* With react-router-dom it's not a good practive do don't use
           <Link /> but Rsuits alredy render a link */}
-          <Nav.Item href="/" eventKey="devnav">
-            Dev nav
-          </Nav.Item>
-          <Nav.Item href="/r/start">Go Room Start</Nav.Item>
-          <Nav.Item href="/r/write">Go Room Write</Nav.Item>
-          <Nav.Item href="/r/draw">Go Room Draw</Nav.Item>
-          <Nav.Item href="/r/lobby">Go Room Lobby</Nav.Item>
-          <Nav.Item href="/r">Go Room</Nav.Item>
-          <Nav.Item href="/home">Go home</Nav.Item>
-          <Nav.Item href="/test">Go Test the API</Nav.Item>
-          <Nav.Item href="/t">Go to TESTS pages</Nav.Item>
-        </Nav>
-      </Box>
+      <NavLink to="/">Dev nav</NavLink>
+      <NavLink to="/r/start">Go Room Start</NavLink>
+      <NavLink to="/r/write">Go Room Write</NavLink>
+      <NavLink to="/r/draw">Go Room Draw</NavLink>
+      <NavLink to="/r/lobby">Go Room Lobby</NavLink>
+      <NavLink to="/r">Go Room</NavLink>
+      <NavLink to="/home">Go home</NavLink>
+      <NavLink to="/t">Go to TESTS pages</NavLink>
+    </Box>
+  );
+}
+
+function NavLink({ to, children }: any) {
+  return (
+    <Box
+      p={1}
+      bgcolor="background.default"
+      m={1}
+      borderRadius={2}
+      border={1}
+      borderColor="secondary.main">
+      <Link to={to} style={{ color: 'white' }}>
+        {children}
+      </Link>
     </Box>
   );
 }

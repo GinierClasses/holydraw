@@ -10,7 +10,6 @@ import Draw from 'pages/room/Draw';
 import Lobby from 'pages/room/Lobby';
 import Start from 'pages/room/Start';
 import Write from 'pages/room/Write';
-import TestAPI from 'pages/TestAPI';
 import { WebsocketProvider } from 'hooks/WebsocketProvider';
 import { SessionContextProvider } from 'hooks/SessionProvider';
 
@@ -23,9 +22,6 @@ export default function Routes() {
           <Route path="/r" component={RoomRoutes} />
           <Route path="/t" component={ComponentTest} />
           <Route path="/home" component={Home} />
-          {/* Page to test the API 
-        TODO : delete it */}
-          <Route path="/test" component={TestAPI} />
           {/* For test, I add a special Nav
         TODO: replace it by `Home` */}
           <Route path="/" component={DevNav} />

@@ -1,53 +1,18 @@
 import React from 'react';
-import { Progress } from 'rsuite';
-import { baseColor } from '../../styles/colors';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
-import { MediaQuery } from '../../styles/breakpoint';
+import { CircularProgress } from '@material-ui/core';
+import useTimerInterval, {
+  UseTimerIntervalProps,
+} from 'hooks/useTimerInterval';
 
-type StepTimerProps = {
-  finishAt: Date;
-  timeDuration: number;
-  onFinish?: () => void;
-};
-
-export default function StepTimer({
-  finishAt,
-  timeDuration,
-  onFinish,
-}: StepTimerProps) {
-  const [progress, setProgress] = React.useState(0);
-  const isDeviceSM = useMediaQuery(MediaQuery.SM);
-  const [timerInterval, setTimerInterval] = React.useState<NodeJS.Timeout>();
-
-  React.useEffect(() => {
-    setProgress(updateProgress(finishAt, timeDuration));
-    const interval = setInterval(
-      () => setProgress(updateProgress(finishAt, timeDuration)),
-      1000,
-    );
-    setTimerInterval(interval);
-    return () => clearInterval(interval);
-  }, [finishAt, timeDuration]);
-
-  React.useEffect(() => {
-    if (progress >= 100) {
-      onFinish?.();
-      timerInterval && clearInterval(timerInterval);
-    }
-  }, [progress, onFinish, timerInterval]);
+export default function StepTimer(props: UseTimerIntervalProps) {
+  const { progress } = useTimerInterval(props);
 
   return (
-    <Progress.Circle
-      strokeColor={baseColor}
-      percent={progress}
-      showInfo={progress >= 100}
-      strokeWidth={isDeviceSM ? 12 : 6}
-      status={progress >= 100 ? 'success' : 'active'}
+    <CircularProgress
+      size={64}
+      thickness={4}
+      variant="determinate"
+      value={progress}
     />
   );
-}
-
-function updateProgress(finishAt: Date, timeDuration: number) {
-  const diff = Math.round((finishAt.getTime() - new Date().getTime()) / 1000);
-  return 100 - (diff * 100) / timeDuration;
 }
