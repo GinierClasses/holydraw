@@ -29,9 +29,15 @@ namespace thyrel_api.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
         {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
             var elementDataProvider = new ElementDataProvider(_context);
             var sessionDataProvider = new SessionDataProvider(_context);
+
             var element = await elementDataProvider.GetElement(id);
+            if (element.CreatorId != player.Id) return Unauthorized();
+
             var session = await sessionDataProvider.GetSessionById(element.SessionId);
             var remainingStepTime = session.StepFinishAt == null
                 ? new TimeSpan()
@@ -41,13 +47,18 @@ namespace thyrel_api.Controllers
             var finishState = await elementDataProvider.HandleFinish(id);
             // edit element only if session is now not null
             if (finishState.FinishAt != null)
-                if (element.Type == ElementType.Sentence)
-                    await elementDataProvider.SetSentence(element, body.Text);
+                if (finishState.Type == ElementType.Sentence)
+                { 
+                    await elementDataProvider.SetSentence(finishState.Id, body.Text);
+                    finishState.Text = body.Text;
+                }
                 else
-                    await elementDataProvider.SetDrawing(element, body.DrawImage);
+                {
+                    await elementDataProvider.SetDrawing(element.Id, body.DrawImage);
+                    finishState.DrawImage = body.DrawImage;
+                }
 
             var stepState = await sessionDataProvider.GetPlayerStatus(session);
-            // run next step only if all player has finish and session finish is less that 5000 milliseconds
             if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
                 await sessionDataProvider.NextStep(session);
 
@@ -58,19 +69,19 @@ namespace thyrel_api.Controllers
                         PlayerFinished = stepState.PlayerFinished
                     }), session.RoomId);
 
-            return Ok();
+            return Ok(finishState);
         }
 
-        // Call this endpoint to get a room
+        // Call this endpoint to get an Element by Id
         // GET : api/element/4
         [HttpGet("{id}")]
-        public async Task<ActionResult<Element>> GetElement(int id)
+        public async Task<ActionResult<ElementDto>> GetElement(int id)
         {
             var element = await new ElementDataProvider(_context).GetElement(id);
             return element;
         }
-
-        // Call this endpoint to get a room
+        
+        // Call this endpoint to get the current Element of the player that call the api
         // GET : api/element/current
         [HttpGet("current")]
         public async Task<ActionResult<ElementStepDto>> GetCurrent()

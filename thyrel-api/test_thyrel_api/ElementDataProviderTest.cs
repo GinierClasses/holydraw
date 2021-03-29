@@ -61,7 +61,7 @@ namespace test_thyrel_api
         {
             const string newText = "yow";
             var element = Context.Element.First();
-            await _elementDataProvider.SetSentence(element, newText);
+            await _elementDataProvider.SetSentence(element.Id, newText);
             Assert.AreEqual(newText, element.Text);
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newText, dbElement.Text);
@@ -73,7 +73,7 @@ namespace test_thyrel_api
             const string newImage = "http://imageexample.com/image.png";
             var element = Context.Element.First();
 
-            await _elementDataProvider.SetDrawing(element, newImage);
+            await _elementDataProvider.SetDrawing(element.Id, newImage);
             Assert.AreEqual(newImage, element.DrawImage);
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newImage, dbElement.DrawImage);
