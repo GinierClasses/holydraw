@@ -94,12 +94,10 @@ export default function BookPlayerList({
                           onClick?.(player.id, player.username)
                         }
                         className={classes.badge}>
-                        {/* <div className={classes.badge}> */}
                         <CloseIcon
                           data-testid="kick-icon"
                           className={classes.icon}
                         />
-                        {/* </div> */}
                       </button>
                     )
                   ))}
