@@ -57,6 +57,7 @@ namespace thyrel_api.DataProvider
         {
             var player = await _holyDrawDbContext.Player
                 .Include(p => p.Token)
+                .Include(p => p.Room)
                 .SingleOrDefaultAsync(p => p.Token.TokenKey == tokenKey);
             return player;
         }

@@ -53,7 +53,7 @@ namespace thyrel_api.Websocket
 
                 var player = playerToken == null ? null : await playerDataProvider.GetPlayerByToken(playerToken);
                 // if no matching token or no token
-                if (player == null)
+                if (player?.Room.FinishAt == null)
                 {
                     await SendMessageToSocket(connection, Json.JsonBase.Serialize(
                         new BaseWebsocketEventJson(WebsocketEvent.Invalid)));
