@@ -33,7 +33,11 @@ export default function StepProgress({
   const progress = stepPercentage(stepActual, stepMax);
 
   return (
-    <Box width="100%" position="relative">
+    <Box
+      width="100%"
+      position="relative"
+      borderTop={1}
+      borderColor="secondary.main">
       <Box
         alignItems="center"
         justifyContent="center"
@@ -41,7 +45,8 @@ export default function StepProgress({
         position="absolute"
         zIndex={1}
         top={0}
-        bottom={0}>
+        bottom={0}
+        left={5}>
         <Typography variant="subtitle1">
           {stepActual}/{stepMax}
         </Typography>
