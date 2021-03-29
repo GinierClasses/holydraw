@@ -7,7 +7,6 @@ import PlayerCard from '../components/room/lobby/PlayerCard';
 import PlayerCardList from '../components/room/lobby/PlayerCardList';
 import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
-import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
 import DrawColorPicker from '../components/room/draw/DrawColorPicker';
@@ -16,7 +15,10 @@ import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
 import testPlayerList from '__tests__/json/players.json';
-import Start from './room/Start';
+import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
+import { Box } from '@material-ui/core';
+import SpinnerIcon from 'components/SpinnerIcon';
+import StartButton from 'components/room/lobby/StartButton';
 
 const colors = [
   '#FF0000',
@@ -46,7 +48,12 @@ export default function ComponentTest() {
 
   return (
     <Box>
-      <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        gridGap={32}>
         <AppTitle />
 
         <Start></Start>
@@ -57,17 +64,20 @@ export default function ComponentTest() {
           onColorChange={color => setCurrentColor(color)}
         />
 
-        <Box display="block" width={100} height={100}>
-          <StepTimer
-            finishAt={new Date('2021-03-02T10:27:00')}
-            timeDuration={100}
-          />
-        </Box>
+        <StepTimer
+          finishAt={new Date('2021-03-02T10:27:00')}
+          timeDuration={100}
+        />
         <ButtonModalJoin
+          loading={false}
           identifier={undefined}
           onClick={console.log}></ButtonModalJoin>
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
-        <BigInput onChange={() => void 0} value={'didier'} icon="apple" />
+        <BigInput
+          onChange={() => void 0}
+          value={'didier'}
+          startIcon={<AccessibilityNewIcon />}
+        />
         <ShareRoomButton identifier="LH4AH3" />
         <PlayerCard
           id={1}
@@ -78,9 +88,11 @@ export default function ComponentTest() {
           onKick={id => console.log('User id is :', id)}
         />
 
-        <BigButton icon="star" onClick={nextPp}>
+        <BigButton size="large" onClick={nextPp}>
           Test
         </BigButton>
+
+        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
 
         <PlayerCardList
           players={testPlayerList}
@@ -88,6 +100,8 @@ export default function ComponentTest() {
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
+
+        <SpinnerIcon />
 
         <PlayerCount count={8} max={12} />
 
@@ -98,11 +112,7 @@ export default function ComponentTest() {
 
         <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
 
-        <Box m={64}>
-          <BookPlayerList
-            players={testPlayerList}
-            playerId={2}></BookPlayerList>
-        </Box>
+        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
       </Box>
     </Box>
   );

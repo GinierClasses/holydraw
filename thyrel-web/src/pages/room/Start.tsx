@@ -1,12 +1,10 @@
-import { css } from '@emotion/css';
 import BigButton from 'components/BigButton';
 import BigInput from 'components/BigInput';
-import Box from 'styles/Box';
 import GymGuy from 'images/gym-guy.svg';
 import GameBar from 'components/GameBar';
-import { client } from 'api/client';
-import { usePlayerContext } from 'hooks/PlayerProvider';
-import { Notification } from 'rsuite';
+import EditIcon from '@material-ui/icons/Edit';
+import { Box, Typography } from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
 
 export default function Start() {
   const { player } = usePlayerContext();
@@ -54,20 +52,11 @@ export default function Start() {
   //     });
   
   return (
-    <Box padding={32} flexDirection="column" gap={42}>
+    <Box padding={4} display="flex" flexDirection="column" gridGap={42}>
       <GameBar max={12} />
-
-      <Box flexDirection="column" alignItems="center">
+      <Box display="flex" flexDirection="column" alignItems="center">
         <img src={GymGuy} alt="" width={256} />
-
-        <h1
-          className={css({
-            fontFamily: 'Work Sans',
-            fontWeight: 'bold',
-            fontSize: 32,
-          })}>
-          Start a story
-        </h1>
+        <Typography variant="h4">Start a story</Typography>
       </Box>
 
       <Box gap={16} flexDirection="column" alignItems="center">

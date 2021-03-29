@@ -1,23 +1,29 @@
-import { css } from '@emotion/css';
-import { keyframes } from '@emotion/react';
+import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import { Icon, IconProps } from 'rsuite';
+import LoopIcon from '@material-ui/icons/Loop';
 
-const spin = keyframes({
-  '0%': { transform: 'rotate(0deg)' },
-  '100%': { transform: 'rotate(360deg)' },
-});
+const useStyles = makeStyles(() => ({
+  spin: {
+    animation: `spinnerIconEffect 1s linear infinite`,
+  },
+  '@global': {
+    '@keyframes spinnerIconEffect': {
+      '0%': { transform: 'rotate(0deg)' },
+      '100%': { transform: 'rotate(-360deg)' },
+    },
+  },
+}));
 
-const loadingClass = css({
-  animation: `${spin} 2s linear infinite`,
-});
-
-export default function SpinnerIcon(props: IconProps) {
+export default function SpinnerIcon(props: {
+  className?: string;
+  style?: any;
+}) {
+  const classes = useStyles();
   return (
-    <Icon
+    <LoopIcon
+      style={props.style}
       aria-label="spinner icon"
-      {...props}
-      className={clsx(props.className, loadingClass)}
+      className={clsx(props.className, classes.spin)}
     />
   );
 }

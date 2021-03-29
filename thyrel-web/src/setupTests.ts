@@ -31,6 +31,15 @@ const localStorageMockStarter = function () {
   };
 };
 
+const mockEnqueue = jest.fn();
+
+jest.mock('notistack', () => ({
+  useSnackbar: () => ({
+    enqueueSnackbar: mockEnqueue,
+    closeSnackbar: () => {},
+  }),
+}));
+
 const localStorageMock = localStorageMockStarter();
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
