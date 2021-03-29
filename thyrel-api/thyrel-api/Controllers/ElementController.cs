@@ -24,7 +24,7 @@ namespace thyrel_api.Controllers
         }
 
 
-         // Call this endpoint to update the element with the finished result from the player
+        // Call this endpoint to update the element with the finished result from the player
         // PATCH: api/element/:id
         [HttpPatch("{id}")]
         public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
@@ -33,24 +33,32 @@ namespace thyrel_api.Controllers
             var sessionDataProvider = new SessionDataProvider(_context);
             var element = await elementDataProvider.GetElement(id);
             var session = await sessionDataProvider.GetSessionById(element.SessionId);
-            TimeSpan remainingStepTime = (TimeSpan)(session.StepFinishAt - DateTime.Now);
-            
+            var remainingStepTime = session.StepFinishAt == null
+                ? new TimeSpan()
+                : (TimeSpan) (session.StepFinishAt - DateTime.Now);
+
+            // handle finish state of session
             var finishState = await elementDataProvider.HandleFinish(id);
+            // edit element only if session is now not null
             if (finishState.FinishAt != null)
                 if (element.Type == ElementType.Sentence)
                     await elementDataProvider.SetSentence(element, body.Text);
                 else
                     await elementDataProvider.SetDrawing(element, body.DrawImage);
-            
-            var stepState = await sessionDataProvider.GetPlayerStatus(element.Session);
+
+            var stepState = await sessionDataProvider.GetPlayerStatus(session);
+            // run next step only if all player has finish and session finish is less that 5000 milliseconds
             if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
                 await sessionDataProvider.NextStep(session);
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
-                    new BaseWebsocketEventJson(WebsocketEvent.PlayerFinished)), session.RoomId);
+                    new SessionSocketDto()
+                    {
+                        PlayerFinished = stepState.PlayerFinished
+                    }), session.RoomId);
 
-            return Ok(element);
+            return Ok();
         }
 
         // Call this endpoint to get a room
@@ -61,7 +69,7 @@ namespace thyrel_api.Controllers
             var element = await new ElementDataProvider(_context).GetElement(id);
             return element;
         }
-        
+
         // Call this endpoint to get a room
         // GET : api/element/current
         [HttpGet("current")]
