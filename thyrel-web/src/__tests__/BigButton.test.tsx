@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import BigButton from '../components/BigButton';
+import CreateIcon from '@material-ui/icons/Create';
 
 describe('BigButton', () => {
   test('button show children', () => {
@@ -10,13 +11,13 @@ describe('BigButton', () => {
   });
 
   test('icon props work', () => {
-    const icon: any = {
-      name: 'apple',
-      class: 'rs-icon-apple',
-    };
-    render(<BigButton icon={icon.name}>Yo</BigButton>);
-    expect(screen.getByTestId('bigbutton-icon')).toBeInTheDocument();
-    expect(screen.getByTestId('bigbutton-icon')).toHaveClass(icon.class);
+    render(
+      <BigButton startIcon={<CreateIcon data-testid="create-icon" />}>
+        Yo
+      </BigButton>,
+    );
+    expect(screen.getByTestId('create-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('create-icon')).toHaveClass('MuiSvgIcon-root');
   });
 
   test('onClick on click', () => {

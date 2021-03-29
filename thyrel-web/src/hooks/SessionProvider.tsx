@@ -1,6 +1,6 @@
 import Loading from 'components/Loading';
+import { useSnackbar } from 'notistack';
 import React from 'react';
-import { Notification } from 'rsuite';
 import HolyElement from 'types/HolyElement.type';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
@@ -25,6 +25,7 @@ export function SessionContextProvider({
   const { session, setSession } = useSessionStates();
   const [currentElement, setCurrentElement] = React.useState<HolyElement>();
   const { websocket } = useWebsocketContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     function onMessage(event: { data: string }) {
@@ -49,17 +50,13 @@ export function SessionContextProvider({
     let deleted = false;
     client<HolyElement>('element/current', { token: getToken() }).then(
       session => !deleted && setCurrentElement(session),
-      () =>
-        Notification.error({
-          title: 'Element error',
-          description: 'Go on Home or refresh the page...',
-        }),
+      () => enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
     );
 
     return () => {
       deleted = true;
     };
-  }, [session?.actualStep]);
+  }, [enqueueSnackbar, session?.actualStep]);
 
   const values = { session, currentElement };
 

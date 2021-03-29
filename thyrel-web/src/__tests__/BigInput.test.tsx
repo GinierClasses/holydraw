@@ -1,7 +1,9 @@
+import { fade } from '@material-ui/core';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import BigInput from '../components/BigInput';
-import { primaryFade } from '../styles/colors';
+import CreateIcon from '@material-ui/icons/Create';
+import { TEST_MUI_SECONDARY } from 'test/mui-data';
 
 describe('BigInput', () => {
   test('default input props work', () => {
@@ -12,13 +14,10 @@ describe('BigInput', () => {
   });
 
   test('icon is dispayed', () => {
-    const icon: any = {
-      name: 'apple',
-      class: 'rs-icon-apple',
-    };
-    render(<BigInput icon={icon.name} />);
+    render(<BigInput startIcon={<CreateIcon />} />);
     expect(screen.getByTestId('biginput-icon')).toBeInTheDocument();
-    expect(screen.getByTestId('biginput-icon')).toHaveClass(icon.class);
+    // check if Icon is an Icon
+    expect(screen.getByTestId('biginput-icon')).toHaveClass('MuiSvgIcon-root');
   });
 
   test('focus input will handle container class', () => {
@@ -28,8 +27,9 @@ describe('BigInput', () => {
     fireEvent.focus(screen.getByDisplayValue(testValue));
 
     const child = container.children;
+
     expect(child[0]).toHaveStyle({
-      boxShadow: `0 0 2px 0.2rem ${primaryFade(0.4)}`,
+      boxShadow: `0 0 2px 0.2rem ${fade(TEST_MUI_SECONDARY, 0.4)}`,
     });
   });
 
