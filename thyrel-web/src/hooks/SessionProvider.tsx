@@ -46,7 +46,6 @@ export function SessionContextProvider({
       .then(element => {
         enqueueSnackbar('Element Saved 😎', { variant: 'success' });
         setCurrentElement(e => ({ ...e, ...element }));
-        console.log(currentElement);
       })
       .catch(() =>
         enqueueSnackbar('Sorry, an error occured while saving 😕', {
