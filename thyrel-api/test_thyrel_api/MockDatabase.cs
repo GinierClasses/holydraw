@@ -50,8 +50,8 @@ namespace test_thyrel_api
         {
             var sessions = new List<Session>
             {
-                new(null, 1, DateTime.Now, 100, SessionStepType.Book),
-                new(null, 2, DateTime.Now, 100, SessionStepType.Draw),
+                new(null, 1, DateTime.Now, 100, SessionStepType.Book, 3),
+                new(null, 2, DateTime.Now, 100, SessionStepType.Draw, 3),
             };
             
             await Context.Session.AddRangeAsync(sessions);
