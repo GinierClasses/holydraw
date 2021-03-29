@@ -7,7 +7,6 @@ import PlayerCard from '../components/room/lobby/PlayerCard';
 import PlayerCardList from '../components/room/lobby/PlayerCardList';
 import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
-import Box from '../styles/Box';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
 import DrawColorPicker from '../components/room/draw/DrawColorPicker';
@@ -15,28 +14,35 @@ import SizePicker from '../components/room/draw/SizePicker';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
+import CanvasDraw from 'components/room/draw/CanvasDraw';
 import testPlayerList from '__tests__/json/players.json';
+import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
+import { Box } from '@material-ui/core';
+import SpinnerIcon from 'components/SpinnerIcon';
+import StartButton from 'components/room/lobby/StartButton';
 
 const colors = [
-  '#FF0000',
-  '#FFC700',
-  '#24FF00',
-  '#001AAF',
-  '#005A5F',
-  '#6564A6',
-  '#759F81',
-  '#FFFA8A',
-  '#8C33D2',
-  '#FF8A00',
-  '#00FFC2',
-  '#002FFF',
+  '#000000',
+  '#7f8c8d',
+  '#bdc3c7',
+  '#ecf0f1',
+  '#00a8ff',
+  '#1e3799',
+  '#2ecc71',
+  '#009432',
+  '#e74c3c',
+  '#c0392b',
   '#FA00FF',
-  '#A450AC',
+  '#FDA7DF',
+  '#FEAFA8',
+  '#CB5A57',
+  '#FFC312',
+  '#F79F1F',
 ];
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
-  const [currentColor, setCurrentColor] = useState(colors[0]);
+  const [color, setColor] = useState(colors[5]);
   const [size, setSize] = useState(8);
 
   const nextPp = () => {
@@ -45,26 +51,40 @@ export default function ComponentTest() {
 
   return (
     <Box>
-      <Box flexDirection="column" alignItems="center" width="100%" gap={30}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        gridGap={32}>
         <AppTitle />
 
-        <DrawColorPicker
-          colors={colors}
-          currentColor={currentColor}
-          onColorChange={color => setCurrentColor(color)}
-        />
-
-        <Box display="block" width={100} height={100}>
-          <StepTimer
-            finishAt={new Date('2021-03-02T10:27:00')}
-            timeDuration={100}
-          />
+        <Box display="flex" flexDirection="column">
+          <Box display="flex">
+            <DrawColorPicker
+              colors={colors}
+              currentColor={color}
+              onColorChange={color => setColor(color)}
+            />
+            <CanvasDraw size={size} color={color} />
+          </Box>
+          <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
         </Box>
+
+        <StepTimer
+          finishAt={new Date('2021-03-02T10:27:00')}
+          timeDuration={100}
+        />
         <ButtonModalJoin
+          loading={false}
           identifier={undefined}
           onClick={console.log}></ButtonModalJoin>
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
-        <BigInput onChange={() => void 0} value={'didier'} icon="apple" />
+        <BigInput
+          onChange={() => void 0}
+          value={'didier'}
+          startIcon={<AccessibilityNewIcon />}
+        />
         <ShareRoomButton identifier="LH4AH3" />
         <PlayerCard
           id={1}
@@ -75,9 +95,11 @@ export default function ComponentTest() {
           onKick={id => console.log('User id is :', id)}
         />
 
-        <BigButton icon="star" onClick={nextPp}>
+        <BigButton size="large" onClick={nextPp}>
           Test
         </BigButton>
+
+        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
 
         <PlayerCardList
           players={testPlayerList}
@@ -85,21 +107,19 @@ export default function ComponentTest() {
           isKickable={true}
           onKick={id => console.log('id is', id)}
         />
+        <DirectiveLabel sentence="Salzt" directive="bonsoir" />
+
+        <SpinnerIcon />
 
         <PlayerCount count={8} max={12} />
 
-        <DirectiveLabel
-          directive="Time to draw"
-          sentence="Mémé fait des fucks à la police"
+        <PlayerCardList
+          players={testPlayerList}
+          isKickable={true}
+          onKick={id => console.log('id is', id)}
         />
 
-        <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
-
-        <Box m={64}>
-          <BookPlayerList
-            players={testPlayerList}
-            playerId={2}></BookPlayerList>
-        </Box>
+        <BookPlayerList players={testPlayerList} playerId={2}></BookPlayerList>
       </Box>
     </Box>
   );

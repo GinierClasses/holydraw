@@ -9,13 +9,16 @@ const usernames = [
   'GrosTas',
   'C moi',
   'C pas moi',
-  'Adolf',
   'Staline',
   'Krokette',
   'Petite loutre',
   'Bob le bob',
-  'Con',
-  'hhhhhhhhhh',
+  'SavageWolf',
+  'Padawan',
+  'BigBear',
+  'BigFather',
+  'Terminator',
+  'Stitch',
 ];
 
 const getRandomUsername = () =>

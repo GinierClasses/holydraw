@@ -1,17 +1,18 @@
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { client } from '../api/client';
-import { getToken } from '../api/player-provider';
+import { destroy, getToken } from '../api/player-provider';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { usePlayerContext } from './PlayerProvider';
-import { Notification } from 'rsuite';
 
 export function useRoomStates() {
   const [room, setRoom] = React.useState<Room>();
   const [players, setPlayers] = React.useState<Player[]>([]);
   const { player } = usePlayerContext();
   const history = useHistory();
+  const { enqueueSnackbar } = useSnackbar();
 
   const updateRoom = React.useCallback(() => {
     client<Room>(`room/${player?.roomId}`, { token: getToken() }).then(setRoom);
@@ -27,10 +28,10 @@ export function useRoomStates() {
     (playerId?: number) => {
       if (!playerId) return;
       if (playerId === player?.id) {
-        history?.push('/home');
-        Notification['info']({
-          title: 'You have been kicked from the room',
-          description: "they don't want to play with the best 😢",
+        history.push('/home');
+        destroy();
+        enqueueSnackbar("Seems like you've been kicked from the room 😅", {
+          variant: 'info',
         });
       }
       setPlayers(prevPlayers => {
@@ -43,7 +44,7 @@ export function useRoomStates() {
         return prevPlayers;
       });
     },
-    [history, player?.id],
+    [enqueueSnackbar, history, player?.id],
   );
 
   const addPlayer = React.useCallback((player?: Player) => {
@@ -56,9 +57,13 @@ export function useRoomStates() {
   }, []);
 
   React.useEffect(() => {
+    if (!player?.roomId) {
+      history.push('/home');
+      return;
+    }
     updateRoom();
     updatePlayer();
-  }, [updatePlayer, updateRoom]);
+  }, [history, player?.roomId, updatePlayer, updateRoom]);
 
   return { updatePlayer, updateRoom, removePlayer, addPlayer, room, players };
 }

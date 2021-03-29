@@ -1,6 +1,5 @@
-import { css } from '@emotion/css';
+import { Box, Typography } from '@material-ui/core';
 import { useRoomContext } from 'hooks/RoomProvider';
-import Box from 'styles/Box';
 import ShareRoomButton from './ShareRoomButton';
 
 export default function SettingsMenu() {
@@ -9,19 +8,13 @@ export default function SettingsMenu() {
     <Box
       borderRadius="0 4px 4px 0"
       minWidth={328}
-      pl={16}
+      pl={2}
       height="auto"
+      display="flex"
       flexDirection="column"
-      gap={24}>
-      <p
-        className={css({
-          fontFamily: 'Work Sans',
-          fontSize: 20,
-          fontWeight: 'bold',
-          overflow: 'hidden',
-        })}>
-        {wsState}
-      </p>
+      alignItems={{ xs: 'center', sm: 'flex-start' }}
+      gridGap={24}>
+      <Typography variant="h5">{wsState}</Typography>
       <ShareRoomButton identifier={room?.identifier} />
     </Box>
   );
