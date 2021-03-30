@@ -5,7 +5,6 @@ import { useSessionContext } from 'hooks/SessionProvider';
 import { Box, makeStyles } from '@material-ui/core';
 
 type GameBarProps = {
-  max: number;
   onFinish?: () => void;
 };
 
@@ -18,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function GameBar({ max, onFinish }: GameBarProps) {
+export default function GameBar({ onFinish }: GameBarProps) {
   const { session } = useSessionContext();
   const classes = useStyles();
   return (
