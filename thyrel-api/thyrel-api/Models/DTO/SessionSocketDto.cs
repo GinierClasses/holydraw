@@ -10,4 +10,9 @@ namespace thyrel_api.Models.DTO
         public int TimeDuration { get; set; }
         public int PlayerFinished { get; set; }
     }
+    
+    public class PlayerFinishStepSocketDto
+    {
+        public int PlayerFinished { get; set; }
+    }
 }

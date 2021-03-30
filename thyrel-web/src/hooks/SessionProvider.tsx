@@ -30,7 +30,7 @@ export function SessionContextProvider({
   const [currentElement, setCurrentElement] = React.useState<StepElement>();
   const { websocket } = useWebsocketContext();
   const { enqueueSnackbar } = useSnackbar();
-
+  console.log(currentElement);
   function onSave(content: string) {
     const elementId = currentElement?.id;
 

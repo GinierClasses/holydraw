@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
 export default function GameBar({ max, onFinish }: GameBarProps) {
   const { session } = useSessionContext();
   const classes = useStyles();
-
   return (
     <Box display="flex" flexDirection="column" alignItems="center" width="100%">
       <AppTitle />
@@ -33,7 +32,7 @@ export default function GameBar({ max, onFinish }: GameBarProps) {
         width="100%"
         className={classes.infoContainer}>
         <PlayerCount
-          count={session?.playersFinished || 0}
+          count={session?.playerFinished || 0}
           max={session?.totalPlayers || 0}
         />
 
