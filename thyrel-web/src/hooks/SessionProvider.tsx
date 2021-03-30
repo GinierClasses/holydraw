@@ -33,12 +33,11 @@ export function SessionContextProvider({
 
   function onSave(content: string) {
     const elementId = currentElement?.id;
-    const url = `element/${elementId}`;
 
     const elementContent =
-      currentElement?.type == 1 ? { drawimage: content } : { text: content };
+      currentElement?.type === 1 ? { drawimage: content } : { text: content };
 
-    client<HolyElement>(url, {
+    client<HolyElement>(`element/${elementId}`, {
       token: getToken(),
       method: 'PATCH',
       data: elementContent,
@@ -46,7 +45,6 @@ export function SessionContextProvider({
       .then(element => {
         enqueueSnackbar('Element Saved 😎', { variant: 'success' });
         setCurrentElement(e => ({ ...e, ...element }));
-        console.log(currentElement);
       })
       .catch(() =>
         enqueueSnackbar('Sorry, an error occured while saving 😕', {
