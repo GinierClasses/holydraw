@@ -16,13 +16,10 @@ import { SessionContextProvider } from 'hooks/SessionProvider';
 const Router: any =
   process.env.NODE_ENV === 'production' ? HashRouter : BrowserRouter;
 
-const basename: string =
-  process.env.NODE_ENV === 'production' ? 'holydraw' : '';
-
 export default function Routes() {
   return (
     <AppLayout>
-      <Router basename={basename}>
+      <Router>
         <Switch>
           <Route path="/join/:identifier" component={Home} />
           <Route path="/r" component={RoomRoutes} />
