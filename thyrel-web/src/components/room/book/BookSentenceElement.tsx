@@ -63,9 +63,7 @@ export default function BookSentenceElement({
         className={classes.sentencecontainer}>
         <Avatar src={avatarUrl} className={classes.avatar} />
         <Typography className={(classes.text, classes.sentence)} component="p">
-          {sentence} asdasda sd wd asd asdas dasd asdasd as das dasdasd asd as
-          dsd ad as dasd asd as dasd asd asd asd asdsdadas adasd asdas asd as
-          dasd
+          {sentence}
         </Typography>
       </Box>
     </Box>
