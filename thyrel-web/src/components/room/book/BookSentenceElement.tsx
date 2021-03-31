@@ -1,4 +1,5 @@
 import { Box, makeStyles, Avatar, Typography } from '@material-ui/core';
+import theme from 'theme';
 
 type BookSentenceElementProps = {
   username?: string;
@@ -11,16 +12,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    padding: 4,
-
-    position: 'static',
-    width: 323,
-    height: 40,
-    left: 0,
-    top: 21,
+    padding: theme.spacing(1),
     border: `1px solid ${theme.palette.secondary.main}`,
     borderRadius: 4,
+    maxWidth: theme.spacing(42),
   },
   avatar: {
     width: 32,
@@ -41,6 +36,10 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  sentence: {
+    marginRight: 8,
+    marginLeft: 8,
+  },
 }));
 
 export default function BookSentenceElement({
@@ -52,12 +51,23 @@ export default function BookSentenceElement({
   return (
     <Box display="flex" flexDirection="column">
       <Box className={classes.text}>{username}</Box>
-      <div className={classes.sentencecontainer}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        padding={theme.spacing(1)}
+        border="1px solid"
+        borderColor={theme.palette.secondary.main}
+        borderRadius="4px"
+        maxWidth={theme.spacing(42)}
+        className={classes.sentencecontainer}>
         <Avatar src={avatarUrl} className={classes.avatar} />
-        <Typography className={classes.text} component="p">
-          {sentence}
+        <Typography className={(classes.text, classes.sentence)} component="p">
+          {sentence} asdasda sd wd asd asdas dasd asdasd as das dasdasd asd as
+          dsd ad as dasd asd as dasd asd asd asd asdsdadas adasd asdas asd as
+          dasd
         </Typography>
-      </div>
+      </Box>
     </Box>
   );
 }
