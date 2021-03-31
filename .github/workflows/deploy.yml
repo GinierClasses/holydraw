@@ -13,8 +13,8 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
-          cd thyrel-web && npm install
-          cd thyrel-web && npm run build
+          cd ./thyrel-web && npm install
+          cd ./thyrel-web && npm run 1
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.0
