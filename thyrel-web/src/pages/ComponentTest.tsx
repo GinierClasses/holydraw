@@ -22,6 +22,7 @@ import SpinnerIcon from 'components/SpinnerIcon';
 import StartButton from 'components/room/lobby/StartButton';
 import StepProgress from 'components/room/StepProgress';
 import { Slider } from '@material-ui/core';
+import BookSentenceElement from 'components/room/book/BookSentenceElement';
 
 const colors = [
   '#000000',
@@ -65,6 +66,10 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <AppTitle />
+
+        <Box>
+          <BookSentenceElement></BookSentenceElement>
+        </Box>
 
         <Box display="flex" flexDirection="column">
           <Box display="flex">
