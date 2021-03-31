@@ -29,5 +29,5 @@ jobs:
           branch: gh-pages # The branch the action should deploy to.
           folder: thyrel-web/build # The folder the action should deploy.
           clean: true
-          GIT_CONFIG_NAME: Melvynx
-          GIT_CONFIG_EMAIL: melvynmal2@gmail.com
+          git-config-name: Melvynx
+          git-config-email: melvynmal2@gmail.com
