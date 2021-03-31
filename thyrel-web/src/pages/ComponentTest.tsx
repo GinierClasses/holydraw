@@ -68,7 +68,10 @@ export default function ComponentTest() {
         <AppTitle />
 
         <Box>
-          <BookSentenceElement></BookSentenceElement>
+          <BookSentenceElement
+            username="Luca thb"
+            avatarUrl={profilesPictures[ppIndex]}
+            sentence={'Hey banane poil vert'}></BookSentenceElement>
         </Box>
 
         <Box display="flex" flexDirection="column">
