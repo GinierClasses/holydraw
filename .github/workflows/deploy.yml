@@ -23,7 +23,6 @@ jobs:
       - name: Build 🔧
         run: cd ./thyrel-web && npm run build
 
-      - uses: actions/checkout@v2
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
