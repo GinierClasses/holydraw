@@ -1,0 +1,33 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install
+        run: cd thyrel-web && npm i
+
+      - name: Build 🔧
+        run: cd ./thyrel-web && npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: thyrel-web/build # The folder the action should deploy.
+          clean: true
+          git-config-name: Melvynx
+          git-config-email: melvynmal2@gmail.com
