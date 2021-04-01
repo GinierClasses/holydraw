@@ -13,14 +13,30 @@ namespace thyrel_api.Json
             PlayerId = playerId;
         }
     }
+    
+    public class ErrorWebsocketEventJson : BaseWebsocketEventJson
+    {
+        public string Error { get; }
+
+        public ErrorWebsocketEventJson(string error)
+        {
+            WebsocketEvent = WebsocketEvent.Invalid;
+            Error = error;
+        }
+    }
 
     public class PlayerWebsocketEventJson : BaseWebsocketEventJson
     {
-        public Player Player { get; }
+        public PlayerDto Player { get; }
 
-        public PlayerWebsocketEventJson(WebsocketEvent websocketEvent, Player player) : base(websocketEvent)
+        public PlayerWebsocketEventJson(WebsocketEvent websocketEvent, PlayerDto player) : base(websocketEvent)
         {
             Player = player;
+        }
+        
+        public PlayerWebsocketEventJson(WebsocketEvent websocketEvent, Player player) : base(websocketEvent)
+        {
+            Player = new PlayerDto(player);
         }
     }
 

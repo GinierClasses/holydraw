@@ -6,9 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using thyrel_api.DataProvider;
-using thyrel_api.Json;
 using thyrel_api.Models;
 
 namespace thyrel_api.Websocket
@@ -16,62 +13,37 @@ namespace thyrel_api.Websocket
     public class WebsocketHandler : IWebsocketHandler
     {
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly WebsocketService _websocketService;
         private List<SocketConnection> _websocketConnections = new();
 
         public WebsocketHandler(IServiceScopeFactory scopeFactory)
         {
             _scopeFactory = scopeFactory;
+            _websocketService = new WebsocketService(this);
             SetupCleanUpTask();
         }
 
         public async Task Handle(Guid id, WebSocket webSocket)
         {
             lock (_websocketConnections)
-            {
                 _websocketConnections.Add(new SocketConnection
                 {
                     Id = id,
-                    WebSocket = webSocket,
-                    RoomId = null
+                    WebSocket = webSocket
                 });
-            }
 
-            // we handle message from Player only for authenticate
             while (webSocket.State == WebSocketState.Open)
             {
                 var message = await ReceiveMessage(webSocket);
                 if (message == null) continue;
 
-                var connection = _websocketConnections.Find(w => w.Id == id);
+                SocketConnection connection;
+                lock (_websocketConnections)
+                    connection = _websocketConnections.Find(w => w.Id == id);
 
                 if (connection == null || connection.RoomId != null) continue;
                 // deserialize message from Player
-                var socketJson = JsonConvert.DeserializeObject<ConnexionSocketMessage>(message);
-
-                var playerToken = socketJson?.PlayerToken;
-                var playerDataProvider = new PlayerDataProvider(GetInjectedContext());
-
-                var player = playerToken == null ? null : await playerDataProvider.GetPlayerByToken(playerToken);
-                // if no matching token or no token
-                if (player == null || player?.Room.FinishAt != null)
-                {
-                    await SendMessageToSocket(connection, Json.JsonBase.Serialize(
-                        new BaseWebsocketEventJson(WebsocketEvent.Invalid)));
-                    continue;
-                }
-
-                if (!player.IsConnected)
-                    player = await playerDataProvider.SetIsConnected(player.Id, true);
-
-                connection.RoomId = player.RoomId;
-                connection.PlayerId = player.Id;
-                // remove token locally (not in the DB)
-                player.Token = null;
-
-                // inform room that a new player join
-                await SendMessageToSockets(
-                    JsonBase.Serialize(
-                        new PlayerWebsocketEventJson(WebsocketEvent.PlayerJoin, player)), player.RoomId);
+                await _websocketService.MessageService(connection, message, GetInjectedContext());
             }
         }
 
@@ -100,7 +72,7 @@ namespace thyrel_api.Websocket
         }
 
         private static async Task<string> ReceiveMessage(WebSocket webSocket)
-        { 
+        {
             var arraySegment = new ArraySegment<byte>(new byte[4096]);
             var receivedMessage = await webSocket.ReceiveAsync(arraySegment, CancellationToken.None);
             if (receivedMessage.MessageType != WebSocketMessageType.Text) return null;
@@ -109,7 +81,7 @@ namespace thyrel_api.Websocket
             return message;
         }
 
-        private static async Task SendMessageToSocket(SocketConnection socketConnection, string message)
+        public static async Task SendMessageToSocket(SocketConnection socketConnection, string message)
         {
             if (socketConnection.WebSocket.State == WebSocketState.Open)
             {
@@ -132,40 +104,21 @@ namespace thyrel_api.Websocket
                     lock (_websocketConnections)
                     {
                         openSockets = _websocketConnections.Where(socket =>
-                            socket.WebSocket.State == WebSocketState.Open || socket.WebSocket.State == WebSocketState.Connecting)
+                                socket.WebSocket.State == WebSocketState.Open ||
+                                socket.WebSocket.State == WebSocketState.Connecting)
                             .ToList();
                         closedSockets = _websocketConnections.Where(socket =>
-                            socket.WebSocket.State != WebSocketState.Open && socket.WebSocket.State != WebSocketState.Connecting)
+                                socket.WebSocket.State != WebSocketState.Open &&
+                                socket.WebSocket.State != WebSocketState.Connecting)
                             .ToList();
 
                         _websocketConnections = openSockets;
                     }
 
-                    foreach (var closedSocket in closedSockets.Where(closedSocket => openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
+                    foreach (var closedSocket in closedSockets.Where(closedSocket =>
+                        openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                     {
-                        await SendMessageToSockets(
-                            JsonBase.Serialize(
-                                new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerLeft, closedSocket.PlayerId)), closedSocket.RoomId);
-                        if (closedSocket.PlayerId == null) continue;
-
-                        var context = GetInjectedContext();
-                        var playerDataProvider = new PlayerDataProvider(context);
-                        
-                        var player = await playerDataProvider.SetIsConnected(
-                            (int) closedSocket.PlayerId, false);
-                        if (!player.IsOwner || player.RoomId == null) continue;
-                        
-                        var newOwnerPlayer = await playerDataProvider.FindNewOwner((int)player.RoomId);
-                        if (newOwnerPlayer == null)
-                        {
-                            await new RoomDataProvider(context).Finish(player.RoomId);
-                            continue;
-                        }
-
-                        await playerDataProvider.SetOwner(player, false);
-                        await SendMessageToSockets(
-                            JsonBase.Serialize(
-                                new PlayerWebsocketEventJson(WebsocketEvent.NewOwnerPlayer, newOwnerPlayer)), closedSocket.RoomId);
+                        await _websocketService.DisconnectService(closedSocket, GetInjectedContext());
                     }
 
                     await Task.Delay(5000);
@@ -176,7 +129,7 @@ namespace thyrel_api.Websocket
         private HolyDrawDbContext GetInjectedContext()
         {
             var scope = _scopeFactory.CreateScope();
-            return scope.ServiceProvider.GetRequiredService<HolyDrawDbContext>(); 
+            return scope.ServiceProvider.GetRequiredService<HolyDrawDbContext>();
         }
     }
 }

@@ -1,12 +1,12 @@
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useHistory } from 'react-router';
+import { WebsocketEvent, WebsocketMessage } from 'types/websocket.types';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
 import Loading from '../components/Loading';
 import Player from '../types/Player.type';
 import { parseJson } from '../utils/json';
-import { WebsocketEvent, WebsocketMessage } from './useWebsocket';
 import { useWebsocketContext } from './WebsocketProvider';
 
 type PlayerContextProps = {
@@ -49,9 +49,7 @@ export function PlayerContextProvider({
     client<Player>('player/me', { token: getToken() }).then(
       player => !deleted && setPlayer(player),
       () => {
-        enqueueSnackbar("We couldn't get you back online.", {
-          variant: 'error',
-        });
+        enqueueSnackbar("You haven't joined a game yet.", { variant: 'error' });
         history.push('/home');
       },
     );

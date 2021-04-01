@@ -38,5 +38,7 @@ namespace thyrel_api.Models
 
         public virtual List<Element> AlbumElements { get; set; }
         public virtual List<Element> CreatedElements { get; set; }
+        
+        
     }
 }
