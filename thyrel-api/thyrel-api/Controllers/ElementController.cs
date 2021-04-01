@@ -39,12 +39,14 @@ namespace thyrel_api.Controllers
             if (element.CreatorId != player.Id) return Unauthorized();
 
             var session = await sessionDataProvider.GetSessionById(element.SessionId);
-            TimeSpan remainingStepTime = (TimeSpan)(session.StepFinishAt - DateTime.Now);
-            
+            var remainingStepTime = session.StepFinishAt == null
+                ? new TimeSpan()
+                : (TimeSpan) (session.StepFinishAt - DateTime.Now);
+
             var finishState = await elementDataProvider.HandleFinish(id);
             if (finishState.IsFinish())
                 if (finishState.Type == ElementType.Sentence)
-                { 
+                {
                     await elementDataProvider.SetSentence(finishState.Id, body.Text);
                     finishState.Text = body.Text;
                 }
@@ -56,11 +58,22 @@ namespace thyrel_api.Controllers
 
             var stepState = await sessionDataProvider.GetPlayerStatus(session);
             if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
-                await sessionDataProvider.NextStep(session);
-
-            await _websocketHandler.SendMessageToSockets(
-                JsonBase.Serialize(
-                    new BaseWebsocketEventJson(WebsocketEvent.PlayerFinished)), session.RoomId);
+            {
+                session = await sessionDataProvider.NextStep(session);
+                if (session.StepType != SessionStepType.Book)
+                    new SessionStepTimeout(session.ActualStep, session.Id, _context, _websocketHandler).RunTimeout(
+                        session.TimeDuration);
+                await _websocketHandler.SendMessageToSockets(
+                    JsonBase.Serialize(
+                        new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep,
+                            session.StepType,
+                            session.StepFinishAt, session.TimeDuration, 0)), session.RoomId);
+            }
+            else
+                await _websocketHandler.SendMessageToSockets(
+                    JsonBase.Serialize(
+                        new PlayerFinishStepWebsocketEventJson(WebsocketEvent.SessionUpdate, stepState.PlayerFinished)),
+                    session.RoomId);
 
             return Ok(finishState);
         }
@@ -70,10 +83,14 @@ namespace thyrel_api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ElementDto>> GetElement(int id)
         {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
             var element = await new ElementDataProvider(_context).GetElement(id);
+            if (element.CreatorId != player.Id) return Unauthorized();
             return element;
         }
-        
+
         // Call this endpoint to get the current Element of the player that call the api
         // GET : api/element/current
         [HttpGet("current")]

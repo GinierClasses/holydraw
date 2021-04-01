@@ -1,12 +1,10 @@
 import PlayerCount from './room/PlayerCount';
 import AppTitle from './AppTitle';
 import StepTimer from './room/StepTimer';
-import { useRoomContext } from '../hooks/RoomProvider';
 import { useSessionContext } from 'hooks/SessionProvider';
 import { Box, makeStyles } from '@material-ui/core';
 
 type GameBarProps = {
-  max: number;
   onFinish?: () => void;
 };
 
@@ -19,11 +17,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function GameBar({ max, onFinish }: GameBarProps) {
-  const { players } = useRoomContext();
+export default function GameBar({ onFinish }: GameBarProps) {
   const { session } = useSessionContext();
   const classes = useStyles();
-
   return (
     <Box display="flex" flexDirection="column" alignItems="center" width="100%">
       <AppTitle />
@@ -34,7 +30,10 @@ export default function GameBar({ max, onFinish }: GameBarProps) {
         justifyContent="space-between"
         width="100%"
         className={classes.infoContainer}>
-        <PlayerCount count={players?.length || 0} max={max} />
+        <PlayerCount
+          count={session?.playerFinished || 0}
+          max={session?.totalPlayers || 0}
+        />
 
         <Box display="block">
           <StepTimer

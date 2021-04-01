@@ -26,7 +26,10 @@ export function Players() {
       method: 'PATCH',
     }).then(
       () => enqueueSnackbar('Player kicked 😎', { variant: 'success' }),
-      () => enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
+      () =>
+        enqueueSnackbar('Sorry, an error occured 😕 [kick-PATCH]', {
+          variant: 'error',
+        }),
     );
   }
 
