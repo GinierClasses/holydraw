@@ -11,7 +11,7 @@ html {
 
 * {
   scrollbar-color: var(--base-color) transparent;
-  scrollbar-width: 8px;
+  scrollbar-width: thin;
 }
 
 body,

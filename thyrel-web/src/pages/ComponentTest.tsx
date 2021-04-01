@@ -87,13 +87,13 @@ export default function ComponentTest() {
         </Box>
 
         <StepTimer
-          finishAt={new Date('2021-03-02T10:27:00')}
-          timeDuration={100}
+          finishAt={new Date('2021-03-30T08:31:00')}
+          timeDuration={120}
         />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}
-          onClick={console.log}></ButtonModalJoin>
+          onClick={() => void 0}></ButtonModalJoin>
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
         <BigInput
           onChange={() => void 0}
@@ -107,7 +107,7 @@ export default function ComponentTest() {
           avatar={profilesPictures[ppIndex]}
           isOwner={true}
           isKickable={false}
-          onKick={id => console.log('User id is :', id)}
+          onKick={id => void 0}
         />
 
         <BigButton size="large" onClick={nextPp}>
@@ -120,7 +120,7 @@ export default function ComponentTest() {
           players={testPlayerList}
           playerId={3}
           isKickable={true}
-          onKick={id => console.log('id is', id)}
+          onKick={id => void 0}
         />
         <DirectiveLabel sentence="Salzt" directive="bonsoir" />
 
@@ -131,7 +131,7 @@ export default function ComponentTest() {
         <PlayerCardList
           players={testPlayerList}
           isKickable={true}
-          onKick={id => console.log('id is', id)}
+          onKick={id => void 0}
         />
 
         <BookPlayerList players={testPlayerList} playerId={2} />

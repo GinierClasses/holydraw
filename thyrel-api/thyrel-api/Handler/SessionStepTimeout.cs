@@ -45,7 +45,7 @@ namespace thyrel_api.Handler
                     JsonBase.Serialize(
                         new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep,
                             session.StepType,
-                            session.StepFinishAt, session.TimeDuration)), session.RoomId);
+                            session.StepFinishAt, session.TimeDuration, 0)), session.RoomId);
 
                 if (session.StepType != SessionStepType.Book)
                     new SessionStepTimeout(session.ActualStep, session.Id, context, _websocketHandler).RunTimeout(
