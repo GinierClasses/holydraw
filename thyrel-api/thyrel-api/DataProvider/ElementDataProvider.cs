@@ -79,7 +79,7 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the DrawImage into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="drawImage"></param>
         /// <returns></returns>
         public async Task SetDrawing(int id, string drawImage)

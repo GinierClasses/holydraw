@@ -44,8 +44,7 @@ namespace thyrel_api.Controllers
                 : (TimeSpan) (session.StepFinishAt - DateTime.Now);
 
             var finishState = await elementDataProvider.HandleFinish(id);
-
-            if (finishState.FinishAt != null)
+            if (finishState.IsFinish())
                 if (finishState.Type == ElementType.Sentence)
                 {
                     await elementDataProvider.SetSentence(finishState.Id, body.Text);

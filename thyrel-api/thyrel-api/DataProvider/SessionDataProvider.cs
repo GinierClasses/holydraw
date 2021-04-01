@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
+using thyrel_api.Handler;
 using thyrel_api.Models;
 using thyrel_api.Models.DTO;
 
@@ -122,8 +123,8 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Session> StartSession(int roomId)
         {
-            const int duration = 30;
             const int step = 1;
+            var duration = StepTimeHandler.GetTimeForStep(SessionStepType.Start);
 
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
             var elementDataProvider = new ElementDataProvider(_holyDrawDbContext);
@@ -165,25 +166,16 @@ namespace thyrel_api.DataProvider
 
             var candidates = await elementProvider.GetNextCandidateElements(session.Id);
 
-            switch (session.StepType)
+            session.StepType = session.StepType switch
             {
-                case SessionStepType.Start:
-                    // TODO : define a time for Drawing and Text, currently 3 minutes for drawing
-                    session.StepFinishAt = DateTime.Now.AddMinutes(3);
-                    session.StepType = SessionStepType.Draw;
-                    break;
-                case SessionStepType.Draw:
-                    session.StepType = SessionStepType.Write;
-                    break;
-                case SessionStepType.Write:
-                    session.StepType = SessionStepType.Draw;
-                    break;
-                case SessionStepType.Book:
-                    Console.WriteLine("Book case");
-                    break;
-                default:
-                    throw new Exception("Impossible switch case");
-            }
+                SessionStepType.Start => SessionStepType.Draw,
+                SessionStepType.Draw => SessionStepType.Write,
+                SessionStepType.Write => SessionStepType.Draw,
+                SessionStepType.Book => SessionStepType.Book,
+                _ => throw new Exception("Impossible Session.StepType case")
+            };
+
+            session.UpdateTimeForStep(StepTimeHandler.GetTimeForStep(session.StepType));
 
             if (session.StepType != SessionStepType.Book)
             {
