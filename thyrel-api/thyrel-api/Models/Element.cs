@@ -41,5 +41,10 @@ namespace thyrel_api.Models
 
         public int SessionId { get; set; }
         public Session Session { get; set; }
+
+        public bool IsFinish()
+        {
+            return FinishAt != null;
+        }
     }
 }

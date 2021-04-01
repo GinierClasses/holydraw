@@ -38,5 +38,10 @@ namespace thyrel_api.Models
 
         public virtual List<Element> AlbumElements { get; set; }
         public virtual List<Element> CreatedElements { get; set; }
+
+        public bool IsInRoom(int roomId)
+        {
+            return RoomId == roomId;
+        }
     }
 }

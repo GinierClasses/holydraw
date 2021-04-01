@@ -109,7 +109,7 @@ namespace thyrel_api.DataProvider
                 .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null)
                 .CountAsync();
 
-            var playerStatusCount = new PlayerStatusDto()
+            var playerStatusCount = new PlayerStatusDto
             {
                 PlayerFinished = elementsCount,
                 PlayerCount = playersCount
@@ -177,12 +177,7 @@ namespace thyrel_api.DataProvider
                 _ => throw new Exception("Impossible Session.StepType case")
             };
 
-            var time = StepTimeHandler.GetTimeForStep(session.StepType);
-            if (time > 0)
-            {
-                session.StepFinishAt = DateTime.Now.AddSeconds(time);
-                session.TimeDuration = time;
-            }
+            session.UpdateTimeForStep(StepTimeHandler.GetTimeForStep(session.StepType));
 
             if (session.StepType != SessionStepType.Book)
             {

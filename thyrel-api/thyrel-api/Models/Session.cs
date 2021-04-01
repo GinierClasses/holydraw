@@ -35,5 +35,12 @@ namespace thyrel_api.Models
         public virtual Room Room { get; set; }
 
         public virtual List<Element> Elements { get; set; }
+
+        public void UpdateTimeForStep(int time)
+        {
+            if (time == 0) return;
+            StepFinishAt = DateTime.Now.AddSeconds(time);
+            TimeDuration = time;
+        }
     }
 }
