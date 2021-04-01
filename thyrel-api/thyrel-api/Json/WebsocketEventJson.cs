@@ -45,14 +45,29 @@ namespace thyrel_api.Json
         public SessionSocketDto Session { get; }
 
         public SessionWebsocketEventJson(WebsocketEvent websocketEvent, int step, SessionStepType stepType,
-            DateTime? stepFinishAt, int timeDuration) : base(websocketEvent)
+            DateTime? stepFinishAt, int timeDuration, int playerFinished) : base(websocketEvent)
         {
             Session = new SessionSocketDto
             {
                 ActualStep = step,
                 StepFinishAt = stepFinishAt,
                 TimeDuration = timeDuration,
-                StepType = stepType
+                StepType = stepType,
+                PlayerFinished = playerFinished
+            };
+        }
+    }
+
+    public class PlayerFinishStepWebsocketEventJson : BaseWebsocketEventJson
+    {
+        public PlayerFinishStepSocketDto Session { get; }
+
+        public PlayerFinishStepWebsocketEventJson(WebsocketEvent websocketEvent, int playerFinished) : base(
+            websocketEvent)
+        {
+            Session = new PlayerFinishStepSocketDto
+            {
+                PlayerFinished = playerFinished
             };
         }
     }

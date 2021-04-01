@@ -16,7 +16,7 @@ type CanvasDrawProps = {
   size?: number;
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   canvas: {
     backgroundColor: '#DDDDDD',
     width: canvasWidth.width,

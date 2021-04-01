@@ -53,24 +53,24 @@ namespace thyrel_api.Controllers
         }
 
         // Call this endpoint to get a room
-        // GET : api/room/identifier
+        // GET : api/room/4
         [HttpGet("{id}")]
-        public async Task<ActionResult<Room>> Get(int id)
+        public async Task<ActionResult<RoomDto>> Get(int id)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
-            if (player == null || player.RoomId != id) return Unauthorized();
+            if (player == null || !player.IsInRoom(id)) return Unauthorized();
             
             var room = await new RoomDataProvider(_context).GetRoom(id);
             return room;
         }
 
         // Call this endpoint to get players of a room
-        // GET : api/room/{id}/players
+        // GET : api/room/{roomId}/players
         [HttpGet("{roomId}/players")]
         public async Task<ActionResult<List<PlayerDto>>> GetPlayersByRoom(int roomId)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
-            if (player == null || player.RoomId != roomId) return Unauthorized();
+            if (player == null || !player.IsInRoom(roomId)) return Unauthorized();
             
             var players = await new PlayerDataProvider(_context).GetPlayersByRoom(roomId);
             return players;

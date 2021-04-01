@@ -1,4 +1,4 @@
-type HolyElement = {
+export type HolyElement = {
   id: number;
   step: number;
   type: 0 | 1;
@@ -7,4 +7,8 @@ type HolyElement = {
   createdAt: string;
 };
 
-export default HolyElement;
+type StepElement = HolyElement & {
+  parent: HolyElement;
+};
+
+export default StepElement;
