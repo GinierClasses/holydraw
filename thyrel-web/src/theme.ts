@@ -8,6 +8,10 @@ function createBaseTheme(palette: Palette) {
   return createMuiTheme({
     palette: palette,
     typography: {
+      h1: {
+        fontSize: 64,
+        fontFamily: 'Modak',
+      },
       h4: {
         fontFamily: 'Work Sans',
         fontWeight: 'bold',
