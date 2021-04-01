@@ -42,7 +42,7 @@ namespace thyrel_api.Websocket
                     connection = _websocketConnections.Find(w => w.Id == id);
 
                 if (connection == null || connection.RoomId != null) continue;
-                // deserialize message from Player
+
                 await _websocketService.MessageService(connection, message, GetInjectedContext());
             }
         }
