@@ -77,6 +77,8 @@ namespace test_thyrel_api
 
             var playersCount = await Context.Player
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).CountAsync();
+            session.TotalPlayers = playersCount;
+            await Context.SaveChangesAsync();
 
             var elementsCount = await Context.Element
                 .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null).CountAsync();

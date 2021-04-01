@@ -13,7 +13,10 @@ export default function LobbyStartAction() {
     client<Session>('session', { method: 'POST', token: getToken() }).then(
       () =>
         enqueueSnackbar('Game successfully started 💪', { variant: 'success' }),
-      () => enqueueSnackbar('Sorry, an error occured 😕', { variant: 'error' }),
+      () =>
+        enqueueSnackbar('Sorry, an error occured 😕 [Session-POST]', {
+          variant: 'error',
+        }),
     );
   }
 

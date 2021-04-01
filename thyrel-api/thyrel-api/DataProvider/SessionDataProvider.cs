@@ -28,7 +28,8 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount)
         {
-            var sessionToAdd = new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
+            var sessionToAdd =
+                new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
 
             // test if no session is already start
             if (await _holyDrawDbContext.Session.AnyAsync(s => s.RoomId == roomId && s.FinishAt == null))
@@ -81,15 +82,16 @@ namespace thyrel_api.DataProvider
                 {
                     ActualStep = s.ActualStep,
                     RoomId = s.RoomId,
+                    TimeDuration = s.TimeDuration,
                     CreatedAt = s.CreatedAt,
                     FinishAt = s.FinishAt,
                     Id = s.Id,
                     StepFinishAt = s.StepFinishAt,
                     StepType = s.StepType,
-                    TotalPLayers = s.TotalPlayers
+                    TotalPlayers = s.TotalPlayers
                 })
                 .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
-            
+
             return sessionDto;
         }
 
@@ -100,15 +102,14 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<PlayerStatusDto> GetPlayerStatus(Session session)
         {
-            var playersCount = await _holyDrawDbContext.Player
-                .Where(p => p.RoomId == session.RoomId && p.IsPlaying).CountAsync();
-
             var elementsCount = await _holyDrawDbContext.Element
-                .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null).CountAsync();
+                .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null)
+                .CountAsync();
 
-            var playerStatusCount = new PlayerStatusDto() {
+            var playerStatusCount = new PlayerStatusDto
+            {
                 PlayerFinished = elementsCount,
-                PlayerCount = playersCount
+                PlayerCount = session.TotalPlayers
             };
 
             return playerStatusCount;
@@ -121,7 +122,7 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Session> StartSession(int roomId)
         {
-            const int duration = 10;
+            const int duration = 30;
             const int step = 1;
 
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
