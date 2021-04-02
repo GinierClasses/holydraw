@@ -2,6 +2,8 @@
 
 *Draw! Guess! Don't Fail!*
 
+https://ginierclasses.github.io/holydraw/
+
 Application qui reprend le concept du téléphone arabe, en y intégrant du dessin 🎨.
 
 Pour ce projet, nous nous sommes inspirés du jeu en ligne GarticPhone.
