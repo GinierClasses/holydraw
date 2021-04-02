@@ -10,7 +10,6 @@ namespace thyrel_api.Models.DTO
         public ElementType Type { get; set; }
         public string Text { get; set; }
         public string DrawImage { get; set; }
-        public int? DrawingId { get; set; }
         public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public int SessionId { get; set; }

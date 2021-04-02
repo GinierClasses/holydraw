@@ -18,16 +18,16 @@ export default function GameBar({ onFinish }: GameBarProps) {
       alignItems="center"
       justifyContent="space-between"
       width="100%">
-      <Box order={{ xs: 2, sm: 1 }}>
+      <Box order={{ xs: 2, sm: 1 }} width={{ xs: 32, sm: 64 }}>
         <PlayerCount
           count={session?.playerFinished || 0}
           max={session?.totalPlayers || 0}
         />
       </Box>
-      <Box width={{ xs: '100%', sm: 'auto' }} order={{ xs: 1, sm: 2 }}>
+      <Box width={{ xs: '100%', sm: 'initial' }} order={{ xs: 1, sm: 2 }}>
         <AppTitle />
       </Box>
-      <Box order={3}>
+      <Box order={3} width={{ xs: 32, sm: 64 }}>
         <StepTimer
           finishAt={new Date(session?.stepFinishAt || '')}
           timeDuration={session?.timeDuration || 60}

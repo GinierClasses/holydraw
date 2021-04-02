@@ -1,18 +1,29 @@
 import GymGuy from 'images/gym-guy.svg';
 import GameBar from 'components/GameBar';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@material-ui/core';
 import StartForm from 'components/room/start/StartForm';
 
 export default function Start() {
   return (
-    <Box padding={4} display="flex" flexDirection="column" gridGap={42}>
+    <Box padding={{ xs: 2, sm: 4 }} height="100vh">
       <GameBar />
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <img src={GymGuy} alt="" width={256} />
-        <Typography variant="h4">Start a story</Typography>
-      </Box>
-
-      <StartForm />
+      <Container maxWidth="sm" className="full-height-80">
+        <Grid
+          container
+          spacing={2}
+          direction="column"
+          alignItems="center"
+          className="full-height"
+          justify="center">
+          <Grid item>
+            <img src={GymGuy} alt="" width={256} />
+          </Grid>
+          <Grid item>
+            <Typography variant="h4">Start a story</Typography>
+          </Grid>
+          <StartForm />
+        </Grid>
+      </Container>
     </Box>
   );
 }

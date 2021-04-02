@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import BigButton from 'components/BigButton';
 import BigInput from 'components/BigInput';
 import { useSessionContext } from 'hooks/SessionProvider';
@@ -12,26 +12,31 @@ export default function StartForm() {
   const isEditing = Boolean(!currentElement?.finishAt);
 
   return (
-    <Box gridGap={16} display="flex" flexDirection="column" alignItems="center">
-      <BigInput
-        disabled={!isEditing}
-        placeholder="A grandma ate my father"
-        startIcon={<EditIcon />}
-        value={sentence}
-        onChange={e => setSentence(e.target.value)}
-      />
-      <BigButton
-        onClick={() => onSave(sentence)}
-        startIcon={
-          isEditing ? (
-            <SaveIcon style={{ fontSize: 32 }} />
-          ) : (
-            <EditIcon style={{ fontSize: 32 }} />
-          )
-        }
-        size="large">
-        {isEditing ? 'Save' : 'Edit'}
-      </BigButton>
-    </Box>
+    <>
+      <Grid item className="full-width">
+        <BigInput
+          disabled={!isEditing}
+          placeholder="A grandma ate my father"
+          startIcon={<EditIcon />}
+          value={sentence}
+          onChange={e => setSentence(e.target.value)}
+        />
+      </Grid>
+      <Grid item>
+        <BigButton
+          disabled={sentence.length === 0}
+          onClick={() => onSave(sentence)}
+          startIcon={
+            isEditing ? (
+              <SaveIcon style={{ fontSize: 32 }} />
+            ) : (
+              <EditIcon style={{ fontSize: 32 }} />
+            )
+          }
+          size="large">
+          {isEditing ? 'Save' : 'Edit'}
+        </BigButton>
+      </Grid>
+    </>
   );
 }

@@ -43,6 +43,8 @@ namespace thyrel_api.Controllers
                 ? new TimeSpan()
                 : (TimeSpan) (session.StepFinishAt - DateTime.Now);
 
+            if (session.ActualStep != element.Step) return BadRequest("You are trying to modify a previous element.");
+
             var finishState = await elementDataProvider.HandleFinish(id);
             if (finishState.IsFinish())
                 if (finishState.Type == ElementType.Sentence)

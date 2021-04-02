@@ -1,12 +1,12 @@
 import React, { InputHTMLAttributes } from 'react';
 import { fade, makeStyles, Theme } from '@material-ui/core';
 
-type ContainerProps = {
+type StylesProps = {
   focus: boolean;
   disabled?: boolean;
 };
 
-const useStyles = makeStyles<Theme, ContainerProps>(theme => ({
+const useStyles = makeStyles<Theme, StylesProps>(theme => ({
   input: {
     backgroundColor: 'inherit',
     border: 'none',
@@ -48,7 +48,7 @@ const useStyles = makeStyles<Theme, ContainerProps>(theme => ({
     boxShadow: props =>
       props.focus
         ? `0 0 2px 0.2rem ${fade(theme.palette.secondary.main, 0.4)}`
-        : undefined,
+        : 'none',
   },
   icon: {
     width: 32,
