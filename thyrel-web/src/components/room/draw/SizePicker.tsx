@@ -50,8 +50,9 @@ const useStyles = makeStyles<Theme, { isCurrentSize: boolean }>(() => ({
     justifyContent: 'center',
     display: 'flex',
     flexDirection: 'column',
+    cursor: 'pointer',
     boxShadow: props =>
-      props.isCurrentSize ? `0 0 0 2px ${primaryFade(0.8)}` : undefined,
+      props.isCurrentSize ? `0 0 0 2px ${primaryFade(0.8)}` : 'none',
   },
 }));
 
