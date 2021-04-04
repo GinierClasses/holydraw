@@ -34,6 +34,7 @@ export default function StepProgress({
 
   return (
     <Box
+      overflow="hidden"
       width="100%"
       position="relative"
       borderTop={1}
