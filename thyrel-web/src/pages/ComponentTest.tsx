@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
-import AppTitle from '../components/AppTitle';
+import HolyDrawLogo from '../components/HolyDrawLogo';
 import BigInput from '../components/BigInput';
 import PlayerCard from '../components/room/lobby/PlayerCard';
 import PlayerCardList from '../components/room/lobby/PlayerCardList';
@@ -64,7 +64,7 @@ export default function ComponentTest() {
         alignItems="center"
         width="100%"
         gridGap={32}>
-        <AppTitle />
+        <HolyDrawLogo />
 
         <Box display="flex" flexDirection="column">
           <Box display="flex">
