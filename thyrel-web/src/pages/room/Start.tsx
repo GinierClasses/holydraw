@@ -1,6 +1,6 @@
 import GymGuy from 'images/gym-guy.svg';
 import { Grid, Typography } from '@material-ui/core';
-import StartForm from 'components/room/start/StartForm';
+import SentenceForm from 'components/room/start/SentenceForm';
 import GameLayout from 'components/room/GameLayout';
 
 export default function Start() {
@@ -20,7 +20,7 @@ export default function Start() {
         <Grid item>
           <Typography variant="h4">Start a story</Typography>
         </Grid>
-        <StartForm />
+        <SentenceForm />
       </Grid>
     </GameLayout>
   );

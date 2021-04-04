@@ -5,6 +5,7 @@ export type HolyElement = {
   text: string;
   finishAt: string;
   createdAt: string;
+  drawImage: string;
 };
 
 type StepElement = HolyElement & {

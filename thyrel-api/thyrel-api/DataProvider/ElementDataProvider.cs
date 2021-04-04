@@ -164,6 +164,7 @@ namespace thyrel_api.DataProvider
                     FinishAt = e.FinishAt,
                     CreatedAt = e.CreatedAt,
                     SessionId = e.SessionId,
+                    DrawImage = e.DrawImage
                 })
                 .Take(2)
                 .ToListAsync();
