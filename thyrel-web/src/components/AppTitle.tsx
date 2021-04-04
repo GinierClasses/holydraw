@@ -1,4 +1,5 @@
-import { makeStyles, Typography } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
+import HolyDrawLogo from 'images/holydraw-logo.svg';
 
 const useStyles = makeStyles(theme => ({
   text: {
@@ -11,13 +12,20 @@ const useStyles = makeStyles(theme => ({
   drawText: {
     color: theme.palette.secondary.main,
   },
+  logo: {
+    width: 192,
+    height: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      width: 128,
+    },
+  },
 }));
 
 export default function AppTitle() {
   const classes = useStyles();
   return (
-    <Typography variant="h1" className={classes.text}>
-      Holy<span className={classes.drawText}>Draw</span>
-    </Typography>
+    <Box>
+      <img src={HolyDrawLogo} className={classes.logo} alt="holy draw logo" />
+    </Box>
   );
 }
