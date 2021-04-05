@@ -1,7 +1,5 @@
 import { Coordinate, Line, LineType } from 'types/canvas.types';
 
-export const canvasScale = 2;
-
 export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
   const context = canvas.getContext('2d');
   if (!context) return;
@@ -81,6 +79,7 @@ export function getQuadraticCurveCoordinates(positions: Coordinate[]) {
 
 export const getCoordinates = (
   event: MouseEvent,
+  canvasScale: number,
   canvas?: HTMLCanvasElement | null,
 ): Coordinate | undefined => {
   if (!canvas) return;

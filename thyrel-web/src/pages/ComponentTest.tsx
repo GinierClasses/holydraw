@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
 import HolyDrawLogo from '../components/HolyDrawLogo';
@@ -14,10 +14,10 @@ import SizePicker from '../components/room/draw/SizePicker';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
-import CanvasDraw from 'components/room/draw/CanvasDraw';
+import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import testPlayerList from '__tests__/json/players.json';
 import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
-import { Box } from '@material-ui/core';
+import { Box, Switch } from '@material-ui/core';
 import SpinnerIcon from 'components/SpinnerIcon';
 import StartButton from 'components/room/lobby/StartButton';
 import StepProgress from 'components/room/StepProgress';
@@ -45,7 +45,9 @@ const colors = [
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
+  const [test, setTest] = useState(true);
   const [size, setSize] = useState(8);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [progress, setProgress] = React.useState<number>(1);
 
   const handleChange = (event: any, newValue: any) => {
@@ -65,7 +67,7 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <HolyDrawLogo />
-
+        <Switch checked={test} onChange={e => setTest(e.target.checked)} />
         <Box display="flex" flexDirection="column">
           <Box display="flex">
             <DrawColorPicker
@@ -73,7 +75,28 @@ export default function ComponentTest() {
               currentColor={color}
               onColorChange={color => setColor(color)}
             />
-            <CanvasDraw size={size} color={color} />
+            <DrawingCanvas
+              canvasRef={canvasRef}
+              canvasSize={
+                test
+                  ? {
+                      width: 512,
+                      height: 320,
+                      border: 4,
+                      scale: 2,
+                      lineScale: 2,
+                    }
+                  : {
+                      width: 256,
+                      height: 160,
+                      border: 2,
+                      scale: 4,
+                      lineScale: 2,
+                    }
+              }
+              lineSize={size}
+              color={color}
+            />
           </Box>
           <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
         </Box>

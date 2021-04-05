@@ -3,7 +3,6 @@ import { Coordinate, Line, LineType } from 'types/canvas.types';
 import {
   clearDraw,
   drawCanvasLine,
-  canvasScale,
   getQuadraticCurveCoordinates,
   rerenderDraw,
 } from 'utils/canvas.utils';
@@ -12,9 +11,15 @@ type useCanvasMouseProps = {
   color: string;
   size: number;
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
+  scale: number;
 };
 
-function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
+function useCanvasPaint({
+  color,
+  size,
+  canvasRef,
+  scale,
+}: useCanvasMouseProps) {
   const mouseCoordinate = React.useRef<Coordinate>({
     x: 0,
     y: 0,
@@ -62,19 +67,23 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
         lines.current.push({
           type: LineType.LINE,
           color,
-          size: size * canvasScale,
+          size: size * scale,
           points: [coordinate],
         });
       else paint(coordinate);
     },
-    [color, paint, size],
+    [color, paint, scale, size],
   );
 
-  const undo = React.useCallback(() => {
+  const refresh = React.useCallback(() => {
     if (!canvasRef.current) return;
-    lines.current.pop();
     rerenderDraw(canvasRef.current, lines.current);
   }, [canvasRef]);
+
+  const undo = React.useCallback(() => {
+    lines.current.pop();
+    refresh();
+  }, [refresh]);
 
   const clear = React.useCallback(() => {
     if (!canvasRef.current) return;
@@ -98,6 +107,7 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
     lines,
     mouseCoordinate,
     clear,
+    refresh
   };
 }
 

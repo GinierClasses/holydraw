@@ -1,0 +1,115 @@
+import React from 'react';
+import { getCoordinates } from 'utils/canvas.utils';
+import { DrawingCanvasProviderProps } from './canvas.type';
+import useCanvasEventListener from './useCanvasEventListener';
+import useCanvasPaint from './useCanvasPaint';
+
+type DrawingCanvasContextProps = {
+  clear: () => void;
+  undo: () => void;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+};
+
+const DrawingCanvasContext = React.createContext<DrawingCanvasContextProps>(
+  {} as any,
+);
+
+const canvasWidth = {
+  width: 512,
+  height: 320,
+  border: 4,
+  scale: 2,
+  lineScale: 2,
+};
+
+export function DrawingCanvasProvider({
+  color = '#900050',
+  lineSize = 4,
+  canvasSize: size = canvasWidth,
+  children,
+}: DrawingCanvasProviderProps) {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [isPainting, setIsPainting] = React.useState(false);
+
+  const { paint, create, addLastLine, clear, undo, refresh } = useCanvasPaint({
+    color,
+    size: lineSize,
+    canvasRef,
+    scale: size.lineScale,
+  });
+
+  const onMouseDown = React.useCallback(
+    (event: MouseEvent, isNewLine: boolean = true) => {
+      const coordinates = getCoordinates(event, size.scale, canvasRef.current);
+      if (!coordinates) return;
+      setIsPainting(true);
+
+      create(coordinates, isNewLine);
+    },
+    [canvasRef, create, size.scale],
+  );
+
+  const onMouseUp = React.useCallback(
+    (event: MouseEvent) => {
+      setIsPainting(false);
+      const coordinate = getCoordinates(event, size.scale);
+      addLastLine(coordinate);
+    },
+    [addLastLine, size.scale],
+  );
+
+  const onMouseEnter = React.useCallback(
+    (event: MouseEvent) => {
+      if (isPainting) onMouseDown(event, false);
+    },
+    [isPainting, onMouseDown],
+  );
+
+  const onMouseMove = React.useCallback(
+    (event: MouseEvent) => {
+      if (!isPainting || !canvasRef.current) return;
+      const newMousePosition = getCoordinates(
+        event,
+        size.scale,
+        canvasRef.current,
+      );
+      paint(newMousePosition);
+    },
+    [canvasRef, isPainting, paint, size.scale],
+  );
+
+  useCanvasEventListener({
+    canvasRef,
+    onMouseDown,
+    onMouseUp,
+    onMouseEnter,
+    onMouseMove,
+    isPainting,
+  });
+
+  React.useEffect(() => {
+    if (!canvasRef.current) return;
+    const canvas: HTMLCanvasElement = canvasRef.current;
+
+    canvas.width = size.width * size.scale;
+    canvas.height = size.height * size.scale;
+    refresh();
+  }, [canvasRef, refresh, size]);
+
+  const values = { clear, undo, canvasRef };
+
+  return (
+    <DrawingCanvasContext.Provider value={values}>
+      {children}
+    </DrawingCanvasContext.Provider>
+  );
+}
+
+export function useDrawingCanvasContext() {
+  const context = React.useContext(DrawingCanvasContext);
+  if (!context)
+    throw new Error(
+      'useRoomContext should be used within a RoomSocketContextProvider',
+    );
+  return context;
+}
