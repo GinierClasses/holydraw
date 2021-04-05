@@ -1,4 +1,4 @@
-import AppTitle from 'components/AppTitle';
+import HolyDrawLogo from 'components/HolyDrawLogo';
 import LobbyStartButton from 'components/room/lobby/LobbyStartAction';
 import { Players, PlayerCountBox } from 'components/room/lobby/Players';
 import SettingsMenu from 'components/room/lobby/SettingsMenu';
@@ -28,8 +28,8 @@ export default function Lobby() {
       height="100vh"
       alignItems="center"
       width="100%">
-      <Box p={4} mb={3} width="100%">
-        <AppTitle />
+      <Box mb={3} width="100%" display="flex" justifyContent="center">
+        <HolyDrawLogo width={32} />
       </Box>
       <Box
         display="flex"
