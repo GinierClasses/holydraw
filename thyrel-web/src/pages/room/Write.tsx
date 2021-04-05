@@ -1,10 +1,21 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, makeStyles } from '@material-ui/core';
 import StartForm from 'components/room/start/SentenceForm';
 import DirectiveLabel from 'components/room/DirectiveLabel';
 import GameLayout from 'components/room/GameLayout';
 import CurrentDrawImage from 'components/room/CurrentDrawImage';
 
+const useStyles = makeStyles(theme => ({
+  width: {
+    width: 512,
+    height: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
+}));
+
 export default function Write() {
+  const classes = useStyles();
   return (
     <GameLayout>
       <Box maxWidth={520}>
@@ -20,7 +31,7 @@ export default function Write() {
             <DirectiveLabel directive="Describe this scene" />
           </Grid>
           <Grid item>
-            <CurrentDrawImage />
+            <CurrentDrawImage className={classes.width} />
           </Grid>
           <StartForm />
         </Grid>

@@ -1,7 +1,11 @@
 import { Box } from '@material-ui/core';
 import { useSessionContext } from 'hooks/SessionProvider';
 
-export default function CurrentDrawImage() {
+type CurrentDrawImageProps = {
+  className?: string;
+};
+
+export default function CurrentDrawImage({ className }: CurrentDrawImageProps) {
   const { currentElement } = useSessionContext();
   return (
     <Box
@@ -9,7 +13,11 @@ export default function CurrentDrawImage() {
       border={4}
       borderColor="secondary.main"
       boxShadow={1}>
-      <img src={currentElement?.parent.drawImage} alt="" width={512} />
+      <img
+        src={currentElement?.parent.drawImage}
+        alt=""
+        className={className}
+      />
     </Box>
   );
 }
