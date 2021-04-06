@@ -25,6 +25,7 @@ function useCanvasPaint({
     y: 0,
   });
   const lines = React.useRef<Line[]>([]);
+  const deletedLines = React.useRef<Line[]>([]);
 
   const getLastLine = () => lines.current[lines.current.length - 1];
 
@@ -63,6 +64,7 @@ function useCanvasPaint({
   const create = React.useCallback(
     (coordinate: Coordinate, isNewLine?: boolean) => {
       mouseCoordinate.current = coordinate;
+      deletedLines.current = [];
       if (isNewLine)
         lines.current.push({
           type: LineType.LINE,
@@ -81,13 +83,28 @@ function useCanvasPaint({
   }, [canvasRef]);
 
   const undo = React.useCallback(() => {
-    lines.current.pop();
+    const deletedLine = lines.current.pop();
+    deletedLine && deletedLines.current.push(deletedLine);
+    refresh();
+  }, [refresh]);
+
+  const redo = React.useCallback(() => {
+    const redoLine = deletedLines.current.pop();
+    redoLine && lines.current.push(redoLine);
     refresh();
   }, [refresh]);
 
   const clear = React.useCallback(() => {
     if (!canvasRef.current) return;
-    clearDraw(canvasRef.current, canvasRef.current.getContext('2d'));
+    if (
+      !window.confirm(
+        "Are you sure you want to clear, you will definitely lose everything you've done?",
+      )
+    )
+      return;
+    lines.current = [];
+    deletedLines.current = [];
+    clearDraw(canvasRef.current);
   }, [canvasRef]);
 
   React.useEffect(() => {
@@ -107,7 +124,8 @@ function useCanvasPaint({
     lines,
     mouseCoordinate,
     clear,
-    refresh
+    redo,
+    refresh,
   };
 }
 

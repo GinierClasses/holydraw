@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 import { getCoordinates } from 'utils/canvas.utils';
-import { DrawingCanvasProviderProps } from './canvas.type';
+import { CanvasWidth, DrawingCanvasProviderProps } from './canvas.type';
+import { CanvasRefContext } from './CanvasRefContext';
 import useCanvasEventListener from './useCanvasEventListener';
 import useCanvasPaint from './useCanvasPaint';
 
 type DrawingCanvasContextProps = {
   clear: () => void;
   undo: () => void;
-  canvasRef: React.RefObject<HTMLCanvasElement>;
+  redo: () => void;
+  canvasRef: MutableRefObject<HTMLCanvasElement | null>;
+  size: CanvasWidth;
 };
 
 const DrawingCanvasContext = React.createContext<DrawingCanvasContextProps>(
@@ -31,7 +34,15 @@ export function DrawingCanvasProvider({
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
 
-  const { paint, create, addLastLine, clear, undo, refresh } = useCanvasPaint({
+  const {
+    paint,
+    create,
+    addLastLine,
+    clear,
+    undo,
+    refresh,
+    redo,
+  } = useCanvasPaint({
     color,
     size: lineSize,
     canvasRef,
@@ -96,20 +107,28 @@ export function DrawingCanvasProvider({
     refresh();
   }, [canvasRef, refresh, size]);
 
-  const values = { clear, undo, canvasRef };
+  const values = React.useMemo(() => ({ clear, undo, canvasRef, redo, size }), [
+    clear,
+    size,
+    redo,
+    undo,
+  ]);
+  const canvasRefValues = React.useMemo(() => ({ canvasRef }), [canvasRef]);
 
   return (
     <DrawingCanvasContext.Provider value={values}>
-      {children}
+      <CanvasRefContext.Provider value={canvasRefValues}>
+        {children}
+      </CanvasRefContext.Provider>
     </DrawingCanvasContext.Provider>
   );
 }
 
-export function useDrawingCanvasContext() {
+export function useCanvasContext() {
   const context = React.useContext(DrawingCanvasContext);
   if (!context)
     throw new Error(
-      'useRoomContext should be used within a RoomSocketContextProvider',
+      'useCanvasContext should be used within a DrawingCanvasContext',
     );
   return context;
 }

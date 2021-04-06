@@ -72,6 +72,7 @@ export default function DrawColorPicker({
                 width={32}
                 height={32}
                 borderRadius={4}
+                className="cursor-pointer"
               />
             );
           })}
