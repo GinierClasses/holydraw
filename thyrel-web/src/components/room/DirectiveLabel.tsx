@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     backgroundColor: fade(theme.palette.secondary.main, 0.8),
-    boxShadow: `0px 0px 4px ${fade(theme.palette.background.default, 0.8)}`,
+    boxShadow: theme.shadows[2],
   },
 }));
 
