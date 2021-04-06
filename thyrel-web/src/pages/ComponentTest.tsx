@@ -14,7 +14,7 @@ import SizePicker from '../components/room/draw/SizePicker';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
-import DrawingCanvas from 'components/canvas/DrawingCanvasC';
+import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import testPlayerList from '__tests__/json/players.json';
 import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
 import { Box, IconButton, Switch } from '@material-ui/core';
