@@ -22,7 +22,7 @@ export default function DirectiveLabel({
   const classes = useStyles();
   return (
     <Box
-      width={470}
+      width="100%"
       display="flex"
       padding={1}
       borderRadius={4}
