@@ -9,11 +9,6 @@ html {
   min-height: 100%;
 } */
 
-* {
-  scrollbar-color: var(--base-color) transparent;
-  scrollbar-width: thin;
-}
-
 body,
 html,
 #root {
@@ -24,7 +19,14 @@ html,
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
+  scrollbar-color: var(--base-color) transparent;
+  scrollbar-width: thin;
   -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  scrollbar-color: var(--base-color) transparent;
+  scrollbar-width: thin;
 }
 
 code {
@@ -51,4 +53,12 @@ code {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #53013c;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
 }
