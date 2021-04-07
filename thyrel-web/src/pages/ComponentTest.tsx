@@ -28,7 +28,7 @@ import {
   OnUndoAction,
   OnSaveAction,
   OnRedoAction,
-} from 'components/canvas/CanvasDrawActions';
+} from 'components/canvas/DrawingCanvasActions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
@@ -135,14 +135,13 @@ export default function ComponentTest() {
 
             <OnSaveAction
               onSave={canvasImage => {
-                if (canvasImage) {
-                  const win = window.open();
-                  win?.document.write(
-                    '<iframe width="1024px" height="640px" src=' +
-                      canvasImage +
-                      '></iframe>',
-                  );
-                }
+                if (!canvasImage) return;
+                const win = window.open();
+                win?.document.write(
+                  '<iframe width="1200px" height="700px" src=' +
+                    canvasImage +
+                    '></iframe>',
+                );
               }}>
               <BigButton size="large">Submit</BigButton>
             </OnSaveAction>

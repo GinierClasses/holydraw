@@ -1,21 +1,9 @@
-import React, { MutableRefObject } from 'react';
+import React from 'react';
 import { getCoordinates } from 'utils/canvas.utils';
-import { CanvasWidth, DrawingCanvasProviderProps } from './canvas.type';
-import { CanvasRefContext } from './CanvasRefContext';
+import { DrawingCanvasProviderProps } from './canvas.type';
+import { DrawingCanvasContext } from './DrawingCanvasContext';
 import useCanvasEventListener from './useCanvasEventListener';
 import useCanvasPaint from './useCanvasPaint';
-
-type DrawingCanvasContextProps = {
-  clear: () => void;
-  undo: () => void;
-  redo: () => void;
-  canvasRef: MutableRefObject<HTMLCanvasElement | null>;
-  size: CanvasWidth;
-};
-
-const DrawingCanvasContext = React.createContext<DrawingCanvasContextProps>(
-  {} as any,
-);
 
 const canvasWidth = {
   width: 512,
@@ -113,22 +101,10 @@ export function DrawingCanvasProvider({
     redo,
     undo,
   ]);
-  const canvasRefValues = React.useMemo(() => ({ canvasRef }), [canvasRef]);
 
   return (
     <DrawingCanvasContext.Provider value={values}>
-      <CanvasRefContext.Provider value={canvasRefValues}>
-        {children}
-      </CanvasRefContext.Provider>
+      {children}
     </DrawingCanvasContext.Provider>
   );
-}
-
-export function useCanvasContext() {
-  const context = React.useContext(DrawingCanvasContext);
-  if (!context)
-    throw new Error(
-      'useCanvasContext should be used within a DrawingCanvasContext',
-    );
-  return context;
 }

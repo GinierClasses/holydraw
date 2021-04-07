@@ -98,7 +98,7 @@ function useCanvasPaint({
     if (!canvasRef.current) return;
     if (
       !window.confirm(
-        "Are you sure you want to clear, you will definitely lose everything you've done?",
+        'This action is definitive. Are you sure you want to clear all ?',
       )
     )
       return;

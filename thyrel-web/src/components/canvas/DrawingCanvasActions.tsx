@@ -1,31 +1,14 @@
 import React from 'react';
-import { Box, IconButton } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import UndoIcon from '@material-ui/icons/Undo';
-import { useCanvasContext } from './DrawingCanvasProvider';
 import { callAll } from 'utils/utils';
+import { useCanvasContext } from './DrawingCanvasContext';
 
-type CanvasDrawActionsProps = {
-  onClear?: () => void;
-  onUndo?: () => void;
-};
+/*
+ * All this component will injected on click event on the children.
+ * Those event will match with the name of component.
+ * They be only used inside a <DrawingCanvasContext>
+ */
 
-export default function CanvasDrawActions({
-  onClear,
-  onUndo,
-}: CanvasDrawActionsProps) {
-  return (
-    <Box ml={1} display="flex" flexDirection="column">
-      <IconButton onClick={onClear}>
-        <DeleteIcon />
-      </IconButton>
-      <IconButton onClick={onUndo}>
-        <UndoIcon />
-      </IconButton>
-    </Box>
-  );
-}
-
+// clear all line on the canvas
 export function OnClearAction({ children }: { children: React.ReactElement }) {
   const { clear } = useCanvasContext();
   return React.cloneElement(children, {
@@ -33,6 +16,7 @@ export function OnClearAction({ children }: { children: React.ReactElement }) {
   });
 }
 
+// undo last line on the canvas
 export function OnUndoAction({ children }: { children: React.ReactElement }) {
   const { undo } = useCanvasContext();
   return React.cloneElement(children, {
@@ -40,6 +24,7 @@ export function OnUndoAction({ children }: { children: React.ReactElement }) {
   });
 }
 
+// redo last line "undo" if exist on the canvas
 export function OnRedoAction({ children }: { children: React.ReactElement }) {
   const { redo } = useCanvasContext();
   return React.cloneElement(children, {
@@ -47,6 +32,8 @@ export function OnRedoAction({ children }: { children: React.ReactElement }) {
   });
 }
 
+// this component will not injected onClick but call the onSave on click on children
+// the onSave will contain the big data url of canvas
 export function OnSaveAction({
   children,
   onSave,

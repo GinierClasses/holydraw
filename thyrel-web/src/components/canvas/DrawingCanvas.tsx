@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 import { CanvasWidth } from './canvas.type';
-import { useCanvasContext } from './DrawingCanvasProvider';
+import { useCanvasContext } from './DrawingCanvasContext';
 
 const useStyles = makeStyles<Theme, { size: CanvasWidth }>(theme => ({
   canvas: {
