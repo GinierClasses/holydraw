@@ -1,5 +1,5 @@
 import AppLayout from 'components/AppLayout';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Switch, Route } from 'react-router-dom';
 import { PlayerContextProvider } from 'hooks/PlayerProvider';
 import { RoomContextProvider } from 'hooks/RoomProvider';
 import ComponentTest from 'pages/ComponentTest';
@@ -13,6 +13,9 @@ import Write from 'pages/room/Write';
 import { WebsocketProvider } from 'hooks/WebsocketProvider';
 import { SessionContextProvider } from 'hooks/SessionProvider';
 
+const Router: any =
+  process.env.NODE_ENV === 'production' ? HashRouter : BrowserRouter;
+
 export default function Routes() {
   return (
     <AppLayout>
@@ -23,7 +26,7 @@ export default function Routes() {
           <Route path="/t" component={ComponentTest} />
           <Route path="/home" component={Home} />
           {/* For test, I add a special Nav
-        TODO: replace it by `Home` */}
+          TODO: replace it by `Home` */}
           <Route path="/" component={DevNav} />
         </Switch>
       </Router>

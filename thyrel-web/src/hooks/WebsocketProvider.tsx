@@ -1,5 +1,6 @@
 import React from 'react';
-import { WsStates, useWebsocket } from './useWebsocket';
+import { WsStates } from 'types/websocket.types';
+import { useWebsocket } from './useWebsocket';
 
 type WebsocketContextProps = {
   wsState: WsStates;

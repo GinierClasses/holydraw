@@ -70,25 +70,21 @@ namespace thyrel_api.DataProvider
         /// <param name="element"></param>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        public async Task SetSentence(Element element, string sentence)
+        public async Task SetSentence(int id, string sentence)
         {
-            if (element == null) return;
-
-            element.Text = sentence;
+            await _holyDrawDbContext.Element.Where(e => e.Id == id).ForEachAsync(e => e.Text = sentence);
             await SaveChanges();
         }
 
         /// <summary>
         ///     Set the DrawImage into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="drawImage"></param>
         /// <returns></returns>
-        public async Task SetDrawing(Element element, string drawImage)
+        public async Task SetDrawing(int id, string drawImage)
         {
-            if (element == null) return;
-
-            element.DrawImage = drawImage;
+            await _holyDrawDbContext.Element.Where(e => e.Id == id).ForEachAsync(e => e.DrawImage = drawImage);
             await SaveChanges();
         }
 
@@ -132,9 +128,20 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="elementId"></param>
         /// <returns></returns>
-        public async Task<Element> GetElement(int elementId)
+        public async Task<ElementDto> GetElement(int elementId)
         {
-            return await _holyDrawDbContext.Element.FindAsync(elementId);
+            return await _holyDrawDbContext.Element.Select(e => new ElementDto
+            {
+                Id = e.Id,
+                Step = e.Step,
+                CreatorId = e.CreatorId,
+                Type = e.Type,
+                Text = e.Text,
+                DrawImage = e.DrawImage,
+                FinishAt = e.FinishAt,
+                CreatedAt = e.CreatedAt,
+                SessionId = e.SessionId,
+            }).FirstOrDefaultAsync(e => e.Id == elementId);
         }
 
 
@@ -154,10 +161,10 @@ namespace thyrel_api.DataProvider
                     Step = e.Step,
                     Type = e.Type,
                     Text = e.Text,
-                    DrawingId = e.DrawingId,
                     FinishAt = e.FinishAt,
                     CreatedAt = e.CreatedAt,
                     SessionId = e.SessionId,
+                    DrawImage = e.DrawImage
                 })
                 .Take(2)
                 .ToListAsync();

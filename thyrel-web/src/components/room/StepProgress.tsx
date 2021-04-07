@@ -8,8 +8,8 @@ import {
 } from '@material-ui/core';
 
 type StepProgressProps = {
-  stepActual: number;
-  stepMax: number;
+  stepActual?: number;
+  stepMax?: number;
 };
 
 const CustomLinearProgress = withStyles((theme: Theme) =>
@@ -27,13 +27,14 @@ const CustomLinearProgress = withStyles((theme: Theme) =>
 )(LinearProgress);
 
 export default function StepProgress({
-  stepActual,
-  stepMax,
+  stepActual = 0,
+  stepMax = 0,
 }: StepProgressProps) {
   const progress = stepPercentage(stepActual, stepMax);
 
   return (
     <Box
+      overflow="hidden"
       width="100%"
       position="relative"
       borderTop={1}

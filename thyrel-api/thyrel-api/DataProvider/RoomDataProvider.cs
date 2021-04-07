@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -38,10 +39,16 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Room> GetRoom(int id)
+        public async Task<RoomDto> GetRoom(int id)
         {
             var room = await _holyDrawDbContext.Room
-                .Include(r => r.Players)
+                .Select(r => new RoomDto
+                {
+                    Id = r.Id,
+                    CreatedAt = r.CreatedAt,
+                    FinishAt = r.FinishAt,
+                    Identifier = r.Identifier
+                })
                 .SingleOrDefaultAsync(p => p.Id == id);
             return room;
         }

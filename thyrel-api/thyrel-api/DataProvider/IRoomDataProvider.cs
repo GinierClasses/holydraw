@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace thyrel_api.DataProvider
 {
@@ -15,7 +16,7 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<Room> GetRoom(int id);
+        Task<RoomDto> GetRoom(int id);
 
         /// <summary>
         ///     To get a Room by it's Identifier

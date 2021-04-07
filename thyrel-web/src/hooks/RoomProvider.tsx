@@ -5,7 +5,11 @@ import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { parseJson } from '../utils/json';
 import { useRoomStates } from './useRoomStates';
-import { WebsocketMessage, WebsocketEvent, WsStates } from './useWebsocket';
+import {
+  WebsocketMessage,
+  WebsocketEvent,
+  WsStates,
+} from 'types/websocket.types';
 import { useWebsocketContext } from './WebsocketProvider';
 
 type RoomSocketContextProps = {
@@ -43,10 +47,7 @@ export function RoomContextProvider({
 
       switch (websocketMessage.websocketEvent) {
         case WebsocketEvent.Invalid:
-          enqueueSnackbar(
-            "You are not playing, we'll redirect you on Home page.",
-            { variant: 'error' },
-          );
+          enqueueSnackbar(websocketMessage.error, { variant: 'error' });
           history.push('/home');
           break;
         case WebsocketEvent.PlayerJoin:
