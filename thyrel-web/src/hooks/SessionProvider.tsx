@@ -8,7 +8,7 @@ import { getToken } from '../api/player-provider';
 import Session from '../types/Session.type';
 import { parseJson } from '../utils/json';
 import useSessionStates from './useSessionStates';
-import { WebsocketEvent, WebsocketMessage } from './useWebsocket';
+import { WebsocketEvent, WebsocketMessage } from 'types/websocket.types';
 import { useWebsocketContext } from './WebsocketProvider';
 
 type SessionContextProps = {

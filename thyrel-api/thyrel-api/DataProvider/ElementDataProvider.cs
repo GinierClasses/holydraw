@@ -138,7 +138,6 @@ namespace thyrel_api.DataProvider
                 Type = e.Type,
                 Text = e.Text,
                 DrawImage = e.DrawImage,
-                DrawingId = e.DrawingId,
                 FinishAt = e.FinishAt,
                 CreatedAt = e.CreatedAt,
                 SessionId = e.SessionId,
@@ -162,10 +161,10 @@ namespace thyrel_api.DataProvider
                     Step = e.Step,
                     Type = e.Type,
                     Text = e.Text,
-                    DrawingId = e.DrawingId,
                     FinishAt = e.FinishAt,
                     CreatedAt = e.CreatedAt,
                     SessionId = e.SessionId,
+                    DrawImage = e.DrawImage
                 })
                 .Take(2)
                 .ToListAsync();

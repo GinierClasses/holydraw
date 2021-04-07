@@ -1,5 +1,5 @@
 import PlayerCount from './room/PlayerCount';
-import AppTitle from './AppTitle';
+import HolyDrawLogo from './HolyDrawLogo';
 import StepTimer from './room/StepTimer';
 import { useSessionContext } from 'hooks/SessionProvider';
 import { Box } from '@material-ui/core';
@@ -16,18 +16,17 @@ export default function GameBar({ onFinish }: GameBarProps) {
       flexWrap="wrap"
       flexDirection="row"
       alignItems="center"
+      px={{ xs: 2, sm: 4 }}
       justifyContent="space-between"
       width="100%">
-      <Box order={{ xs: 2, sm: 1 }}>
+      <Box width={{ xs: 32, sm: 64 }}>
         <PlayerCount
           count={session?.playerFinished || 0}
           max={session?.totalPlayers || 0}
         />
       </Box>
-      <Box width={{ xs: '100%', sm: 'auto' }} order={{ xs: 1, sm: 2 }}>
-        <AppTitle />
-      </Box>
-      <Box order={3}>
+      <HolyDrawLogo />
+      <Box width={{ xs: 32, sm: 64 }}>
         <StepTimer
           finishAt={new Date(session?.stepFinishAt || '')}
           timeDuration={session?.timeDuration || 60}
