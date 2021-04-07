@@ -1,5 +1,4 @@
 import { Box, makeStyles, Avatar, Typography } from '@material-ui/core';
-import theme from 'theme';
 
 type BookSentenceElementProps = {
   username?: string;
@@ -8,20 +7,11 @@ type BookSentenceElementProps = {
 };
 
 const useStyles = makeStyles(theme => ({
-  sentencecontainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: theme.spacing(1),
-    border: `1px solid ${theme.palette.secondary.main}`,
-    borderRadius: 4,
-    maxWidth: theme.spacing(42),
-  },
   avatar: {
     width: 32,
     height: 32,
     backgroundColor: theme.palette.secondary.dark,
-    border: `1px solid ${theme.palette.secondary.main}`,
+    border: `1px solid ${theme.palette.secondary.dark}`,
     overflow: 'visible',
     '&> img': {
       height: 32,
@@ -29,16 +19,6 @@ const useStyles = makeStyles(theme => ({
       margin: 'auto',
       position: 'unset',
     },
-  },
-  text: {
-    fontFamily: 'Work Sans',
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  sentence: {
-    marginRight: 8,
-    marginLeft: 8,
   },
 }));
 
@@ -50,21 +30,20 @@ export default function BookSentenceElement({
   const classes = useStyles();
   return (
     <Box display="flex" flexDirection="column">
-      <Box className={classes.text}>{username}</Box>
+      <Typography variant="subtitle1">{username}</Typography>
       <Box
         display="flex"
         flexDirection="row"
         alignItems="center"
-        padding={theme.spacing(1)}
-        border="1px solid"
-        borderColor={theme.palette.secondary.main}
-        borderRadius="4px"
-        maxWidth={theme.spacing(42)}
-        className={classes.sentencecontainer}>
+        p={1}
+        border={1}
+        borderColor="secondary.main"
+        borderRadius={4}
+        maxWidth={336}>
         <Avatar src={avatarUrl} className={classes.avatar} />
-        <Typography className={(classes.text, classes.sentence)} component="p">
-          {sentence}
-        </Typography>
+        <Box ml={1} mr={1}>
+          <Typography variant="body1">{sentence}</Typography>
+        </Box>
       </Box>
     </Box>
   );
