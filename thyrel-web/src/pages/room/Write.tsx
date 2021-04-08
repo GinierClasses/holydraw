@@ -33,7 +33,7 @@ export default function Write() {
             <DirectiveLabel directive="Describe this scene" />
           </Grid>
           <Grid item>
-            <CurrentDrawImageContext className={classes.width} />
+            <CurrentDrawImageWithContext className={classes.width} />
           </Grid>
           <StartForm />
         </Grid>
@@ -42,7 +42,11 @@ export default function Write() {
   );
 }
 
-export function CurrentDrawImageContext({ className }: { className: string }) {
+export function CurrentDrawImageWithContext({
+  className,
+}: {
+  className: string;
+}) {
   const { currentElement } = useSessionContext();
   return (
     <CurrentDrawImage
