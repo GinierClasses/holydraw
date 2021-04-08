@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   width: {
     width: 512,
     height: 'auto',
-    minHeight: 527,
+    minHeight: 320,
     [theme.breakpoints.down('xs')]: {
       width: '100%',
     },
