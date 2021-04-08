@@ -42,11 +42,7 @@ export default function Write() {
   );
 }
 
-export function CurrentDrawImageWithContext({
-  className,
-}: {
-  className: string;
-}) {
+function CurrentDrawImageWithContext({ className }: { className: string }) {
   const { currentElement } = useSessionContext();
   return (
     <CurrentDrawImage
