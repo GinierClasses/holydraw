@@ -32,9 +32,7 @@ export default function BookDrawingElement({
       <Typography variant="subtitle1" className={classes.username}>
         {username}
       </Typography>
-      <Box>
-        <CurrentDrawImage className={classes.width} />
-      </Box>
+      <CurrentDrawImage className={classes.width} />
     </Box>
   );
 }
