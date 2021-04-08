@@ -24,7 +24,7 @@ const sentences = [
 const getRandomSentences = () =>
   sentences[Math.floor(Math.random() * sentences.length)];
 
-export function useRandomUsername() {
+export function useRandomSentence() {
   const sentenceRef = React.useRef(getRandomSentences());
 
   return sentenceRef.current;
