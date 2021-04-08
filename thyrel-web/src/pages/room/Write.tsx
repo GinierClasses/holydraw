@@ -3,6 +3,7 @@ import StartForm from 'components/room/start/SentenceForm';
 import DirectiveLabel from 'components/room/DirectiveLabel';
 import GameLayout from 'components/room/GameLayout';
 import CurrentDrawImage from 'components/room/CurrentDrawImage';
+import { useSessionContext } from 'hooks/SessionProvider';
 
 const useStyles = makeStyles(theme => ({
   width: {
@@ -32,11 +33,21 @@ export default function Write() {
             <DirectiveLabel directive="Describe this scene" />
           </Grid>
           <Grid item>
-            <CurrentDrawImage className={classes.width} />
+            <CurrentDrawImageContext className={classes.width} />
           </Grid>
           <StartForm />
         </Grid>
       </Box>
     </GameLayout>
+  );
+}
+
+export function CurrentDrawImageContext({ className }: { className: string }) {
+  const { currentElement } = useSessionContext();
+  return (
+    <CurrentDrawImage
+      src={currentElement?.parent.drawImage}
+      className={className}
+    />
   );
 }
