@@ -3,6 +3,7 @@ import CurrentDrawImage from '../CurrentDrawImage';
 
 type BookDrawingElementProps = {
   username?: string;
+  src?: string;
 };
 
 const useStyles = makeStyles(theme => ({
@@ -25,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function BookDrawingElement({
   username,
+  src,
 }: BookDrawingElementProps) {
   const classes = useStyles();
   return (
@@ -32,7 +34,7 @@ export default function BookDrawingElement({
       <Typography variant="subtitle1" className={classes.username}>
         {username}
       </Typography>
-      <CurrentDrawImage className={classes.width} />
+      <CurrentDrawImage src={src} className={classes.width} />
     </Box>
   );
 }
