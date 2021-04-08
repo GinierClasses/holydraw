@@ -1,12 +1,12 @@
 import React from 'react';
 
 const sentences = [
-  'A samurai eating a kebab with sauce samouraï',
+  'A samurai eating a kebab with samouraï sauce',
   'A man walking on the ceiling',
   'A gas station on fire',
   'A T-Rex playing chess with monkeys',
-  'Someone watching himself on the TV',
-  'Pinocchio but in iron',
+  'Someone watching himself on TV',
+  "Pinocchio but he's made of iron",
   'A nice shark without teeth',
   'A knight far too tall',
   'A man chained by circus animals',
@@ -18,7 +18,7 @@ const sentences = [
   'Godzilla VS King Kong',
   'Woman pissed of by noisy neighbors',
   'A world where sofas and humans are interchanged',
-  'Stitch meeting The Rock at Shrek birthday',
+  "Stitch meeting The Rock at Shrek's birthday",
 ];
 
 const getRandomSentences = () =>
