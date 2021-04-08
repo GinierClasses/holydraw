@@ -22,6 +22,7 @@ import SpinnerIcon from 'components/SpinnerIcon';
 import StartButton from 'components/room/lobby/StartButton';
 import StepProgress from 'components/room/StepProgress';
 import { Slider } from '@material-ui/core';
+import BookDrawingElement from 'components/room/book/BookDrawingElement';
 
 const colors = [
   '#000000',
@@ -82,6 +83,7 @@ export default function ComponentTest() {
           finishAt={new Date('2021-03-30T08:31:00')}
           timeDuration={120}
         />
+        <BookDrawingElement username="Jean-Philippes-Pascal" />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}
