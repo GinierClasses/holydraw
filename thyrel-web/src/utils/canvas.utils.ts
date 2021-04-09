@@ -1,12 +1,10 @@
 import { Coordinate, Line, LineType } from 'types/canvas.types';
 
-export const canvasScale = 2;
-
 export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
   const context = canvas.getContext('2d');
   if (!context) return;
 
-  clearDraw(canvas, context);
+  clearDraw(canvas);
 
   lines &&
     lines.forEach(line => {
@@ -32,11 +30,8 @@ export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
     });
 };
 
-export const clearDraw = (
-  canvas: HTMLCanvasElement,
-  context?: CanvasRenderingContext2D | null,
-) => {
-  context?.clearRect(0, 0, canvas.width, canvas.height);
+export const clearDraw = (canvas: HTMLCanvasElement) => {
+  canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
 };
 
 export const drawCanvasLine = (
@@ -81,6 +76,7 @@ export function getQuadraticCurveCoordinates(positions: Coordinate[]) {
 
 export const getCoordinates = (
   event: MouseEvent,
+  canvasScale: number,
   canvas?: HTMLCanvasElement | null,
 ): Coordinate | undefined => {
   if (!canvas) return;
