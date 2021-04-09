@@ -1,23 +1,22 @@
 import { Box } from '@material-ui/core';
-import { useSessionContext } from 'hooks/SessionProvider';
 
 type CurrentDrawImageProps = {
   className?: string;
+  src?: string;
 };
 
-export default function CurrentDrawImage({ className }: CurrentDrawImageProps) {
-  const { currentElement } = useSessionContext();
+export default function CurrentDrawImage({
+  className,
+  src,
+}: CurrentDrawImageProps) {
   return (
     <Box
       bgcolor="common.white"
       border={4}
       borderColor="secondary.main"
-      boxShadow={1}>
-      <img
-        src={currentElement?.parent.drawImage}
-        alt=""
-        className={className}
-      />
+      boxShadow={1}
+      display="flex">
+      <img src={src} alt="" className={className} />
     </Box>
   );
 }
