@@ -3,6 +3,7 @@ import { Box, fade, makeStyles, Theme, useTheme } from '@material-ui/core';
 type SizePickerProps = {
   currentSize: number;
   onSizeChange: (size: number) => void;
+  flexDirection?: 'row' | 'column';
 };
 
 const buttonSizes = [4, 8, 16, 20, 24, 30];
@@ -10,6 +11,7 @@ const buttonSizes = [4, 8, 16, 20, 24, 30];
 export default function SizePicker({
   currentSize,
   onSizeChange,
+  flexDirection = 'row',
 }: SizePickerProps) {
   const theme = useTheme();
   return (
@@ -20,6 +22,7 @@ export default function SizePicker({
       display="flex"
       borderRadius={4}
       border={1}
+      flexDirection={flexDirection}
       borderColor="common.black"
       alignItems="center"
       boxShadow={2}>
