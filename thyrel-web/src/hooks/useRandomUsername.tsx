@@ -1,3 +1,4 @@
+import GetRandomValueFromArray from 'components/GetRandomValueFromArray';
 import React from 'react';
 
 const usernames = [
@@ -21,11 +22,8 @@ const usernames = [
   'Stitch',
 ];
 
-const getRandomUsername = () =>
-  usernames[Math.floor(Math.random() * usernames.length)];
-
 export function useRandomUsername() {
-  const usernameRef = React.useRef(getRandomUsername());
+  const usernameRef = React.useRef(GetRandomValueFromArray(usernames));
 
   return usernameRef.current;
 }

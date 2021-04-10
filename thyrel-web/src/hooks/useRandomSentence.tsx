@@ -1,3 +1,4 @@
+import GetRandomValueFromArray from 'components/GetRandomValueFromArray';
 import React from 'react';
 
 const sentences = [
@@ -21,11 +22,8 @@ const sentences = [
   "Stitch meeting The Rock at Shrek's birthday",
 ];
 
-const getRandomSentences = () =>
-  sentences[Math.floor(Math.random() * sentences.length)];
-
 export function useRandomSentence() {
-  const sentenceRef = React.useRef(getRandomSentences());
+  const sentenceRef = React.useRef(GetRandomValueFromArray(sentences));
 
   return sentenceRef.current;
 }
