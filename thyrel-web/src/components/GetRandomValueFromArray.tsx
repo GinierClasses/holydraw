@@ -1,3 +1,3 @@
-export default function GetRandomValueFromArray<T>(x: T[]): T {
-  return x[Math.floor(Math.random() * x.length)];
+export default function GetRandomValueFromArray<T>(type: T[]): T {
+  return type[Math.floor(Math.random() * type.length)];
 }
