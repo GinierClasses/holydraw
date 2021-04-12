@@ -1,5 +1,5 @@
-import GetRandomValueFromArray from 'components/GetRandomValueFromArray';
 import React from 'react';
+import { getRandomValueFromArray } from 'utils/utils';
 
 const sentences = [
   'A samurai eating a kebab with samouraï sauce',
@@ -23,7 +23,7 @@ const sentences = [
 ];
 
 export function useRandomSentence() {
-  const sentenceRef = React.useRef(GetRandomValueFromArray(sentences));
+  const sentenceRef = React.useRef(getRandomValueFromArray(sentences));
 
   return sentenceRef.current;
 }
