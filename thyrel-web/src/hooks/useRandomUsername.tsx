@@ -1,18 +1,19 @@
 import React from 'react';
+import { getRandomValueFromArray } from 'utils/utils';
 
 const usernames = [
-  'Dieu',
-  'JeSuisCovid',
-  'GrosBg',
+  'God',
+  'Mushu the Dragon',
+  'Bob Razowski',
   'Macco',
-  'Petite cochonne',
-  'GrosTas',
-  'C moi',
-  'C pas moi',
+  'Woody Woodpecker',
+  'Mr Potato',
+  'Nemo',
+  'Shrek',
   'Staline',
   'Krokette',
-  'Petite loutre',
-  'Bob le bob',
+  'Little Otter',
+  'Bob the bob',
   'SavageWolf',
   'Padawan',
   'BigBear',
@@ -21,11 +22,8 @@ const usernames = [
   'Stitch',
 ];
 
-const getRandomUsername = () =>
-  usernames[Math.floor(Math.random() * usernames.length)];
-
 export function useRandomUsername() {
-  const usernameRef = React.useRef(getRandomUsername());
+  const usernameRef = React.useRef(getRandomValueFromArray(usernames));
 
   return usernameRef.current;
 }

@@ -5,18 +5,20 @@ import BigInput from 'components/BigInput';
 import { useSessionContext } from 'hooks/SessionProvider';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import { useRandomSentence } from 'hooks/useRandomSentence';
 
 export default function StartForm() {
   const { currentElement, onSave } = useSessionContext();
   const [sentence, setSentence] = React.useState('');
   const isEditing = Boolean(!currentElement?.finishAt);
+  const defaultSentence = useRandomSentence();
 
   return (
     <>
       <Grid item className="full-width">
         <BigInput
           disabled={!isEditing}
-          placeholder="A grandma ate my father"
+          placeholder={defaultSentence}
           startIcon={<EditIcon />}
           value={sentence}
           onChange={e => setSentence(e.target.value)}

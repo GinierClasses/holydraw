@@ -20,9 +20,19 @@ export default function useCanvasEventListener({
   React.useEffect(() => {
     if (!isPainting) return;
 
+    function touchMove(event: TouchEvent) {
+      const mouseEvent = new MouseEvent('mousedown', {
+        clientX: event.touches[0].clientX,
+        clientY: event.touches[0].clientY,
+      });
+      onMouseMove(mouseEvent);
+    }
+
     window.document.addEventListener('mousemove', onMouseMove);
+    window.document.addEventListener('touchmove', touchMove);
     return () => {
       window.document.removeEventListener('mousemove', onMouseMove);
+      window.document.removeEventListener('touchmove', touchMove);
     };
   }, [isPainting, onMouseMove]);
 
@@ -40,10 +50,20 @@ export default function useCanvasEventListener({
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
 
+    function touchStart(event: TouchEvent) {
+      const mouseEvent = new MouseEvent('mousedown', {
+        clientX: event.touches[0].clientX,
+        clientY: event.touches[0].clientY,
+      });
+      onMouseDown(mouseEvent);
+    }
+
     canvas.addEventListener('mousedown', onMouseDown);
+    canvas.addEventListener('touchstart', touchStart);
     window.document.addEventListener('mouseup', onMouseUp);
     return () => {
       canvas.removeEventListener('mousedown', onMouseDown);
+      canvas.removeEventListener('touchstart', touchStart);
       window.document.removeEventListener('mouseup', onMouseUp);
     };
   }, [canvasRef, onMouseDown, onMouseUp]);
