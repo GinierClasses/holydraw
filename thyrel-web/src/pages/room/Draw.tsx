@@ -1,22 +1,12 @@
-import { Box, IconButton, useMediaQuery } from '@material-ui/core';
-import BigButton from 'components/BigButton';
-import DrawingCanvas from 'components/canvas/DrawingCanvas';
-import {
-  OnClearAction,
-  OnRedoAction,
-  OnSaveAction,
-  OnUndoAction,
-} from 'components/canvas/DrawingCanvasActions';
-import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
+import { Box, useMediaQuery } from '@material-ui/core';
 import DirectiveLabel from 'components/room/DirectiveLabel';
 import DrawColorPicker from 'components/room/draw/DrawColorPicker';
 import SizePicker from 'components/room/draw/SizePicker';
 import GameLayout from 'components/room/GameLayout';
+import GameCanvas from 'components/room/draw/GameCanvas';
 import { useState } from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
-import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo';
 import theme from 'theme';
+import { useSessionContext } from 'hooks/SessionProvider';
 
 const colors = [
   '#000000',
@@ -37,87 +27,54 @@ const colors = [
   '#F79F1F',
 ];
 
-const canvasWidth = {
-  md: {
-    width: 512,
-    height: 320,
-    border: 4,
-    scale: 2,
-    lineScale: 2,
-  },
-  xs: {
-    width: 256,
-    height: 160,
-    border: 2,
-    scale: 4,
-    lineScale: 2,
-  },
-};
-
 export default function Draw() {
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const [color, setColor] = useState(colors[5]);
   const [size, setSize] = useState(8);
   return (
-    <GameLayout maxWidth="sm">
-      <DirectiveLabel directive="Time to Draw" />
+    <GameLayout maxWidth="md">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gridGap={16}>
+        <Box width="100%" maxWidth={682}>
+          <CurrentDirectiveLabel />
+        </Box>
 
-      <Box display="flex" flexDirection="column">
-        <DrawingCanvasProvider
-          color={color}
-          lineSize={size}
-          canvasSize={isDeviceSM ? canvasWidth.md : canvasWidth.xs}>
-          <Box display="flex" flexDirection="column">
-            <Box display="flex" flexDirection="row">
-              <DrawingCanvas />
-              <Box display="flex" flexDirection="column">
-                <OnClearAction>
-                  <IconButton>
-                    <DeleteIcon />
-                  </IconButton>
-                </OnClearAction>
-                <OnUndoAction>
-                  <IconButton>
-                    <UndoIcon />
-                  </IconButton>
-                </OnUndoAction>
-                <OnRedoAction>
-                  <IconButton>
-                    <RedoIcon />
-                  </IconButton>
-                </OnRedoAction>
-              </Box>
-            </Box>
-            <Box display="flex" flexDirection="column">
-              <DrawColorPicker
-                colors={colors}
-                currentColor={color}
-                onColorChange={color => setColor(color)}
-                flexDirection="row"
-              />
-              <SizePicker
-                currentSize={size}
-                onSizeChange={size => setSize(size)}
-              />
-            </Box>
+        <Box
+          display="flex"
+          flexDirection={{ xs: 'column', sm: 'row' }}
+          gridGap={16}>
+          <Box order={{ xs: 1, sm: 0 }}>
+            <DrawColorPicker
+              colors={colors}
+              currentColor={color}
+              onColorChange={color => setColor(color)}
+              flexDirection={isDeviceSM ? 'column' : 'row'}
+            />
           </Box>
 
-          <OnSaveAction
-            onSave={canvasImage => {
-              if (!canvasImage) return;
-              const win = window.open();
-              win?.document.write(
-                '<iframe width="1200px" height="700px" src=' +
-                  canvasImage +
-                  '></iframe>',
-              );
-            }}>
-            <BigButton size="large">Submit</BigButton>
-          </OnSaveAction>
-        </DrawingCanvasProvider>
+          <GameCanvas size={size} color={color} />
+          <Box order={{ xs: 2, sm: 0 }}>
+            <SizePicker
+              currentSize={size}
+              onSizeChange={size => setSize(size)}
+              flexDirection={isDeviceSM ? 'column' : 'row'}
+            />
+          </Box>
+        </Box>
       </Box>
-
-      <p>hello this is a test</p>
     </GameLayout>
+  );
+}
+
+function CurrentDirectiveLabel() {
+  const { currentElement } = useSessionContext();
+  return (
+    <DirectiveLabel
+      directive="Time to Draw"
+      sentence={currentElement?.parent?.text}
+    />
   );
 }
