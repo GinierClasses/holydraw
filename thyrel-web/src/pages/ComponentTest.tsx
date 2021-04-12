@@ -22,6 +22,7 @@ import SpinnerIcon from 'components/SpinnerIcon';
 import StartButton from 'components/room/lobby/StartButton';
 import StepProgress from 'components/room/StepProgress';
 import { Slider } from '@material-ui/core';
+import BookSentenceElement from 'components/room/book/BookSentenceElement';
 import GymGuy from 'images/gym-guy.svg';
 import BookDrawingElement from 'components/room/book/BookDrawingElement';
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
@@ -95,6 +96,14 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <HolyDrawLogo />
+
+        <Box>
+          <BookSentenceElement
+            username="Luca thb"
+            avatarUrl={profilesPictures[ppIndex]}
+            sentence={'Hey banane poil vert'}></BookSentenceElement>
+        </Box>
+
         <Switch
           checked={mobileCanvas}
           onChange={e => setMobileCanvas(e.target.checked)}
