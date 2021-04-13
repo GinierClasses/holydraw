@@ -43,7 +43,6 @@ export default function DrawColorPicker({
 
   return (
     <Box
-      width={flexDirection === 'column' ? 88 : undefined}
       display="flex"
       flexDirection={flexDirection}
       padding="8px"

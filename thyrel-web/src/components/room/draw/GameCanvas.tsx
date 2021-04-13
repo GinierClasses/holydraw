@@ -5,6 +5,8 @@ import { OnSaveAction } from 'components/canvas/DrawingCanvasActions';
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
 import CanvasActionButtons from 'components/room/draw/CanvasActionButtons';
 import { useSessionContext } from 'hooks/SessionProvider';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
 import theme from 'theme';
 
 type GameCanvasProps = {
@@ -31,7 +33,8 @@ const canvasWidth = {
 
 export default function GameCanvas({ size, color }: GameCanvasProps) {
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
-  const { onSave } = useSessionContext();
+  const { currentElement, onSave } = useSessionContext();
+  const isEditing = Boolean(!currentElement?.finishAt);
   return (
     <DrawingCanvasProvider
       color={color}
@@ -45,7 +48,7 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
         <DrawingCanvas />
         <Box
           display="flex"
-          flexDirection={{ xs: 'row', sm: 'column' }}
+          flexDirection="row"
           gridGap={8}
           alignItems="center"
           justifyContent="space-between"
@@ -53,7 +56,17 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
           <CanvasActionButtons />
           <OnSaveAction
             onSave={canvasImage => canvasImage && onSave(canvasImage)}>
-            <BigButton size="large">Submit</BigButton>
+            <BigButton
+              startIcon={
+                isEditing ? (
+                  <SaveIcon style={{ fontSize: 32 }} />
+                ) : (
+                  <EditIcon style={{ fontSize: 32 }} />
+                )
+              }
+              size="large">
+              {isEditing ? 'Save' : 'Edit'}
+            </BigButton>
           </OnSaveAction>
         </Box>
       </Box>
