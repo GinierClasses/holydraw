@@ -52,10 +52,7 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
           width="100%">
           <CanvasActionButtons />
           <OnSaveAction
-            onSave={canvasImage => {
-              if (!canvasImage) return;
-              onSave(canvasImage);
-            }}>
+            onSave={canvasImage => canvasImage && onSave(canvasImage)}>
             <BigButton size="large">Submit</BigButton>
           </OnSaveAction>
         </Box>
