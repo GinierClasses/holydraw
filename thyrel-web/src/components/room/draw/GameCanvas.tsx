@@ -35,9 +35,11 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const { currentElement, onSave } = useSessionContext();
   const isEditing = Boolean(!currentElement?.finishAt);
+
   return (
     <DrawingCanvasProvider
       color={color}
+      disabled={!isEditing}
       lineSize={size}
       canvasSize={isDeviceSM ? canvasWidth.md : canvasWidth.xs}>
       <Box
@@ -45,7 +47,7 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
         flexDirection="column"
         gridGap={8}
         alignItems="center">
-        <DrawingCanvas />
+        <DrawingCanvas disabled={!isEditing} />
         <Box
           display="flex"
           flexDirection="row"
