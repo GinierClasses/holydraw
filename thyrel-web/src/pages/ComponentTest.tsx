@@ -17,7 +17,7 @@ import ButtonModalJoin from '../components/home/ButtonModalJoin';
 import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import testPlayerList from '__tests__/json/players.json';
 import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
-import { Box, IconButton, Switch } from '@material-ui/core';
+import { Box, FormControlLabel, IconButton, Switch } from '@material-ui/core';
 import SpinnerIcon from 'components/SpinnerIcon';
 import StartButton from 'components/room/lobby/StartButton';
 import StepProgress from 'components/room/StepProgress';
@@ -76,6 +76,7 @@ export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
   const [mobileCanvas, setMobileCanvas] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [size, setSize] = useState(8);
   const [progress, setProgress] = React.useState<number>(1);
 
@@ -104,13 +105,28 @@ export default function ComponentTest() {
             sentence={'Hey banane poil vert'}></BookSentenceElement>
         </Box>
 
-        <Switch
-          checked={mobileCanvas}
-          onChange={e => setMobileCanvas(e.target.checked)}
+        <FormControlLabel
+          control={
+            <Switch
+              checked={mobileCanvas}
+              onChange={e => setMobileCanvas(e.target.checked)}
+            />
+          }
+          label="Is mobile canvas"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={disabled}
+              onChange={e => setDisabled(e.target.checked)}
+            />
+          }
+          label="Is canvas disabled"
         />
         <Box display="flex" flexDirection="column">
           <DrawingCanvasProvider
             color={color}
+            disabled={disabled}
             lineSize={size}
             canvasSize={mobileCanvas ? canvasWidth.xs : canvasWidth.md}>
             <Box display="flex">
@@ -124,7 +140,7 @@ export default function ComponentTest() {
                 onSizeChange={size => setSize(size)}
                 flexDirection="column"
               />
-              <DrawingCanvas />
+              <DrawingCanvas disabled={disabled} />
               <Box display="flex" flexDirection="column">
                 <OnClearAction>
                   <IconButton>
