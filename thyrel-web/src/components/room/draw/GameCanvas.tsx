@@ -23,8 +23,8 @@ const canvasWidth = {
     lineScale: 2,
   },
   xs: {
-    width: 320,
-    height: 224,
+    width: 332.8,
+    height: 208,
     border: 2,
     scale: 4,
     lineScale: 2,
