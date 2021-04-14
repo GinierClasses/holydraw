@@ -6,6 +6,7 @@ type DrawColorPickerProps = {
   colors: string[];
   onColorChange?: (color: string) => void;
   currentColor: string;
+  flexDirection?: 'row' | 'column';
 };
 
 function getCoupleColors(colors: string[]) {
@@ -33,6 +34,7 @@ export default function DrawColorPicker({
   colors,
   currentColor,
   onColorChange,
+  flexDirection = 'column',
 }: DrawColorPickerProps) {
   const coupleColors: string[][] = React.useMemo(
     () => getCoupleColors(colors),
@@ -41,9 +43,8 @@ export default function DrawColorPicker({
 
   return (
     <Box
-      width={88}
       display="flex"
-      flexDirection="column"
+      flexDirection={flexDirection}
       padding="8px"
       borderRadius={4}
       gridGap={8}
@@ -55,7 +56,7 @@ export default function DrawColorPicker({
         <Box
           key={index}
           display="flex"
-          flexDirection="row"
+          flexDirection={flexDirection === 'column' ? 'row' : 'column'}
           justifyContent="space-between"
           top={248}>
           {couple.map((squareColor, index) => {

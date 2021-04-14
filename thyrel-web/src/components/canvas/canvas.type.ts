@@ -1,6 +1,7 @@
 export type DrawingCanvasProviderProps = {
   color?: string;
   lineSize?: number;
+  disabled?: boolean;
   canvasSize?: CanvasWidth;
   children?: React.ReactElement | React.ReactElement[];
 };
