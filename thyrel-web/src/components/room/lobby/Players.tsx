@@ -1,3 +1,4 @@
+import React from 'react';
 import { client } from 'api/client';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
@@ -5,7 +6,15 @@ import Loading from '../../Loading';
 import PlayerCount from '../../room/PlayerCount';
 import BookPlayerList from '../book/BookPlayerList';
 import PlayerCardList from './PlayerCardList';
-import { Box, useMediaQuery, useTheme } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  useMediaQuery,
+  useTheme,
+} from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
 export function Players() {
@@ -14,9 +23,14 @@ export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
+  const [open, setOpen] = React.useState(false);
+  const [kickedPlayerId, setKickedPlayerId] = React.useState(Number);
+  const [kickedPlayerName, setKickedPlayerName] = React.useState(String);
 
   function onKick(id: number, name: string) {
-    window.confirm(`Do you really want to kick ${name} ?`) && kickPlayer(id);
+    setKickedPlayerId(id);
+    setKickedPlayerName(name);
+    setOpen(true);
   }
 
   function kickPlayer(id: number) {
@@ -37,12 +51,37 @@ export function Players() {
     <Box display="flex" flexDirection="column" alignItems="flex-end">
       {players?.length > 0 ? (
         isDeviceSM ? (
-          <PlayerCardList
-            players={players}
-            playerId={player?.id}
-            isKickable={player?.isOwner}
-            onKick={(id, name) => onKick(id, name)}
-          />
+          <>
+            <PlayerCardList
+              players={players}
+              playerId={player?.id}
+              isKickable={player?.isOwner}
+              onKick={(id, name) => onKick(id, name)}
+            />
+
+            <Dialog
+              fullWidth
+              maxWidth="xs"
+              open={open}
+              onClose={() => setOpen(false)}>
+              <DialogTitle>
+                Do you really want to kick {kickedPlayerName} ?
+              </DialogTitle>
+              <DialogActions>
+                <Button onClick={() => setOpen(false)} color="primary">
+                  Cancel ❌
+                </Button>
+                <Button
+                  onClick={() => {
+                    kickPlayer(kickedPlayerId);
+                    setOpen(false);
+                  }}
+                  color="primary">
+                  Kick ⭕️
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
         ) : (
           <BookPlayerList
             players={players}
