@@ -16,6 +16,7 @@ const canvasWidth = {
 export function DrawingCanvasProvider({
   color = '#900050',
   lineSize = 4,
+  disabled = false,
   canvasSize: size = canvasWidth,
   children,
 }: DrawingCanvasProviderProps) {
@@ -84,6 +85,7 @@ export function DrawingCanvasProvider({
     onMouseEnter,
     onMouseMove,
     isPainting,
+    disabled,
   });
 
   React.useEffect(() => {
