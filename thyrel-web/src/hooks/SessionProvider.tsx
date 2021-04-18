@@ -1,7 +1,7 @@
 import Loading from 'components/Loading';
 import { useSnackbar } from 'notistack';
 import React from 'react';
-import StepElement from 'types/HolyElement.type';
+import StepElement, { ElementType } from 'types/HolyElement.type';
 import HolyElement from 'types/HolyElement.type';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
@@ -35,7 +35,9 @@ export function SessionContextProvider({
     const elementId = currentElement?.id;
 
     const elementContent =
-      currentElement?.type === 1 ? { drawimage: content } : { text: content };
+      currentElement?.type === ElementType.Drawing
+        ? { drawimage: content }
+        : { text: content };
 
     client<HolyElement>(`element/${elementId}`, {
       token: getToken(),
