@@ -80,6 +80,8 @@ export function RoomContextProvider({
     websocket,
   ]);
 
+  React.useEffect(() => {}, [players]);
+
   const values = { room, wsState, players };
 
   return <RoomContext.Provider value={values}>{children}</RoomContext.Provider>;
