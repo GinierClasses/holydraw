@@ -69,7 +69,7 @@ export function Players() {
               </DialogTitle>
               <DialogActions>
                 <Button onClick={() => setOpen(false)} color="primary">
-                  Cancel ❌
+                  Cancel 👋
                 </Button>
                 <Button
                   onClick={() => {
