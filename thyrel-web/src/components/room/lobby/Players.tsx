@@ -77,7 +77,7 @@ export function Players() {
                     setOpen(false);
                   }}
                   color="primary">
-                  Kick ⭕️
+                  Kick 🤫
                 </Button>
               </DialogActions>
             </Dialog>
