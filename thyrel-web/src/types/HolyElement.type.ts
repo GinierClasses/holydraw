@@ -1,3 +1,5 @@
+import Player from './Player.type';
+
 export type HolyElement = {
   id: number;
   step: number;
@@ -6,7 +8,13 @@ export type HolyElement = {
   finishAt: string;
   createdAt: string;
   drawImage: string;
+  creator?: Player;
 };
+
+export enum ElementType {
+  Sentence = 0,
+  Drawing = 1,
+}
 
 type StepElement = HolyElement & {
   parent: HolyElement;
