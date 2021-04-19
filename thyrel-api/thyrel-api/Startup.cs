@@ -50,6 +50,7 @@ namespace thyrel_api
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                         options.SerializerSettings.ContractResolver = contractResolver;
                         options.SerializerSettings.Formatting = Formatting.Indented;
+                        options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                     }
                 );
 

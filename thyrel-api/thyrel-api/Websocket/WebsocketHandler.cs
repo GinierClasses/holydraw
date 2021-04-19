@@ -5,20 +5,23 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using thyrel_api.Models;
 
 namespace thyrel_api.Websocket
 {
     public class WebsocketHandler : IWebsocketHandler
     {
-        private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IConfiguration _configuration;
         private readonly WebsocketService _websocketService;
         private List<SocketConnection> _websocketConnections = new();
 
-        public WebsocketHandler(IServiceScopeFactory scopeFactory)
+        public WebsocketHandler(IConfiguration configuration)
         {
-            _scopeFactory = scopeFactory;
+            _configuration = configuration;
             _websocketService = new WebsocketService(this);
             SetupCleanUpTask();
         }
@@ -43,7 +46,9 @@ namespace thyrel_api.Websocket
 
                 if (connection == null || connection.RoomId != null) continue;
 
-                await _websocketService.MessageService(connection, message, GetInjectedContext());
+                var context = CreateContext();
+                await _websocketService.MessageService(connection, message, context);
+                await context.DisposeAsync();
             }
         }
 
@@ -118,7 +123,9 @@ namespace thyrel_api.Websocket
                     foreach (var closedSocket in closedSockets.Where(closedSocket =>
                         openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                     {
-                        await _websocketService.DisconnectService(closedSocket, GetInjectedContext());
+                        var context = CreateContext();
+                        await _websocketService.DisconnectService(closedSocket, context);
+                        await context.DisposeAsync();
                     }
 
                     await Task.Delay(5000);
@@ -126,10 +133,25 @@ namespace thyrel_api.Websocket
             });
         }
 
-        private HolyDrawDbContext GetInjectedContext()
+        /// <summary>
+        /// Dispose the context after using it !
+        /// `await context.DisposeAsync();`
+        /// </summary>
+        /// <returns>Context able to be used</returns>
+        private HolyDrawDbContext CreateContext()
         {
-            var scope = _scopeFactory.CreateScope();
-            return scope.ServiceProvider.GetRequiredService<HolyDrawDbContext>();
+            var connectionString = _configuration.GetConnectionString("thyrel_db");
+
+            Console.WriteLine($"Connection string : #{connectionString}");
+            Console.WriteLine("Connection string!!!");
+
+            var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
+            optionsBuilder.UseMySql(
+                connectionString,
+                new MySqlServerVersion(new Version(8, 0, 23)),
+                mySqlOptions => mySqlOptions
+                    .CharSetBehavior(CharSetBehavior.NeverAppend));
+            return new HolyDrawDbContext(optionsBuilder.Options);
         }
     }
 }

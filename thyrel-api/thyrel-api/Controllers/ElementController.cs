@@ -32,7 +32,6 @@ namespace thyrel_api.Controllers
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized("You're not in the room.");
 
-
             var elementDataProvider = new ElementDataProvider(_context);
             var sessionDataProvider = new SessionDataProvider(_context);
 
