@@ -6,16 +6,9 @@ import Loading from '../../Loading';
 import PlayerCount from '../../room/PlayerCount';
 import BookPlayerList from '../book/BookPlayerList';
 import PlayerCardList from './PlayerCardList';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  useMediaQuery,
-  useTheme,
-} from '@material-ui/core';
+import { Box, useMediaQuery, useTheme } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import { KickModal } from './KickModal';
 
 export function Players() {
   const theme = useTheme();
@@ -23,14 +16,13 @@ export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
-  const [open, setOpen] = React.useState(false);
-  const [kickedPlayerId, setKickedPlayerId] = React.useState(Number);
-  const [kickedPlayerName, setKickedPlayerName] = React.useState(String);
+  const [playerToKick, setPlayerToKick] = React.useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
   function onKick(id: number, name: string) {
-    setKickedPlayerId(id);
-    setKickedPlayerName(name);
-    setOpen(true);
+    setPlayerToKick({ id, name });
   }
 
   function kickPlayer(id: number) {
@@ -58,29 +50,6 @@ export function Players() {
               isKickable={player?.isOwner}
               onKick={(id, name) => onKick(id, name)}
             />
-
-            <Dialog
-              fullWidth
-              maxWidth="xs"
-              open={open}
-              onClose={() => setOpen(false)}>
-              <DialogTitle>
-                Do you really want to kick {kickedPlayerName} ?
-              </DialogTitle>
-              <DialogActions>
-                <Button onClick={() => setOpen(false)} color="primary">
-                  Cancel 👋
-                </Button>
-                <Button
-                  onClick={() => {
-                    kickPlayer(kickedPlayerId);
-                    setOpen(false);
-                  }}
-                  color="primary">
-                  Kick 🤫
-                </Button>
-              </DialogActions>
-            </Dialog>
           </>
         ) : (
           <BookPlayerList
@@ -93,6 +62,16 @@ export function Players() {
       ) : (
         <Loading />
       )}
+      <KickModal
+        open={Boolean(playerToKick)}
+        username={playerToKick?.name}
+        onKick={() => {
+          if (!playerToKick) return;
+          kickPlayer(playerToKick?.id);
+          setPlayerToKick(null);
+        }}
+        onClose={() => setPlayerToKick(null)}
+      />
     </Box>
   );
 }
