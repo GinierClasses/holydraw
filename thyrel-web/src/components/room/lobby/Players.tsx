@@ -43,14 +43,12 @@ export function Players() {
     <Box display="flex" flexDirection="column" alignItems="flex-end">
       {players?.length > 0 ? (
         isDeviceSM ? (
-          <>
-            <PlayerCardList
-              players={players}
-              playerId={player?.id}
-              isKickable={player?.isOwner}
-              onKick={(id, name) => onKick(id, name)}
-            />
-          </>
+          <PlayerCardList
+            players={players}
+            playerId={player?.id}
+            isKickable={player?.isOwner}
+            onKick={(id, name) => onKick(id, name)}
+          />
         ) : (
           <BookPlayerList
             players={players}
