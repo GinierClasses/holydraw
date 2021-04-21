@@ -21,5 +21,5 @@ export default function BookStartAction() {
     // );
   }
 
-  return <StartButton onStart={onStart} book={true} player={player} />;
+  return <StartButton onStart={onStart} startName="book" player={player} />;
 }
