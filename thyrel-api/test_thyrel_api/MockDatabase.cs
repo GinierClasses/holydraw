@@ -50,8 +50,8 @@ namespace test_thyrel_api
         {
             var sessions = new List<Session>
             {
-                new(null, 1, DateTime.Now, 100, SessionStepType.Book, 3),
-                new(null, 2, DateTime.Now, 100, SessionStepType.Draw, 3),
+                new(1, DateTime.Now, 100, SessionStepType.Book, 3),
+                new(2, DateTime.Now, 100, SessionStepType.Draw, 3),
             };
             
             await Context.Session.AddRangeAsync(sessions);
@@ -62,15 +62,15 @@ namespace test_thyrel_api
         {   
             var players = new List<Player>
             {
-                new("player-1-owner", "player-1-avatarurl", true, null, 1, 1),
-                new("player-2-owner", "player-1-avatarurl", false, null, 1, 2),
-                new("player-3-owner", "player-1-avatarurl", false, null, 1, 3),
-                new("player-4-owner", "player-1-avatarurl", false, null, 1, 4),
-                new("player-5-owner", "player-1-avatarurl", false, null, 1, 5),
-                new("player-6-owner", "player-1-avatarurl", true, null, 2, 6),
-                new("player-7-owner", "player-1-avatarurl", false, null, 2, 7),
-                new("player-8-owner", "player-1-avatarurl", false, null, 2, 8),
-                new("player-9-owner", "player-1-avatarurl", true, null, 3, 9),
+                new("player-1-owner", "player-1-avatarurl", true, 1, 1),
+                new("player-2-owner", "player-1-avatarurl", false, 1, 2),
+                new("player-3-owner", "player-1-avatarurl", false, 1, 3),
+                new("player-4-owner", "player-1-avatarurl", false, 1, 4),
+                new("player-5-owner", "player-1-avatarurl", false, 1, 5),
+                new("player-6-owner", "player-1-avatarurl", true, 2, 6),
+                new("player-7-owner", "player-1-avatarurl", false, 2, 7),
+                new("player-8-owner", "player-1-avatarurl", false, 2, 8),
+                new("player-9-owner", "player-1-avatarurl", true, 3, 9),
             };
 
             await Context.Player.AddRangeAsync(players);
@@ -99,10 +99,10 @@ namespace test_thyrel_api
         {
             var rooms = new List<Room>
             {
-                new ("room-1-id", null),
-                new ("room-2-id", null),
-                new ("room-3-id", null),
-                new ("room-4-id", null),
+                new ("room-1-id"),
+                new ("room-2-id"),
+                new ("room-3-id"),
+                new ("room-4-id"),
             };
 
             await Context.Room.AddRangeAsync(rooms);

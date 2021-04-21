@@ -9,10 +9,8 @@ namespace thyrel_api.Models
         {
         }
 
-        public Session(DateTime? finishAt, int roomId, DateTime stepFinishAt, int timeDuration,
-            SessionStepType stepType, int totalPlayers)
+        public Session(int roomId, DateTime stepFinishAt, int timeDuration, SessionStepType stepType, int totalPlayers)
         {
-            FinishAt = finishAt;
             CreatedAt = DateTime.Now;
             RoomId = roomId;
             ActualStep = 1;
@@ -30,6 +28,8 @@ namespace thyrel_api.Models
         public int ActualStep { get; set; }
         public SessionStepType StepType { get; set; }
         public int TotalPlayers { get; set; }
+
+        public int? CurrentAlbumId { get; set; }
 
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
