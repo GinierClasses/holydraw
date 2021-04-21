@@ -9,8 +9,7 @@ namespace thyrel_api.Models
         {
         }
 
-        public Player(string username, string avatarUrl, bool isOwner,
-            int roomId, int tokenId)
+        public Player(string username, string avatarUrl, bool isOwner, int roomId, int tokenId)
         {
             Username = username;
             AvatarUrl = avatarUrl;

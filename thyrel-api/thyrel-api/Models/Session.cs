@@ -9,8 +9,7 @@ namespace thyrel_api.Models
         {
         }
 
-        public Session(int roomId, DateTime stepFinishAt, int timeDuration,
-            SessionStepType stepType, int totalPlayers)
+        public Session(int roomId, DateTime stepFinishAt, int timeDuration, SessionStepType stepType, int totalPlayers)
         {
             CreatedAt = DateTime.Now;
             RoomId = roomId;
