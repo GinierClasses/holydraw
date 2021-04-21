@@ -8,7 +8,7 @@ type Session = {
   actualStep: number;
   timeDuration: number;
   roomId: number;
-  CurrentAlbumId?: number;
+  currentAlbumId?: number;
   room?: Room;
   stepType: SessionStepType;
   totalPlayers: number;
