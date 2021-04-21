@@ -67,7 +67,7 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="sentence"></param>
         /// <returns></returns>
         public async Task SetSentence(int id, string sentence)
@@ -152,10 +152,10 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<ElementStepDto> GetCurrentElement(int playerId)
         {
-            var elementWithParent = await _holyDrawDbContext.Element
+            var currentElement = await _holyDrawDbContext.Element
                 .OrderByDescending(e => e.Step)
                 .Where(e => e.CreatorId == playerId)
-                .Select(e => new ElementDto
+                .Select(e => new CurrentElementDto
                 {
                     Id = e.Id,
                     Step = e.Step,
@@ -164,13 +164,28 @@ namespace thyrel_api.DataProvider
                     FinishAt = e.FinishAt,
                     CreatedAt = e.CreatedAt,
                     SessionId = e.SessionId,
-                    DrawImage = e.DrawImage
+                    DrawImage = e.DrawImage,
+                    InitiatorId = e.InitiatorId
                 })
-                .Take(2)
-                .ToListAsync();
+                .FirstAsync();
 
-            var result = new ElementStepDto(elementWithParent[0],
-                elementWithParent.Count > 1 ? elementWithParent[1] : null);
+            ElementDto parentElement = null;
+
+            if (currentElement.Step != 1)
+            {
+                parentElement = await _holyDrawDbContext.Element
+                    .OrderByDescending(e => e.Step)
+                    .Where(e => e.InitiatorId == currentElement.InitiatorId && e.Step == currentElement.Step - 1)
+                    .Select(e => new ElementDto
+                    {
+                        Id = e.Id,
+                        Text = e.Text,
+                        DrawImage = e.DrawImage
+                    })
+                    .FirstAsync();
+            }
+
+            var result = new ElementStepDto(currentElement, parentElement);
 
             return result;
         }

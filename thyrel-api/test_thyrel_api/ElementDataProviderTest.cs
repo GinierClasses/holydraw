@@ -141,6 +141,8 @@ namespace test_thyrel_api
             var expectedWithParent = await _elementDataProvider.GetCurrentElement(expected.CreatorId);
             var current = await _elementDataProvider.GetCurrentElement(player.Id);
             Assert.AreEqual(expectedWithParent.Parent.Id, current.Parent.Id);
+            Assert.AreNotEqual(expectedWithParent.Parent.Id, expectedWithParent.Id);
+            Assert.AreNotEqual(expectedWithParent.Parent.Step, expectedWithParent.Step);
             Assert.AreEqual(current.Step, expected.Step);
             Assert.AreEqual(current.Id, expected.Id);
         }
