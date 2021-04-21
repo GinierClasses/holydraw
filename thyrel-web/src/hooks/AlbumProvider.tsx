@@ -24,7 +24,7 @@ export function AlbumContextProvider({ children }: AlbumContextProviderProps) {
       switch (websocketMessage.websocketEvent) {
         case WebsocketEvent.NewAlbumElement:
           if (!websocketMessage.album) break;
-          
+
           const { element, initiatorId } = websocketMessage.album;
           setAlbums(prevAlbums => {
             if (prevAlbums[initiatorId]) {
