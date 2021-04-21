@@ -50,7 +50,6 @@ export default function ModalJoin({
             margin="dense"
             id="name"
             label="Identifier"
-            type="email"
             value={identifier}
             onChange={event => setIdentifier(event.target.value)}
             fullWidth
