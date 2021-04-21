@@ -30,7 +30,7 @@ namespace thyrel_api.DataProvider
         public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount)
         {
             var sessionToAdd =
-                new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
+                new Session(roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
 
             // test if no session is already start
             if (await _holyDrawDbContext.Session.AnyAsync(s => s.RoomId == roomId && s.FinishAt == null))
