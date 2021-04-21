@@ -9,13 +9,12 @@ namespace thyrel_api.Models
         {
         }
 
-        public Player(string username, string avatarUrl, bool isOwner, DateTime? disableAt,
+        public Player(string username, string avatarUrl, bool isOwner,
             int roomId, int tokenId)
         {
             Username = username;
             AvatarUrl = avatarUrl;
             IsOwner = isOwner;
-            DisableAt = disableAt;
             CreatedAt = DateTime.Now;
             RoomId = roomId;
             TokenId = tokenId;
