@@ -26,8 +26,8 @@ export default function StartButton({
         )}
         <Typography variant="body2" color="textSecondary">
           {player?.isOwner
-            ? "you're the owner, click here to start the " + startName + '.'
-            : 'Waiting for the host to start the ' + startName + '.'}
+            ? `you're the owner, click here to start the ${startName}`
+            : `Waiting for the host to start the ${startName}`}
         </Typography>
       </Box>
       {player?.isOwner && (
