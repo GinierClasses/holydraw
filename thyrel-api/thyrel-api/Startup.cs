@@ -94,13 +94,10 @@ namespace thyrel_api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "thyrel_api v1"));
             }
 
-            if (env.IsProduction())
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
-                app.UseForwardedHeaders(new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-                });
-            }
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             var webSocketOptions = new WebSocketOptions()
             {
