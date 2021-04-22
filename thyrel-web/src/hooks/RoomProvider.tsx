@@ -80,6 +80,13 @@ export function RoomContextProvider({
     websocket,
   ]);
 
+  React.useEffect(() => {
+    const playingPlayers = players.filter(player => player.isPlaying);
+    if (history.location.pathname === '/r/lobby' && playingPlayers.length > 0) {
+      history?.push('/r/start');
+    }
+  }, [players, history]);
+
   const values = { room, wsState, players };
 
   return <RoomContext.Provider value={values}>{children}</RoomContext.Provider>;

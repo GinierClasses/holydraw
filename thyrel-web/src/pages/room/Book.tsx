@@ -1,77 +1,31 @@
-import { Box, Typography } from '@material-ui/core';
-import { client } from 'api/client';
-import { getToken } from 'api/player-provider';
-import Loading from 'components/Loading';
-import BookDrawingElement from 'components/room/book/BookDrawingElement';
-import BookSentenceElement from 'components/room/book/BookSentenceElement';
-import { useSessionContext } from 'hooks/SessionProvider';
-import profilesPictures from 'images/profiles/profiles-pictures';
+import BookPlayerList from 'components/room/book/BookPlayerList';
 import React from 'react';
-
-import { ElementType, HolyElement } from 'types/HolyElement.type';
+import GameLayout from 'components/room/GameLayout';
+import { Grid } from '@material-ui/core';
+import BookStartAction from 'components/room/book/BookStartAction';
+import { useRoomContext } from 'hooks/RoomProvider';
+import BookMock from 'components/room/book/BookMock';
 
 export default function Book() {
-  const { session } = useSessionContext();
-  const [album, setAlbum] = React.useState<HolyElement[][]>([]);
-
-  React.useEffect(() => {
-    client<HolyElement[]>(`album/${session?.id || 1}`, { token: getToken() })
-      .then(elements => {
-        const sortedElements = elements.reduce(
-          (accumulator: Record<number, HolyElement[]>, value: HolyElement) => {
-            if (!value.initiatorId) return accumulator;
-            if (accumulator[value.initiatorId]) {
-              accumulator[value.initiatorId].push(value);
-              return accumulator;
-            }
-            accumulator[value.initiatorId] = [value];
-            return accumulator;
-          },
-          {},
-        );
-        const flatArray: HolyElement[][] = [];
-        Object.keys(sortedElements).forEach((key: any) =>
-          flatArray.push(sortedElements[key]),
-        );
-        setAlbum(flatArray);
-      })
-      .catch(alert);
-  }, [session?.id]);
-
-  return album.length >= 1 ? (
-    <Box display="flex" flexDirection="row">
-      {album.map(elements => {
-        return (
-          <Box display="flex" flexDirection="column" maxWidth={300}>
-            <Typography variant="h4">
-              {elements[0].creator?.username}
-            </Typography>
-            {elements.map(element => {
-              const isSentence = element.type === ElementType.Sentence;
-              return isSentence ? (
-                <BookSentenceElement
-                  key={element.id}
-                  username={element.creator?.username}
-                  avatarUrl={
-                    profilesPictures[Number(element.creator?.avatarUrl)]
-                  }
-                  sentence={element.text}
-                />
-              ) : (
-                <BookDrawingElement
-                  key={element.id}
-                  username={element.creator?.username}
-                  src={element.drawImage}
-                />
-              );
-            })}
-          </Box>
-        );
-      })}
-    </Box>
-  ) : (
-    <Box>
-      <Loading />
-    </Box>
+  const { players } = useRoomContext();
+  return (
+    <GameLayout displayHud={false} maxWidth="sm">
+      <BookMock />
+      <Grid
+        container
+        spacing={2}
+        direction="column"
+        alignItems="center"
+        className="full-height"
+        wrap="nowrap"
+        justify="space-between">
+        <Grid item>
+          <BookPlayerList players={players} />
+        </Grid>
+        <Grid item>
+          <BookStartAction />
+        </Grid>
+      </Grid>
+    </GameLayout>
   );
 }

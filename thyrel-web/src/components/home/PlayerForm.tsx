@@ -68,8 +68,11 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   }
 
   function onJoin(identifier: string) {
+    const catchedIdentifier = identifier.startsWith('http')
+      ? identifier.split('/').pop()
+      : identifier;
     setLoading(true);
-    client<Player>(`room/join/${identifier}`, {
+    client<Player>(`room/join/${catchedIdentifier}`, {
       data: {
         username: username || defaultUsername,
         avatarUrl: String(ppIndex),

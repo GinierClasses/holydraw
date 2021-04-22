@@ -1,3 +1,4 @@
+import React from 'react';
 import { client } from 'api/client';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
@@ -7,6 +8,7 @@ import BookPlayerList from '../book/BookPlayerList';
 import PlayerCardList from './PlayerCardList';
 import { Box, useMediaQuery, useTheme } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import { KickModal } from './KickModal';
 
 export function Players() {
   const theme = useTheme();
@@ -14,9 +16,13 @@ export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
+  const [playerToKick, setPlayerToKick] = React.useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
   function onKick(id: number, name: string) {
-    window.confirm(`Do you really want to kick ${name} ?`) && kickPlayer(id);
+    setPlayerToKick({ id, name });
   }
 
   function kickPlayer(id: number) {
@@ -54,6 +60,16 @@ export function Players() {
       ) : (
         <Loading />
       )}
+      <KickModal
+        open={Boolean(playerToKick)}
+        username={playerToKick?.name}
+        onKick={() => {
+          if (!playerToKick) return;
+          kickPlayer(playerToKick?.id);
+          setPlayerToKick(null);
+        }}
+        onClose={() => setPlayerToKick(null)}
+      />
     </Box>
   );
 }

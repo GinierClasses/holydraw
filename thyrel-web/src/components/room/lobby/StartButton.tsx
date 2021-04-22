@@ -6,10 +6,15 @@ import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 
 type StartButtonProps = {
   player?: Player;
+  startName?: string;
   onStart: () => void;
 };
 
-export default function StartButton({ player, onStart }: StartButtonProps) {
+export default function StartButton({
+  player,
+  startName = 'game',
+  onStart,
+}: StartButtonProps) {
   const theme = useTheme();
   return (
     <Box m={3} display="flex" flexDirection="column" alignItems="center">
@@ -21,8 +26,8 @@ export default function StartButton({ player, onStart }: StartButtonProps) {
         )}
         <Typography variant="body2" color="textSecondary">
           {player?.isOwner
-            ? "you're the owner, click here to start the game"
-            : 'Waiting for the host to start the game.'}
+            ? `you're the owner, click here to start the ${startName}`
+            : `Waiting for the host to start the ${startName}`}
         </Typography>
       </Box>
       {player?.isOwner && (

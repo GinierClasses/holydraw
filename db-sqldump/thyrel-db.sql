@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Feb 17, 2021 at 07:36 AM
+-- Generation Time: Apr 21, 2021 at 10:46 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.13
 
@@ -50,7 +50,6 @@ CREATE TABLE `Element` (
   `DrawImage` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 --
 -- Dumping data for table `Element`
 --
@@ -79,7 +78,7 @@ CREATE TABLE `Player` (
   `IsOwner` tinyint(1) NOT NULL DEFAULT '0',
   `DisableAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `RoomId` int,
+  `RoomId` int DEFAULT NULL,
   `IsPlaying` tinyint(1) NOT NULL DEFAULT '0',
   `IsConnected` tinyint(1) NOT NULL DEFAULT '1',
   `TokenId` int NOT NULL
@@ -92,7 +91,9 @@ CREATE TABLE `Player` (
 INSERT INTO `Player` (`Id`, `Username`, `AvatarUrl`, `IsOwner`, `DisableAt`, `CreatedAt`, `RoomId`, `IsPlaying`, `IsConnected`, `TokenId`) VALUES
 (26, 'Didier', '0', 1, NULL, '2021-03-17 18:52:31', 23, 1, 1, 49),
 (27, 'Patrick', '0', 0, NULL, '2021-03-17 18:52:39', 23, 1, 1, 50),
-(28, 'Jean', '0', 0, NULL, '2021-03-17 18:52:49', 23, 1, 1, 51);
+(28, 'Jean', '0', 0, NULL, '2021-03-17 18:52:49', 23, 1, 1, 51),
+(29, 'Alex', '1', 1, NULL, '2021-04-21 08:29:41', 24, 0, 0, 52),
+(30, 'Bob Razowski', '2', 0, NULL, '2021-04-21 08:29:54', 24, 0, 0, 53);
 
 -- --------------------------------------------------------
 
@@ -111,8 +112,9 @@ CREATE TABLE `Room` (
 -- Dumping data for table `Room`
 --
 
-INSERT INTO `Room` (`Id`, `Identifier`, `FinishAt`, `CreatedAt`) VALUES
-(23, 'Vy0nWtXyTJ7JipVz', NULL, '2021-02-17 11:38:58');
+INSERT INTO `Room` (`Id`, `FinishAt`, `CreatedAt`, `Identifier`) VALUES
+(23, NULL, '2021-02-17 11:38:58', 'Vy0nWtXyTJ7JipVz'),
+(24, '2021-04-21 08:35:32', '2021-04-21 08:29:40', 'Q56hteDtu5IK');
 
 -- --------------------------------------------------------
 
@@ -127,6 +129,7 @@ CREATE TABLE `Session` (
   `ActualStep` int DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `RoomId` int NOT NULL,
+  `CurrentAlbumId` int DEFAULT NULL,
   `TimeDuration` int NOT NULL,
   `StepType` int NOT NULL,
   `TotalPlayers` int NOT NULL
@@ -136,8 +139,8 @@ CREATE TABLE `Session` (
 -- Dumping data for table `Session`
 --
 
-INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`, `TimeDuration`, `StepType`, `TotalPlayers`) VALUES
-(9, NULL, NULL, 2, '2021-02-17 18:00:18', 23, 120, 12, 3);
+INSERT INTO `Session` (`Id`, `FinishAt`, `StepFinishAt`, `ActualStep`, `CreatedAt`, `RoomId`, `CurrentAlbumId`, `TimeDuration`, `StepType`, `TotalPlayers`) VALUES
+(9, NULL, NULL, 2, '2021-02-17 18:00:18', 23, NULL, 120, 12, 3);
 
 -- --------------------------------------------------------
 
@@ -159,7 +162,9 @@ CREATE TABLE `Token` (
 INSERT INTO `Token` (`Id`, `DiscardAt`, `CreatedAt`, `TokenKey`) VALUES
 (49, NULL, '2021-03-17 18:52:31', 'UcHRAOTuuQR03AyP'),
 (50, NULL, '2021-03-17 18:52:39', 'ibEhpN19Uro3mt5Y'),
-(51, NULL, '2021-03-17 18:52:49', 'XZ4bnf2C53WxdiZO');
+(51, NULL, '2021-03-17 18:52:49', 'XZ4bnf2C53WxdiZO'),
+(52, NULL, '2021-04-21 08:29:41', 'RPtCVtF9mVe57uIT'),
+(53, NULL, '2021-04-21 08:29:54', 'M0bi96EXn1hpx7L7');
 
 --
 -- Indexes for dumped tables
@@ -217,13 +222,13 @@ ALTER TABLE `Element`
 -- AUTO_INCREMENT for table `Player`
 --
 ALTER TABLE `Player`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `Room`
 --
 ALTER TABLE `Room`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `Session`
@@ -235,7 +240,7 @@ ALTER TABLE `Session`
 -- AUTO_INCREMENT for table `Token`
 --
 ALTER TABLE `Token`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- Constraints for dumped tables
