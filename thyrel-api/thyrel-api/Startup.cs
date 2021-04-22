@@ -38,8 +38,8 @@ namespace thyrel_api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            DotNetEnv.Env.Load("./invalidpath");
-            
+            DotNetEnv.Env.Load(".env");
+
             services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
             
             // for deployment
