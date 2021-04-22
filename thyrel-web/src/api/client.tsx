@@ -1,11 +1,15 @@
-import { testApiUrl } from '../test/data';
+function getApiUrl() {
+  switch (process.env.NODE_ENV) {
+    case 'development':
+      return process.env.REACT_APP_API_URL;
+    case 'production':
+      return process.env.REACT_APP_PROD_API_URL;
+    case 'test':
+      return 'http://test-api-url.com/api';
+  }
+}
 
-export const apiURL: string =
-  (process.env.NODE_ENV === 'production'
-    ? process.env.REACT_APP_PROD_API_URL
-    : process.env.NODE_ENV === 'development'
-    ? process.env.REACT_APP_API_URL
-    : testApiUrl) || '';
+export const apiURL: string = getApiUrl() || 'http://default-url.com/api';
 
 type config = {
   data?: any;
