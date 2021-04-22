@@ -81,8 +81,8 @@ export function RoomContextProvider({
   ]);
 
   React.useEffect(() => {
-    const anyIsPlaying = players.filter(player => player.isPlaying);
-    if (history.location.pathname === '/r/lobby' && anyIsPlaying.length > 0) {
+    const playingPlayers = players.filter(player => player.isPlaying);
+    if (history.location.pathname === '/r/lobby' && playingPlayers.length > 0) {
       history?.push('/r/start');
     }
   }, [players, history]);
