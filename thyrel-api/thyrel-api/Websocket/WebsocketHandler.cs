@@ -140,14 +140,17 @@ namespace thyrel_api.Websocket
         /// <returns>Context able to be used</returns>
         private HolyDrawDbContext CreateContext()
         {
-            var connectionString = _configuration.GetConnectionString("thyrel_db");
+            var connectionString = _configuration.GetConnectionString("thyrel_db") == null
+                ? Environment.GetEnvironmentVariable("THYREL_CONNECTION_STRING")
+                : _configuration.GetConnectionString("thyrel_db"); 
+
 
             Console.WriteLine($"Connection string : #{connectionString}");
             Console.WriteLine("Connection string!!!");
 
             var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
             optionsBuilder.UseMySql(
-                connectionString,
+                connectionString ?? throw new InvalidOperationException("No connection string, on WebsocketHandler"),
                 new MySqlServerVersion(new Version(8, 0, 23)),
                 mySqlOptions => mySqlOptions
                     .CharSetBehavior(CharSetBehavior.NeverAppend));
