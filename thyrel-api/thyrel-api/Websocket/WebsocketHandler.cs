@@ -144,10 +144,6 @@ namespace thyrel_api.Websocket
                 ? Environment.GetEnvironmentVariable("THYREL_CONNECTION_STRING")
                 : _configuration.GetConnectionString("thyrel_db"); 
 
-
-            Console.WriteLine($"Connection string : #{connectionString}");
-            Console.WriteLine("Connection string!!!");
-
             var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
             optionsBuilder.UseMySql(
                 connectionString ?? throw new InvalidOperationException("No connection string, on WebsocketHandler"),
