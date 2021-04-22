@@ -16,13 +16,20 @@ export default function GameLayout({
 }: GameLayoutProps) {
   return (
     <Box height="100vh" display="flex" flexDirection="column">
-      <GameBar />
+      <GameBar onFinish={CallApi} />
       <Container maxWidth={maxWidth} className="full-height">
         {children}
       </Container>
       <StepProgressWithContext />
     </Box>
   );
+}
+function CallApi() {
+  //here i call the api to save the element because the time is finished
+  console.log('Finished time');
+  const url = 'Api/url';
+  console.log(url);
+  //client(url);
 }
 
 const StepProgressWithContext = () => {

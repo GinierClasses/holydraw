@@ -26,8 +26,10 @@ export default function useTimerInterval({
 
   React.useEffect(() => {
     if (progress >= 100) {
-      onFinish?.();
       timerInterval && clearInterval(timerInterval);
+    }
+    if (progress >= 90) {
+      onFinish?.();
     }
   }, [progress, onFinish, timerInterval]);
 

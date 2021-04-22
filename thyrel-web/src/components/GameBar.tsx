@@ -28,8 +28,11 @@ export default function GameBar({ onFinish }: GameBarProps) {
       <HolyDrawLogo />
       <Box width={{ xs: 32, sm: 64 }}>
         <StepTimer
-          finishAt={new Date(session?.stepFinishAt || '')}
-          timeDuration={session?.timeDuration || 60}
+          //finishAt={new Date(session?.stepFinishAt || '')}
+          //finishAt={new Date(session?.stepFinishAt - 1500 || '')}
+          finishAt={new Date(Date.now() + 6000)}
+          //timeDuration={session?.timeDuration || 60}
+          timeDuration={6}
           onFinish={onFinish}
         />
       </Box>
