@@ -4,6 +4,7 @@ export type UseTimerIntervalProps = {
   finishAt: Date;
   timeDuration: number;
   onFinish?: () => void;
+  onFinishPercentage?: number;
 };
 
 export default function useTimerInterval({
@@ -15,9 +16,9 @@ export default function useTimerInterval({
   const [timerInterval, setTimerInterval] = React.useState<NodeJS.Timeout>();
 
   React.useEffect(() => {
-    setProgress(updateProgress(finishAt, timeDuration));
+    setProgress(getProgressPercentage(finishAt, timeDuration));
     const interval = setInterval(
-      () => setProgress(updateProgress(finishAt, timeDuration)),
+      () => setProgress(getProgressPercentage(finishAt, timeDuration)),
       1000,
     );
     setTimerInterval(interval);
@@ -34,7 +35,28 @@ export default function useTimerInterval({
   return { progress };
 }
 
-function updateProgress(finishAt: Date, timeDuration: number) {
+export function useTimerEvent({
+  finishAt,
+  timeDuration,
+  onFinish,
+  onFinishPercentage = 100,
+}: UseTimerIntervalProps) {
+  const intervalRef = React.useRef<NodeJS.Timeout>();
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (getProgressPercentage(finishAt, timeDuration) >= onFinishPercentage) {
+        onFinish?.();
+        intervalRef.current && clearInterval(intervalRef.current);
+      }
+    }, 1000);
+
+    intervalRef.current = interval;
+    return () => clearInterval(interval);
+  }, [finishAt, timeDuration, onFinishPercentage, onFinish]);
+}
+
+function getProgressPercentage(finishAt: Date, timeDuration: number): number {
   const diff = Math.round((finishAt.getTime() - new Date().getTime()) / 1000);
   const progress = 100 - (diff * 100) / timeDuration;
   return progress > 100 ? 100 : progress;
