@@ -38,6 +38,8 @@ namespace thyrel_api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            DotNetEnv.Env.Load("./invalidpath");
+            
             services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
             
             // for deployment
@@ -61,10 +63,15 @@ namespace thyrel_api
                     }
                 );
 
+
+            var connectionString = _configuration.GetConnectionString("thyrel_db") == null
+                ? Environment.GetEnvironmentVariable("THYREL_CONNECTION_STRING")
+                : _configuration.GetConnectionString("thyrel_db"); 
+
             services.AddDbContextPool<HolyDrawDbContext>(
                 dbContextOptions => dbContextOptions
                     .UseMySql(
-                        _configuration.GetConnectionString("thyrel_db"),
+                        connectionString ?? throw new InvalidOperationException("Connection string is empty."),
                         new MySqlServerVersion(new Version(8, 0, 23)),
                         mySqlOptions => mySqlOptions
                             .CharSetBehavior(CharSetBehavior.NeverAppend))
