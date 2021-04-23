@@ -15,10 +15,12 @@ type SessionContextProps = {
   session?: Session;
   currentElement?: HolyElement;
   onSave: (content: string) => void;
+  autoSave: (content?: string) => void;
 };
 
 const SessionContext = React.createContext<SessionContextProps>({
   onSave: () => void 0,
+  autoSave: () => void 0,
 });
 
 type SessionContextProviderProps = { children: React.ReactElement };
@@ -50,6 +52,30 @@ export function SessionContextProvider({
       })
       .catch(() =>
         enqueueSnackbar('Sorry, an error occured while saving 😕', {
+          variant: 'error',
+        }),
+      );
+  }
+
+  function autoSave(content?: string) {
+    const elementId = currentElement?.id;
+
+    const elementContent =
+      currentElement?.type === ElementType.Drawing
+        ? { drawimage: content }
+        : { text: content };
+
+    client<HolyElement>(`element/auto/${elementId}`, {
+      token: getToken(),
+      method: 'PATCH',
+      data: elementContent,
+    })
+      .then(element => {
+        enqueueSnackbar('Element AUTO Saved 😎', { variant: 'success' });
+        setCurrentElement(e => ({ ...e, ...element }));
+      })
+      .catch(() =>
+        enqueueSnackbar('Sorry, an error occured while AUTO saving 😕', {
           variant: 'error',
         }),
       );
@@ -89,7 +115,7 @@ export function SessionContextProvider({
     };
   }, [enqueueSnackbar, session?.actualStep]);
 
-  const values = { session, currentElement, onSave };
+  const values = { session, currentElement, onSave, autoSave };
 
   return (
     <SessionContext.Provider value={values}>

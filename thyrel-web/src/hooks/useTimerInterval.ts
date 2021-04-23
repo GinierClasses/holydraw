@@ -48,6 +48,7 @@ export function useTimerEvent({
       if (getProgressPercentage(finishAt, timeDuration) >= onFinishPercentage) {
         onFinish?.();
         intervalRef.current && clearInterval(intervalRef.current);
+        console.log(`Hi from intervalRef ${onFinishPercentage}`);
       }
     }, 1000);
 

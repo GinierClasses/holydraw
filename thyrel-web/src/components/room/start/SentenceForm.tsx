@@ -6,12 +6,20 @@ import { useSessionContext } from 'hooks/SessionProvider';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import { useRandomSentence } from 'hooks/useRandomSentence';
+import { useTimerEvent } from 'hooks/useTimerInterval';
 
 export default function StartForm() {
-  const { currentElement, onSave } = useSessionContext();
+  const { session, currentElement, onSave, autoSave } = useSessionContext(); //session
   const [sentence, setSentence] = React.useState('');
   const isEditing = Boolean(!currentElement?.finishAt);
   const defaultSentence = useRandomSentence();
+
+  useTimerEvent({
+    finishAt: new Date(session?.stepFinishAt || ''),
+    timeDuration: session?.timeDuration || 60,
+    onFinish: () => autoSave(sentence),
+    onFinishPercentage: 98,
+  });
 
   return (
     <>
