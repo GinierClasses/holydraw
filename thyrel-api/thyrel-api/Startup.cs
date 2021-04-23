@@ -45,7 +45,7 @@ namespace thyrel_api
             // for deployment
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+              options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
             });
 
             var contractResolver = new DefaultContractResolver

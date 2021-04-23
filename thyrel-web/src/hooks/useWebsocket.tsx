@@ -5,8 +5,10 @@ import useSafeMounted from 'hooks/useSafeMounted';
 import { SendMessageType, WsStates } from 'types/websocket.types';
 import { apiURL } from 'api/client';
 
+const protocol = process.env.NODE_ENV === 'development' ? 'ws' : 'wss';
+
 const domainRegExp = /\b(?:(?:https?|ftp):\/\/)?([^/\n]+)\/?/;
-const url = `wss://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
+const url = `${protocol}://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
 
 export function useWebsocket() {
   const [websocket, setWebsocket] = React.useState<WebSocket>();
