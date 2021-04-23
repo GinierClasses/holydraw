@@ -69,16 +69,7 @@ export function SessionContextProvider({
       token: getToken(),
       method: 'PATCH',
       data: elementContent,
-    })
-      .then(element => {
-        enqueueSnackbar('Element AUTO Saved 😎', { variant: 'success' });
-        setCurrentElement(e => ({ ...e, ...element }));
-      })
-      .catch(() =>
-        enqueueSnackbar('Sorry, an error occured while AUTO saving 😕', {
-          variant: 'error',
-        }),
-      );
+    });
   }
 
   React.useEffect(() => {
