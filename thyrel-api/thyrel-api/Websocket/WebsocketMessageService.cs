@@ -31,7 +31,6 @@ namespace thyrel_api.Websocket
 
         public async Task DisconnectService(SocketConnection closedSocket, HolyDrawDbContext context)
         {
-            Console.WriteLine("DisconnectService START");
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
                     new PlayerIdWebsocketEventJson(WebsocketEvent.PlayerLeft, closedSocket.PlayerId)),
@@ -42,14 +41,13 @@ namespace thyrel_api.Websocket
 
             var player = await playerDataProvider.SetIsConnected(
                 (int) closedSocket.PlayerId, false);
-            Console.WriteLine("DisconnectService END SET IS CONNECTED TO FALSE");
+
             if (!player.IsOwner || player.RoomId == null) return;
 
             var newOwnerPlayer = await playerDataProvider.FindNewOwner((int) player.RoomId);
             if (newOwnerPlayer == null)
             {
                 await new RoomDataProvider(context).Finish(player.RoomId);
-                Console.WriteLine("DisconnectService END NEW OWNER NOT FIND");
                 return;
             }
 
@@ -58,8 +56,6 @@ namespace thyrel_api.Websocket
                 JsonBase.Serialize(
                     new PlayerWebsocketEventJson(WebsocketEvent.NewOwnerPlayer, newOwnerPlayer)),
                 closedSocket.RoomId);
-            Console.WriteLine("DisconnectService END");
-
         }
 
         private async Task SendAuthenticationMessage(SocketConnection socketConnection, string message,

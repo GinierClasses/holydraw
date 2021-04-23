@@ -122,13 +122,9 @@ namespace thyrel_api.Websocket
                             _websocketConnections = openSockets;
                         }
 
-                        Console.WriteLine($"_websocketConnections {_websocketConnections.Count} ||| \n" +
-                                          $"closedSocket {closedSockets.Count} ||| \n");
-
                         foreach (var closedSocket in closedSockets.Where(closedSocket =>
                             openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                         {
-                            Console.WriteLine($"Player disconnected : ${closedSocket.PlayerId}");
                             var context = CreateContext();
                             await _websocketService.DisconnectService(closedSocket, context);
                             await context.DisposeAsync();
@@ -136,8 +132,7 @@ namespace thyrel_api.Websocket
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Oh!!! errror");
-                        Console.WriteLine(e);
+                        Console.WriteLine($"Error : {e}");
                     }
 
                     await Task.Delay(5000);
