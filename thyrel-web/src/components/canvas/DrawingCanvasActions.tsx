@@ -50,7 +50,7 @@ export function OnSaveAction({
     finishAt: new Date(session?.stepFinishAt || ''),
     timeDuration: session?.timeDuration || 60,
     onFinish: () => autoSave(canvasRef?.current?.toDataURL()),
-    onFinishPercentage: 98,
+    onFinishPercentage: 99,
   });
 
   return React.cloneElement(children, {
