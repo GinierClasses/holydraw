@@ -119,10 +119,14 @@ namespace thyrel_api.Websocket
 
                         _websocketConnections = openSockets;
                     }
+                    Console.WriteLine($"_websocketConnections ${_websocketConnections.Count}" +
+                                      $"openSocket ${openSockets.Count}" +
+                                      $"closedSocket ${closedSockets.Count}");
 
                     foreach (var closedSocket in closedSockets.Where(closedSocket =>
                         openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                     {
+                        Console.WriteLine($"Player disconnected : ${closedSocket.PlayerId}");
                         var context = CreateContext();
                         await _websocketService.DisconnectService(closedSocket, context);
                         await context.DisposeAsync();
