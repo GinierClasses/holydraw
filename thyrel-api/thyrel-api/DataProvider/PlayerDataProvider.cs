@@ -107,7 +107,7 @@ namespace thyrel_api.DataProvider
         /// <param name="isOwner"></param>
         public async Task<Player> SetOwner(Player player, bool isOwner = true)
         {
-            if (player == null)
+            if (player == null || player.IsOwner == isOwner)
                 return null;
 
             player.IsOwner = isOwner;

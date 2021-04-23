@@ -103,33 +103,41 @@ namespace thyrel_api.Websocket
             {
                 while (true)
                 {
-                    List<SocketConnection> openSockets;
-                    List<SocketConnection> closedSockets;
-
-                    lock (_websocketConnections)
+                    try
                     {
-                        openSockets = _websocketConnections.Where(socket =>
-                                socket.WebSocket.State == WebSocketState.Open ||
-                                socket.WebSocket.State == WebSocketState.Connecting)
-                            .ToList();
-                        closedSockets = _websocketConnections.Where(socket =>
-                                socket.WebSocket.State != WebSocketState.Open &&
-                                socket.WebSocket.State != WebSocketState.Connecting)
-                            .ToList();
+                        List<SocketConnection> openSockets;
+                        List<SocketConnection> closedSockets;
 
-                        _websocketConnections = openSockets;
+                        lock (_websocketConnections)
+                        {
+                            openSockets = _websocketConnections.Where(socket =>
+                                    socket.WebSocket.State == WebSocketState.Open ||
+                                    socket.WebSocket.State == WebSocketState.Connecting)
+                                .ToList();
+                            closedSockets = _websocketConnections.Where(socket =>
+                                    socket.WebSocket.State != WebSocketState.Open &&
+                                    socket.WebSocket.State != WebSocketState.Connecting)
+                                .ToList();
+
+                            _websocketConnections = openSockets;
+                        }
+
+                        Console.WriteLine($"_websocketConnections {_websocketConnections.Count} ||| \n" +
+                                          $"closedSocket {closedSockets.Count} ||| \n");
+
+                        foreach (var closedSocket in closedSockets.Where(closedSocket =>
+                            openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
+                        {
+                            Console.WriteLine($"Player disconnected : ${closedSocket.PlayerId}");
+                            var context = CreateContext();
+                            await _websocketService.DisconnectService(closedSocket, context);
+                            await context.DisposeAsync();
+                        }
                     }
-                    Console.WriteLine($"_websocketConnections ${_websocketConnections.Count}" +
-                                      $"openSocket ${openSockets.Count}" +
-                                      $"closedSocket ${closedSockets.Count}");
-
-                    foreach (var closedSocket in closedSockets.Where(closedSocket =>
-                        openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
+                    catch (Exception e)
                     {
-                        Console.WriteLine($"Player disconnected : ${closedSocket.PlayerId}");
-                        var context = CreateContext();
-                        await _websocketService.DisconnectService(closedSocket, context);
-                        await context.DisposeAsync();
+                        Console.WriteLine("Oh!!! errror");
+                        Console.WriteLine(e);
                     }
 
                     await Task.Delay(5000);
