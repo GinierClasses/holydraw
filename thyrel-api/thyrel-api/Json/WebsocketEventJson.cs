@@ -58,6 +58,17 @@ namespace thyrel_api.Json
         }
     }
 
+    public class AlbumWebsocketEventJson : BaseWebsocketEventJson
+    {
+        public ElementAlbumDto Album;   
+
+        public AlbumWebsocketEventJson(ElementAlbumDto album)
+        {
+            Album = album;
+            WebsocketEvent = WebsocketEvent.NewAlbumElement;
+        }
+    }
+
     public class PlayerFinishStepWebsocketEventJson : BaseWebsocketEventJson
     {
         public PlayerFinishStepSocketDto Session { get; }

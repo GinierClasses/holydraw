@@ -14,6 +14,7 @@ namespace thyrel_api.DataProvider
         /// <param name="roomId"></param>
         /// <param name="stepFinishAt"></param>
         /// <param name="timeDuration"></param>
+        /// <param name="playerCount"></param>
         Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount);
 
         /// <summary>
@@ -70,5 +71,12 @@ namespace thyrel_api.DataProvider
         /// <exception cref="Exception">if no candidate can be created</exception>
         List<Element> GetNextCandidatesElements(List<Player> players,
             List<ElementCandidateDto> candidates, int nextStep, int sessionId, ElementType type);
+
+        /// <summary>
+        ///     Run the next album for a specified roomId
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns>Session that start the album</returns>
+        Task<Session> NextAlbum(int roomId);
     }
 }
