@@ -18,5 +18,6 @@ namespace thyrel_api.Models
         SessionStart = 11,
         SessionUpdate = 12,
         NextStep = 13, // on a step is finish
+        NewAlbumElement = 14,
     }
 }

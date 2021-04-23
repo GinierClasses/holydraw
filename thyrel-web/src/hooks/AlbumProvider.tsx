@@ -12,6 +12,17 @@ const AlbumContext = React.createContext<AlbumContextProps>({});
 
 type AlbumContextProviderProps = { children: React.ReactElement };
 
+/*
+  AlbumContextProvider return `albums` than contain objects like this :
+
+  44: [               <- is the id of the initiator 
+    { id: 3, ... },   <- element with the same initiator id, the first element creator is equal to the initiator
+    { id: 4, ... },
+  ],
+  45: [
+    ...
+  ]
+*/
 export function AlbumContextProvider({ children }: AlbumContextProviderProps) {
   const [albums, setAlbums] = React.useState<Record<number, HolyElement[]>>({});
   const { websocket } = useWebsocketContext();
@@ -20,19 +31,22 @@ export function AlbumContextProvider({ children }: AlbumContextProviderProps) {
     function onMessage(event: { data: string }) {
       const websocketMessage = parseJson<WebsocketMessage>(event.data);
       if (!websocketMessage) return;
-
       switch (websocketMessage.websocketEvent) {
         case WebsocketEvent.NewAlbumElement:
           if (!websocketMessage.album) break;
 
-          const { element, initiatorId } = websocketMessage.album;
+          const album = websocketMessage.album;
           setAlbums(prevAlbums => {
-            if (prevAlbums[initiatorId]) {
-              prevAlbums[initiatorId].push(element);
+            if (!album.initiatorId) return prevAlbums;
+            const prevAlbumsCopy = { ...prevAlbums };
+
+            if (prevAlbumsCopy[album.initiatorId]) {
+              prevAlbumsCopy[album.initiatorId].push(album);
             } else {
-              prevAlbums[initiatorId] = [element];
+              prevAlbumsCopy[album.initiatorId] = [album];
             }
-            return prevAlbums;
+
+            return prevAlbumsCopy;
           });
           break;
       }
