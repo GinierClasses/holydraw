@@ -108,6 +108,7 @@ namespace test_thyrel_api
         {
             var session = await Context.Session.FirstAsync();
             session.StepType = SessionStepType.Write;
+            await new PlayerDataProvider(Context).SetIsPlaying(session.RoomId);
             await Context.SaveChangesAsync();
             var sessionStep = session.ActualStep;
             var elementsCount = Context.Element.Count(e => e.SessionId == session.Id);
@@ -118,7 +119,6 @@ namespace test_thyrel_api
             var editedSession = await Context.Session.FindAsync(session.Id);
             Assert.AreEqual(sessionStep + 1, editedSession.ActualStep);
             Assert.AreEqual(session.StepType, SessionStepType.Draw);
-
         }
         
         [Test]
@@ -144,7 +144,7 @@ namespace test_thyrel_api
         public async Task GetNextCandidatesElementsNormal()
         {
             var session = await Context.Session.FirstAsync();
-            await new PlayerDataProvider(Context).SetIsPlaying(session.RoomId);
+            await _playerDataProvider.SetIsPlaying(session.RoomId);
             var players = Context.Player
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).ToList();
             var elements = await new ElementDataProvider(Context).GetNextCandidateElements(session.Id);
@@ -156,5 +156,30 @@ namespace test_thyrel_api
             var isAnySameCreatorAndInitiator = elementsCreated.Any(e => e.InitiatorId == e.CreatorId);
             Assert.IsFalse(isAnySameCreatorAndInitiator);
         }
+
+        [Test]
+        public async Task GetNextAlbum()
+        {
+            var session = await Context.Session.FirstAsync();
+            Assert.IsNull(session.CurrentAlbumId);
+            
+            var creatorsId = await Context.Element
+                .Where(e => e.SessionId == session.Id && e.Step == 1)
+                .OrderBy(e => e.CreatorId)
+                .Select(e => e.CreatorId)
+                .ToListAsync();
+            
+            // try the current album id for each possibilities
+            foreach (var creatorId in creatorsId)
+            {
+                var updatedSession = await _sessionDataProvider.NextAlbum(session.RoomId);
+                Assert.AreEqual(creatorId, updatedSession.CurrentAlbumId);
+            }
+            
+            // try to update Session but it's was the last creator
+            var updatedSession2 = await _sessionDataProvider.NextAlbum(session.RoomId);
+            Assert.AreEqual(null, updatedSession2);
+        }
+
     }
 }

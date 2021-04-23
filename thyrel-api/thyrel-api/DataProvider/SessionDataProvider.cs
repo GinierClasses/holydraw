@@ -188,6 +188,11 @@ namespace thyrel_api.DataProvider
             return session;
         }
 
+        /// <summary>
+        ///     Run the next album for a specified roomId
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns>Session that start the album</returns>
         public async Task<Session> NextAlbum(int roomId)
         {
             var session = await _holyDrawDbContext.Session.OrderBy(e => e.CreatedAt)
