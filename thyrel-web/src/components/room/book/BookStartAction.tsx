@@ -15,7 +15,7 @@ export default function BookStartAction() {
     }).then(
       () =>
         enqueueSnackbar(
-          'Album successfully started, wait 3 secondes before starting 💪',
+          'Album successfully started, wait 3 seconds before starting 💪',
           { variant: 'success' },
         ),
       () =>
