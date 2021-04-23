@@ -37,10 +37,6 @@ export default function GameBar({ displayHud = true, onFinish }: GameBarProps) {
             finishAt={new Date(session?.stepFinishAt || '')}
             timeDuration={session?.timeDuration || 60}
             onFinish={onFinish}
-            //   finishAt={new Date(Date.now() + 6000)}
-            // //timeDuration={session?.timeDuration || 60}
-            // timeDuration={6}
-            // onFinish={onFinish}
           />
         </Box>
       )}

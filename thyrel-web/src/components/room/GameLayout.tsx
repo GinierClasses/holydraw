@@ -26,13 +26,6 @@ export default function GameLayout({
     </Box>
   );
 }
-function CallApi() {
-  //here i call the api to save the element because the time is finished
-  console.log('Finished time');
-  const url = 'Api/url';
-  console.log(url);
-  //client(url);
-}
 
 const StepProgressWithContext = () => {
   const { session } = useSessionContext();
