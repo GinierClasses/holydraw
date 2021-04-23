@@ -1,3 +1,5 @@
+import { useSessionContext } from 'hooks/SessionProvider';
+import { useTimerEvent } from 'hooks/useTimerInterval';
 import React from 'react';
 import { callAll } from 'utils/utils';
 import { useCanvasContext } from './DrawingCanvasContext';
@@ -41,7 +43,18 @@ export function OnSaveAction({
   children: React.ReactElement;
   onSave: (drawImage?: string) => void;
 }) {
+  const { session, onSave: onSaveElement } = useSessionContext();
   const { canvasRef } = useCanvasContext();
+
+  useTimerEvent({
+    finishAt: new Date(session?.stepFinishAt || ''),
+    timeDuration: session?.timeDuration || 60,
+    onFinish: () => onSave(canvasRef?.current?.toDataURL()),
+    onFinishPercentage: 97,
+  });
+
+  const intervalRef = React.useRef<NodeJS.Timeout>();
+
   return React.cloneElement(children, {
     onClick: () => {
       onSave(canvasRef.current?.toDataURL());

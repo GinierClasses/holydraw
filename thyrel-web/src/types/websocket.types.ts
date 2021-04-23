@@ -1,5 +1,6 @@
 import { SessionState } from 'node:http2';
 import Player from 'types/Player.type';
+import { HolyElement } from './HolyElement.type';
 
 export enum WsStates {
   IDLE = 'Loading...',
@@ -18,6 +19,7 @@ export enum WebsocketEvent {
   SessionStart = 11,
   SessionUpdate = 12,
   NextStep = 13, // on a step is finish
+  NewAlbumElement = 14,
 }
 
 export enum SendMessageType {
@@ -28,6 +30,7 @@ export type WebsocketMessage = {
   websocketEvent: WebsocketEvent;
   player?: Player;
   playerId?: number;
+  album?: { initiatorId: number; element: HolyElement };
   session?: Partial<SessionState>;
   error?: string;
 };

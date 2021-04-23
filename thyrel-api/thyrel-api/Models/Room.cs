@@ -9,10 +9,9 @@ namespace thyrel_api.Models
         {
         }
 
-        public Room(string identifier, DateTime? finishAt)
+        public Room(string identifier)
         {
             Identifier = identifier;
-            FinishAt = finishAt;
             CreatedAt = DateTime.Now;
         }
 

@@ -1,47 +1,29 @@
-import { Box } from '@material-ui/core';
-import { client } from 'api/client';
-import { getToken } from 'api/player-provider';
-import Loading from 'components/Loading';
-import BookDrawingElement from 'components/room/book/BookDrawingElement';
-import BookSentenceElement from 'components/room/book/BookSentenceElement';
-import profilesPictures from 'images/profiles/profiles-pictures';
+import BookPlayerList from 'components/room/book/BookPlayerList';
 import React from 'react';
-
-import { ElementType, HolyElement } from 'types/HolyElement.type';
+import GameLayout from 'components/room/GameLayout';
+import { Grid } from '@material-ui/core';
+import BookStartAction from 'components/room/book/BookStartAction';
+import { useRoomContext } from 'hooks/RoomProvider';
 
 export default function Book() {
-  const [album, setAlbum] = React.useState<HolyElement[]>([]);
-
-  React.useEffect(() => {
-    client<HolyElement[]>('get_own_album', { token: getToken() })
-      .then(setAlbum)
-      .catch(alert);
-  }, []);
-
-  return album.length >= 1 ? (
-    <Box display="flex" flexDirection="column" maxWidth={300}>
-      {album.map(element => {
-        const isSentence = element.type === ElementType.Sentence;
-
-        return isSentence ? (
-          <BookSentenceElement
-            key={element.id}
-            username={element.creator?.username}
-            avatarUrl={profilesPictures[Number(element.creator?.avatarUrl)]}
-            sentence={element.text}
-          />
-        ) : (
-          <BookDrawingElement
-            key={element.id}
-            username={element.creator?.username}
-            src={element.drawImage}
-          />
-        );
-      })}
-    </Box>
-  ) : (
-    <Box>
-      <Loading />
-    </Box>
+  const { players } = useRoomContext();
+  return (
+    <GameLayout displayHud={false} maxWidth="sm">
+      <Grid
+        container
+        spacing={2}
+        direction="column"
+        alignItems="center"
+        className="full-height"
+        wrap="nowrap"
+        justify="space-between">
+        <Grid item>
+          <BookPlayerList players={players} />
+        </Grid>
+        <Grid item>
+          <BookStartAction />
+        </Grid>
+      </Grid>
+    </GameLayout>
   );
 }
