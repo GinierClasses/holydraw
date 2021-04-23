@@ -43,7 +43,7 @@ export function OnSaveAction({
   children: React.ReactElement;
   onSave: (drawImage?: string) => void;
 }) {
-  const { session, autoSave } = useSessionContext(); // session,
+  const { session, autoSave } = useSessionContext();
   const { canvasRef } = useCanvasContext();
 
   useTimerEvent({

@@ -9,7 +9,7 @@ import { useRandomSentence } from 'hooks/useRandomSentence';
 import { useTimerEvent } from 'hooks/useTimerInterval';
 
 export default function StartForm() {
-  const { session, currentElement, onSave, autoSave } = useSessionContext(); //session
+  const { session, currentElement, onSave, autoSave } = useSessionContext();
   const [sentence, setSentence] = React.useState('');
   const isEditing = Boolean(!currentElement?.finishAt);
   const defaultSentence = useRandomSentence();
