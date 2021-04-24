@@ -57,9 +57,9 @@ namespace thyrel_api.DataProvider
         ///     Handle finish State
         /// </summary>
         /// <param name="elementId">elementId to handle</param>
-        /// <param name="isFinish">true = element finish, false = element not finish</param>
+        /// <param name="elementDto"></param>
         /// <returns>Edited element</returns>
-        Task<Element> HandleFinish(int elementId);
+        Task<Element> HandleFinish(int elementId, FinishElementDto elementDto = null);
 
         /// <summary>
         ///     Album of this InitiatorId

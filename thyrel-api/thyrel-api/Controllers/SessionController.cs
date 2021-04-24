@@ -31,7 +31,7 @@ namespace thyrel_api.Controllers
             if (player?.RoomId == null || !player.IsOwner) return Unauthorized();
 
             var roomId = (int) player.RoomId;
-            
+
             var sessionDataProvider = new SessionDataProvider(_context);
             var session = await sessionDataProvider.StartSession(roomId);
             if (session == null)
@@ -55,9 +55,27 @@ namespace thyrel_api.Controllers
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
-            
+
             return await new SessionDataProvider(_context).GetCurrentSessionByRoomId((int) player.RoomId);
         }
 
+        // Post for a next album
+        // GET: api/session/album/next
+        [HttpPost("album/next")]
+        public async Task<ActionResult> NextAlbum()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null || !player.IsOwner) return Unauthorized();
+
+            var sessionDataProvider = new SessionDataProvider(_context);
+            var session = await sessionDataProvider.NextAlbum((int) player.RoomId);
+
+            if (session?.CurrentAlbumId == null) return BadRequest();
+
+            new AlbumStepTimeout((int) session.CurrentAlbumId, session.Id, _context, 1, _websocketHandler)
+                .RunTimeout(3);
+
+            return Ok("success");
+        }
     }
 }

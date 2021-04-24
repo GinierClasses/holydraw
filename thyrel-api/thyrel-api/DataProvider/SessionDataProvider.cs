@@ -158,13 +158,11 @@ namespace thyrel_api.DataProvider
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).ToListAsync();
 
             // test if game is finish to go to the album
-            if (session.ActualStep == players.Count)
+            if (session.ActualStep >= players.Count)
                 session.StepType = SessionStepType.Book;
 
             var nextStep = session.ActualStep + 1;
             session.ActualStep = nextStep;
-
-            var candidates = await elementProvider.GetNextCandidateElements(session.Id);
 
             session.StepType = session.StepType switch
             {
@@ -179,12 +177,43 @@ namespace thyrel_api.DataProvider
 
             if (session.StepType != SessionStepType.Book)
             {
+                var candidates = await elementProvider.GetNextCandidateElements(session.Id);
+                
                 var elements = GetNextCandidatesElements(players, candidates, nextStep, session.Id,
                     session.StepType == SessionStepType.Write ? ElementType.Sentence : ElementType.Drawing);
                 await elementProvider.AddElements(elements);
             }
 
             await SaveChanges();
+            return session;
+        }
+
+        /// <summary>
+        ///     Run the next album for a specified roomId
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns>Session that start the album</returns>
+        public async Task<Session> NextAlbum(int roomId)
+        {
+            var session = await _holyDrawDbContext.Session.OrderBy(e => e.CreatedAt)
+                .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
+
+            var creators = await _holyDrawDbContext.Element
+                .Where(e => e.SessionId == session.Id && e.Step == 1)
+                .OrderBy(e => e.CreatorId)
+                .Select(e => e.CreatorId)
+                .ToListAsync();
+            if (session.CurrentAlbumId == null)
+                session.CurrentAlbumId = creators.First();
+            else
+            {
+                var prevAlbumIdIndex = creators.IndexOf((int) session.CurrentAlbumId);
+                if (prevAlbumIdIndex + 1 == creators.Count) return null;
+                session.CurrentAlbumId = creators[prevAlbumIdIndex + 1];
+            }
+
+            await SaveChanges();
+
             return session;
         }
 
