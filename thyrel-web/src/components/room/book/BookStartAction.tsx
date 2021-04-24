@@ -8,21 +8,25 @@ export default function BookStartAction() {
   const { enqueueSnackbar } = useSnackbar();
   const { player } = usePlayerContext();
 
-  function onStart() {
-    client<null>('session/album/next', {
-      method: 'POST',
-      token: getToken(),
-    }).then(
-      () =>
-        enqueueSnackbar(
-          'Album successfully started, wait 3 seconds before starting 💪',
-          { variant: 'success' },
-        ),
-      () =>
-        enqueueSnackbar('Sorry, an error occured 😕 [Session-POST]', {
-          variant: 'error',
-        }),
-    );
+  function onStart(): Promise<void> {
+    return new Promise(resolve => {
+      client<null>('session/album/next', {
+        method: 'POST',
+        token: getToken(),
+      })
+        .then(
+          () =>
+            enqueueSnackbar(
+              'Album successfully started, wait 3 seconds before starting 💪',
+              { variant: 'success' },
+            ),
+          () =>
+            enqueueSnackbar('Sorry, an error occured 😕 [Session-POST]', {
+              variant: 'error',
+            }),
+        )
+        .finally(() => resolve());
+    });
   }
 
   return <StartButton onStart={onStart} startName="book" player={player} />;

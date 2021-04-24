@@ -9,15 +9,21 @@ export default function LobbyStartAction() {
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
 
-  function onStart() {
-    client<Session>('session', { method: 'POST', token: getToken() }).then(
-      () =>
-        enqueueSnackbar('Game successfully started 💪', { variant: 'success' }),
-      () =>
-        enqueueSnackbar('Sorry, an error occured 😕 [Session-POST]', {
-          variant: 'error',
-        }),
-    );
+  function onStart(): Promise<void> {
+    return new Promise(resolve => {
+      client<Session>('session', { method: 'POST', token: getToken() })
+        .then(
+          () =>
+            enqueueSnackbar('Game successfully started 💪', {
+              variant: 'success',
+            }),
+          () =>
+            enqueueSnackbar('Sorry, an error occured 😕 [Session-POST]', {
+              variant: 'error',
+            }),
+        )
+        .finally(() => resolve());
+    });
   }
 
   return <StartButton onStart={onStart} player={player} />;
