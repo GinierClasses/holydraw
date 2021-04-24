@@ -92,8 +92,9 @@ namespace thyrel_api.DataProvider
         ///     Handle finish State
         /// </summary>
         /// <param name="elementId">elementId to handle</param>
+        /// <param name="elementDto"></param>
         /// <returns>Edited element</returns>
-        public async Task<Element> HandleFinish(int elementId)
+        public async Task<Element> HandleFinish(int elementId, FinishElementDto elementDto = null)
         {
             var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
@@ -101,10 +102,19 @@ namespace thyrel_api.DataProvider
                 return null;
 
             if (element.FinishAt == null)
+            {
                 element.FinishAt = DateTime.Now;
-            else
-                element.FinishAt = null;
 
+                if (element.Type == ElementType.Sentence)
+                    element.Text = elementDto?.Text;
+                else
+                    element.DrawImage = elementDto?.DrawImage;
+            }
+            else
+            {
+                element.FinishAt = null;
+            }
+            
             await SaveChanges();
             return element;
         }

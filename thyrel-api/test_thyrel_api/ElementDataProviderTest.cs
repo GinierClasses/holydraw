@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace test_thyrel_api
 {
@@ -82,9 +83,16 @@ namespace test_thyrel_api
         [Test]
         public async Task HandleFinishChangeTheFinish()
         {
-            await _elementDataProvider.HandleFinish(1);
+            const string text = "text";
+            await _elementDataProvider.HandleFinish(1, new FinishElementDto
+            {
+                Text = text,
+                DrawImage = "invalid image"
+            });
+            
             var element1 = await _elementDataProvider.GetElement(1);
             Assert.IsNotNull(element1.FinishAt);
+            Assert.AreEqual(element1.Text, text);
             await _elementDataProvider.HandleFinish(1);
             var element2 = await _elementDataProvider.GetElement(1);
             Assert.IsNull(element2.FinishAt);
