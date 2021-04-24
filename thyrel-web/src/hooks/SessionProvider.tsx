@@ -14,7 +14,7 @@ import { useWebsocketContext } from './WebsocketProvider';
 type SessionContextProps = {
   session?: Session;
   currentElement?: HolyElement;
-  onSave: (content: string) => Promise<any>;
+  onSave: (content: string) => Promise<void>;
 };
 
 const SessionContext = React.createContext<SessionContextProps>({
@@ -30,9 +30,8 @@ export function SessionContextProvider({
   const [currentElement, setCurrentElement] = React.useState<StepElement>();
   const { websocket } = useWebsocketContext();
   const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = React.useState(false);
 
-  function onSave(content: string): Promise<any> {
+  function onSave(content: string): Promise<void> {
     const elementId = currentElement?.id;
 
     const elementContent =
@@ -40,7 +39,6 @@ export function SessionContextProvider({
         ? { drawimage: content }
         : { text: content };
 
-    setLoading(true);
     return new Promise(resolve => {
       client<HolyElement>(`element/${elementId}`, {
         token: getToken(),
@@ -50,14 +48,13 @@ export function SessionContextProvider({
         .then(element => {
           enqueueSnackbar('Element Saved 😎', { variant: 'success' });
           setCurrentElement(e => ({ ...e, ...element }));
-          resolve(element);
         })
         .catch(() =>
           enqueueSnackbar('Sorry, an error occured while saving 😕', {
             variant: 'error',
           }),
         )
-        .finally(() => setLoading(false));
+        .finally(() => resolve());
     });
   }
 
@@ -95,7 +92,7 @@ export function SessionContextProvider({
     };
   }, [enqueueSnackbar, session?.actualStep]);
 
-  const values = { session, currentElement, onSave, loading };
+  const values = { session, currentElement, onSave };
 
   return (
     <SessionContext.Provider value={values}>
