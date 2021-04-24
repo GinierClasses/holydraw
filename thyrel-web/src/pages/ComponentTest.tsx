@@ -204,7 +204,10 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
+        <StartButton
+          player={testPlayerList[1]}
+          onStart={() => Promise.resolve()}
+        />
 
         <PlayerCardList
           players={testPlayerList}
