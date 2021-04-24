@@ -11,7 +11,7 @@ export default function BookStartAction() {
   const [isLoading, setIsLoading] = useState(false);
 
   function onStart() {
-    setIsLoading(false)
+    setIsLoading(true)
     client<null>('session/album/next', {
       method: 'POST',
       token: getToken(),
@@ -27,7 +27,7 @@ export default function BookStartAction() {
             variant: 'error',
           }),
       )
-      .finally(() => setIsLoading(true));
+      .finally(() => setIsLoading(false));
   }
 
   return <StartButton onStart={onStart} isLoading={isLoading} startName="book" player={player} />;
