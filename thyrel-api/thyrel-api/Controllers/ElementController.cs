@@ -27,39 +27,27 @@ namespace thyrel_api.Controllers
         // Call this endpoint to update the element with the finished result from the player
         // PATCH: api/element/:id
         [HttpPatch("{id}")]
-        public async Task<ActionResult<Element>> Finish(int id, [FromBody] ElementBody body)
+        public async Task<ActionResult<Element>> Finish(int id, [FromBody] FinishElementDto body)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized("You're not in the room.");
 
-
             var elementDataProvider = new ElementDataProvider(_context);
             var sessionDataProvider = new SessionDataProvider(_context);
 
-            var element = await elementDataProvider.GetElement(id);
-            if (element.CreatorId != player.Id) return Unauthorized("You're not the creator of this element.");
+            var elementDto = await elementDataProvider.GetElement(id);
+            if (elementDto.CreatorId != player.Id) return Unauthorized("You're not the creator of this element.");
 
-            var session = await sessionDataProvider.GetSessionById(element.SessionId);
-            if (element.Step != session.ActualStep) return Unauthorized("You can't modify a previous element.");
+            var session = await sessionDataProvider.GetSessionById(elementDto.SessionId);
+            if (elementDto.Step != session.ActualStep) return Unauthorized("You can't modify a previous element.");
             
             var remainingStepTime = session.StepFinishAt == null
                 ? new TimeSpan()
                 : (TimeSpan) (session.StepFinishAt - DateTime.Now);
 
-            if (session.ActualStep != element.Step) return BadRequest("You are trying to modify a previous element.");
+            if (session.ActualStep != elementDto.Step) return BadRequest("You are trying to modify a previous element.");
 
-            var finishState = await elementDataProvider.HandleFinish(id);
-            if (finishState.IsFinish())
-                if (finishState.Type == ElementType.Sentence)
-                {
-                    await elementDataProvider.SetSentence(finishState.Id, body.Text);
-                    finishState.Text = body.Text;
-                }
-                else
-                {
-                    await elementDataProvider.SetDrawing(element.Id, body.DrawImage);
-                    finishState.DrawImage = body.DrawImage;
-                }
+            var element = await elementDataProvider.HandleFinish(id, body);
 
             var stepState = await sessionDataProvider.GetPlayerStatus(session);
             if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
@@ -80,7 +68,7 @@ namespace thyrel_api.Controllers
                         new PlayerFinishStepWebsocketEventJson(WebsocketEvent.SessionUpdate, stepState.PlayerFinished)),
                     session.RoomId);
 
-            return Ok(finishState);
+            return Ok(element);
         }
 
         // Call this endpoint to get an Element by Id
@@ -105,13 +93,6 @@ namespace thyrel_api.Controllers
             if (player?.RoomId == null) return Unauthorized();
 
             return await new ElementDataProvider(_context).GetCurrentElement(player.Id);
-        }
-
-
-        public class ElementBody
-        {
-            public string Text;
-            public string DrawImage;
         }
     }
 }

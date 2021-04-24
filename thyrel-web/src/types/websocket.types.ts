@@ -30,7 +30,7 @@ export type WebsocketMessage = {
   websocketEvent: WebsocketEvent;
   player?: Player;
   playerId?: number;
-  album?: { initiatorId: number; element: HolyElement };
+  album?: HolyElement;
   session?: Partial<SessionState>;
   error?: string;
 };
