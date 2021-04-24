@@ -10,6 +10,7 @@ import { useRandomSentence } from 'hooks/useRandomSentence';
 export default function StartForm() {
   const { currentElement, onSave } = useSessionContext();
   const [sentence, setSentence] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
   const isEditing = Boolean(!currentElement?.finishAt);
   const defaultSentence = useRandomSentence();
 
@@ -26,8 +27,12 @@ export default function StartForm() {
       </Grid>
       <Grid item>
         <BigButton
+          loading={loading}
           disabled={sentence.length === 0}
-          onClick={() => onSave(sentence)}
+          onClick={() => {
+            setLoading(true);
+            onSave(sentence).then(() => setLoading(false));
+          }}
           startIcon={
             isEditing ? (
               <SaveIcon style={{ fontSize: 32 }} />

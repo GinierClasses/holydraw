@@ -8,6 +8,7 @@ import { useSessionContext } from 'hooks/SessionProvider';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import theme from 'theme';
+import { useState } from 'react';
 
 type GameCanvasProps = {
   size: number;
@@ -35,6 +36,7 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const { currentElement, onSave } = useSessionContext();
   const isEditing = Boolean(!currentElement?.finishAt);
+  const [loading, setLoading] = useState(false);
 
   return (
     <DrawingCanvasProvider
@@ -57,8 +59,13 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
           width="100%">
           <CanvasActionButtons />
           <OnSaveAction
-            onSave={canvasImage => canvasImage && onSave(canvasImage)}>
+            onSave={canvasImage => {
+              if (!canvasImage) return;
+              setLoading(true);
+              onSave(canvasImage).then(() => setLoading(false));
+            }}>
             <BigButton
+              loading={loading}
               startIcon={
                 isEditing ? (
                   <SaveIcon style={{ fontSize: 32 }} />
