@@ -20,16 +20,8 @@ export function DrawingCanvasProvider({
   canvasSize: size = canvasWidth,
   children,
 }: DrawingCanvasProviderProps) {
-  const [currentSize, setCurrentSize] = React.useState(size);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
-
-  React.useEffect(() => {
-    console.log(currentSize, setCurrentSize);
-    console.log(
-      canvasRef.current?.parentElement?.parentElement?.getBoundingClientRect(),
-    );
-  });
 
   const {
     paint,
