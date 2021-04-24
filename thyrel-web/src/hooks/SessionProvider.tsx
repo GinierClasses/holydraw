@@ -15,12 +15,10 @@ type SessionContextProps = {
   session?: Session;
   currentElement?: HolyElement;
   onSave: (content: string) => void;
-  autoSave: (content?: string) => void;
 };
 
 const SessionContext = React.createContext<SessionContextProps>({
   onSave: () => void 0,
-  autoSave: () => void 0,
 });
 
 type SessionContextProviderProps = { children: React.ReactElement };
@@ -57,21 +55,6 @@ export function SessionContextProvider({
       );
   }
 
-  function autoSave(content?: string) {
-    const elementId = currentElement?.id;
-
-    const elementContent =
-      currentElement?.type === ElementType.Drawing
-        ? { drawimage: content }
-        : { text: content };
-
-    client<HolyElement>(`element/auto/${elementId}`, {
-      token: getToken(),
-      method: 'PATCH',
-      data: elementContent,
-    });
-  }
-
   React.useEffect(() => {
     function onMessage(event: { data: string }) {
       const websocketMessage = parseJson<WebsocketMessage>(event.data);
@@ -106,7 +89,7 @@ export function SessionContextProvider({
     };
   }, [enqueueSnackbar, session?.actualStep]);
 
-  const values = { session, currentElement, onSave, autoSave };
+  const values = { session, currentElement, onSave };
 
   return (
     <SessionContext.Provider value={values}>

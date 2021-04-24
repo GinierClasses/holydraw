@@ -83,6 +83,8 @@ namespace thyrel_api.Controllers
             return Ok(finishState);
         }
 
+        // Automaticly call this endpoint to handle finish state
+        // PATCH: api/element/:id
         [HttpPatch("auto/{id}")]
         public async Task<ActionResult<Element>> AutoFinish(int id, [FromBody] ElementBody body)
         {
@@ -107,7 +109,7 @@ namespace thyrel_api.Controllers
                 await elementDataProvider.SetDrawing(element.Id, body.DrawImage);
             }
 
-            return Ok(element);
+            return Ok();
         }
 
         // Call this endpoint to get an Element by Id
