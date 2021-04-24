@@ -74,7 +74,7 @@ namespace thyrel_api.Controllers
         // Automaticly call this endpoint to handle finish state
         // PATCH: api/element/:id
         [HttpPatch("auto/{id}")]
-        public async Task<ActionResult<Element>> AutoFinish(int id, [FromBody] ElementBody body)
+        public async Task<ActionResult<Element>> AutoFinish(int id, [FromBody] FinishElementDto body)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized("You're not in the room.");
