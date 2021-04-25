@@ -1,6 +1,11 @@
+import { useSessionContext } from 'hooks/SessionProvider';
+import { useTimerEvent } from 'hooks/useTimerInterval';
 import React from 'react';
 import { callAll } from 'utils/utils';
 import { useCanvasContext } from './DrawingCanvasContext';
+import { client } from 'api/client';
+import { HolyElement } from 'types/HolyElement.type';
+import { getToken } from 'api/player-provider';
 
 /*
  * All this component will injected on click event on the children.
@@ -41,7 +46,22 @@ export function OnSaveAction({
   children: React.ReactElement;
   onSave: (drawImage?: string) => void;
 }) {
+  const { currentElement, session } = useSessionContext();
   const { canvasRef } = useCanvasContext();
+
+  useTimerEvent({
+    finishAt: new Date(session?.stepFinishAt || ''),
+    timeDuration: session?.timeDuration || 60,
+    onFinish: () => {
+      client<HolyElement>(`element/auto/${currentElement?.id}`, {
+        token: getToken(),
+        method: 'PATCH',
+        data: { draw: canvasRef?.current?.toDataURL() },
+      });
+    },
+    onFinishPercentage: 99,
+  });
+
   return React.cloneElement(children, {
     onClick: () => {
       onSave(canvasRef.current?.toDataURL());
