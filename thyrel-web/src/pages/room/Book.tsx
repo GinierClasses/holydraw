@@ -12,7 +12,6 @@ export default function Book() {
   return (
     <AlbumContextProvider>
       <GameLayout displayHud={false} maxWidth="sm">
-        <BookMock />
         <Grid
           container
           spacing={2}
@@ -24,6 +23,7 @@ export default function Book() {
           <Grid item>
             <BookPlayerList players={players} />
           </Grid>
+          <BookMock />
           <Grid item>
             <BookStartAction />
           </Grid>
