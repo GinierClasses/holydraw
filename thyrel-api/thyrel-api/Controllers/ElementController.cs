@@ -53,14 +53,7 @@ namespace thyrel_api.Controllers
             if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
             {
                 session = await sessionDataProvider.NextStep(session);
-                if (session.StepType != SessionStepType.Book)
-                    new SessionStepTimeout(session.ActualStep, session.Id, _context, _websocketHandler).RunTimeout(
-                        session.TimeDuration);
-                await _websocketHandler.SendMessageToSockets(
-                    JsonBase.Serialize(
-                        new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep,
-                            session.StepType,
-                            session.StepFinishAt, session.TimeDuration, 0)), session.RoomId);
+                await session.RunNewTimeout(_context, _websocketHandler);
             }
             else
                 await _websocketHandler.SendMessageToSockets(
@@ -74,7 +67,7 @@ namespace thyrel_api.Controllers
         // Automaticly call this endpoint to handle finish state
         // PATCH: api/element/:id
         [HttpPatch("auto/{id}")]
-        public async Task<ActionResult<Element>> AutoFinish(int id, [FromBody] ElementBody body)
+        public async Task<ActionResult<Element>> AutoFinish(int id, [FromBody] FinishElementDto body)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized("You're not in the room.");

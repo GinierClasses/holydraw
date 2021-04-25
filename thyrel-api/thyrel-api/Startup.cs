@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using thyrel_api.Websocket;
 using System;
+using System.Net;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -36,8 +38,15 @@ namespace thyrel_api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
+            DotNetEnv.Env.Load(".env");
 
+            services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
+            
+            // for deployment
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+              options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+            });
 
             var contractResolver = new DefaultContractResolver
             {
@@ -50,13 +59,19 @@ namespace thyrel_api
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                         options.SerializerSettings.ContractResolver = contractResolver;
                         options.SerializerSettings.Formatting = Formatting.Indented;
+                        options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                     }
                 );
+
+
+            var connectionString = _configuration.GetConnectionString("thyrel_db") == null
+                ? Environment.GetEnvironmentVariable("THYREL_CONNECTION_STRING")
+                : _configuration.GetConnectionString("thyrel_db"); 
 
             services.AddDbContextPool<HolyDrawDbContext>(
                 dbContextOptions => dbContextOptions
                     .UseMySql(
-                        _configuration.GetConnectionString("thyrel_db"),
+                        connectionString ?? throw new InvalidOperationException("Connection string is empty."),
                         new MySqlServerVersion(new Version(8, 0, 23)),
                         mySqlOptions => mySqlOptions
                             .CharSetBehavior(CharSetBehavior.NeverAppend))
@@ -85,6 +100,11 @@ namespace thyrel_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "thyrel_api v1"));
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             var webSocketOptions = new WebSocketOptions()
             {

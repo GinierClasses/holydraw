@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function DevNav() {
   return (
-    <Box p={2} display="flex" flexDirection="column" alignItems="center">
+    <Box p={3} display="flex" flexDirection="column" alignItems="center">
       <h1>You're in DevNav</h1>
       {/* With react-router-dom it's not a good practive do don't use
           <Link /> but Rsuits alredy render a link */}
