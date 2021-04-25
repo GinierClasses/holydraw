@@ -1,26 +1,23 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { apiURL } from 'api/client';
 import { rest } from 'msw';
 import PlayerForm from '../components/home/PlayerForm';
-import { testBaseUrl } from '../test/handlers';
 import { server } from '../test/server';
 
 function useServerWithMock() {
   const serverMock = jest.fn();
 
   server.use(
-    rest.post(`${testBaseUrl}/room`, async (req, res, ctx) => {
+    rest.post(`${apiURL}/room`, async (req, res, ctx) => {
       serverMock(req.body);
       return res(ctx.json({ token: { tokenKey: 'mytoken' } }));
     }),
 
-    rest.patch(
-      `${testBaseUrl}/room/join/:identifier`,
-      async (req, res, ctx) => {
-        serverMock(req.body, req.params);
-        return res(ctx.json({ token: { tokenKey: 'mytoken' } }));
-      },
-    ),
+    rest.patch(`${apiURL}/room/join/:identifier`, async (req, res, ctx) => {
+      serverMock(req.body, req.params);
+      return res(ctx.json({ token: { tokenKey: 'mytoken' } }));
+    }),
   );
 
   return serverMock;

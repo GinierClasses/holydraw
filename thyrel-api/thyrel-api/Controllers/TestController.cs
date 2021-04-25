@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,17 +37,31 @@ namespace thyrel_api.Controllers
 
         // for test the album
         // GET: api/get_own_album
-        [HttpGet("/api/get_own_album")]
-        public async Task<ActionResult<List<Element>>> GetOwnAlbum()
+        [HttpGet("/api/album/{sessionId}")]
+        public async Task<ActionResult<object>> GetOwnAlbum(int sessionId)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
 
             var elements = _context.Element
-                .Where(e => e.InitiatorId == player.Id)
+                .Where(e => e.SessionId == sessionId)
                 .Include(e => e.Creator)
+                .Select(e => new
+                {
+                    creator = new
+                    {
+                        username = e.Creator.Username,
+                        id = e.Creator.Id,
+                        avatarUrl = e.Creator.AvatarUrl
+                    },
+                    type = e.Type,
+                    initiatorId = e.InitiatorId,
+                    drawImage = e.DrawImage,
+                    text = e.Text,
+                    id = e.Id
+                })
                 .ToList();
-            // var element = await _context.Element.OrderBy(e => e.CreatedAt).LastAsync();
+
             return elements;
         }
 

@@ -41,6 +41,7 @@ namespace thyrel_api.Websocket
 
             var player = await playerDataProvider.SetIsConnected(
                 (int) closedSocket.PlayerId, false);
+
             if (!player.IsOwner || player.RoomId == null) return;
 
             var newOwnerPlayer = await playerDataProvider.FindNewOwner((int) player.RoomId);
