@@ -1,13 +1,14 @@
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { getToken } from '../api/player-provider';
-import { testApiUrl } from '../test/data';
 import useSafeMounted from 'hooks/useSafeMounted';
 import { SendMessageType, WsStates } from 'types/websocket.types';
+import { apiURL } from 'api/client';
 
-const apiURL = process.env.REACT_APP_API_URL || testApiUrl;
+const protocol = process.env.NODE_ENV === 'development' ? 'ws' : 'wss';
+
 const domainRegExp = /\b(?:(?:https?|ftp):\/\/)?([^/\n]+)\/?/;
-const url = `wss://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
+const url = `${protocol}://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
 
 export function useWebsocket() {
   const [websocket, setWebsocket] = React.useState<WebSocket>();

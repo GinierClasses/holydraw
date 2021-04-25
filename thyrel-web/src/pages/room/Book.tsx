@@ -4,6 +4,7 @@ import GameLayout from 'components/room/GameLayout';
 import { Grid } from '@material-ui/core';
 import BookStartAction from 'components/room/book/BookStartAction';
 import { useRoomContext } from 'hooks/RoomProvider';
+import BookMock from 'components/room/book/BookMock';
 import { AlbumContextProvider } from 'hooks/AlbumProvider';
 
 export default function Book() {
@@ -11,6 +12,7 @@ export default function Book() {
   return (
     <AlbumContextProvider>
       <GameLayout displayHud={false} maxWidth="sm">
+        <BookMock />
         <Grid
           container
           spacing={2}

@@ -33,7 +33,8 @@ namespace thyrel_api.Json
                 {
                     ContractResolver = contractResolver,
                     Formatting = Formatting.Indented,
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    DateTimeZoneHandling = DateTimeZoneHandling.Local
                 });
         }
     }

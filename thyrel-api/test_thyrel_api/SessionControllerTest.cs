@@ -20,7 +20,7 @@ namespace test_thyrel_api
             await SetupTest();
 
             var httpContext = new DefaultHttpContext();
-            var controller = new SessionController(new WebsocketHandler(new MockScopeFactory()), Context)
+            var controller = new SessionController(new WebsocketHandler(TestConfiguration), Context)
             {
                 ControllerContext = new ControllerContext
                 {
