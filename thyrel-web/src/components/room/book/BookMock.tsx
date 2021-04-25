@@ -1,6 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
+import BigButton from 'components/BigButton';
 // import BigButton from 'components/BigButton';
 import Loading from 'components/Loading';
 import BookDrawingElement from 'components/room/book/BookDrawingElement';
@@ -77,7 +78,9 @@ export default function BookMock() {
               ? setAlbumNumber(0)
               : setAlbumNumber(albumNumber + 1)
           }>
-          {albumNumber >= album.length - 1 ? 'First' : 'Next'}
+          {albumNumber >= album.length - 1 && albumNumber > 0
+            ? 'First'
+            : 'Next'}
         </button>
       </Box>
       {/* <BigButton onClick={() => setAlbumNumber(albumNumber + 1)}>Next</BigButton>; */}
