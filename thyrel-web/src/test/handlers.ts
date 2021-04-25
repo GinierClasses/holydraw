@@ -38,6 +38,8 @@ const handlers = [
     return res(ctx.json(clientData.TEST));
   }),
 
+  // HolyDraw API :
+
   rest.post(`${apiURL}/room`, async (req, res, ctx) => {
     return res(ctx.json({ token: { tokenKey: 'mytoken' } }));
   }),
@@ -45,8 +47,6 @@ const handlers = [
   rest.patch(`${apiURL}/room/join/:identifier`, async (req, res, ctx) => {
     return res(ctx.json({ token: { tokenKey: 'mytoken' } }));
   }),
-
-  // HolyDraw API :
 ];
 
-export { handlers, apiURL as testBaseUrl };
+export { handlers };
