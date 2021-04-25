@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using thyrel_api.Handler;
+using thyrel_api.Json;
+using thyrel_api.Websocket;
 
 namespace thyrel_api.Models
 {
@@ -41,6 +45,17 @@ namespace thyrel_api.Models
             if (time == 0) return;
             StepFinishAt = DateTime.Now.AddSeconds(time);
             TimeDuration = time;
+        }
+
+        public async Task RunNewTimeout(HolyDrawDbContext context, IWebsocketHandler websocketHandler)
+        {
+            if (StepType != SessionStepType.Book)
+                new SessionStepTimeout(ActualStep, Id, context, websocketHandler).RunTimeout(
+                    TimeDuration);
+            await websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, ActualStep,
+                        StepType, StepFinishAt, TimeDuration, 0)), RoomId);
         }
     }
 }

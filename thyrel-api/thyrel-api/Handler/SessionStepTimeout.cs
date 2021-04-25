@@ -41,15 +41,7 @@ namespace thyrel_api.Handler
                 if (session?.ActualStep != _step || session.FinishAt != null) return;
                 session = await sessionProvider.NextStep(session);
 
-                await _websocketHandler.SendMessageToSockets(
-                    JsonBase.Serialize(
-                        new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep,
-                            session.StepType,
-                            session.StepFinishAt, session.TimeDuration, 0)), session.RoomId);
-
-                if (session.StepType != SessionStepType.Book)
-                    new SessionStepTimeout(session.ActualStep, session.Id, context, _websocketHandler).RunTimeout(
-                        session.TimeDuration);
+                await session.RunNewTimeout(context, _websocketHandler);
 
                 await context.DisposeAsync();
             });

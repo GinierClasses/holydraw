@@ -405,3 +405,8 @@ ASALocalRun/
 .localhistory/
 
 .eslintcache
+
+*.env
+
+.env
+thyrel-api/thyrel-api/.env

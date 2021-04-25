@@ -53,14 +53,7 @@ namespace thyrel_api.Controllers
             if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
             {
                 session = await sessionDataProvider.NextStep(session);
-                if (session.StepType != SessionStepType.Book)
-                    new SessionStepTimeout(session.ActualStep, session.Id, _context, _websocketHandler).RunTimeout(
-                        session.TimeDuration);
-                await _websocketHandler.SendMessageToSockets(
-                    JsonBase.Serialize(
-                        new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, session.ActualStep,
-                            session.StepType,
-                            session.StepFinishAt, session.TimeDuration, 0)), session.RoomId);
+                await session.RunNewTimeout(_context, _websocketHandler);
             }
             else
                 await _websocketHandler.SendMessageToSockets(

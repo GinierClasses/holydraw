@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using thyrel_api.Controllers;
 using thyrel_api.Handler;
@@ -19,7 +21,7 @@ namespace test_thyrel_api
             await SetupTest();
 
             var httpContext = new DefaultHttpContext();
-            var controller = new PlayerController(new WebsocketHandler(new MockScopeFactory()), Context)
+            var controller = new PlayerController(new WebsocketHandler(TestConfiguration), Context)
             {
                 ControllerContext = new ControllerContext
                 {
