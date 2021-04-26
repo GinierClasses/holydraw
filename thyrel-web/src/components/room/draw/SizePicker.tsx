@@ -1,9 +1,9 @@
-import { Box, makeStyles, Theme } from '@material-ui/core';
-import { bgFade, primaryFade } from 'styles/colors';
+import { Box, fade, makeStyles, Theme, useTheme } from '@material-ui/core';
 
 type SizePickerProps = {
   currentSize: number;
   onSizeChange: (size: number) => void;
+  flexDirection?: 'row' | 'column';
 };
 
 const buttonSizes = [4, 8, 16, 20, 24, 30];
@@ -11,18 +11,21 @@ const buttonSizes = [4, 8, 16, 20, 24, 30];
 export default function SizePicker({
   currentSize,
   onSizeChange,
+  flexDirection = 'row',
 }: SizePickerProps) {
+  const theme = useTheme();
   return (
     <Box
       padding={1}
       gridGap={8}
-      bgcolor={primaryFade(0.2)}
+      bgcolor={fade(theme.palette.secondary.main, 0.2)}
       display="flex"
       borderRadius={4}
       border={1}
-      borderColor="#000000"
+      flexDirection={flexDirection}
+      borderColor="common.black"
       alignItems="center"
-      boxShadow={`0px 0px 4px ${bgFade(0.8)}`}>
+      boxShadow={2}>
       {buttonSizes.map((size, i) => {
         const isCurrentSize = currentSize === size;
         return (
@@ -38,7 +41,7 @@ export default function SizePicker({
   );
 }
 
-const useStyles = makeStyles<Theme, { isCurrentSize: boolean }>(() => ({
+const useStyles = makeStyles<Theme, { isCurrentSize: boolean }>(theme => ({
   button: {
     backgroundColor: 'transparent',
     outline: 'none',
@@ -50,8 +53,11 @@ const useStyles = makeStyles<Theme, { isCurrentSize: boolean }>(() => ({
     justifyContent: 'center',
     display: 'flex',
     flexDirection: 'column',
+    cursor: 'pointer',
     boxShadow: props =>
-      props.isCurrentSize ? `0 0 0 2px ${primaryFade(0.8)}` : undefined,
+      props.isCurrentSize
+        ? `0 0 .2px 2px ${fade(theme.palette.secondary.main, 0.8)}`
+        : 'none',
   },
 }));
 

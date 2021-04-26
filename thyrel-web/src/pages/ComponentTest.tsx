@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import BigButton from '../components/BigButton';
 import PlayerCount from '../components/room/PlayerCount';
-import AppTitle from '../components/AppTitle';
+import HolyDrawLogo from '../components/HolyDrawLogo';
 import BigInput from '../components/BigInput';
 import PlayerCard from '../components/room/lobby/PlayerCard';
 import PlayerCardList from '../components/room/lobby/PlayerCardList';
@@ -14,14 +14,27 @@ import SizePicker from '../components/room/draw/SizePicker';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
-import CanvasDraw from 'components/room/draw/CanvasDraw';
+import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import testPlayerList from '__tests__/json/players.json';
 import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
-import { Box } from '@material-ui/core';
+import { Box, FormControlLabel, IconButton, Switch } from '@material-ui/core';
 import SpinnerIcon from 'components/SpinnerIcon';
 import StartButton from 'components/room/lobby/StartButton';
 import StepProgress from 'components/room/StepProgress';
 import { Slider } from '@material-ui/core';
+import BookSentenceElement from 'components/room/book/BookSentenceElement';
+import GymGuy from 'images/gym-guy.svg';
+import BookDrawingElement from 'components/room/book/BookDrawingElement';
+import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
+import {
+  OnClearAction,
+  OnUndoAction,
+  OnSaveAction,
+  OnRedoAction,
+} from 'components/canvas/DrawingCanvasActions';
+import DeleteIcon from '@material-ui/icons/Delete';
+import UndoIcon from '@material-ui/icons/Undo';
+import RedoIcon from '@material-ui/icons/Redo';
 
 const colors = [
   '#000000',
@@ -42,9 +55,28 @@ const colors = [
   '#F79F1F',
 ];
 
+const canvasWidth = {
+  md: {
+    width: 512,
+    height: 320,
+    border: 4,
+    scale: 2,
+    lineScale: 2,
+  },
+  xs: {
+    width: 256,
+    height: 160,
+    border: 2,
+    scale: 4,
+    lineScale: 2,
+  },
+};
+
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
+  const [mobileCanvas, setMobileCanvas] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [size, setSize] = useState(8);
   const [progress, setProgress] = React.useState<number>(1);
 
@@ -64,28 +96,94 @@ export default function ComponentTest() {
         alignItems="center"
         width="100%"
         gridGap={32}>
-        <AppTitle />
+        <HolyDrawLogo />
 
-        <Box display="flex" flexDirection="column">
-          <Box display="flex">
-            <DrawColorPicker
-              colors={colors}
-              currentColor={color}
-              onColorChange={color => setColor(color)}
+        <Box>
+          <BookSentenceElement
+            username="Luca thb"
+            avatarUrl={profilesPictures[ppIndex]}
+            sentence={'Hey banane poil vert'}></BookSentenceElement>
+        </Box>
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={mobileCanvas}
+              onChange={e => setMobileCanvas(e.target.checked)}
             />
-            <CanvasDraw size={size} color={color} />
-          </Box>
-          <SizePicker currentSize={size} onSizeChange={size => setSize(size)} />
+          }
+          label="Is mobile canvas"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={disabled}
+              onChange={e => setDisabled(e.target.checked)}
+            />
+          }
+          label="Is canvas disabled"
+        />
+        <Box display="flex" flexDirection="column">
+          <DrawingCanvasProvider
+            color={color}
+            disabled={disabled}
+            lineSize={size}
+            canvasSize={mobileCanvas ? canvasWidth.xs : canvasWidth.md}>
+            <Box display="flex">
+              <DrawColorPicker
+                colors={colors}
+                currentColor={color}
+                onColorChange={color => setColor(color)}
+              />
+              <SizePicker
+                currentSize={size}
+                onSizeChange={size => setSize(size)}
+                flexDirection="column"
+              />
+              <DrawingCanvas disabled={disabled} />
+              <Box display="flex" flexDirection="column">
+                <OnClearAction>
+                  <IconButton>
+                    <DeleteIcon />
+                  </IconButton>
+                </OnClearAction>
+                <OnUndoAction>
+                  <IconButton>
+                    <UndoIcon />
+                  </IconButton>
+                </OnUndoAction>
+                <OnRedoAction>
+                  <IconButton>
+                    <RedoIcon />
+                  </IconButton>
+                </OnRedoAction>
+              </Box>
+            </Box>
+
+            <OnSaveAction
+              onSave={canvasImage => {
+                if (!canvasImage) return;
+                const win = window.open();
+                win?.document.write(
+                  '<iframe width="1200px" height="700px" src=' +
+                    canvasImage +
+                    '></iframe>',
+                );
+              }}>
+              <BigButton size="large">Submit</BigButton>
+            </OnSaveAction>
+          </DrawingCanvasProvider>
         </Box>
 
         <StepTimer
-          finishAt={new Date('2021-03-02T10:27:00')}
-          timeDuration={100}
+          finishAt={new Date('2021-03-30T08:31:00')}
+          timeDuration={120}
         />
+        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}
-          onClick={console.log}></ButtonModalJoin>
+          onClick={() => void 0}></ButtonModalJoin>
         <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
         <BigInput
           onChange={() => void 0}
@@ -99,20 +197,23 @@ export default function ComponentTest() {
           avatar={profilesPictures[ppIndex]}
           isOwner={true}
           isKickable={false}
-          onKick={id => console.log('User id is :', id)}
+          onKick={id => void 0}
         />
 
         <BigButton size="large" onClick={nextPp}>
           Test
         </BigButton>
 
-        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
+        <StartButton
+          player={testPlayerList[1]}
+          onStart={() => void 0}
+        />
 
         <PlayerCardList
           players={testPlayerList}
           playerId={3}
           isKickable={true}
-          onKick={id => console.log('id is', id)}
+          onKick={id => void 0}
         />
         <DirectiveLabel sentence="Salzt" directive="bonsoir" />
 
@@ -123,7 +224,7 @@ export default function ComponentTest() {
         <PlayerCardList
           players={testPlayerList}
           isKickable={true}
-          onKick={id => console.log('id is', id)}
+          onKick={id => void 0}
         />
 
         <BookPlayerList players={testPlayerList} playerId={2} />

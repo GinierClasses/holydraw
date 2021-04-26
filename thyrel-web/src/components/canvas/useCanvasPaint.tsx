@@ -3,7 +3,6 @@ import { Coordinate, Line, LineType } from 'types/canvas.types';
 import {
   clearDraw,
   drawCanvasLine,
-  canvasScale,
   getQuadraticCurveCoordinates,
   rerenderDraw,
 } from 'utils/canvas.utils';
@@ -12,14 +11,21 @@ type useCanvasMouseProps = {
   color: string;
   size: number;
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
+  scale: number;
 };
 
-function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
+function useCanvasPaint({
+  color,
+  size,
+  canvasRef,
+  scale,
+}: useCanvasMouseProps) {
   const mouseCoordinate = React.useRef<Coordinate>({
     x: 0,
     y: 0,
   });
   const lines = React.useRef<Line[]>([]);
+  const deletedLines = React.useRef<Line[]>([]);
 
   const getLastLine = () => lines.current[lines.current.length - 1];
 
@@ -58,27 +64,47 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
   const create = React.useCallback(
     (coordinate: Coordinate, isNewLine?: boolean) => {
       mouseCoordinate.current = coordinate;
+      deletedLines.current = [];
       if (isNewLine)
         lines.current.push({
           type: LineType.LINE,
           color,
-          size: size * canvasScale,
+          size: size * scale,
           points: [coordinate],
         });
       else paint(coordinate);
     },
-    [color, paint, size],
+    [color, paint, scale, size],
   );
 
-  const undo = React.useCallback(() => {
+  const refresh = React.useCallback(() => {
     if (!canvasRef.current) return;
-    lines.current.pop();
     rerenderDraw(canvasRef.current, lines.current);
   }, [canvasRef]);
 
+  const undo = React.useCallback(() => {
+    const deletedLine = lines.current.pop();
+    deletedLine && deletedLines.current.push(deletedLine);
+    refresh();
+  }, [refresh]);
+
+  const redo = React.useCallback(() => {
+    const redoLine = deletedLines.current.pop();
+    redoLine && lines.current.push(redoLine);
+    refresh();
+  }, [refresh]);
+
   const clear = React.useCallback(() => {
     if (!canvasRef.current) return;
-    clearDraw(canvasRef.current, canvasRef.current.getContext('2d'));
+    if (
+      !window.confirm(
+        'This action is definitive. Are you sure you want to clear all ?',
+      )
+    )
+      return;
+    lines.current = [];
+    deletedLines.current = [];
+    clearDraw(canvasRef.current);
   }, [canvasRef]);
 
   React.useEffect(() => {
@@ -98,6 +124,8 @@ function useCanvasPaint({ color, size, canvasRef }: useCanvasMouseProps) {
     lines,
     mouseCoordinate,
     clear,
+    redo,
+    refresh,
   };
 }
 

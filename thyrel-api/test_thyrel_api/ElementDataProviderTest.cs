@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace test_thyrel_api
 {
@@ -61,7 +62,7 @@ namespace test_thyrel_api
         {
             const string newText = "yow";
             var element = Context.Element.First();
-            await _elementDataProvider.SetSentence(element, newText);
+            await _elementDataProvider.SetSentence(element.Id, newText);
             Assert.AreEqual(newText, element.Text);
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newText, dbElement.Text);
@@ -73,7 +74,7 @@ namespace test_thyrel_api
             const string newImage = "http://imageexample.com/image.png";
             var element = Context.Element.First();
 
-            await _elementDataProvider.SetDrawing(element, newImage);
+            await _elementDataProvider.SetDrawing(element.Id, newImage);
             Assert.AreEqual(newImage, element.DrawImage);
             var dbElement = await _elementDataProvider.GetElement(1);
             Assert.AreEqual(newImage, dbElement.DrawImage);
@@ -82,9 +83,16 @@ namespace test_thyrel_api
         [Test]
         public async Task HandleFinishChangeTheFinish()
         {
-            await _elementDataProvider.HandleFinish(1);
+            const string text = "text";
+            await _elementDataProvider.HandleFinish(1, new FinishElementDto
+            {
+                Text = text,
+                DrawImage = "invalid image"
+            });
+            
             var element1 = await _elementDataProvider.GetElement(1);
             Assert.IsNotNull(element1.FinishAt);
+            Assert.AreEqual(element1.Text, text);
             await _elementDataProvider.HandleFinish(1);
             var element2 = await _elementDataProvider.GetElement(1);
             Assert.IsNull(element2.FinishAt);
@@ -141,6 +149,8 @@ namespace test_thyrel_api
             var expectedWithParent = await _elementDataProvider.GetCurrentElement(expected.CreatorId);
             var current = await _elementDataProvider.GetCurrentElement(player.Id);
             Assert.AreEqual(expectedWithParent.Parent.Id, current.Parent.Id);
+            Assert.AreNotEqual(expectedWithParent.Parent.Id, expectedWithParent.Id);
+            Assert.AreNotEqual(expectedWithParent.Parent.Step, expectedWithParent.Step);
             Assert.AreEqual(current.Step, expected.Step);
             Assert.AreEqual(current.Id, expected.Id);
         }

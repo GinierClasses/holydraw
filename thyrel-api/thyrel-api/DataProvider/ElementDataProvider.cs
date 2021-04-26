@@ -67,28 +67,24 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        public async Task SetSentence(Element element, string sentence)
+        public async Task SetSentence(int id, string sentence)
         {
-            if (element == null) return;
-
-            element.Text = sentence;
+            await _holyDrawDbContext.Element.Where(e => e.Id == id).ForEachAsync(e => e.Text = sentence);
             await SaveChanges();
         }
 
         /// <summary>
         ///     Set the DrawImage into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="drawImage"></param>
         /// <returns></returns>
-        public async Task SetDrawing(Element element, string drawImage)
+        public async Task SetDrawing(int id, string drawImage)
         {
-            if (element == null) return;
-
-            element.DrawImage = drawImage;
+            await _holyDrawDbContext.Element.Where(e => e.Id == id).ForEachAsync(e => e.DrawImage = drawImage);
             await SaveChanges();
         }
 
@@ -96,8 +92,9 @@ namespace thyrel_api.DataProvider
         ///     Handle finish State
         /// </summary>
         /// <param name="elementId">elementId to handle</param>
+        /// <param name="elementDto"></param>
         /// <returns>Edited element</returns>
-        public async Task<Element> HandleFinish(int elementId)
+        public async Task<Element> HandleFinish(int elementId, FinishElementDto elementDto = null)
         {
             var element = await _holyDrawDbContext.Element.SingleOrDefaultAsync(e => e.Id == elementId);
 
@@ -105,10 +102,19 @@ namespace thyrel_api.DataProvider
                 return null;
 
             if (element.FinishAt == null)
+            {
                 element.FinishAt = DateTime.Now;
-            else
-                element.FinishAt = null;
 
+                if (element.Type == ElementType.Sentence)
+                    element.Text = elementDto?.Text;
+                else
+                    element.DrawImage = elementDto?.DrawImage;
+            }
+            else
+            {
+                element.FinishAt = null;
+            }
+            
             await SaveChanges();
             return element;
         }
@@ -132,9 +138,20 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="elementId"></param>
         /// <returns></returns>
-        public async Task<Element> GetElement(int elementId)
+        public async Task<ElementDto> GetElement(int elementId)
         {
-            return await _holyDrawDbContext.Element.FindAsync(elementId);
+            return await _holyDrawDbContext.Element.Select(e => new ElementDto
+            {
+                Id = e.Id,
+                Step = e.Step,
+                CreatorId = e.CreatorId,
+                Type = e.Type,
+                Text = e.Text,
+                DrawImage = e.DrawImage,
+                FinishAt = e.FinishAt,
+                CreatedAt = e.CreatedAt,
+                SessionId = e.SessionId,
+            }).FirstOrDefaultAsync(e => e.Id == elementId);
         }
 
 
@@ -145,25 +162,40 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<ElementStepDto> GetCurrentElement(int playerId)
         {
-            var elementWithParent = await _holyDrawDbContext.Element
+            var currentElement = await _holyDrawDbContext.Element
                 .OrderByDescending(e => e.Step)
                 .Where(e => e.CreatorId == playerId)
-                .Select(e => new ElementDto
+                .Select(e => new CurrentElementDto
                 {
                     Id = e.Id,
                     Step = e.Step,
                     Type = e.Type,
                     Text = e.Text,
-                    DrawingId = e.DrawingId,
                     FinishAt = e.FinishAt,
                     CreatedAt = e.CreatedAt,
                     SessionId = e.SessionId,
+                    DrawImage = e.DrawImage,
+                    InitiatorId = e.InitiatorId
                 })
-                .Take(2)
-                .ToListAsync();
+                .FirstAsync();
 
-            var result = new ElementStepDto(elementWithParent[0],
-                elementWithParent.Count > 1 ? elementWithParent[1] : null);
+            ElementDto parentElement = null;
+
+            if (currentElement.Step != 1)
+            {
+                parentElement = await _holyDrawDbContext.Element
+                    .OrderByDescending(e => e.Step)
+                    .Where(e => e.InitiatorId == currentElement.InitiatorId && e.Step == currentElement.Step - 1)
+                    .Select(e => new ElementDto
+                    {
+                        Id = e.Id,
+                        Text = e.Text,
+                        DrawImage = e.DrawImage
+                    })
+                    .FirstAsync();
+            }
+
+            var result = new ElementStepDto(currentElement, parentElement);
 
             return result;
         }

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using thyrel_api.Models;
 
 namespace test_thyrel_api
@@ -9,6 +11,8 @@ namespace test_thyrel_api
     {
         protected DbContextOptions<HolyDrawDbContext> Options { get; private set;}
         protected HolyDrawDbContext Context { get; private set; }
+        protected readonly IConfiguration TestConfiguration = new ConfigurationRoot(new List<IConfigurationProvider>());
+
 
         protected async Task SetupTest()
         {

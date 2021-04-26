@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
+using thyrel_api.Handler;
 using thyrel_api.Models;
 using thyrel_api.Models.DTO;
 
@@ -28,7 +29,8 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount)
         {
-            var sessionToAdd = new Session(null, roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
+            var sessionToAdd =
+                new Session(roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
 
             // test if no session is already start
             if (await _holyDrawDbContext.Session.AnyAsync(s => s.RoomId == roomId && s.FinishAt == null))
@@ -81,15 +83,16 @@ namespace thyrel_api.DataProvider
                 {
                     ActualStep = s.ActualStep,
                     RoomId = s.RoomId,
+                    TimeDuration = s.TimeDuration,
                     CreatedAt = s.CreatedAt,
                     FinishAt = s.FinishAt,
                     Id = s.Id,
                     StepFinishAt = s.StepFinishAt,
                     StepType = s.StepType,
-                    TotalPLayers = s.TotalPlayers
+                    TotalPlayers = s.TotalPlayers
                 })
                 .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
-            
+
             return sessionDto;
         }
 
@@ -100,15 +103,14 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<PlayerStatusDto> GetPlayerStatus(Session session)
         {
-            var playersCount = await _holyDrawDbContext.Player
-                .Where(p => p.RoomId == session.RoomId && p.IsPlaying).CountAsync();
-
             var elementsCount = await _holyDrawDbContext.Element
-                .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null).CountAsync();
+                .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null)
+                .CountAsync();
 
-            var playerStatusCount = new PlayerStatusDto() {
+            var playerStatusCount = new PlayerStatusDto
+            {
                 PlayerFinished = elementsCount,
-                PlayerCount = playersCount
+                PlayerCount = session.TotalPlayers
             };
 
             return playerStatusCount;
@@ -121,8 +123,8 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task<Session> StartSession(int roomId)
         {
-            const int duration = 10;
             const int step = 1;
+            var duration = StepTimeHandler.GetTimeForStep(SessionStepType.Start);
 
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
             var elementDataProvider = new ElementDataProvider(_holyDrawDbContext);
@@ -156,42 +158,62 @@ namespace thyrel_api.DataProvider
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).ToListAsync();
 
             // test if game is finish to go to the album
-            if (session.ActualStep == players.Count)
+            if (session.ActualStep >= players.Count)
                 session.StepType = SessionStepType.Book;
 
             var nextStep = session.ActualStep + 1;
             session.ActualStep = nextStep;
 
-            var candidates = await elementProvider.GetNextCandidateElements(session.Id);
-
-            switch (session.StepType)
+            session.StepType = session.StepType switch
             {
-                case SessionStepType.Start:
-                    // TODO : define a time for Drawing and Text, currently 3 minutes for drawing
-                    session.StepFinishAt = DateTime.Now.AddMinutes(3);
-                    session.StepType = SessionStepType.Draw;
-                    break;
-                case SessionStepType.Draw:
-                    session.StepType = SessionStepType.Write;
-                    break;
-                case SessionStepType.Write:
-                    session.StepType = SessionStepType.Draw;
-                    break;
-                case SessionStepType.Book:
-                    Console.WriteLine("Book case");
-                    break;
-                default:
-                    throw new Exception("Impossible switch case");
-            }
+                SessionStepType.Start => SessionStepType.Draw,
+                SessionStepType.Draw => SessionStepType.Write,
+                SessionStepType.Write => SessionStepType.Draw,
+                SessionStepType.Book => SessionStepType.Book,
+                _ => throw new Exception("Impossible Session.StepType case")
+            };
+
+            session.UpdateTimeForStep(StepTimeHandler.GetTimeForStep(session.StepType));
 
             if (session.StepType != SessionStepType.Book)
             {
+                var candidates = await elementProvider.GetNextCandidateElements(session.Id);
+                
                 var elements = GetNextCandidatesElements(players, candidates, nextStep, session.Id,
                     session.StepType == SessionStepType.Write ? ElementType.Sentence : ElementType.Drawing);
                 await elementProvider.AddElements(elements);
             }
 
             await SaveChanges();
+            return session;
+        }
+
+        /// <summary>
+        ///     Run the next album for a specified roomId
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns>Session that start the album</returns>
+        public async Task<Session> NextAlbum(int roomId)
+        {
+            var session = await _holyDrawDbContext.Session.OrderBy(e => e.CreatedAt)
+                .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
+
+            var creators = await _holyDrawDbContext.Element
+                .Where(e => e.SessionId == session.Id && e.Step == 1)
+                .OrderBy(e => e.CreatorId)
+                .Select(e => e.CreatorId)
+                .ToListAsync();
+            if (session.CurrentAlbumId == null)
+                session.CurrentAlbumId = creators.First();
+            else
+            {
+                var prevAlbumIdIndex = creators.IndexOf((int) session.CurrentAlbumId);
+                if (prevAlbumIdIndex + 1 == creators.Count) return null;
+                session.CurrentAlbumId = creators[prevAlbumIdIndex + 1];
+            }
+
+            await SaveChanges();
+
             return session;
         }
 

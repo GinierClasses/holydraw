@@ -9,13 +9,11 @@ namespace thyrel_api.Models
         {
         }
 
-        public Player(string username, string avatarUrl, bool isOwner, DateTime? disableAt,
-            int roomId, int tokenId)
+        public Player(string username, string avatarUrl, bool isOwner, int roomId, int tokenId)
         {
             Username = username;
             AvatarUrl = avatarUrl;
             IsOwner = isOwner;
-            DisableAt = disableAt;
             CreatedAt = DateTime.Now;
             RoomId = roomId;
             TokenId = tokenId;
@@ -38,5 +36,10 @@ namespace thyrel_api.Models
 
         public virtual List<Element> AlbumElements { get; set; }
         public virtual List<Element> CreatedElements { get; set; }
+
+        public bool IsInRoom(int roomId)
+        {
+            return RoomId == roomId;
+        }
     }
 }

@@ -40,26 +40,26 @@ namespace thyrel_api.DataProvider
         /// <summary>
         ///     Set the sentence into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        Task SetSentence(Element element, string sentence);
+        Task SetSentence(int id, string sentence);
 
         /// <summary>
-        ///     Set the DrawImage into a Element
+        /// ///     Set the DrawImage into a Element
         /// </summary>
-        /// <param name="element"></param>
+        /// <param name="id"></param>
         /// <param name="drawImage"></param>
         /// <returns></returns>
-        Task SetDrawing(Element element, string drawImage);
+        Task SetDrawing(int id, string drawImage);
 
         /// <summary>
         ///     Handle finish State
         /// </summary>
         /// <param name="elementId">elementId to handle</param>
-        /// <param name="isFinish">true = element finish, false = element not finish</param>
+        /// <param name="elementDto"></param>
         /// <returns>Edited element</returns>
-        Task<Element> HandleFinish(int elementId);
+        Task<Element> HandleFinish(int elementId, FinishElementDto elementDto = null);
 
         /// <summary>
         ///     Album of this InitiatorId
@@ -73,7 +73,7 @@ namespace thyrel_api.DataProvider
         /// </summary>
         /// <param name="elementId"></param>
         /// <returns></returns>
-        Task<Element> GetElement(int elementId);
+        Task<ElementDto> GetElement(int elementId);
 
         /// <summary>
         ///     Get candidates from Sessions

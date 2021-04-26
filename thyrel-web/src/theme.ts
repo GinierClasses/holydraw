@@ -8,6 +8,10 @@ function createBaseTheme(palette: Palette) {
   return createMuiTheme({
     palette: palette,
     typography: {
+      h1: {
+        fontSize: 64,
+        fontFamily: 'Modak',
+      },
       h4: {
         fontFamily: 'Work Sans',
         fontWeight: 'bold',
@@ -87,45 +91,6 @@ function createBaseTheme(palette: Palette) {
           padding: '8px 16px',
           fontSize: 32,
         },
-      },
-      MuiSwitch: {
-        root: {
-          width: 54,
-          height: 26,
-          padding: 0,
-          margin: 8,
-        },
-        switchBase: {
-          padding: 1,
-          '&$checked': {
-            transform: 'translateX(28px)',
-            '& + $track': {
-              backgroundColor: fade(palette.primary.light, 0.4),
-              opacity: 1,
-              border: 'none',
-            },
-          },
-        },
-        colorPrimary: {
-          '&$checked': {
-            '& + $track': {
-              backgroundColor: fade(palette.primary.light, 0.4),
-              border: `none`,
-              opacity: 1,
-            },
-          },
-        },
-        thumb: {
-          width: 24,
-          height: 24,
-        },
-        track: {
-          borderRadius: 26 / 2,
-          border: `none`,
-          backgroundColor: fade(palette.divider, 0.4),
-          opacity: 1,
-        },
-        checked: {},
       },
     },
   });

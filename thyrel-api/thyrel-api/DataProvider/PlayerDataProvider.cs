@@ -27,7 +27,7 @@ namespace thyrel_api.DataProvider
         /// <param name="tokenId"></param>
         public async Task<Player> Add(string username, string avatarUrl, bool isOwner, int roomId, int tokenId)
         {
-            var player = new Player(username, avatarUrl, isOwner, null, roomId, tokenId);
+            var player = new Player(username, avatarUrl, isOwner, roomId, tokenId);
 
             var entity = await _holyDrawDbContext.Player.AddAsync(player);
             await SaveChanges();
@@ -107,7 +107,7 @@ namespace thyrel_api.DataProvider
         /// <param name="isOwner"></param>
         public async Task<Player> SetOwner(Player player, bool isOwner = true)
         {
-            if (player == null)
+            if (player == null || player.IsOwner == isOwner)
                 return null;
 
             player.IsOwner = isOwner;

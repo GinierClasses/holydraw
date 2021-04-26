@@ -1,40 +1,14 @@
-import { Session } from 'inspector';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { getToken } from '../api/player-provider';
-import { testApiUrl } from '../test/data';
-import Player from '../types/Player.type';
 import useSafeMounted from 'hooks/useSafeMounted';
+import { SendMessageType, WsStates } from 'types/websocket.types';
+import { apiURL } from 'api/client';
 
-const apiURL = process.env.REACT_APP_API_URL || testApiUrl;
+const protocol = process.env.NODE_ENV === 'development' ? 'ws' : 'wss';
+
 const domainRegExp = /\b(?:(?:https?|ftp):\/\/)?([^/\n]+)\/?/;
-const url = `wss://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
-
-export enum WsStates {
-  IDLE = 'Loading...',
-  CONNECTING = 'You will be connected',
-  CONNECTED = 'You are connected',
-  CLOSED = "You're disconnected",
-}
-
-export enum WebsocketEvent {
-  Invalid = -1,
-  PlayerJoin = 1,
-  PlayerLeft = 2,
-  PlayerFinished = 3,
-  NewOwnerPlayer = 4,
-  PlayerKicked = 5,
-  SessionStart = 11,
-  SessionUpdate = 12,
-  NextStep = 13, // on a step is finish
-}
-
-export type WebsocketMessage = {
-  websocketEvent: WebsocketEvent;
-  player?: Player;
-  playerId?: number;
-  session?: Partial<Session>;
-};
+const url = `${protocol}://${domainRegExp.exec(apiURL)?.[1]}/api/stream`;
 
 export function useWebsocket() {
   const [websocket, setWebsocket] = React.useState<WebSocket>();
@@ -45,7 +19,7 @@ export function useWebsocket() {
     (isSocketOpened: boolean) => {
       setWsState(WsStates.CLOSED);
       if (isSocketOpened) {
-        enqueueSnackbar('Connexion lost ⚡️', { variant: 'error' });
+        enqueueSnackbar('Connexion lost ⚡️ [ws]', { variant: 'error' });
         setWebsocket(undefined);
       }
     },
@@ -62,7 +36,12 @@ export function useWebsocket() {
     socket.onopen = function () {
       isSocketOpened = true;
       // identifie the request
-      socket.send(JSON.stringify({ PlayerToken: getToken() }));
+      socket.send(
+        JSON.stringify({
+          type: SendMessageType.Authentication,
+          playerToken: getToken(),
+        }),
+      );
       setWsState(WsStates.CONNECTED);
     };
 
