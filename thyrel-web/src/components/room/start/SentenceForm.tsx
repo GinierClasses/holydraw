@@ -6,13 +6,30 @@ import { useSessionContext } from 'hooks/SessionProvider';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import { useRandomSentence } from 'hooks/useRandomSentence';
+import { useTimerEvent } from 'hooks/useTimerInterval';
+import { client } from 'api/client';
+import { HolyElement } from 'types/HolyElement.type';
+import { getToken } from 'api/player-provider';
 
 export default function StartForm() {
-  const { currentElement, onSave } = useSessionContext();
+  const { session, currentElement, onSave } = useSessionContext();
   const [sentence, setSentence] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const isEditing = Boolean(!currentElement?.finishAt);
   const defaultSentence = useRandomSentence();
+
+  useTimerEvent({
+    finishAt: new Date(session?.stepFinishAt || ''),
+    timeDuration: session?.timeDuration || 60,
+    onFinish: () => {
+      client<HolyElement>(`element/auto/${currentElement?.id}`, {
+        token: getToken(),
+        method: 'PATCH',
+        data: { text: sentence },
+      });
+    },
+    onFinishPercentage: 98,
+  });
 
   return (
     <>

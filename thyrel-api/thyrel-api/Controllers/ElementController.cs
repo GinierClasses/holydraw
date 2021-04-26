@@ -64,6 +64,35 @@ namespace thyrel_api.Controllers
             return Ok(element);
         }
 
+        // Automaticly call this endpoint to handle finish state
+        // PATCH: api/element/:id
+        [HttpPatch("auto/{id}")]
+        public async Task<ActionResult<Element>> AutoFinish(int id, [FromBody] FinishElementDto body)
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized("You're not in the room.");
+
+            var elementDataProvider = new ElementDataProvider(_context);
+            var sessionDataProvider = new SessionDataProvider(_context);
+
+            var element = await elementDataProvider.GetElement(id);
+            if (element.CreatorId != player.Id) return Unauthorized("You're not the creator of this element.");
+
+            var session = await sessionDataProvider.GetSessionById(element.SessionId);
+            if (element.Step != session.ActualStep) return Unauthorized("You can't modify a previous element.");
+
+            if (element.Type == ElementType.Sentence)
+            {
+                await elementDataProvider.SetSentence(element.Id, body.Text);
+            }
+            else
+            {
+                await elementDataProvider.SetDrawing(element.Id, body.DrawImage);
+            }
+
+            return Ok();
+        }
+
         // Call this endpoint to get an Element by Id
         // GET : api/element/4
         [HttpGet("{id}")]
