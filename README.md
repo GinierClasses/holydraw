@@ -43,7 +43,7 @@ Réalisée dans le cadre des modules : `i226b - Implémenter orienté objets (av
 
 ## Information sur le projet :
 
-![Current Branch](https://img.shields.io/badge/branch-sprint--3-blue?style=for-the-badge)
+![Current Branch](https://img.shields.io/badge/branch-sprint--6-blue?style=for-the-badge)
 
 ![Most used language](https://img.shields.io/github/languages/top/GinierClasses/teamproject-thyrel-team?style=for-the-badge) 
 ![Number of languages](https://img.shields.io/github/languages/count/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
@@ -62,7 +62,7 @@ Réalisée dans le cadre des modules : `i226b - Implémenter orienté objets (av
 ![Closes Issues](https://img.shields.io/github/issues-closed-raw/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
 ![Open Pull Requests](https://img.shields.io/github/issues-pr-raw/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
 ![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/GinierClasses/teamproject-thyrel-team?style=for-the-badge)
-![Sprint Completion](https://img.shields.io/github/milestones/progress-percent/GinierClasses/teamproject-thyrel-team/3?style=for-the-badge)
+![Sprint Completion](https://img.shields.io/github/milestones/progress-percent/GinierClasses/teamproject-thyrel-team/6?style=for-the-badge)
 
 ## Qualité du code :
 
