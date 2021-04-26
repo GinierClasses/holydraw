@@ -17,7 +17,7 @@ Réalisée dans le cadre des modules : `i226b - Implémenter orienté objets (av
  * Ainsi que `MySQL` pour la base de données.
 
 **Frontend**
- * Utilisation d'un site web qui utilise `React` comme Framework principal, avec `rsuits` et `emotion` pour les styles.
+ * Utilisation d'un site web qui utilise `React` comme Framework principal, avec `Material-UI` pour les styles.
 
 ## Install Guide
 #### Requested :
