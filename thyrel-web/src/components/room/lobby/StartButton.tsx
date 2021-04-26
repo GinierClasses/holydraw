@@ -8,11 +8,13 @@ type StartButtonProps = {
   player?: Player;
   startName?: string;
   onStart: () => void;
+  isLoading?: boolean;
 };
 
 export default function StartButton({
   player,
   startName = 'game',
+  isLoading,
   onStart,
 }: StartButtonProps) {
   const theme = useTheme();
@@ -33,6 +35,7 @@ export default function StartButton({
       {player?.isOwner && (
         <Box mt={2}>
           <BigButton
+            loading={isLoading}
             onClick={onStart}
             size="large"
             startIcon={<PlayArrowRoundedIcon style={{ fontSize: 48 }} />}>
