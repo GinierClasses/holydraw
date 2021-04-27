@@ -10,8 +10,8 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: 32,
     height: 32,
-    backgroundColor: theme.palette.secondary.dark,
-    border: `1px solid ${theme.palette.secondary.dark}`,
+    backgroundColor: theme.palette.primary.dark,
+    border: `1px solid ${theme.palette.primary.dark}`,
     overflow: 'visible',
     '&> img': {
       height: 32,

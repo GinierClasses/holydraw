@@ -21,7 +21,7 @@ const CustomLinearProgress = withStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.default,
     },
     bar: {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main,
     },
   }),
 )(LinearProgress);

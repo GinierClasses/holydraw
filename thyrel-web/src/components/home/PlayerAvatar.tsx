@@ -8,7 +8,7 @@ type PlayerAvatarProps = {
 
 const useStyles = makeStyles(theme => ({
   button: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
     outline: 'none',
     borderRadius: '50%',
     position: 'absolute',
