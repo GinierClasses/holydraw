@@ -56,7 +56,7 @@ export default function ModalJoin({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color="primary">
+          <Button onClick={() => setOpen(false)} color="secondary">
             Cancel 👋
           </Button>
           <Button
@@ -64,7 +64,7 @@ export default function ModalJoin({
               onClick(identifier);
               setOpen(false);
             }}
-            color="primary">
+            color="secondary">
             Join 🥳
           </Button>
         </DialogActions>

@@ -8,8 +8,8 @@ const useAvatarStyles = makeStyles<Theme, { isSelected: boolean }>(theme => ({
     overflow: 'visible',
     backgroundColor: props =>
       props.isSelected
-        ? fade(theme.palette.secondary.main, 0.6)
-        : fade(theme.palette.secondary.main, 0.2),
+        ? fade(theme.palette.primary.main, 0.6)
+        : fade(theme.palette.primary.main, 0.2),
     [theme.breakpoints.up('sm')]: {
       height: 40,
       width: 40,
