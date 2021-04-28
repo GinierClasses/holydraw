@@ -47,7 +47,7 @@ export default function PlayerAvatar({ image, onShuffle }: PlayerAvatarProps) {
       <Box
         border={2}
         display="flex"
-        borderColor="secondary.main"
+        borderColor="primary.main"
         borderRadius="50%"
         width={256}
         height={256}

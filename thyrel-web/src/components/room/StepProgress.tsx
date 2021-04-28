@@ -38,7 +38,7 @@ export default function StepProgress({
       width="100%"
       position="relative"
       borderTop={1}
-      borderColor="secondary.main">
+      borderColor="primary.main">
       <Box
         alignItems="center"
         justifyContent="center"

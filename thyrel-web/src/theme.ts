@@ -59,8 +59,7 @@ function createBaseTheme(palette: Palette) {
         },
         root: {
           textTransform: 'none',
-          padding: '4px 8px',
-          borderRadius: 6,
+          borderRadius: 8,
         },
         contained: {
           height: 64,
@@ -70,7 +69,7 @@ function createBaseTheme(palette: Palette) {
           padding: '18px 24px',
           borderRadius: 32,
           fontFamily: 'Work Sans',
-          backgroundColor: '#1C2020',
+          backgroundColor: palette.action.active,
           position: 'relative',
           '@media (min-width: 600px)': {
             fontSize: 28,
@@ -111,6 +110,9 @@ let theme = createBaseTheme(
     background: {
       default: '#0f131a',
       paper: '#1a1d24',
+    },
+    action: {
+      active: '#272B31',
     },
   }),
 );

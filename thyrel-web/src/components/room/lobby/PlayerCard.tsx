@@ -81,7 +81,7 @@ export default function PlayerCard({
       padding={1}
       display="flex"
       alignItems="center"
-      borderColor="secondary.main"
+      borderColor="primary.main"
       justifyContent="space-between"
       bgcolor={bgColor}>
       <Box position="relative">

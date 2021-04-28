@@ -1,14 +1,20 @@
 import React from 'react';
-import { Button, ButtonProps, PropTypes } from '@material-ui/core';
+import { Button, ButtonProps } from '@material-ui/core';
 import SpinnerIcon from './SpinnerIcon';
 
 type BigButtonProps = ButtonProps & {
   children?: React.ReactNode;
   loading?: boolean;
   onClick?: () => void;
-  color?: PropTypes.Color;
 };
 
+/*
+  BigButton is an abstraction of `Button` from `Material-ui` using the theme.
+
+  <BigButton>Label</BigButton>: Will create button with black background.
+  <BigButton color="primary">Label</BigButton>: Will create button with the primary background.
+  <BigButton size="large">Label</BigButton>: Only large and medium using on this button
+*/
 export default function BigButton({
   children,
   loading,

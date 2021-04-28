@@ -37,7 +37,7 @@ export default function BookSentenceElement({
         alignItems="center"
         p={1}
         border={1}
-        borderColor="secondary.main"
+        borderColor="primary.main"
         borderRadius={4}
         maxWidth={336}>
         <Avatar src={avatarUrl} className={classes.avatar} />
