@@ -123,24 +123,16 @@ export default function ComponentTest() {
           }
           label="Is canvas disabled"
         />
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" width="100%" maxWidth={1000} flexDirection="column">
           <DrawingCanvasProvider
             color={color}
             disabled={disabled}
             lineSize={size}
             canvasSize={mobileCanvas ? canvasWidth.xs : canvasWidth.md}>
-            <Box display="flex">
-              <DrawColorPicker
-                colors={colors}
-                currentColor={color}
-                onColorChange={color => setColor(color)}
-              />
-              <SizePicker
-                currentSize={size}
-                onSizeChange={size => setSize(size)}
-                flexDirection="column"
-              />
-              <DrawingCanvas disabled={disabled} />
+            <Box display="flex" width="100%">
+              <Box width="100%">
+                <DrawingCanvas disabled={disabled} />
+              </Box>
               <Box display="flex" flexDirection="column">
                 <OnClearAction>
                   <IconButton>
@@ -158,6 +150,17 @@ export default function ComponentTest() {
                   </IconButton>
                 </OnRedoAction>
               </Box>
+
+              <DrawColorPicker
+                colors={colors}
+                currentColor={color}
+                onColorChange={color => setColor(color)}
+              />
+              <SizePicker
+                currentSize={size}
+                onSizeChange={size => setSize(size)}
+                flexDirection="column"
+              />
             </Box>
 
             <OnSaveAction
@@ -204,10 +207,7 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <StartButton
-          player={testPlayerList[1]}
-          onStart={() => void 0}
-        />
+        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
 
         <PlayerCardList
           players={testPlayerList}

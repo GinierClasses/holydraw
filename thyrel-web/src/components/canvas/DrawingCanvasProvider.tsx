@@ -5,6 +5,7 @@ import { DrawingCanvasContext } from './DrawingCanvasContext';
 import useCanvasEventListener from './useCanvasEventListener';
 import useCanvasPaint from './useCanvasPaint';
 
+// TODO: clean scale, lineScale and border
 const canvasWidth = {
   width: 512,
   height: 320,
@@ -13,6 +14,8 @@ const canvasWidth = {
   lineScale: 2,
 };
 
+const ratio = 1.6;
+
 export function DrawingCanvasProvider({
   color = '#900050',
   lineSize = 4,
@@ -20,8 +23,24 @@ export function DrawingCanvasProvider({
   canvasSize: size = canvasWidth,
   children,
 }: DrawingCanvasProviderProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [currentSize, setCurrentSize] = React.useState(size);
+
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
+
+  React.useEffect(() => {
+    function onResize() {
+      const newWidth = canvasRef.current?.parentElement?.parentElement?.getBoundingClientRect()
+        .width;
+      if (!newWidth) return;
+      const newHeight = newWidth / ratio;
+      console.log(newWidth, newHeight);
+    }
+
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [currentSize]);
 
   const {
     paint,
@@ -40,22 +59,26 @@ export function DrawingCanvasProvider({
 
   const onMouseDown = React.useCallback(
     (event: MouseEvent, isNewLine: boolean = true) => {
-      const coordinates = getCoordinates(event, size.scale, canvasRef.current);
+      const coordinates = getCoordinates(
+        event,
+        currentSize.scale,
+        canvasRef.current,
+      );
       if (!coordinates) return;
       setIsPainting(true);
 
       create(coordinates, isNewLine);
     },
-    [canvasRef, create, size.scale],
+    [canvasRef, create, currentSize.scale],
   );
 
   const onMouseUp = React.useCallback(
     (event: MouseEvent) => {
       setIsPainting(false);
-      const coordinate = getCoordinates(event, size.scale);
+      const coordinate = getCoordinates(event, currentSize.scale);
       addLastLine(coordinate);
     },
-    [addLastLine, size.scale],
+    [addLastLine, currentSize.scale],
   );
 
   const onMouseEnter = React.useCallback(
