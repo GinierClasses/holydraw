@@ -10,8 +10,8 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: 32,
     height: 32,
-    backgroundColor: theme.palette.secondary.dark,
-    border: `1px solid ${theme.palette.secondary.dark}`,
+    backgroundColor: theme.palette.primary.dark,
+    border: `1px solid ${theme.palette.primary.dark}`,
     overflow: 'visible',
     '&> img': {
       height: 32,
@@ -37,7 +37,7 @@ export default function BookSentenceElement({
         alignItems="center"
         p={1}
         border={1}
-        borderColor="secondary.main"
+        borderColor="primary.main"
         borderRadius={4}
         maxWidth={336}>
         <Avatar src={avatarUrl} className={classes.avatar} />

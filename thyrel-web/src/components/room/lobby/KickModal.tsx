@@ -13,10 +13,10 @@ export function KickModal({ open, username, onKick, onClose }: KickModalProps) {
     <Dialog fullWidth maxWidth="xs" open={open} onClose={() => onClose()}>
       <DialogTitle>Do you really want to kick {username} ?</DialogTitle>
       <DialogActions>
-        <Button onClick={() => onClose()} color="primary">
+        <Button onClick={() => onClose()} color="secondary">
           Cancel 👋
         </Button>
-        <Button onClick={() => onKick()} color="primary">
+        <Button onClick={() => onKick()} color="secondary">
           Kick 🤫
         </Button>
       </DialogActions>

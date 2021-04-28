@@ -7,8 +7,8 @@ type AppLayoutProps = {
 
 const useStyles = makeStyles(theme => ({
   gameBox: {
-    borderLeft: `1px solid ${theme.palette.secondary.main}`,
-    borderRight: `1px solid ${theme.palette.secondary.main}`,
+    borderLeft: `1px solid ${theme.palette.primary.main}`,
+    borderRight: `1px solid ${theme.palette.primary.main}`,
   },
   container: {
     padding: 0,
@@ -22,7 +22,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <Container className={classes.container} maxWidth="lg">
       <Box
-        bgcolor="background.paper"
+        bgcolor="background.default"
         display="block"
         margin="auto"
         height="100%"

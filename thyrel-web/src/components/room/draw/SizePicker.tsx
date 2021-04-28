@@ -18,7 +18,7 @@ export default function SizePicker({
     <Box
       padding={1}
       gridGap={8}
-      bgcolor={fade(theme.palette.secondary.main, 0.2)}
+      bgcolor={fade(theme.palette.primary.main, 0.2)}
       display="flex"
       borderRadius={4}
       border={1}
@@ -56,7 +56,7 @@ const useStyles = makeStyles<Theme, { isCurrentSize: boolean }>(theme => ({
     cursor: 'pointer',
     boxShadow: props =>
       props.isCurrentSize
-        ? `0 0 .2px 2px ${fade(theme.palette.secondary.main, 0.8)}`
+        ? `0 0 .2px 2px ${fade(theme.palette.primary.main, 0.8)}`
         : 'none',
   },
 }));

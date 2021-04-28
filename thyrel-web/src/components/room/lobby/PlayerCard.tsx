@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     width: 48,
     height: 48,
     backgroundColor: 'transparent',
-    border: `1px solid ${theme.palette.secondary.main}`,
+    border: `1px solid ${theme.palette.primary.main}`,
     overflow: 'visible',
     '&> img': {
       height: 48,
@@ -81,7 +81,7 @@ export default function PlayerCard({
       padding={1}
       display="flex"
       alignItems="center"
-      borderColor="secondary.main"
+      borderColor="primary.main"
       justifyContent="space-between"
       bgcolor={bgColor}>
       <Box position="relative">
