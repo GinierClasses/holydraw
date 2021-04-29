@@ -10,19 +10,13 @@ import BigInput from '../BigInput';
 import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import CreateIcon from '@material-ui/icons/Create';
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, Grid, makeStyles } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
-  container: {
+  marginButton: {
     '&>*': {
-      marginBottom: theme.spacing(4),
-    },
-  },
-  buttonContainer: {
-    '&>*': {
-      marginBottom: theme.spacing(2),
+      marginLeft: 2,
     },
   },
 }));
@@ -93,42 +87,41 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   }
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      width="100%"
-      className={classes.container}>
-      <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+    <>
+      <Grid item>
+        <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+      </Grid>
 
-      <BigInput
-        startIcon={<CreateIcon />}
-        value={username}
-        onChange={e => setUsername(e.target.value)}
-        placeholder={defaultUsername}
-      />
+      <Grid item>
+        <Box display="flex" flexDirection="column">
+          <BigInput
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            placeholder={defaultUsername}
+          />
 
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        className={classes.buttonContainer}>
-        <ButtonModalJoin
-          identifier={identifier}
-          onClick={onJoin}
-          loading={loading}
-        />
+          <Box display="flex" mt={2}>
+            <ButtonModalJoin
+              identifier={identifier}
+              onClick={onJoin}
+              loading={loading}
+            />
 
-        {!identifier && (
-          <BigButton
-            size="large"
-            startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
-            onClick={onStart}
-            loading={loading}>
-            Start
-          </BigButton>
-        )}
-      </Box>
-    </Box>
+            {!identifier && (
+              <BigButton
+                fullWidth
+                className={classes.marginButton}
+                color="primary"
+                size="medium"
+                startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
+                onClick={onStart}
+                loading={loading}>
+                Create
+              </BigButton>
+            )}
+          </Box>
+        </Box>
+      </Grid>
+    </>
   );
 }
