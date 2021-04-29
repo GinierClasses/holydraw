@@ -100,10 +100,14 @@ export default function ComponentTest() {
 
         <Box>
           <BookSentenceElement
-            username="Luca thb"
+            username="Houn Salade"
             avatarUrl={profilesPictures[ppIndex]}
-            sentence={'Hey banane poil vert'}></BookSentenceElement>
+            sentence={
+              'Combien sont ces six saucissons-ci ? Ces six saucissons-ci sont six sous'
+            }></BookSentenceElement>
         </Box>
+
+        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
 
         <FormControlLabel
           control={
@@ -179,7 +183,6 @@ export default function ComponentTest() {
           finishAt={new Date('2021-03-30T08:31:00')}
           timeDuration={120}
         />
-        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}
@@ -204,10 +207,7 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <StartButton
-          player={testPlayerList[1]}
-          onStart={() => void 0}
-        />
+        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
 
         <PlayerCardList
           players={testPlayerList}
