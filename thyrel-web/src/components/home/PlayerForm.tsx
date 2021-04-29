@@ -15,9 +15,7 @@ import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(theme => ({
   marginButton: {
-    '&>*': {
-      marginLeft: 2,
-    },
+    marginLeft: theme.spacing(2),
   },
 }));
 
