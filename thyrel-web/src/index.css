@@ -61,10 +61,6 @@ code {
   height: 100%;
 }
 
-.fullscreen-height {
-  min-height: 100vh;
-}
-
 .full-width {
   width: 100%;
 }
