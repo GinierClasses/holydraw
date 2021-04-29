@@ -10,6 +10,13 @@ export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
     lines.forEach(line => {
       let currentPosition: Coordinate = line.points[0];
       const positionCopy: Coordinate[] = [];
+
+      drawCanvasLine(
+        context,
+        { ...line, type: LineType.CIRCLE },
+        { beginPosition: line.points[0] },
+      );
+
       line.points.forEach(coordinate => {
         positionCopy.push(coordinate);
         if (positionCopy.length > 3) {
