@@ -22,7 +22,7 @@ html,
   scrollbar-color: var(--base-color) transparent;
   scrollbar-width: thin;
   -moz-osx-font-smoothing: grayscale;
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
   height: 100vh;
 }
 
