@@ -55,23 +55,6 @@ const colors = [
   '#F79F1F',
 ];
 
-const canvasWidth = {
-  md: {
-    width: 512,
-    height: 320,
-    border: 4,
-    scale: 2,
-    lineScale: 2,
-  },
-  xs: {
-    width: 256,
-    height: 160,
-    border: 2,
-    scale: 4,
-    lineScale: 2,
-  },
-};
-
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
@@ -127,9 +110,8 @@ export default function ComponentTest() {
           <DrawingCanvasProvider
             color={color}
             disabled={disabled}
-            lineSize={size}
-            canvasSize={mobileCanvas ? canvasWidth.xs : canvasWidth.md}>
-            <Box display="flex" width="100%">
+            lineSize={size}>
+            <Box display="flex" width="100%" flexWrap="wrap">
               <Box width="100%">
                 <DrawingCanvas disabled={disabled} />
               </Box>

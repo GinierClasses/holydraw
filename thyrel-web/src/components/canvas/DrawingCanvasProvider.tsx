@@ -5,13 +5,11 @@ import { DrawingCanvasContext } from './DrawingCanvasContext';
 import useCanvasEventListener from './useCanvasEventListener';
 import useCanvasPaint from './useCanvasPaint';
 
-// TODO: clean scale, lineScale and border
 const canvasWidth = {
   width: 512,
   height: 320,
   border: 4,
   scale: 2,
-  lineScale: 2,
 };
 
 const ratio = 1.6;
@@ -20,27 +18,34 @@ export function DrawingCanvasProvider({
   color = '#900050',
   lineSize = 4,
   disabled = false,
-  canvasSize: size = canvasWidth,
   children,
 }: DrawingCanvasProviderProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [currentSize, setCurrentSize] = React.useState(size);
-
+  const [currentSize, setCurrentSize] = React.useState(canvasWidth);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
 
-  React.useEffect(() => {
-    function onResize() {
-      const newWidth = canvasRef.current?.parentElement?.parentElement?.getBoundingClientRect()
-        .width;
-      if (!newWidth) return;
-      const newHeight = newWidth / ratio;
-      console.log(newWidth, newHeight);
-    }
+  const onResize = React.useCallback(() => {
+    const newWidth = canvasRef.current?.parentElement?.parentElement?.getBoundingClientRect()
+      .width;
+    if (!newWidth || newWidth < 64) return;
 
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, [currentSize]);
+    const scale = 1024 / newWidth;
+    const newHeight = newWidth / ratio;
+    const border = newWidth < 400 ? 2 : 4;
+    const noUpdateRange = 1;
+
+    if (
+      newWidth - noUpdateRange > currentSize.width ||
+      newWidth + noUpdateRange < currentSize.width
+    ) {
+      setCurrentSize({
+        width: newWidth - border * 2,
+        height: newHeight - border * 2,
+        border,
+        scale,
+      });
+    }
+  }, [currentSize.width]);
 
   const {
     paint,
@@ -54,7 +59,7 @@ export function DrawingCanvasProvider({
     color,
     size: lineSize,
     canvasRef,
-    scale: size.lineScale,
+    scale: currentSize.scale,
   });
 
   const onMouseDown = React.useCallback(
@@ -69,7 +74,7 @@ export function DrawingCanvasProvider({
 
       create(coordinates, isNewLine);
     },
-    [canvasRef, create, currentSize.scale],
+    [create, currentSize.scale],
   );
 
   const onMouseUp = React.useCallback(
@@ -93,12 +98,12 @@ export function DrawingCanvasProvider({
       if (!isPainting || !canvasRef.current) return;
       const newMousePosition = getCoordinates(
         event,
-        size.scale,
+        currentSize.scale,
         canvasRef.current,
       );
       paint(newMousePosition);
     },
-    [canvasRef, isPainting, paint, size.scale],
+    [currentSize.scale, isPainting, paint],
   );
 
   useCanvasEventListener({
@@ -108,6 +113,7 @@ export function DrawingCanvasProvider({
     onMouseEnter,
     onMouseMove,
     isPainting,
+    onResize,
     disabled,
   });
 
@@ -115,17 +121,15 @@ export function DrawingCanvasProvider({
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
 
-    canvas.width = size.width * size.scale;
-    canvas.height = size.height * size.scale;
+    canvas.width = currentSize.width * currentSize.scale;
+    canvas.height = currentSize.height * currentSize.scale;
     refresh();
-  }, [canvasRef, refresh, size]);
+  }, [canvasRef, refresh, currentSize]);
 
-  const values = React.useMemo(() => ({ clear, undo, canvasRef, redo, size }), [
-    clear,
-    size,
-    redo,
-    undo,
-  ]);
+  const values = React.useMemo(
+    () => ({ clear, undo, canvasRef, redo, size: currentSize }),
+    [clear, currentSize, redo, undo],
+  );
 
   return (
     <DrawingCanvasContext.Provider value={values}>
