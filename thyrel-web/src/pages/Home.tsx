@@ -11,10 +11,9 @@ export default function Home(
   return (
     <Grid
       container
-      spacing={2}
       direction="column"
       alignItems="center"
-      className="full-height fullscreen-height"
+      className="full-height"
       justify="space-between">
       <Grid item>
         <HolyDrawLogo width={32} />

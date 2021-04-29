@@ -6,13 +6,9 @@ type AppLayoutProps = {
 };
 
 const useStyles = makeStyles(theme => ({
-  gameBox: {
-    borderLeft: `1px solid ${theme.palette.primary.main}`,
-    borderRight: `1px solid ${theme.palette.primary.main}`,
-  },
   container: {
     padding: 0,
-    minHeight: '100vh',
+    height: '100%',
     maxWidth: `calc(${theme.breakpoints.values.lg}px - 128px)`,
   },
 }));
@@ -22,14 +18,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <Container className={classes.container} maxWidth="lg">
       <Box
-        bgcolor="background.default"
         display="block"
         margin="auto"
         height="100%"
-        minHeight="100vh"
         width="100%"
-        minWidth={320}
-        className={classes.gameBox}>
+        minWidth={320}>
         {children}
       </Box>
     </Container>

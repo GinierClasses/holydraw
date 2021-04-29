@@ -26,23 +26,23 @@ function useServerWithMock() {
 describe('PlayerForm', () => {
   test('PlayerForm correctly render', () => {
     render(<PlayerForm />);
-    expect(screen.getByText(/start/i)).toBeInTheDocument();
+    expect(screen.getByText(/create/i)).toBeInTheDocument();
     expect(screen.getByText(/join/i)).toBeInTheDocument();
     expect(screen.getByRole('img')).toBeInTheDocument();
     expect(screen.getByRole('textbox')).toBeInTheDocument();
   });
 
-  test('not display start if identifier was provided', () => {
+  test('not display create if identifier was provided', () => {
     render(<PlayerForm identifier="blabla" />);
-    expect(screen.queryByText(/start/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/create/i)).not.toBeInTheDocument();
   });
 
-  test('onstart add value on localStorage', async () => {
+  test('oncreate add value on localStorage', async () => {
     const serverMock = useServerWithMock();
     render(<PlayerForm />);
     const playerUsername = 'Didier';
     userEvent.type(screen.getByRole('textbox'), playerUsername);
-    userEvent.click(screen.getByText(/start/i));
+    userEvent.click(screen.getByText(/create/i));
 
     await waitFor(() => expect(serverMock).toHaveBeenCalledTimes(1));
     await waitFor(() =>

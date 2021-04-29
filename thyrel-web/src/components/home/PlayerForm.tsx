@@ -38,7 +38,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
     history?.push('/r/lobby');
   }
 
-  function onStart() {
+  function onCreate() {
     setLoading(true);
     client<Player>('room', {
       data: {
@@ -91,9 +91,10 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       </Grid>
 
       <Grid item>
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" mb={1} px={1} maxWidth={356}>
           <BigInput
             value={username}
+            fullWidth
             onChange={e => setUsername(e.target.value)}
             placeholder={defaultUsername}
           />
@@ -112,7 +113,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
                 color="primary"
                 size="medium"
                 startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
-                onClick={onStart}
+                onClick={onCreate}
                 loading={loading}>
                 Create
               </BigButton>

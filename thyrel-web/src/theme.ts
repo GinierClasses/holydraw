@@ -55,14 +55,13 @@ function createBaseTheme(palette: Palette) {
         label: {
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
-          overflow: 'hidden',
         },
         root: {
           textTransform: 'none',
           borderRadius: 8,
         },
         contained: {
-          height: 64,
+          height: 68,
           minWidth: 128,
           fontSize: 24,
           color: palette.common.white,
@@ -73,7 +72,7 @@ function createBaseTheme(palette: Palette) {
           position: 'relative',
           '@media (min-width: 600px)': {
             fontSize: 28,
-            height: 70,
+            height: 72,
             borderRadius: 35,
           },
           '&:hover': {

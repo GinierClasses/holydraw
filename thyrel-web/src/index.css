@@ -22,6 +22,8 @@ html,
   scrollbar-color: var(--base-color) transparent;
   scrollbar-width: thin;
   -moz-osx-font-smoothing: grayscale;
+  /* overflow-x: hidden; */
+  height: 100vh;
 }
 
 * {
@@ -69,4 +71,22 @@ code {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+/*
+  Those style will only been applicated for safari and iOS device.
+
+  PS : I hate safari and all of this fucking stuff.
+*/
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    /* to see all text of BigInput */
+    .big-input-safari {
+      height: 40px !important;
+    }
+    /* to correctly aligny label of MuiButton */
+    .MuiButton-label {
+      height: 30px !important;
+    }
+  }
 }
