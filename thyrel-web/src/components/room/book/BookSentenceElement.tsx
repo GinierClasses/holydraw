@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   box: {
-    backgroundColor: theme.palette.action.active,
+    backgroundColor: theme.palette.custom.main,
     borderRadius: 20,
     border: 'none',
   },
