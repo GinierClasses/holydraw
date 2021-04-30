@@ -27,7 +27,7 @@ function NavLink({ to, children }: any) {
       m={1}
       borderRadius={2}
       border={1}
-      borderColor="secondary.main">
+      borderColor="primary.main">
       <Link to={to} style={{ color: 'white' }}>
         {children}
       </Link>

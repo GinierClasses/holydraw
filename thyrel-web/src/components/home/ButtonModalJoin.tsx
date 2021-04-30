@@ -10,19 +10,19 @@ import {
   TextField,
 } from '@material-ui/core';
 
-type ModalJoinProps = {
+type ButtonModalJoinProps = {
   identifier?: string;
   onClick: (identifier: string) => void;
   loading?: boolean;
   className?: string;
 };
 
-export default function ModalJoin({
+export default function ButtonModalJoin({
   identifier: urlIdentifier,
   loading,
   onClick,
   className,
-}: ModalJoinProps) {
+}: ButtonModalJoinProps) {
   const [open, setOpen] = React.useState(false);
   const [identifier, setIdentifier] = React.useState('');
   return (
@@ -46,6 +46,7 @@ export default function ModalJoin({
         <DialogTitle>Join a game 👨‍🎨</DialogTitle>
         <DialogContent>
           <TextField
+            color="secondary"
             autoFocus
             margin="dense"
             id="name"
@@ -56,7 +57,7 @@ export default function ModalJoin({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color="primary">
+          <Button onClick={() => setOpen(false)} color="secondary">
             Cancel 👋
           </Button>
           <Button
@@ -64,7 +65,7 @@ export default function ModalJoin({
               onClick(identifier);
               setOpen(false);
             }}
-            color="primary">
+            color="secondary">
             Join 🥳
           </Button>
         </DialogActions>

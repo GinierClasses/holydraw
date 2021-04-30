@@ -13,7 +13,7 @@ export default function CurrentDrawImage({
     <Box
       bgcolor="common.white"
       border={4}
-      borderColor="secondary.main"
+      borderColor="primary.main"
       boxShadow={1}
       display="flex">
       <img src={src} alt="" className={className} />

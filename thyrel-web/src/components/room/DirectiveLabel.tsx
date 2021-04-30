@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
   },
   container: {
-    backgroundColor: fade(theme.palette.secondary.main, 0.8),
+    backgroundColor: fade(theme.palette.primary.main, 0.8),
     boxShadow: theme.shadows[2],
   },
 }));

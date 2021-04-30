@@ -21,7 +21,7 @@ const CustomLinearProgress = withStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.default,
     },
     bar: {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main,
     },
   }),
 )(LinearProgress);
@@ -38,7 +38,7 @@ export default function StepProgress({
       width="100%"
       position="relative"
       borderTop={1}
-      borderColor="secondary.main">
+      borderColor="primary.main">
       <Box
         alignItems="center"
         justifyContent="center"

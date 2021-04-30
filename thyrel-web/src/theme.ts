@@ -1,8 +1,8 @@
-import { responsiveFontSizes, createMuiTheme, fade } from '@material-ui/core';
+import { responsiveFontSizes, createMuiTheme } from '@material-ui/core';
 import createPalette, { Palette } from '@material-ui/core/styles/createPalette';
 
-export const PRIMARY = '#9c27b0';
-export const SECONDARY = '#880061';
+export const PRIMARY = '#880061';
+export const SECONDARY = '#9c27b0';
 
 function createBaseTheme(palette: Palette) {
   return createMuiTheme({
@@ -59,37 +59,39 @@ function createBaseTheme(palette: Palette) {
         },
         root: {
           textTransform: 'none',
-          padding: '4px 8px',
-          borderRadius: 6,
+          borderRadius: 8,
         },
         contained: {
-          height: 42,
-          fontSize: 16,
+          height: 64,
+          minWidth: 128,
+          fontSize: 24,
           color: palette.common.white,
+          padding: '18px 24px',
+          borderRadius: 32,
           fontFamily: 'Work Sans',
-          backgroundColor: palette.divider,
-          boxShadow: `0px 8px 1px ${fade('#000000', 0.8)}`,
+          backgroundColor: palette.action.active,
           position: 'relative',
+          '@media (min-width: 600px)': {
+            fontSize: 28,
+            height: 70,
+            borderRadius: 35,
+          },
           '&:hover': {
             backgroundColor: palette.action.hover,
-
-            boxShadow: `0px 8px 1px ${fade('#000000', 0.8)}`,
           },
-          '&:focus': {
-            boxShadow: `0px 8px 1px ${fade('#000000', 0.8)}`,
-          },
-          '&:active': {
-            top: 8,
-            boxShadow: 'none',
+        },
+        containedSizeLarge: {
+          fontSize: 32,
+          height: 78,
+          borderRadius: 38,
+          '@media (min-width: 600px)': {
+            fontSize: 36,
+            height: 82,
+            borderRadius: 40,
           },
         },
         iconSizeLarge: {
           marginLeft: 0,
-        },
-        containedSizeLarge: {
-          height: 58,
-          padding: '8px 16px',
-          fontSize: 32,
         },
       },
     },
@@ -108,6 +110,9 @@ let theme = createBaseTheme(
     background: {
       default: '#0f131a',
       paper: '#1a1d24',
+    },
+    action: {
+      active: '#272B31',
     },
   }),
 );
