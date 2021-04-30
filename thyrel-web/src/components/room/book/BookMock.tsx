@@ -1,7 +1,6 @@
 import { Box, Typography } from '@material-ui/core';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
-import BigButton from 'components/BigButton';
 // import BigButton from 'components/BigButton';
 import Loading from 'components/Loading';
 import BookDrawingElement from 'components/room/book/BookDrawingElement';
