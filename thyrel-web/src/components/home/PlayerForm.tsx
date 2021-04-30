@@ -111,7 +111,6 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
                 fullWidth
                 className={classes.marginButton}
                 color="primary"
-                size="medium"
                 startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
                 onClick={onCreate}
                 loading={loading}>

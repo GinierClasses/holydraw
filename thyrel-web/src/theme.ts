@@ -66,14 +66,16 @@ function createBaseTheme(palette: Palette) {
           fontSize: 24,
           color: palette.common.white,
           padding: '18px 24px',
-          borderRadius: 32,
+          borderRadius: 34,
           fontFamily: 'Work Sans',
           backgroundColor: palette.action.active,
           position: 'relative',
+          '& .$MuiButton-label': {
+            height: 20,
+          },
           '@media (min-width: 600px)': {
             fontSize: 28,
             height: 72,
-            borderRadius: 35,
           },
           '&:hover': {
             backgroundColor: palette.action.hover,
@@ -89,6 +91,7 @@ function createBaseTheme(palette: Palette) {
             borderRadius: 40,
           },
         },
+
         iconSizeLarge: {
           marginLeft: 0,
         },
