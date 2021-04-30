@@ -7,6 +7,7 @@ type UseCanvasEventListenerProps = {
   onMouseEnter: (event: MouseEvent) => void;
   onMouseMove: (event: MouseEvent) => void;
   onMouseDown: (event: MouseEvent) => void;
+  onResize: (event: UIEvent) => void;
   disabled?: boolean;
 };
 
@@ -18,6 +19,7 @@ export default function useCanvasEventListener({
   onMouseDown,
   onMouseUp,
   disabled,
+  onResize,
 }: UseCanvasEventListenerProps) {
   React.useEffect(() => {
     if (!isPainting || disabled) return;
@@ -69,4 +71,9 @@ export default function useCanvasEventListener({
       window.document.removeEventListener('mouseup', onMouseUp);
     };
   }, [canvasRef, disabled, onMouseDown, onMouseUp]);
+
+  React.useEffect(() => {
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [onResize]);
 }
