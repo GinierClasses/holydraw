@@ -55,7 +55,7 @@ export default function BookMock() {
                   avatarUrl={
                     profilesPictures[Number(element.creator?.avatarUrl)]
                   }
-                  sentence={element.text}
+                  {...element.text}
                 />
               ) : (
                 <BookDrawingElement

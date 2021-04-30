@@ -1,8 +1,8 @@
-import { Box, makeStyles, Avatar, Typography, fade } from '@material-ui/core';
+import { Box, makeStyles, Avatar, Typography } from '@material-ui/core';
 
 type BookSentenceElementProps = {
   username?: string;
-  sentence?: string;
+  children?: string;
   avatarUrl?: string;
 };
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     height: 32,
     backgroundColor: theme.palette.primary.dark,
     overflow: 'visible',
-    boxShadow: `0px 4px 4px ${fade(theme.palette.background.default, 0.8)}`,
+    boxShadow: theme.shadows[2],
     '&> img': {
       height: 26,
       width: 'auto',
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   box: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.action.active,
     borderRadius: 20,
     border: 'none',
   },
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function BookSentenceElement({
   username,
-  sentence,
+  children,
   avatarUrl,
 }: BookSentenceElementProps) {
   const classes = useStyles();
@@ -43,8 +43,8 @@ export default function BookSentenceElement({
         width={320}
         className={classes.box}>
         <Avatar src={avatarUrl} className={classes.avatar} />
-        <Box ml={1} mr={1}>
-          <Typography variant="body1">{sentence}</Typography>
+        <Box ml={1} mr={1} alignSelf="center">
+          <Typography variant="body1">{children}</Typography>
         </Box>
       </Box>
     </Box>

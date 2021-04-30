@@ -101,10 +101,9 @@ export default function ComponentTest() {
         <Box>
           <BookSentenceElement
             username="Houn Salade"
-            avatarUrl={profilesPictures[ppIndex]}
-            sentence={
-              'Combien sont ces six saucissons-ci ? Ces six saucissons-ci sont six sous'
-            }></BookSentenceElement>
+            avatarUrl={profilesPictures[ppIndex]}>
+            Combien sont ces six saucissons-ci ?
+          </BookSentenceElement>
         </Box>
 
         <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
