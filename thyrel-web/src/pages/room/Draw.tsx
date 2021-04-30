@@ -7,6 +7,7 @@ import GameCanvas from 'components/room/draw/GameCanvas';
 import { useState } from 'react';
 import theme from 'theme';
 import { useSessionContext } from 'hooks/SessionProvider';
+import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
 
 const colors = [
   '#000000',
@@ -31,6 +32,7 @@ export default function Draw() {
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const [color, setColor] = useState(colors[5]);
   const [size, setSize] = useState(8);
+  useDisableBodyOverflow();
   return (
     <GameLayout maxWidth="md">
       <Box
@@ -44,6 +46,8 @@ export default function Draw() {
 
         <Box
           display="flex"
+          width="100%"
+          justifyContent={{ xs: 'center', sm: 'auto' }}
           flexDirection={{ xs: 'column', sm: 'row' }}
           gridGap={16}>
           <Box order={{ xs: 1, sm: 0 }}>
