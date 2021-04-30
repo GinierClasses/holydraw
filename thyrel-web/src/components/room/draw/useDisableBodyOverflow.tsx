@@ -10,7 +10,6 @@ export function useDisableBodyOverflow() {
     const currentStyle = styleElement.current;
 
     currentStyle.innerHTML = 'body { overflow: hidden; }';
-    currentStyle.id = 'test-overlo';
 
     document.getElementsByTagName('head')[0].appendChild(currentStyle);
     return () => {
