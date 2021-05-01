@@ -16,19 +16,25 @@ export default function Album({ album }: AlbumProps) {
       <Typography variant="h4">{album[0].creator?.username}'s album</Typography>
       {album.map(element => {
         const isSentence = element.type === ElementType.Sentence;
-        return isSentence ? (
-          <BookSentenceElement
-            key={element.id}
-            username={element.creator?.username}
-            avatarUrl={profilesPictures[Number(element.creator?.avatarUrl)]}
-            sentence={element.text}
-          />
-        ) : (
-          <BookDrawingElement
-            key={element.id}
-            username={element.creator?.username}
-            src={element.drawImage}
-          />
+        return (
+          <Box
+            display="flex"
+            flexDirection={isSentence ? 'row' : 'row-reverse'}>
+            {isSentence ? (
+              <BookSentenceElement
+                key={element.id}
+                username={element.creator?.username}
+                avatarUrl={profilesPictures[Number(element.creator?.avatarUrl)]}
+                sentence={element.text}
+              />
+            ) : (
+              <BookDrawingElement
+                key={element.id}
+                username={element.creator?.username}
+                src={element.drawImage}
+              />
+            )}
+          </Box>
         );
       })}
     </Box>

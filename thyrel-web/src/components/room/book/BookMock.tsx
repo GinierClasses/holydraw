@@ -2,10 +2,7 @@ import { Box } from '@material-ui/core'; //Typography
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
 import Loading from 'components/Loading';
-// import BookDrawingElement from 'components/room/book/BookDrawingElement';
-// import BookSentenceElement from 'components/room/book/BookSentenceElement';
 import { useSessionContext } from 'hooks/SessionProvider';
-// import profilesPictures from 'images/profiles/profiles-pictures';
 import React from 'react';
 
 import { HolyElement } from 'types/HolyElement.type'; //ElementType,
@@ -40,8 +37,12 @@ export default function BookMock() {
   }, [session?.id]);
 
   return album.length >= 1 ? (
-    <Box display="flex" flexDirection="row">
-      <Album album={album[0]} />
+    <Box display="flex" flexDirection="column" style={{ gap: '40px' }}>
+      {album.map(a => {
+        {
+          return <Album album={a} />;
+        }
+      })}
     </Box>
   ) : (
     <Box>
