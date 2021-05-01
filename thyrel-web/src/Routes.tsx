@@ -22,6 +22,7 @@ export default function Routes() {
       <Router>
         <Switch>
           <Route path="/join/:identifier" component={Home} />
+          <Route path="/start" component={Start} />
           <Route path="/r" component={RoomRoutes} />
           <Route path="/t" component={ComponentTest} />
           <Route path="/home" component={Home} />
