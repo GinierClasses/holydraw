@@ -88,6 +88,4 @@ namespace thyrel_api.Json
             };
         }
     }
-    
-    
 }
