@@ -16,12 +16,12 @@ namespace thyrel_api.Json
     
     public class SessionCurrentAlbumIdUpdateEventJson : BaseWebsocketEventJson
     {
-        public SessionCurrentAlbumIdUpdateSocketDto session { get; }
+        public SessionCurrentAlbumIdUpdateSocketDto Session { get; }
 
         public SessionCurrentAlbumIdUpdateEventJson(int? currentAlbumId)
         {
             WebsocketEvent = WebsocketEvent.SessionUpdate;
-            session = new SessionCurrentAlbumIdUpdateSocketDto { CurrentAlbumId = currentAlbumId };
+            Session = new SessionCurrentAlbumIdUpdateSocketDto { CurrentAlbumId = currentAlbumId };
         }
     }
     
