@@ -19,10 +19,15 @@ export default function BigButton({
   children,
   loading,
   color = 'default',
+  startIcon,
   ...props
 }: BigButtonProps) {
   return (
-    <Button variant="contained" color={color} {...props}>
+    <Button
+      variant="contained"
+      color={color}
+      startIcon={loading ? undefined : startIcon}
+      {...props}>
       {loading ? (
         <SpinnerIcon style={{ fontSize: props.size === 'medium' ? 32 : 40 }} />
       ) : (

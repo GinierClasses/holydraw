@@ -20,10 +20,7 @@ function useCanvasPaint({
   canvasRef,
   scale,
 }: useCanvasMouseProps) {
-  const mouseCoordinate = React.useRef<Coordinate>({
-    x: 0,
-    y: 0,
-  });
+  const mouseCoordinate = React.useRef<Coordinate>({ x: 0, y: 0 });
   const lines = React.useRef<Line[]>([]);
   const deletedLines = React.useRef<Line[]>([]);
 
@@ -49,13 +46,11 @@ function useCanvasPaint({
         lastLine.points,
       );
 
-      drawCanvasLine(
-        context,
-        mouseCoordinate.current,
-        controlPoint,
-        endPoint,
-        lastLine,
-      );
+      drawCanvasLine(context, lastLine, {
+        beginPosition: mouseCoordinate.current,
+        controlPosition: controlPoint,
+        endPosition: endPoint,
+      });
       mouseCoordinate.current = endPoint;
     },
     [canvasRef],
@@ -65,16 +60,23 @@ function useCanvasPaint({
     (coordinate: Coordinate, isNewLine?: boolean) => {
       mouseCoordinate.current = coordinate;
       deletedLines.current = [];
-      if (isNewLine)
+      if (isNewLine) {
         lines.current.push({
           type: LineType.LINE,
           color,
           size: size * scale,
           points: [coordinate],
         });
-      else paint(coordinate);
+        const context = canvasRef?.current?.getContext('2d');
+        if (!context) return;
+        drawCanvasLine(
+          context,
+          { ...getLastLine(), type: LineType.CIRCLE },
+          { beginPosition: coordinate },
+        );
+      } else paint(coordinate);
     },
-    [color, paint, scale, size],
+    [canvasRef, color, paint, scale, size],
   );
 
   const refresh = React.useCallback(() => {
