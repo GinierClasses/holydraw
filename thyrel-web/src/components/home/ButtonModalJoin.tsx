@@ -1,5 +1,6 @@
 import React from 'react';
 import BigButton from '../BigButton';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import {
   Dialog,
   DialogActions,
@@ -27,10 +28,16 @@ export default function ButtonModalJoin({
   return (
     <>
       <BigButton
+        startIcon={
+          !urlIdentifier ? undefined : (
+            <PlayArrowIcon style={{ fontSize: 32 }} />
+          )
+        }
         fullWidth
         loading={loading}
         className={className}
         size="medium"
+        color={!urlIdentifier ? 'default' : 'primary'}
         onClick={() =>
           urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
         }>
