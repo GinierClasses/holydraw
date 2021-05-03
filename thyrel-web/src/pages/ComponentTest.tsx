@@ -83,10 +83,13 @@ export default function ComponentTest() {
 
         <Box>
           <BookSentenceElement
-            username="Luca thb"
-            avatarUrl={profilesPictures[ppIndex]}
-            sentence={'Hey banane poil vert'}></BookSentenceElement>
+            username="Houn Salade"
+            avatarUrl={profilesPictures[ppIndex]}>
+            Combien sont ces six saucissons-ci ?
+          </BookSentenceElement>
         </Box>
+
+        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
 
         <FormControlLabel
           control={
@@ -164,7 +167,6 @@ export default function ComponentTest() {
           finishAt={new Date('2021-03-30T08:31:00')}
           timeDuration={120}
         />
-        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}

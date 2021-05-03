@@ -29,15 +29,13 @@ export default function ButtonModalJoin({
     <>
       <BigButton
         startIcon={
-          !urlIdentifier ? undefined : (
-            <PlayArrowIcon style={{ fontSize: 32 }} />
-          )
+          urlIdentifier ? <PlayArrowIcon style={{ fontSize: 32 }} /> : undefined
         }
         fullWidth
         loading={loading}
         className={className}
         size="medium"
-        color={!urlIdentifier ? 'default' : 'primary'}
+        color={urlIdentifier ? 'primary' : 'default'}
         onClick={() =>
           urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
         }>
