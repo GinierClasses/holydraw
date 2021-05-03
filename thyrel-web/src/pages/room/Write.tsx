@@ -32,7 +32,7 @@ export default function Write() {
           <Grid item className="full-width">
             <DirectiveLabel directive="Describe this scene" />
           </Grid>
-          <Grid item>
+          <Grid item className="full-width">
             <CurrentDrawImageWithContext className={classes.width} />
           </Grid>
           <StartForm />
