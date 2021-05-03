@@ -12,7 +12,7 @@ export default function Album({ album }: AlbumProps) {
     return null;
   }
   return (
-    <Box display="flex" flexDirection="column" maxWidth={300}>
+    <Box display="flex" flexDirection="column" width={300}>
       <Typography variant="h4">{album[0].creator?.username}'s album</Typography>
       {album.map(element => {
         const isSentence = element.type === ElementType.Sentence;

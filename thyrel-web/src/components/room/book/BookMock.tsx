@@ -38,11 +38,7 @@ export default function BookMock() {
 
   return album.length >= 1 ? (
     <Box display="flex" flexDirection="column" style={{ gap: '40px' }}>
-      {album.map(a => {
-        {
-          return <Album album={a} />;
-        }
-      })}
+      <Album album={album[0]} />
     </Box>
   ) : (
     <Box>
