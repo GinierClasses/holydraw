@@ -39,7 +39,7 @@ export default function StartForm() {
       client<HolyElement>(`element/auto/${currentElement?.id}`, {
         token: getToken(),
         method: 'PATCH',
-        data: { text: sentence },
+        data: { text: sentence || defaultSentence },
       });
     },
     onFinishPercentage: 98,
