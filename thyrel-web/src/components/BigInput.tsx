@@ -45,7 +45,7 @@ const useStyles = makeStyles<Theme, StylesProps>(theme => ({
       props.disabled
         ? `2px solid ${fade(theme.palette.primary.main, 0.6)}`
         : `2px solid ${theme.palette.primary.main}`,
-    borderRadius: props => (props.variant === 'medium' ? 34 : 38),
+    borderRadius: props => (props.variant === 'medium' ? 38 : 42),
     alignItems: 'center',
     transition: 'box-shadow ease-in .2s',
     boxShadow: props =>

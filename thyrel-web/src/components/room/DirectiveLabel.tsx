@@ -25,7 +25,7 @@ export default function DirectiveLabel({
       width="100%"
       display="flex"
       padding={1}
-      borderRadius={4}
+      borderRadius={16}
       alignItems="center"
       flexDirection="column"
       className={classes.container}>
