@@ -3,6 +3,7 @@ import { Coordinate, Line, LineType } from 'types/canvas.types';
 import {
   clearDraw,
   drawCanvasLine,
+  fillCanvas,
   getQuadraticCurveCoordinates,
   rerenderDraw,
 } from 'utils/canvas.utils';
@@ -12,6 +13,7 @@ type useCanvasMouseProps = {
   size: number;
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   scale: number;
+  lineType: LineType;
 };
 
 function useCanvasPaint({
@@ -19,6 +21,7 @@ function useCanvasPaint({
   size,
   canvasRef,
   scale,
+  lineType,
 }: useCanvasMouseProps) {
   const mouseCoordinate = React.useRef<Coordinate>({ x: 0, y: 0 });
   const lines = React.useRef<Line[]>([]);
@@ -56,27 +59,42 @@ function useCanvasPaint({
     [canvasRef],
   );
 
+  const fill = React.useCallback(
+    (coordinate: Coordinate) => {
+      if (!canvasRef.current) return;
+      fillCanvas(canvasRef.current, coordinate, color);
+    },
+    [canvasRef, color],
+  );
+
   const create = React.useCallback(
     (coordinate: Coordinate, isNewLine?: boolean) => {
       mouseCoordinate.current = coordinate;
       deletedLines.current = [];
       if (isNewLine) {
         lines.current.push({
-          type: LineType.LINE,
+          type: lineType,
           color,
           size: size * scale,
           points: [coordinate],
         });
-        const context = canvasRef?.current?.getContext('2d');
-        if (!context) return;
-        drawCanvasLine(
-          context,
-          { ...getLastLine(), type: LineType.CIRCLE },
-          { beginPosition: coordinate },
-        );
+        switch (lineType) {
+          case LineType.LINE:
+            const context = canvasRef?.current?.getContext('2d');
+            if (!context) return;
+            drawCanvasLine(
+              context,
+              { ...getLastLine(), type: LineType.CIRCLE },
+              { beginPosition: coordinate },
+            );
+            break;
+          case LineType.FILL:
+            fill(coordinate);
+            break;
+        }
       } else paint(coordinate);
     },
-    [canvasRef, color, paint, scale, size],
+    [canvasRef, color, fill, lineType, paint, scale, size],
   );
 
   const refresh = React.useCallback(() => {
@@ -128,6 +146,7 @@ function useCanvasPaint({
     clear,
     redo,
     refresh,
+    fill,
   };
 }
 

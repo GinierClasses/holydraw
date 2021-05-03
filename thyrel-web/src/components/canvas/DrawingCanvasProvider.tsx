@@ -1,4 +1,5 @@
 import React from 'react';
+import { LineType } from 'types/canvas.types';
 import { getCoordinates } from 'utils/canvas.utils';
 import { DrawingCanvasProviderProps } from './canvas.type';
 import { DrawingCanvasContext } from './DrawingCanvasContext';
@@ -21,6 +22,7 @@ export function DrawingCanvasProvider({
   children,
 }: DrawingCanvasProviderProps) {
   const [currentSize, setCurrentSize] = React.useState(canvasWidth);
+  const [lineType, setLineType] = React.useState<LineType>(LineType.LINE);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
 
@@ -60,6 +62,7 @@ export function DrawingCanvasProvider({
     size: lineSize,
     canvasRef,
     scale: currentSize.scale,
+    lineType,
   });
 
   const onMouseDown = React.useCallback(
@@ -70,11 +73,14 @@ export function DrawingCanvasProvider({
         canvasRef.current,
       );
       if (!coordinates) return;
-      setIsPainting(true);
+
+      if (lineType !== LineType.FILL) {
+        setIsPainting(true);
+      }
 
       create(coordinates, isNewLine);
     },
-    [create, currentSize.scale],
+    [create, currentSize.scale, lineType],
   );
 
   const onMouseUp = React.useCallback(
@@ -127,8 +133,16 @@ export function DrawingCanvasProvider({
   }, [canvasRef, refresh, currentSize]);
 
   const values = React.useMemo(
-    () => ({ clear, undo, canvasRef, redo, size: currentSize }),
-    [clear, currentSize, redo, undo],
+    () => ({
+      clear,
+      undo,
+      canvasRef,
+      redo,
+      size: currentSize,
+      setLineType,
+      lineType,
+    }),
+    [clear, undo, redo, currentSize, lineType],
   );
 
   return (

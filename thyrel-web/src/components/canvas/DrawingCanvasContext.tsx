@@ -1,4 +1,5 @@
 import React, { MutableRefObject } from 'react';
+import { LineType } from 'types/canvas.types';
 import { CanvasWidth } from './canvas.type';
 
 type DrawingCanvasContextProps = {
@@ -6,6 +7,8 @@ type DrawingCanvasContextProps = {
   undo: () => void;
   redo: () => void;
   canvasRef: MutableRefObject<HTMLCanvasElement | null>;
+  lineType: LineType;
+  setLineType: (lineType: LineType) => void;
   size: CanvasWidth;
 };
 
