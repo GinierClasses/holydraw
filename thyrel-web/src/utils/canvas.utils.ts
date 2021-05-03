@@ -10,6 +10,13 @@ export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
     lines.forEach(line => {
       let currentPosition: Coordinate = line.points[0];
       const positionCopy: Coordinate[] = [];
+
+      drawCanvasLine(
+        context,
+        { ...line, type: LineType.CIRCLE },
+        { beginPosition: line.points[0] },
+      );
+
       line.points.forEach(coordinate => {
         positionCopy.push(coordinate);
         if (positionCopy.length > 3) {
@@ -17,13 +24,11 @@ export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
             positionCopy,
           );
 
-          drawCanvasLine(
-            context,
-            currentPosition,
-            controlPoint,
-            endPoint,
-            line,
-          );
+          drawCanvasLine(context, line, {
+            beginPosition: currentPosition,
+            controlPosition: controlPoint,
+            endPosition: endPoint,
+          });
           currentPosition = endPoint;
         }
       });
@@ -36,12 +41,19 @@ export const clearDraw = (canvas: HTMLCanvasElement) => {
 
 export const drawCanvasLine = (
   ctx: CanvasRenderingContext2D,
-  beginPosition: Coordinate,
-  controlPosition: Coordinate,
-  endPosition: Coordinate,
   line: Line,
+  {
+    beginPosition,
+    controlPosition,
+    endPosition,
+  }: {
+    beginPosition: Coordinate;
+    controlPosition?: Coordinate;
+    endPosition?: Coordinate;
+  },
 ) => {
   ctx.strokeStyle = line.color;
+  ctx.fillStyle = line.color;
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
   ctx.lineWidth = line.size;
@@ -50,6 +62,7 @@ export const drawCanvasLine = (
 
   switch (line.type) {
     case LineType.LINE:
+      if (!controlPosition || !endPosition) return;
       ctx.moveTo(beginPosition.x, beginPosition.y);
       ctx.quadraticCurveTo(
         controlPosition.x,
@@ -59,11 +72,20 @@ export const drawCanvasLine = (
       );
       ctx.stroke();
       break;
+    case LineType.CIRCLE:
+      ctx.arc(beginPosition.x, beginPosition.y, line.size / 2, 0, 2 * Math.PI);
+      ctx.fill();
+      break;
   }
   ctx.closePath();
 };
 
-export function getQuadraticCurveCoordinates(positions: Coordinate[]) {
+export function getQuadraticCurveCoordinates(
+  positions: Coordinate[],
+): {
+  controlPoint: Coordinate;
+  endPoint: Coordinate;
+} {
   const [lastPoint, prevPoint] = positions.slice(-2);
   const controlPoint = lastPoint;
   const endPoint = {
