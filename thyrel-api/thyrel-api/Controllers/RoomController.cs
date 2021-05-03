@@ -89,18 +89,16 @@ namespace thyrel_api.Controllers
             if (player == null || !player.IsOwner) return Unauthorized();
 
             var playerDataProvider = new PlayerDataProvider(_context);
-            var sessionDataProvider = new SessionDataProvider(_context);
-            var roomDataProvider = new RoomDataProvider(_context);
 
             if (player.RoomId != null)
             {
-                var players = await new PlayerDataProvider(_context).GetPlayersByRoom((int)player.RoomId);
+                var players = await playerDataProvider.GetPlayersByRoom((int)player.RoomId);
                 players.ForEach(async player => {
                     await playerDataProvider.SetIsPlaying((int)player.RoomId, false);
                 });
             }
 
-            player.Room.Sessions.ForEach(async s => { await sessionDataProvider.Finish(s.Id); });
+            await new RoomDataProvider(_context).FinishSessionsByRoomId(player.RoomId);
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
