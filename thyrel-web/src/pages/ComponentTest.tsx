@@ -226,7 +226,7 @@ export default function ComponentTest() {
         />
 
         <SizePickerV2
-          defaultSize={10}
+          size={size2}
           onSizeChange={(e, value) => setSize2(value)}
         />
 

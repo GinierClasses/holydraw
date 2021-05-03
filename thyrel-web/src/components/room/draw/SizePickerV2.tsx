@@ -2,7 +2,7 @@ import { Box, Slider, Tooltip } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 type SizePickerV2Props = {
-  defaultSize: number;
+  size: number;
   onSizeChange?: (event: any, newValue: any) => void;
   orientation?: 'vertical' | 'horizontal';
 };
@@ -64,7 +64,7 @@ function ValueLabelComponent(props: Props) {
 }
 
 export default function SizePickerV2({
-  defaultSize,
+  size,
   onSizeChange,
   orientation = 'vertical',
 }: SizePickerV2Props) {
@@ -93,7 +93,7 @@ export default function SizePickerV2({
         max={60}
         aria-labelledby="size-picker-slider"
         orientation={orientation}
-        defaultValue={defaultSize}
+        value={size}
         onChange={onSizeChange}
         ValueLabelComponent={ValueLabelComponent}
       />
