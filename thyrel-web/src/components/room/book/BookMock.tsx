@@ -1,11 +1,11 @@
-import { Box } from '@material-ui/core'; //Typography
+import { Box } from '@material-ui/core';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
 import Loading from 'components/Loading';
 import { useSessionContext } from 'hooks/SessionProvider';
 import React from 'react';
 
-import { HolyElement } from 'types/HolyElement.type'; //ElementType,
+import { HolyElement } from 'types/HolyElement.type';
 import Album from './Album';
 
 export default function BookMock() {
