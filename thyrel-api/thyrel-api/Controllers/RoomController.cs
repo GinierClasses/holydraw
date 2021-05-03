@@ -92,10 +92,7 @@ namespace thyrel_api.Controllers
 
             if (player.RoomId != null)
             {
-                var players = await playerDataProvider.GetPlayersByRoom((int)player.RoomId);
-                players.ForEach(async player => {
-                    await playerDataProvider.SetIsPlaying((int)player.RoomId, false);
-                });
+                await playerDataProvider.SetIsPlaying((int)player.RoomId, false);
             }
 
             await new RoomDataProvider(_context).FinishSessionsByRoomId(player.RoomId);

@@ -84,6 +84,11 @@ namespace thyrel_api.DataProvider
             return dbRoom;
         }
 
+        /// <summary>
+        ///     To finish all sessions of a Room by its Id
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
         public async Task FinishSessionsByRoomId(int? roomId)
         {
             await _holyDrawDbContext.Session
