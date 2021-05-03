@@ -73,7 +73,8 @@ namespace thyrel_api.Controllers
 
             if (session?.CurrentAlbumId == null) return BadRequest();
 
-            new AlbumStepTimeout((int)session.CurrentAlbumId, session.Id, _context, 1, _websocketHandler)
+            new AlbumStepTimeout((int) session.CurrentAlbumId, session.Id, _context, 1, _websocketHandler)
+
                 .RunTimeout(3);
 
             return Ok("success");
