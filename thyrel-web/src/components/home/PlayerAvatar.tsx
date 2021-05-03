@@ -8,7 +8,7 @@ type PlayerAvatarProps = {
 
 const useStyles = makeStyles(theme => ({
   button: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
     outline: 'none',
     borderRadius: '50%',
     position: 'absolute',
@@ -47,7 +47,7 @@ export default function PlayerAvatar({ image, onShuffle }: PlayerAvatarProps) {
       <Box
         border={2}
         display="flex"
-        borderColor="secondary.main"
+        borderColor="primary.main"
         borderRadius="50%"
         width={256}
         height={256}

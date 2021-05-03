@@ -14,7 +14,7 @@ const useStyles = makeStyles<Theme, { size: CanvasWidth; disabled?: boolean }>(
       width: props => props.size.width + props.size.border * 2,
       height: props => props.size.height + props.size.border * 2,
       border: props =>
-        `${props.size.border}px solid ${theme.palette.secondary.main}`,
+        `${props.size.border}px solid ${theme.palette.primary.main}`,
       boxShadow: theme.shadows[1],
     },
   }),

@@ -1,7 +1,7 @@
 import { RouteComponentProps } from 'react-router-dom';
 import HolyDrawLogo from 'components/HolyDrawLogo';
 import PlayerForm from 'components/home/PlayerForm';
-import { Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 export default function Home(
   props: RouteComponentProps<{ identifier?: string }>,
@@ -9,11 +9,16 @@ export default function Home(
   const identifier = props.match.params.identifier;
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" width="100%">
-      <HolyDrawLogo width={32} />
-      <Box mt={{ xs: 1, sm: 2 }}>
-        <PlayerForm identifier={identifier} />
-      </Box>
-    </Box>
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      className="full-height"
+      justify="space-between">
+      <Grid item>
+        <HolyDrawLogo width={32} />
+      </Grid>
+      <PlayerForm identifier={identifier} />
+    </Grid>
   );
 }

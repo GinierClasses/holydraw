@@ -56,23 +56,6 @@ const colors = [
   '#F79F1F',
 ];
 
-const canvasWidth = {
-  md: {
-    width: 512,
-    height: 320,
-    border: 4,
-    scale: 2,
-    lineScale: 2,
-  },
-  xs: {
-    width: 256,
-    height: 160,
-    border: 2,
-    scale: 4,
-    lineScale: 2,
-  },
-};
-
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
@@ -102,10 +85,13 @@ export default function ComponentTest() {
 
         <Box>
           <BookSentenceElement
-            username="Luca thb"
-            avatarUrl={profilesPictures[ppIndex]}
-            sentence={'Hey banane poil vert'}></BookSentenceElement>
+            username="Houn Salade"
+            avatarUrl={profilesPictures[ppIndex]}>
+            Combien sont ces six saucissons-ci ?
+          </BookSentenceElement>
         </Box>
+
+        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
 
         <FormControlLabel
           control={
@@ -125,24 +111,15 @@ export default function ComponentTest() {
           }
           label="Is canvas disabled"
         />
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" width="100%" maxWidth={1000} flexDirection="column">
           <DrawingCanvasProvider
             color={color}
             disabled={disabled}
-            lineSize={size}
-            canvasSize={mobileCanvas ? canvasWidth.xs : canvasWidth.md}>
-            <Box display="flex">
-              <DrawColorPicker
-                colors={colors}
-                currentColor={color}
-                onColorChange={color => setColor(color)}
-              />
-              <SizePicker
-                currentSize={size}
-                onSizeChange={size => setSize(size)}
-                flexDirection="column"
-              />
-              <DrawingCanvas disabled={disabled} />
+            lineSize={size}>
+            <Box display="flex" width="100%" flexWrap="wrap">
+              <Box width="100%">
+                <DrawingCanvas disabled={disabled} />
+              </Box>
               <Box display="flex" flexDirection="column">
                 <OnClearAction>
                   <IconButton>
@@ -160,6 +137,17 @@ export default function ComponentTest() {
                   </IconButton>
                 </OnRedoAction>
               </Box>
+
+              <DrawColorPicker
+                colors={colors}
+                currentColor={color}
+                onColorChange={color => setColor(color)}
+              />
+              <SizePicker
+                currentSize={size}
+                onSizeChange={size => setSize(size)}
+                flexDirection="column"
+              />
             </Box>
 
             <OnSaveAction
@@ -181,7 +169,6 @@ export default function ComponentTest() {
           finishAt={new Date('2021-03-30T08:31:00')}
           timeDuration={120}
         />
-        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}
