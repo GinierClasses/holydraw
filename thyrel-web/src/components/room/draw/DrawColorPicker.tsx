@@ -9,76 +9,41 @@ type DrawColorPickerProps = {
   flexDirection?: 'row' | 'column';
 };
 
-function getCoupleColors(colors: string[]) {
-  return colors.reduce(
-    (accumulator: { index: number; result: string[][] }, value) => {
-      const colorCouples = accumulator.result[accumulator.index];
-      switch (colorCouples?.length) {
-        case undefined:
-          accumulator.result[accumulator.index] = [value];
-          break;
-        case 1:
-          accumulator.result[accumulator.index].push(value);
-          break;
-        default:
-          accumulator.index++;
-          accumulator.result[accumulator.index] = [value];
-      }
-      return accumulator;
-    },
-    { index: 0, result: [] },
-  ).result;
-}
-
 export default function DrawColorPicker({
   colors,
   currentColor,
   onColorChange,
   flexDirection = 'column',
 }: DrawColorPickerProps) {
-  const coupleColors: string[][] = React.useMemo(
-    () => getCoupleColors(colors),
-    [colors],
-  );
-
   return (
     <Box
       display="flex"
-      flexDirection={flexDirection}
-      padding="8px"
+      flexDirection={'row'}
       borderRadius={4}
-      gridGap={8}
       border={1}
+      width={flexDirection === 'row' ? '100%' : 88}
+      flexWrap="wrap"
       borderColor="#000000"
       justifyContent="center"
       bgcolor={primaryFade(0.2)}>
-      {coupleColors.map((couple, index) => (
-        <Box
-          key={index}
-          display="flex"
-          flexDirection={flexDirection === 'column' ? 'row' : 'column'}
-          justifyContent="space-between"
-          top={248}>
-          {couple.map((squareColor, index) => {
-            const isSelected = squareColor === currentColor;
-
-            return (
-              <Box
-                component="button"
-                key={index}
-                onClick={() => onColorChange?.(squareColor)}
-                border={isSelected ? 2 : 1}
-                bgcolor={squareColor}
-                borderColor={isSelected ? '#FFFFFF' : '#000000'}
-                width={32}
-                height={32}
-                borderRadius={4}
-                className="cursor-pointer"
-              />
-            );
-          })}
-        </Box>
-      ))}
+      {colors.map(color => {
+        const isSelected = color === currentColor;
+        return (
+          <Box
+            component="button"
+            key={color}
+            onClick={() => onColorChange?.(color)}
+            border={1.5}
+            m={0.5}
+            bgcolor={color}
+            borderColor={isSelected ? '#FFFFFF' : '#000000'}
+            width={32}
+            height={32}
+            borderRadius={4}
+            className="cursor-pointer"
+          />
+        );
+      })}
     </Box>
   );
 }
