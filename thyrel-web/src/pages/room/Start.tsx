@@ -15,7 +15,7 @@ export default function Start() {
         wrap="nowrap"
         justify="center">
         <Grid item>
-          <img src={GymGuy} alt="" width={384} />
+          <img src={GymGuy} alt="" width={256} />
         </Grid>
         <Grid item>
           <Typography variant="h4">Start a story</Typography>
