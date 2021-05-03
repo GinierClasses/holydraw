@@ -10,6 +10,7 @@ import { useTimerEvent } from 'hooks/useTimerInterval';
 import { client } from 'api/client';
 import { HolyElement } from 'types/HolyElement.type';
 import { getToken } from 'api/player-provider';
+import { SessionStepType } from 'types/Session.type';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -52,10 +53,9 @@ export default function StartForm() {
           width="100%"
           flexDirection={{ xs: 'column', sm: 'row' }}>
           <BigInput
-            fullWidth
             disabled={!isEditing}
             placeholder={
-              session?.actualStep === 0
+              session?.stepType === SessionStepType.Start
                 ? defaultSentence
                 : 'Your description here'
             }
