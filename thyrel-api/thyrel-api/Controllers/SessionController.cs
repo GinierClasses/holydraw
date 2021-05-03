@@ -68,11 +68,16 @@ namespace thyrel_api.Controllers
             if (player?.RoomId == null || !player.IsOwner) return Unauthorized();
 
             var sessionDataProvider = new SessionDataProvider(_context);
-            var session = await sessionDataProvider.NextAlbum((int)player.RoomId);
+            var session = await sessionDataProvider.NextAlbum((int) player.RoomId);
+
 
             if (session?.CurrentAlbumId == null) return BadRequest();
 
             new AlbumStepTimeout((int) session.CurrentAlbumId, session.Id, _context, 1, _websocketHandler)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 90795ff8cd987a5e52066369c75dfcd23a787d50
                 .RunTimeout(3);
 
             return Ok("success");

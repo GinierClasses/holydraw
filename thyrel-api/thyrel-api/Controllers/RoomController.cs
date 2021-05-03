@@ -101,7 +101,7 @@ namespace thyrel_api.Controllers
                 JsonBase.Serialize(
                     new BaseWebsocketEventJson(WebsocketEvent.SessionRestart)), player.RoomId);
 
-            return Ok("success");
+            return Ok();
         }
 
 
