@@ -21,15 +21,14 @@ export default function Write() {
   const classes = useStyles();
   return (
     <GameLayout>
-      <Box maxWidth={600}>
+      <Box maxWidth={600} alignItems="center" className="full-height">
         <Grid
           container
-          spacing={2}
+          spacing={3}
           direction="column"
           alignItems="center"
           className="full-height"
-          wrap="nowrap"
-          justify="space-between">
+          justify="center">
           <Grid item className="full-width">
             <DirectiveLabel directive="Describe this scene" />
           </Grid>

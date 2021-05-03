@@ -8,7 +8,7 @@ export default function Start() {
     <GameLayout maxWidth="sm">
       <Grid
         container
-        spacing={2}
+        spacing={3}
         direction="column"
         alignItems="center"
         className="full-height"
