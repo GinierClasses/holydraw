@@ -21,7 +21,7 @@ export default function Write() {
   const classes = useStyles();
   return (
     <GameLayout>
-      <Box maxWidth={600} alignItems="center" className="full-height">
+      <Box maxWidth={600} alignItems="center" height="100%">
         <Grid
           container
           spacing={3}
