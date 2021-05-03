@@ -129,12 +129,15 @@ function useCanvasPaint({
 
   React.useEffect(() => {
     if (!canvasRef.current) return;
-    const onKeyDown = (event: any) => {
-      if (event.keyCode === 90 && (event.ctrlKey || event.metaKey)) undo();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+        event.shiftKey ? redo() : undo();
+      }
+      if (event.key === 'c') clear();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [canvasRef, undo]);
+  }, [canvasRef, clear, redo, undo]);
 
   return {
     paint,

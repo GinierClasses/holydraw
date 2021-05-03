@@ -10,7 +10,7 @@ import { useSessionContext } from 'hooks/SessionProvider';
 import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
 
 const colors = [
-  '#000000',
+  '#010101',
   '#7f8c8d',
   '#bdc3c7',
   '#ecf0f1',

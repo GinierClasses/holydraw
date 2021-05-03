@@ -51,11 +51,13 @@ export default function CircleButton({
       height={width}
       className={classes.root}
       position="absolute">
-      {onClick && children
-        ? React.cloneElement(children, {
-            onClick: callAll(onClick, children.props.onClick),
-          })
-        : children}
+      {onClick && children ? (
+        React.cloneElement(children, {
+          onClick: callAll(onClick, children.props.onClick),
+        })
+      ) : (
+        <p>salut</p>
+      )}
     </Box>
   );
 }

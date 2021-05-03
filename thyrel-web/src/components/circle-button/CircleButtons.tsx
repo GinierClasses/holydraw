@@ -62,7 +62,6 @@ export default function CircleButtons({
         position="relative"
         width={width}
         height={width}
-        m={10}
         className={classes.root}>
         {React.cloneElement(actionComponent, {
           onClick: () => setOpen(!open),
