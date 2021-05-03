@@ -9,6 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import theme from 'theme';
 import { useState } from 'react';
+import CanvasLineTypeButtons from './CanvasLineTypeButtons';
 
 type GameCanvasProps = {
   size: number;
@@ -41,6 +42,7 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
           justifyContent="space-between"
           width="100%">
           <CanvasActionButtons />
+          <CanvasLineTypeButtons />
           <OnSaveAction
             onSave={canvasImage => {
               if (!canvasImage) return;
