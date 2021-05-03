@@ -80,12 +80,5 @@ namespace thyrel_api.DataProvider
         /// <param name="roomId">Room to find a owner</param>
         /// <returns></returns>
         Task<Player> FindNewOwner(int roomId);
-
-        /// <summary>
-        /// To finish all sessions of a Room by its Id
-        /// </summary>
-        /// <param name="roomId"></param>
-        /// <returns></returns>
-        Task FinishSessionsByRoomId(int? roomId);
     }
 }
