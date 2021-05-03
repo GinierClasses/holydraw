@@ -35,6 +35,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
+import CircleButtons from './room/CircleButtons';
 
 const colors = [
   '#000000',
@@ -79,14 +80,38 @@ export default function ComponentTest() {
         alignItems="center"
         width="100%"
         gridGap={32}>
+        <Box>
+          <CircleButtons
+            circleBg="border"
+            action={
+              <IconButton>
+                <DeleteIcon />
+              </IconButton>
+            }>
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton>
+              <UndoIcon />
+            </IconButton>
+            <IconButton>
+              <RedoIcon />
+            </IconButton>
+          </CircleButtons>
+        </Box>
         <HolyDrawLogo />
 
         <Box>
           <BookSentenceElement
-            username="Luca thb"
+            username="Houn Salade"
             avatarUrl={profilesPictures[ppIndex]}
-            sentence={'Hey banane poil vert'}></BookSentenceElement>
+            sentence="Combien sont ces six saucissons-ci ?"></BookSentenceElement>
         </Box>
+
+        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
 
         <FormControlLabel
           control={
@@ -164,7 +189,6 @@ export default function ComponentTest() {
           finishAt={new Date('2021-03-30T08:31:00')}
           timeDuration={120}
         />
-        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}

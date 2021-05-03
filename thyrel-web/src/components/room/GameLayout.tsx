@@ -29,6 +29,8 @@ export default function GameLayout({
 
 const StepProgressWithContext = () => {
   const { session } = useSessionContext();
+
+  // mettre background rose
   return (
     <StepProgress
       stepActual={session?.actualStep}
