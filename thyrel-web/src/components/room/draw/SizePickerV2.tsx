@@ -21,7 +21,6 @@ const SizeSlider = withStyles({
       boxShadow: 'inherit',
     },
   },
-  active: {},
   track: {
     height: 8,
     borderRadius: 4,

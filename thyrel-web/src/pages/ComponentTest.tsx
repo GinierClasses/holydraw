@@ -82,10 +82,6 @@ export default function ComponentTest() {
   const [size2, setSize2] = useState<number>(10);
   const [progress, setProgress] = React.useState<number>(1);
 
-  const handleChangeSizePickerV2 = (event2: any, newValue2: any) => {
-    setSize2(newValue2);
-  };
-
   const handleChange = (event: any, newValue: any) => {
     setProgress(newValue);
   };
@@ -244,7 +240,7 @@ export default function ComponentTest() {
 
         <SizePickerV2
           defaultSize={10}
-          onSizeChange={handleChangeSizePickerV2}
+          onSizeChange={(e, value) => setSize2(value)}
         />
 
         <Box
