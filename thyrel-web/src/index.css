@@ -1,14 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
 
-/* #root,
-body,
-html {
-  scrollbar-color: rgba(100, 100, 100, 1) transparent;
-  scrollbar-width: 8px;
-  min-height: 100%;
-} */
-
 body,
 html,
 #root {
@@ -22,6 +14,8 @@ html,
   scrollbar-color: var(--base-color) transparent;
   scrollbar-width: thin;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  height: 100vh;
 }
 
 * {

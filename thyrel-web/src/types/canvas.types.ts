@@ -13,4 +13,6 @@ export type Line = {
 
 export enum LineType {
   LINE = 0,
+  CIRCLE = 1,
+  FILL = 2,
 }

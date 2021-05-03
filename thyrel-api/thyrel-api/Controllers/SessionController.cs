@@ -76,6 +76,11 @@ namespace thyrel_api.Controllers
             new AlbumStepTimeout((int) session.CurrentAlbumId, session.Id, _context, 1, _websocketHandler)
                 .RunTimeout(3);
 
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new SessionCurrentAlbumIdUpdateEventJson(session.CurrentAlbumId)), 
+                session.RoomId);
+
             return Ok("success");
         }
     }

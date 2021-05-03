@@ -55,26 +55,27 @@ function createBaseTheme(palette: Palette) {
         label: {
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
-          overflow: 'hidden',
         },
         root: {
           textTransform: 'none',
           borderRadius: 8,
         },
         contained: {
-          height: 64,
+          height: 68,
           minWidth: 128,
           fontSize: 24,
           color: palette.common.white,
           padding: '18px 24px',
-          borderRadius: 32,
+          borderRadius: 34,
           fontFamily: 'Work Sans',
-          backgroundColor: palette.action.active,
+          backgroundColor: palette.custom.main,
           position: 'relative',
+          '& .$MuiButton-label': {
+            height: 20,
+          },
           '@media (min-width: 600px)': {
             fontSize: 28,
-            height: 70,
-            borderRadius: 35,
+            height: 72,
           },
           '&:hover': {
             backgroundColor: palette.action.hover,
@@ -90,12 +91,27 @@ function createBaseTheme(palette: Palette) {
             borderRadius: 40,
           },
         },
+
         iconSizeLarge: {
           marginLeft: 0,
         },
       },
     },
   });
+}
+
+declare module '@material-ui/core/styles/createPalette' {
+  interface Palette {
+    custom: {
+      main: string;
+    };
+  }
+
+  interface PaletteOptions {
+    custom: {
+      main: string;
+    };
+  }
 }
 
 let theme = createBaseTheme(
@@ -111,8 +127,8 @@ let theme = createBaseTheme(
       default: '#0f131a',
       paper: '#1a1d24',
     },
-    action: {
-      active: '#272B31',
+    custom: {
+      main: '#272B31',
     },
   }),
 );

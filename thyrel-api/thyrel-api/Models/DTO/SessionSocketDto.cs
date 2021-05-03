@@ -15,4 +15,9 @@ namespace thyrel_api.Models.DTO
     {
         public int PlayerFinished { get; set; }
     }
+    
+    public class SessionCurrentAlbumIdUpdateSocketDto
+    {
+        public int? CurrentAlbumId { get; set; }
+    }
 }
