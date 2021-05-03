@@ -35,6 +35,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
+import SizePickerV2 from 'components/room/draw/SizePickerV2';
 
 const colors = [
   '#000000',
@@ -78,7 +79,12 @@ export default function ComponentTest() {
   const [mobileCanvas, setMobileCanvas] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [size, setSize] = useState(8);
+  const [size2, setSize2] = useState<number>(10);
   const [progress, setProgress] = React.useState<number>(1);
+
+  const handleChangeSizePickerV2 = (event2: any, newValue2: any) => {
+    setSize2(newValue2);
+  };
 
   const handleChange = (event: any, newValue: any) => {
     setProgress(newValue);
@@ -204,10 +210,7 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <StartButton
-          player={testPlayerList[1]}
-          onStart={() => void 0}
-        />
+        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
 
         <PlayerCardList
           players={testPlayerList}
@@ -237,6 +240,18 @@ export default function ComponentTest() {
           step={1}
           min={1}
           max={7}
+        />
+
+        <SizePickerV2
+          defaultSize={10}
+          onSizeChange={handleChangeSizePickerV2}
+        />
+
+        <Box
+          bgcolor="#C6C6C6"
+          borderRadius="50%"
+          height={size2}
+          width={size2}
         />
 
         <StepProgress stepActual={progress} stepMax={7} />
