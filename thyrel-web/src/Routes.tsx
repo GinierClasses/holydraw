@@ -23,6 +23,7 @@ export default function Routes() {
         <Switch>
           <Route path="/join/:identifier" component={Home} />
           <Route path="/r" component={RoomRoutes} />
+          <Route path="/draw" component={Draw} />
           <Route path="/t" component={ComponentTest} />
           <Route path="/home" component={Home} />
           {/* For test, I add a special Nav

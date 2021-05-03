@@ -35,7 +35,10 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
-import CircleButtons from './room/CircleButtons';
+import CircleButtons from '../components/circle-button/CircleButtons';
+import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
+import CloseIcon from '@material-ui/icons/Close';
+import BrushIcon from '@material-ui/icons/Brush';
 
 const colors = [
   '#000000',
@@ -83,22 +86,15 @@ export default function ComponentTest() {
         <Box>
           <CircleButtons
             circleBg="border"
-            action={
-              <IconButton>
-                <DeleteIcon />
-              </IconButton>
-            }>
+            spacing={1.2}
+            action={open => (
+              <IconButton>{open ? <CloseIcon /> : <BrushIcon />}</IconButton>
+            )}>
             <IconButton>
-              <DeleteIcon />
+              <AccessibilityNewIcon />
             </IconButton>
             <IconButton>
-              <DeleteIcon />
-            </IconButton>
-            <IconButton>
-              <UndoIcon />
-            </IconButton>
-            <IconButton>
-              <RedoIcon />
+              <FormatColorFillIcon />
             </IconButton>
           </CircleButtons>
         </Box>
