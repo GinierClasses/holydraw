@@ -6,23 +6,21 @@ import React from 'react';
 import StepProgress from './StepProgress';
 
 type GameLayoutProps = {
-  displayHud?: boolean;
   maxWidth?: Breakpoint;
   children: React.ReactElement | React.ReactElement[];
 };
 
 export default function GameLayout({
-  displayHud = true,
   maxWidth = 'sm',
   children,
 }: GameLayoutProps) {
   return (
     <Box height="100vh" display="flex" flexDirection="column">
-      <GameBar displayHud={displayHud} />
+      <GameBar />
       <Container maxWidth={maxWidth} className="full-height">
         {children}
       </Container>
-      {displayHud && <StepProgressWithContext />}
+      {<StepProgressWithContext />}
     </Box>
   );
 }
