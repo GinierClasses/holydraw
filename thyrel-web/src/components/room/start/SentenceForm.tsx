@@ -53,6 +53,7 @@ export default function StartForm() {
           width="100%"
           flexDirection={{ xs: 'column', sm: 'row' }}>
           <BigInput
+            fullWidth
             disabled={!isEditing}
             placeholder={
               session?.stepType === SessionStepType.Start
@@ -78,8 +79,7 @@ export default function StartForm() {
               ) : (
                 <EditIcon style={{ fontSize: 28 }} />
               )
-            }
-            size="large">
+            }>
             {isEditing ? 'Save' : 'Edit'}
           </BigButton>
         </Box>
