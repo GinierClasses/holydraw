@@ -14,6 +14,17 @@ namespace thyrel_api.Json
         }
     }
     
+    public class SessionCurrentAlbumIdUpdateEventJson : BaseWebsocketEventJson
+    {
+        public SessionCurrentAlbumIdUpdateSocketDto Session { get; }
+
+        public SessionCurrentAlbumIdUpdateEventJson(int? currentAlbumId)
+        {
+            WebsocketEvent = WebsocketEvent.SessionUpdate;
+            Session = new SessionCurrentAlbumIdUpdateSocketDto { CurrentAlbumId = currentAlbumId };
+        }
+    }
+    
     public class ErrorWebsocketEventJson : BaseWebsocketEventJson
     {
         public string Error { get; }
@@ -28,11 +39,6 @@ namespace thyrel_api.Json
     public class PlayerWebsocketEventJson : BaseWebsocketEventJson
     {
         public PlayerDto Player { get; }
-
-        public PlayerWebsocketEventJson(WebsocketEvent websocketEvent, PlayerDto player) : base(websocketEvent)
-        {
-            Player = player;
-        }
         
         public PlayerWebsocketEventJson(WebsocketEvent websocketEvent, Player player) : base(websocketEvent)
         {
