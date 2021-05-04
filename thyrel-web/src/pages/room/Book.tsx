@@ -1,18 +1,14 @@
 import BookPlayerList from 'components/room/book/BookPlayerList';
 import React from 'react';
-import GameLayout from 'components/room/GameLayout';
-import { Grid } from '@material-ui/core';
-import BookStartAction from 'components/room/book/BookStartAction';
+import { Container, Grid } from '@material-ui/core';
 import { useRoomContext } from 'hooks/RoomProvider';
-import BookMock from 'components/room/book/BookMock';
+import BookAlbums from 'components/room/book/BookAlbums';
 import { AlbumContextProvider } from 'hooks/AlbumProvider';
 
 export default function Book() {
-  const { players } = useRoomContext();
   return (
     <AlbumContextProvider>
-      <GameLayout maxWidth="sm">
-        <BookMock />
+      <Container maxWidth="sm" className="full-height">
         <Grid
           container
           spacing={2}
@@ -22,14 +18,16 @@ export default function Book() {
           wrap="nowrap"
           justify="space-between">
           <Grid item>
-            <BookPlayerList players={players} />
+            <BookPlayerListWithContext />
           </Grid>
-          <BookMock />
-          <Grid item>
-            <BookStartAction />
-          </Grid>
+          <BookAlbums />
         </Grid>
-      </GameLayout>
+      </Container>
     </AlbumContextProvider>
   );
 }
+
+const BookPlayerListWithContext = () => {
+  const { players } = useRoomContext();
+  return <BookPlayerList players={players} />;
+};

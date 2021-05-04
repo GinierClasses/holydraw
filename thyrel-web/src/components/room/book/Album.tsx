@@ -12,7 +12,7 @@ export default function Album({ album }: AlbumProps) {
     return null;
   }
   return (
-    <Box display="flex" flexDirection="column" width={300}>
+    <Box display="flex" flexDirection="column" width="100%">
       <Typography variant="h4">{album[0].creator?.username}'s album</Typography>
       {album.map(element => {
         const isSentence = element.type === ElementType.Sentence;
@@ -24,9 +24,11 @@ export default function Album({ album }: AlbumProps) {
               <BookSentenceElement
                 key={element.id}
                 username={element.creator?.username}
-                avatarUrl={profilesPictures[Number(element.creator?.avatarUrl)]}
-                sentence={element.text}
-              />
+                avatarUrl={
+                  profilesPictures[Number(element.creator?.avatarUrl)]
+                }>
+                {element.text}
+              </BookSentenceElement>
             ) : (
               <BookDrawingElement
                 key={element.id}
