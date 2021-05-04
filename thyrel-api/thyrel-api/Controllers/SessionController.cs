@@ -70,7 +70,6 @@ namespace thyrel_api.Controllers
             var sessionDataProvider = new SessionDataProvider(_context);
             var session = await sessionDataProvider.NextAlbum((int) player.RoomId);
 
-
             if (session?.CurrentAlbumId == null) return BadRequest();
 
             new AlbumStepTimeout((int) session.CurrentAlbumId, session.Id, _context, 1, _websocketHandler)
