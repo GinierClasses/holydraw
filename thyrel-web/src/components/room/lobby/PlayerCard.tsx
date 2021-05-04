@@ -1,4 +1,4 @@
-import { baseColor, bgColor } from 'styles/colors';
+import { baseColor } from 'styles/colors';
 import { Avatar, Box, makeStyles, Typography } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import StarIcon from '@material-ui/icons/Star';
@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: 48,
     height: 48,
-    backgroundColor: 'transparent',
-    border: `1px solid ${theme.palette.primary.main}`,
+    backgroundColor: `${theme.palette.primary.dark}`,
+    boxShadow: theme.shadows[5],
     overflow: 'visible',
     '&> img': {
       height: 48,
@@ -74,16 +74,14 @@ export default function PlayerCard({
   const classes = useStyles();
   return (
     <Box
-      border={1}
       width={256}
       height={64}
-      borderRadius={4}
+      borderRadius={40}
       padding={1}
       display="flex"
       alignItems="center"
-      borderColor="primary.main"
       justifyContent="space-between"
-      bgcolor={bgColor}>
+      bgcolor="background.default">
       <Box position="relative">
         {isCurrentPlayer && (
           <div className={classes.badge}>
