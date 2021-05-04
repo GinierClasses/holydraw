@@ -104,7 +104,6 @@ namespace thyrel_api.Controllers
             return Ok();
         }
 
-
         public class PlayerRoomBody
         {
             public string AvatarUrl;
