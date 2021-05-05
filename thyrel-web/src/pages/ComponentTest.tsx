@@ -36,7 +36,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 
-const colors = [
+const baseColors = [
   '#000000',
   '#7f8c8d',
   '#bdc3c7',
@@ -50,10 +50,14 @@ const colors = [
   '#FA00FF',
   '#FDA7DF',
   '#FEAFA8',
-  '#CB5A57',
 ];
 
 export default function ComponentTest() {
+  const [randomColor, setRandomColor] = React.useState(
+    '#'.concat(Math.floor(Math.random() * 16777215).toString(16)),
+  );
+  const [colors, setColors] = React.useState([...baseColors, randomColor]);
+
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
   const [mobileCanvas, setMobileCanvas] = useState(false);
@@ -83,7 +87,15 @@ export default function ComponentTest() {
             colors={colors}
             currentColor={color}
             onColorChange={color => setColor(color)}
-            // flexDirection="row"
+            randomColor={randomColor}
+            onRandomColorClick={() => {
+              const newRandomColor = '#'.concat(
+                Math.floor(Math.random() * 16777215).toString(16),
+              );
+              setRandomColor(newRandomColor);
+              setColors([...baseColors, newRandomColor]);
+              setColor(newRandomColor);
+            }}
           />
         </Box>
 
@@ -142,11 +154,6 @@ export default function ComponentTest() {
                 </OnRedoAction>
               </Box>
 
-              <DrawColorPicker
-                colors={colors}
-                currentColor={color}
-                onColorChange={color => setColor(color)}
-              />
               <SizePicker
                 currentSize={size}
                 onSizeChange={size => setSize(size)}

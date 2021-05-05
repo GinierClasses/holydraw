@@ -8,8 +8,7 @@ import { useState } from 'react';
 import theme from 'theme';
 import { useSessionContext } from 'hooks/SessionProvider';
 import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
-
-const colors = [
+const baseColors = [
   '#000000',
   '#7f8c8d',
   '#bdc3c7',
@@ -23,14 +22,16 @@ const colors = [
   '#FA00FF',
   '#FDA7DF',
   '#FEAFA8',
-  '#CB5A57',
-  '#FFC312',
-  '#F79F1F',
 ];
 
 export default function Draw() {
-  const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
+  const [randomColor, setRandomColor] = useState(
+    '#'.concat(Math.floor(Math.random() * 16777215).toString(16)),
+  );
+  const [colors, setColors] = useState([...baseColors, randomColor]);
   const [color, setColor] = useState(colors[5]);
+
+  const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const [size, setSize] = useState(8);
   useDisableBodyOverflow();
   return (
@@ -55,7 +56,15 @@ export default function Draw() {
               colors={colors}
               currentColor={color}
               onColorChange={color => setColor(color)}
-              flexDirection={isDeviceSM ? 'column' : 'row'}
+              randomColor={randomColor}
+              onRandomColorClick={() => {
+                const newRandomColor = '#'.concat(
+                  Math.floor(Math.random() * 16777215).toString(16),
+                );
+                setRandomColor(newRandomColor);
+                setColors([...baseColors, newRandomColor]);
+                setColor(newRandomColor);
+              }}
             />
           </Box>
 
