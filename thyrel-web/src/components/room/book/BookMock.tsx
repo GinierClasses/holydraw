@@ -1,14 +1,12 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
 import Loading from 'components/Loading';
-import BookDrawingElement from 'components/room/book/BookDrawingElement';
-import BookSentenceElement from 'components/room/book/BookSentenceElement';
 import { useSessionContext } from 'hooks/SessionProvider';
-import profilesPictures from 'images/profiles/profiles-pictures';
 import React from 'react';
 
-import { ElementType, HolyElement } from 'types/HolyElement.type';
+import { HolyElement } from 'types/HolyElement.type';
+import Album from './Album';
 
 export default function BookMock() {
   const { session } = useSessionContext();
@@ -39,35 +37,8 @@ export default function BookMock() {
   }, [session?.id]);
 
   return album.length >= 1 ? (
-    <Box display="flex" flexDirection="row">
-      {album.map(elements => {
-        return (
-          <Box display="flex" flexDirection="column" maxWidth={300}>
-            <Typography variant="h4">
-              {elements[0].creator?.username}
-            </Typography>
-            {elements.map(element => {
-              const isSentence = element.type === ElementType.Sentence;
-              return isSentence ? (
-                <BookSentenceElement
-                  key={element.id}
-                  username={element.creator?.username}
-                  avatarUrl={
-                    profilesPictures[Number(element.creator?.avatarUrl)]
-                  }>
-                  {element.text}
-                </BookSentenceElement>
-              ) : (
-                <BookDrawingElement
-                  key={element.id}
-                  username={element.creator?.username}
-                  src={element.drawImage}
-                />
-              );
-            })}
-          </Box>
-        );
-      })}
+    <Box display="flex" flexDirection="column" style={{ gap: '40px' }}>
+      <Album album={album[0]} />
     </Box>
   ) : (
     <Box>

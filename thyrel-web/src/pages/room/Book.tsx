@@ -24,6 +24,7 @@ export default function Book() {
           <Grid item>
             <BookPlayerList players={players} />
           </Grid>
+          <BookMock />
           <Grid item>
             <BookStartAction />
           </Grid>
