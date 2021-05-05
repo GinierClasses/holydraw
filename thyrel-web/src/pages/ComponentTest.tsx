@@ -35,23 +35,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
-
-const colors = [
-  '#000000',
-  '#7f8c8d',
-  '#bdc3c7',
-  '#ecf0f1',
-  '#00a8ff',
-  '#1e3799',
-  '#2ecc71',
-  '#009432',
-  '#e74c3c',
-  '#c0392b',
-  '#FA00FF',
-  '#FDA7DF',
-  '#FEAFA8',
-  '#CB5A57',
-];
+import { colors } from 'utils/app-constant';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -80,10 +64,8 @@ export default function ComponentTest() {
         <HolyDrawLogo />
         <Box>
           <DrawColorPicker
-            colors={colors}
             currentColor={color}
             onColorChange={color => setColor(color)}
-            // flexDirection="row"
           />
         </Box>
 
@@ -143,7 +125,6 @@ export default function ComponentTest() {
               </Box>
 
               <DrawColorPicker
-                colors={colors}
                 currentColor={color}
                 onColorChange={color => setColor(color)}
               />
