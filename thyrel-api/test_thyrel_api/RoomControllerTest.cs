@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using thyrel_api.Controllers;
+using thyrel_api.Websocket;
 using static thyrel_api.Controllers.RoomController;
 
 namespace test_thyrel_api
@@ -18,7 +19,7 @@ namespace test_thyrel_api
             await SetupTest();
 
             var httpContext = new DefaultHttpContext();
-            var controller = new RoomController(Context)
+            var controller = new RoomController(new WebsocketHandler(TestConfiguration), Context)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -97,6 +98,24 @@ namespace test_thyrel_api
             Assert.AreEqual(player.Username, body.Username);
             Assert.AreEqual(player.AvatarUrl, body.AvatarUrl);
             Assert.AreEqual(player.TokenId, token.Id);
+        }
+
+        [Test]
+        public async Task RestartTest()
+        {
+            var room = Context.Room.First();
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id);
+            await ConnectApi(_roomController.HttpContext, player);
+
+            await _roomController.Restart();
+
+            var playerRestarted = Context.Player.FirstOrDefault(p => p.Id == player.Id);
+            //assert the same player is not playing anymore
+            Assert.IsFalse(playerRestarted.IsPlaying);
+
+            var session = Context.Session.FirstOrDefault(s => s.RoomId == room.Id);
+            //assert the session of the room is finished
+            Assert.IsNotNull(session.FinishAt);
         }
     }
 }
