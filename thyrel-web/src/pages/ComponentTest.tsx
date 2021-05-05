@@ -35,26 +35,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
-import SizePickerV2 from 'components/room/draw/SizePickerV2';
+import { colors } from 'utils/app-constant';
 
-const colors = [
-  '#000000',
-  '#7f8c8d',
-  '#bdc3c7',
-  '#ecf0f1',
-  '#00a8ff',
-  '#1e3799',
-  '#2ecc71',
-  '#009432',
-  '#e74c3c',
-  '#c0392b',
-  '#FA00FF',
-  '#FDA7DF',
-  '#FEAFA8',
-  '#CB5A57',
-  '#FFC312',
-  '#F79F1F',
-];
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -82,6 +64,12 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <HolyDrawLogo />
+        <Box>
+          <DrawColorPicker
+            currentColor={color}
+            onColorChange={color => setColor(color)}
+          />
+        </Box>
 
         <Box>
           <BookSentenceElement
@@ -139,7 +127,6 @@ export default function ComponentTest() {
               </Box>
 
               <DrawColorPicker
-                colors={colors}
                 currentColor={color}
                 onColorChange={color => setColor(color)}
               />
