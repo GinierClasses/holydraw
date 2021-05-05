@@ -51,8 +51,6 @@ const colors = [
   '#FDA7DF',
   '#FEAFA8',
   '#CB5A57',
-  '#FFC312',
-  '#F79F1F',
 ];
 
 export default function ComponentTest() {
@@ -80,6 +78,14 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <HolyDrawLogo />
+        <Box>
+          <DrawColorPicker
+            colors={colors}
+            currentColor={color}
+            onColorChange={color => setColor(color)}
+            // flexDirection="row"
+          />
+        </Box>
 
         <Box>
           <BookSentenceElement
