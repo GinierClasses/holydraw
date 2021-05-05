@@ -7,7 +7,7 @@ import { useSessionContext } from 'hooks/SessionProvider';
 
 const useStyles = makeStyles(theme => ({
   width: {
-    width: 512,
+    width: 552,
     height: 'auto',
     minHeight: 320,
     [theme.breakpoints.down('xs')]: {
@@ -21,19 +21,18 @@ export default function Write() {
   const classes = useStyles();
   return (
     <GameLayout>
-      <Box maxWidth={520}>
+      <Box maxWidth={600} alignItems="center" height="100%">
         <Grid
           container
-          spacing={2}
+          spacing={3}
           direction="column"
           alignItems="center"
           className="full-height"
-          wrap="nowrap"
           justify="center">
           <Grid item className="full-width">
             <DirectiveLabel directive="Describe this scene" />
           </Grid>
-          <Grid item>
+          <Grid item className="full-width">
             <CurrentDrawImageWithContext className={classes.width} />
           </Grid>
           <StartForm />
