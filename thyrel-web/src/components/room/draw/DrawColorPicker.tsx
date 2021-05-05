@@ -1,5 +1,8 @@
 import { Box } from '@material-ui/core';
+import { useState } from 'react';
 import { colors } from 'utils/app-constant';
+import { getRandomColor } from 'utils/utils';
+import RandomColor from './RandomColor';
 
 type DrawColorPickerProps = {
   currentColor: string;
@@ -10,6 +13,9 @@ export default function DrawColorPicker({
   currentColor,
   onColorChange,
 }: DrawColorPickerProps) {
+  const [randomColor, setRandomColor] = useState(getRandomColor());
+  const [isRandomColorSelected, setisRandomColorSelected] = useState(false);
+
   return (
     <Box
       display="flex"
@@ -21,31 +27,15 @@ export default function DrawColorPicker({
       bgcolor="#272B31"
       padding={1}>
       {colors.map(color => {
-        const isSelected = color === currentColor;
-        const isRandomColor = color === randomColor;
-        return isRandomColor ? (
-          <Box
-            component="button"
-            key={randomColor}
-            onClick={() => {
-              onColorChange?.(color);
-              onRandomColorClick?.();
-            }}
-            border={isSelected ? 2 : 0}
-            m={0.5}
-            bgcolor={randomColor}
-            borderColor={isSelected ? '#FFF6F6' : '#000000'}
-            width={42}
-            height={42}
-            borderRadius="50%"
-            className="cursor-pointer">
-            <ShuffleIcon></ShuffleIcon>
-          </Box>
-        ) : (
+        const isSelected = color === currentColor && !isRandomColorSelected;
+        return (
           <Box
             component="button"
             key={color}
-            onClick={() => onColorChange?.(color)}
+            onClick={() => {
+              setisRandomColorSelected(false);
+              onColorChange?.(color);
+            }}
             border={2}
             m={0.5}
             p={0}
@@ -59,6 +49,14 @@ export default function DrawColorPicker({
           />
         );
       })}
+      <RandomColor
+        color={randomColor}
+        isSelected={isRandomColorSelected}
+        onColorChange={() => {
+          setisRandomColorSelected(true);
+          setRandomColor(getRandomColor());
+          onColorChange?.(randomColor);
+        }}></RandomColor>
     </Box>
   );
 }

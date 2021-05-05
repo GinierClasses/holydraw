@@ -11,10 +11,10 @@ import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverf
 import { colors } from 'utils/app-constant';
 
 export default function Draw() {
-  const [randomColor, setRandomColor] = useState(
-    '#'.concat(Math.floor(Math.random() * 16777215).toString(16)),
-  );
-  const [colors, setColors] = useState([...baseColors, randomColor]);
+  // const [randomColor, setRandomColor] = useState(
+  //   '#'.concat(Math.floor(Math.random() * 16777215).toString(16)),
+  // );
+  // const [colors, setColors] = useState([...baseColors, randomColor]);
   const [color, setColor] = useState(colors[5]);
 
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
@@ -41,15 +41,6 @@ export default function Draw() {
             <DrawColorPicker
               currentColor={color}
               onColorChange={color => setColor(color)}
-              randomColor={randomColor}
-              onRandomColorClick={() => {
-                const newRandomColor = '#'.concat(
-                  Math.floor(Math.random() * 16777215).toString(16),
-                );
-                setRandomColor(newRandomColor);
-                setColors([...baseColors, newRandomColor]);
-                setColor(newRandomColor);
-              }}
             />
           </Box>
 

@@ -34,14 +34,14 @@ import {
 } from 'components/canvas/DrawingCanvasActions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo'
+import RedoIcon from '@material-ui/icons/Redo';
 import { colors } from 'utils/app-constant';
 
 export default function ComponentTest() {
-  const [randomColor, setRandomColor] = React.useState(
-    '#'.concat(Math.floor(Math.random() * 16777215).toString(16)),
-  );
-  const [colors, setColors] = React.useState([...baseColors, randomColor]);
+  // const [randomColor, setRandomColor] = React.useState(
+  // '#'.concat(Math.floor(Math.random() * 16777215).toString(16)),
+  // );
+  // const [colors, setColors] = React.useState([...baseColors, randomColor]);
 
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
