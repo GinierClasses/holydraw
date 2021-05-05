@@ -76,7 +76,21 @@ namespace thyrel_api.DataProvider
                 .FindAsync(roomId);
             if (dbRoom == null)
                 return null;
-            
+
+            await FinishSessionsByRoomId(roomId);
+
+            dbRoom.FinishAt = DateTime.Now;
+            await SaveChanges();
+            return dbRoom;
+        }
+
+        /// <summary>
+        ///     To finish all sessions of a Room by its Id
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public async Task FinishSessionsByRoomId(int? roomId)
+        {
             await _holyDrawDbContext.Session
                 .Where(s => s.RoomId == roomId && s.FinishAt == null)
                 .ForEachAsync(s =>
@@ -84,10 +98,7 @@ namespace thyrel_api.DataProvider
                     s.FinishAt = DateTime.Now;
                     s.StepFinishAt = null;
                 });
-
-            dbRoom.FinishAt = DateTime.Now;
             await SaveChanges();
-            return dbRoom;
         }
 
         private async Task SaveChanges()

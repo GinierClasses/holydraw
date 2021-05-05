@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Box, Grid, makeStyles } from '@material-ui/core';
 import BigButton from 'components/BigButton';
 import BigInput from 'components/BigInput';
 import { useSessionContext } from 'hooks/SessionProvider';
@@ -10,6 +10,19 @@ import { useTimerEvent } from 'hooks/useTimerInterval';
 import { client } from 'api/client';
 import { HolyElement } from 'types/HolyElement.type';
 import { getToken } from 'api/player-provider';
+import { SessionStepType } from 'types/Session.type';
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    marginLeft: theme.spacing(1),
+    fontSize: 28,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+      marginLeft: theme.spacing(0),
+      marginTop: theme.spacing(1),
+    },
+  },
+}));
 
 export default function StartForm() {
   const { session, currentElement, onSave } = useSessionContext();
@@ -17,6 +30,7 @@ export default function StartForm() {
   const [loading, setLoading] = React.useState(false);
   const isEditing = Boolean(!currentElement?.finishAt);
   const defaultSentence = useRandomSentence();
+  const classes = useStyles();
 
   useTimerEvent({
     finishAt: new Date(session?.stepFinishAt || ''),
@@ -25,7 +39,7 @@ export default function StartForm() {
       client<HolyElement>(`element/auto/${currentElement?.id}`, {
         token: getToken(),
         method: 'PATCH',
-        data: { text: sentence },
+        data: { text: sentence || defaultSentence },
       });
     },
     onFinishPercentage: 98,
@@ -34,32 +48,41 @@ export default function StartForm() {
   return (
     <>
       <Grid item className="full-width">
-        <BigInput
-          disabled={!isEditing}
-          placeholder={defaultSentence}
-          startIcon={<EditIcon />}
-          value={sentence}
-          onChange={e => setSentence(e.target.value)}
-        />
-      </Grid>
-      <Grid item>
-        <BigButton
-          loading={loading}
-          disabled={sentence.length === 0}
-          onClick={() => {
-            setLoading(true);
-            onSave(sentence).then(() => setLoading(false));
-          }}
-          startIcon={
-            isEditing ? (
-              <SaveIcon style={{ fontSize: 32 }} />
-            ) : (
-              <EditIcon style={{ fontSize: 32 }} />
-            )
-          }
-          size="large">
-          {isEditing ? 'Save' : 'Edit'}
-        </BigButton>
+        <Box
+          display="flex"
+          width="100%"
+          flexDirection={{ xs: 'column', sm: 'row' }}>
+          <BigInput
+            fullWidth
+            disabled={!isEditing}
+            placeholder={
+              session?.stepType === SessionStepType.Start
+                ? defaultSentence
+                : 'Your description here'
+            }
+            value={sentence}
+            onChange={e => setSentence(e.target.value)}
+          />
+
+          <BigButton
+            className={classes.button}
+            color="primary"
+            loading={loading}
+            disabled={sentence.length === 0}
+            onClick={() => {
+              setLoading(true);
+              onSave(sentence).then(() => setLoading(false));
+            }}
+            startIcon={
+              isEditing ? (
+                <SaveIcon style={{ fontSize: 28 }} />
+              ) : (
+                <EditIcon style={{ fontSize: 28 }} />
+              )
+            }>
+            {isEditing ? 'Save' : 'Edit'}
+          </BigButton>
+        </Box>
       </Grid>
     </>
   );
