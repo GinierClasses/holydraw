@@ -34,23 +34,8 @@ import {
 } from 'components/canvas/DrawingCanvasActions';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo';
-
-const baseColors = [
-  '#000000',
-  '#7f8c8d',
-  '#bdc3c7',
-  '#ecf0f1',
-  '#00a8ff',
-  '#1e3799',
-  '#2ecc71',
-  '#009432',
-  '#e74c3c',
-  '#c0392b',
-  '#FA00FF',
-  '#FDA7DF',
-  '#FEAFA8',
-];
+import RedoIcon from '@material-ui/icons/Redo'
+import { colors } from 'utils/app-constant';
 
 export default function ComponentTest() {
   const [randomColor, setRandomColor] = React.useState(
@@ -84,18 +69,8 @@ export default function ComponentTest() {
         <HolyDrawLogo />
         <Box>
           <DrawColorPicker
-            colors={colors}
             currentColor={color}
             onColorChange={color => setColor(color)}
-            randomColor={randomColor}
-            onRandomColorClick={() => {
-              const newRandomColor = '#'.concat(
-                Math.floor(Math.random() * 16777215).toString(16),
-              );
-              setRandomColor(newRandomColor);
-              setColors([...baseColors, newRandomColor]);
-              setColor(newRandomColor);
-            }}
           />
         </Box>
 
@@ -154,6 +129,10 @@ export default function ComponentTest() {
                 </OnRedoAction>
               </Box>
 
+              <DrawColorPicker
+                currentColor={color}
+                onColorChange={color => setColor(color)}
+              />
               <SizePicker
                 currentSize={size}
                 onSizeChange={size => setSize(size)}

@@ -8,21 +8,7 @@ import { useState } from 'react';
 import theme from 'theme';
 import { useSessionContext } from 'hooks/SessionProvider';
 import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
-const baseColors = [
-  '#000000',
-  '#7f8c8d',
-  '#bdc3c7',
-  '#ecf0f1',
-  '#00a8ff',
-  '#1e3799',
-  '#2ecc71',
-  '#009432',
-  '#e74c3c',
-  '#c0392b',
-  '#FA00FF',
-  '#FDA7DF',
-  '#FEAFA8',
-];
+import { colors } from 'utils/app-constant';
 
 export default function Draw() {
   const [randomColor, setRandomColor] = useState(
@@ -53,7 +39,6 @@ export default function Draw() {
           gridGap={16}>
           <Box order={{ xs: 1, sm: 0 }}>
             <DrawColorPicker
-              colors={colors}
               currentColor={color}
               onColorChange={color => setColor(color)}
               randomColor={randomColor}
