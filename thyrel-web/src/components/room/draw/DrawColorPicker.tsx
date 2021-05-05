@@ -39,7 +39,7 @@ export default function DrawColorPicker({
             borderColor={isSelected ? '#FFFFFF' : '#000000'}
             width={32}
             height={32}
-            borderRadius={4}
+            borderRadius={16}
             className="cursor-pointer"
           />
         );
