@@ -37,6 +37,7 @@ import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import { colors } from 'utils/app-constant';
 
+
 export default function ComponentTest() {
   // const [randomColor, setRandomColor] = React.useState(
   // '#'.concat(Math.floor(Math.random() * 16777215).toString(16)),
@@ -48,6 +49,7 @@ export default function ComponentTest() {
   const [mobileCanvas, setMobileCanvas] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [size, setSize] = useState(8);
+  const [size2, setSize2] = useState<number>(10);
   const [progress, setProgress] = React.useState<number>(1);
 
   const handleChange = (event: any, newValue: any) => {
@@ -213,6 +215,18 @@ export default function ComponentTest() {
           step={1}
           min={1}
           max={7}
+        />
+
+        <SizePickerV2
+          size={size2}
+          onSizeChange={(e, value) => setSize2(value)}
+        />
+
+        <Box
+          bgcolor="#C6C6C6"
+          borderRadius="50%"
+          height={size2}
+          width={size2}
         />
 
         <StepProgress stepActual={progress} stepMax={7} />
