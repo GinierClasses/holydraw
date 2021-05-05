@@ -8,14 +8,14 @@ export default function Start() {
     <GameLayout maxWidth="sm">
       <Grid
         container
-        spacing={2}
+        spacing={3}
         direction="column"
         alignItems="center"
         className="full-height"
         wrap="nowrap"
         justify="center">
         <Grid item>
-          <img src={GymGuy} alt="" width={384} />
+          <img src={GymGuy} alt="" width={256} />
         </Grid>
         <Grid item>
           <Typography variant="h4">Start a story</Typography>
