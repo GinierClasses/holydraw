@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
+using thyrel_api.Json;
 using thyrel_api.Models;
 using thyrel_api.Models.DTO;
+using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
 {
@@ -12,10 +14,12 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
+        private readonly IWebsocketHandler _websocketHandler;
         private readonly HolyDrawDbContext _context;
 
-        public RoomController(HolyDrawDbContext context)
+        public RoomController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
+            _websocketHandler = websocketHandler;
             _context = context;
         }
 
@@ -74,6 +78,30 @@ namespace thyrel_api.Controllers
             
             var players = await new PlayerDataProvider(_context).GetPlayersByRoom(roomId);
             return players;
+        }
+
+        // Call this endpoint to close the session and restart another one
+        // PATCH : api/room/restart
+        [HttpPatch("restart")]
+        public async Task<ActionResult> Restart()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player == null || !player.IsOwner) return Unauthorized();
+
+            var playerDataProvider = new PlayerDataProvider(_context);
+
+            if (player.RoomId != null)
+            {
+                await playerDataProvider.SetIsPlaying((int)player.RoomId, false);
+            }
+
+            await new RoomDataProvider(_context).FinishSessionsByRoomId(player.RoomId);
+
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new BaseWebsocketEventJson(WebsocketEvent.SessionRestart)), player.RoomId);
+
+            return Ok();
         }
 
         public class PlayerRoomBody
