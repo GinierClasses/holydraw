@@ -1,7 +1,5 @@
 import { Box } from '@material-ui/core';
-import { useState } from 'react';
 import { colors } from 'utils/app-constant';
-import { getRandomColor } from 'utils/utils';
 import RandomColor from './RandomColor';
 
 type DrawColorPickerProps = {
@@ -13,9 +11,6 @@ export default function DrawColorPicker({
   currentColor,
   onColorChange,
 }: DrawColorPickerProps) {
-  const [randomColor, setRandomColor] = useState(getRandomColor());
-  const [isRandomColorSelected, setisRandomColorSelected] = useState(false);
-
   return (
     <Box
       display="flex"
@@ -27,13 +22,12 @@ export default function DrawColorPicker({
       bgcolor="#272B31"
       padding={1}>
       {colors.map(color => {
-        const isSelected = color === currentColor && !isRandomColorSelected;
+        const isSelected = color === currentColor;
         return (
           <Box
             component="button"
             key={color}
             onClick={() => {
-              setisRandomColorSelected(false);
               onColorChange?.(color);
             }}
             border={2}
@@ -50,12 +44,9 @@ export default function DrawColorPicker({
         );
       })}
       <RandomColor
-        color={randomColor}
-        isSelected={isRandomColorSelected}
-        onColorChange={() => {
-          setisRandomColorSelected(true);
-          setRandomColor(getRandomColor());
-          onColorChange?.(randomColor);
+        currentColor={currentColor}
+        onRandomClick={color => {
+          onColorChange?.(color);
         }}></RandomColor>
     </Box>
   );
