@@ -12,6 +12,7 @@ import PlayerAvatar from './PlayerAvatar';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { Box, Grid, makeStyles } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import useMobileHorizontal from 'hooks/useMobileHorizontal';
 
 const useStyles = makeStyles(theme => ({
   marginButton: {
@@ -27,6 +28,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   const history = useHistory();
   const defaultUsername = useRandomUsername();
   const classes = useStyles();
+  const isHorizontal = useMobileHorizontal();
 
   const nextPp = () => {
     setPpIndex((p: number) => (p >= profilesPictures.length - 1 ? 0 : p + 1));
@@ -87,11 +89,21 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   return (
     <>
       <Grid item>
-        <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
+        <PlayerAvatar
+          image={profilesPictures[ppIndex]}
+          onShuffle={nextPp}
+          size={isHorizontal ? 192 : 256}
+        />
       </Grid>
 
       <Grid item>
-        <Box display="flex" flexDirection="column" mb={1} px={1} maxWidth={356}>
+        <Box
+          display="flex"
+          flexDirection={isHorizontal ? 'row' : 'column'}
+          mb={1}
+          px={1}
+          height={isHorizontal ? 72 : undefined}
+          maxWidth={isHorizontal ? undefined : 356}>
           <BigInput
             value={username}
             fullWidth
@@ -99,17 +111,22 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
             placeholder={defaultUsername}
           />
 
-          <Box display="flex" mt={2}>
-            <ButtonModalJoin
-              identifier={identifier}
-              onClick={onJoin}
-              loading={loading}
-            />
+          <Box
+            display="flex"
+            mt={isHorizontal ? 0 : 2}
+            ml={isHorizontal ? 1 : 0}>
+            {(!isHorizontal || identifier) && (
+              <ButtonModalJoin
+                identifier={identifier}
+                onClick={onJoin}
+                loading={loading}
+              />
+            )}
 
             {!identifier && (
               <BigButton
-                fullWidth
-                className={classes.marginButton}
+                fullWidth={!isHorizontal}
+                className={isHorizontal ? undefined : classes.marginButton}
                 color="primary"
                 startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
                 onClick={onCreate}
