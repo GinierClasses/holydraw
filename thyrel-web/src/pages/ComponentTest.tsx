@@ -40,7 +40,7 @@ import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
 import CloseIcon from '@material-ui/icons/Close';
 import BrushIcon from '@material-ui/icons/Brush';
 import { colors } from 'utils/app-constant';
-
+import SizePickerV2 from 'components/room/draw/SizePickerV2';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
