@@ -24,9 +24,11 @@ export default function Album({ album }: AlbumProps) {
               <BookSentenceElement
                 key={element.id}
                 username={element.creator?.username}
-                avatarUrl={profilesPictures[Number(element.creator?.avatarUrl)]}
-                sentence={element.text}
-              />
+                avatarUrl={
+                  profilesPictures[Number(element.creator?.avatarUrl)]
+                }>
+                {element.text}
+              </BookSentenceElement>
             ) : (
               <BookDrawingElement
                 key={element.id}
