@@ -11,7 +11,7 @@ export default function Book() {
   const { players } = useRoomContext();
   return (
     <AlbumContextProvider>
-      <GameLayout displayHud={false} maxWidth="sm">
+      <GameLayout maxWidth="sm">
         <BookMock />
         <Grid
           container
@@ -24,6 +24,7 @@ export default function Book() {
           <Grid item>
             <BookPlayerList players={players} />
           </Grid>
+          <BookMock />
           <Grid item>
             <BookStartAction />
           </Grid>

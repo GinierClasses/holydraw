@@ -121,7 +121,10 @@ namespace thyrel_api.Websocket
 
                             _websocketConnections = openSockets;
                         }
-
+                        
+                        Console.WriteLine($"DEBUG server: openSockets count: {openSockets.Count}");
+                        Console.WriteLine($"DEBUG server: closedSockets count: {closedSockets.Count}");
+                        
                         foreach (var closedSocket in closedSockets.Where(closedSocket =>
                             openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                         {

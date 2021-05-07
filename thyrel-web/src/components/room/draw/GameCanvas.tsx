@@ -3,7 +3,9 @@ import BigButton from 'components/BigButton';
 import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import { OnSaveAction } from 'components/canvas/DrawingCanvasActions';
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
-import CanvasActionButtons from 'components/room/draw/CanvasActionButtons';
+import CanvasActionButtons, {
+  CanvasLineTypeButton,
+} from 'components/room/draw/CanvasActionButtons';
 import { useSessionContext } from 'hooks/SessionProvider';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
@@ -41,6 +43,7 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
           justifyContent="space-between"
           width="100%">
           <CanvasActionButtons />
+          <CanvasLineTypeButton />
           <OnSaveAction
             onSave={canvasImage => {
               if (!canvasImage) return;

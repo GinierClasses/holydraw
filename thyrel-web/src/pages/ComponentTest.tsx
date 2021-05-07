@@ -35,25 +35,12 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
-
-const colors = [
-  '#000000',
-  '#7f8c8d',
-  '#bdc3c7',
-  '#ecf0f1',
-  '#00a8ff',
-  '#1e3799',
-  '#2ecc71',
-  '#009432',
-  '#e74c3c',
-  '#c0392b',
-  '#FA00FF',
-  '#FDA7DF',
-  '#FEAFA8',
-  '#CB5A57',
-  '#FFC312',
-  '#F79F1F',
-];
+import CircleButtons from '../components/circle-button/CircleButtons';
+import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
+import CloseIcon from '@material-ui/icons/Close';
+import BrushIcon from '@material-ui/icons/Brush';
+import { colors } from 'utils/app-constant';
+import SizePickerV2 from 'components/room/draw/SizePickerV2';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -61,6 +48,7 @@ export default function ComponentTest() {
   const [mobileCanvas, setMobileCanvas] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [size, setSize] = useState(8);
+  const [size2, setSize2] = useState<number>(10);
   const [progress, setProgress] = React.useState<number>(1);
 
   const handleChange = (event: any, newValue: any) => {
@@ -79,14 +67,38 @@ export default function ComponentTest() {
         alignItems="center"
         width="100%"
         gridGap={32}>
+        <Box>
+          <CircleButtons
+            circleBg="border"
+            spacing={1.2}
+            action={open => (
+              <IconButton>{open ? <CloseIcon /> : <BrushIcon />}</IconButton>
+            )}>
+            <IconButton>
+              <AccessibilityNewIcon />
+            </IconButton>
+            <IconButton>
+              <FormatColorFillIcon />
+            </IconButton>
+          </CircleButtons>
+        </Box>
         <HolyDrawLogo />
+        <Box>
+          <DrawColorPicker
+            currentColor={color}
+            onColorChange={color => setColor(color)}
+          />
+        </Box>
 
         <Box>
           <BookSentenceElement
-            username="Luca thb"
-            avatarUrl={profilesPictures[ppIndex]}
-            sentence={'Hey banane poil vert'}></BookSentenceElement>
+            username="Houn Salade"
+            avatarUrl={profilesPictures[ppIndex]}>
+            Combien sont ces six saucissons-ci ?
+          </BookSentenceElement>
         </Box>
+
+        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
 
         <FormControlLabel
           control={
@@ -134,7 +146,6 @@ export default function ComponentTest() {
               </Box>
 
               <DrawColorPicker
-                colors={colors}
                 currentColor={color}
                 onColorChange={color => setColor(color)}
               />
@@ -164,7 +175,6 @@ export default function ComponentTest() {
           finishAt={new Date('2021-03-30T08:31:00')}
           timeDuration={120}
         />
-        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}
@@ -219,6 +229,18 @@ export default function ComponentTest() {
           step={1}
           min={1}
           max={7}
+        />
+
+        <SizePickerV2
+          size={size2}
+          onSizeChange={(e, value) => setSize2(value)}
+        />
+
+        <Box
+          bgcolor="#C6C6C6"
+          borderRadius="50%"
+          height={size2}
+          width={size2}
         />
 
         <StepProgress stepActual={progress} stepMax={7} />
