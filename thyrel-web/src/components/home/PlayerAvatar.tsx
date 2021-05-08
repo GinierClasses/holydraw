@@ -1,5 +1,5 @@
 import { Box, fade, makeStyles, Theme } from '@material-ui/core';
-import ShuffleIcon from '@material-ui/icons/Shuffle';
+import ShuffleRoundedIcon from '@material-ui/icons/ShuffleRounded';
 
 type PlayerAvatarProps = {
   image: string;
