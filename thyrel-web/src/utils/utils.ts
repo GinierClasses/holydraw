@@ -4,3 +4,7 @@ export const callAll = (...fns: (any | undefined)[]) => (...args: any) =>
 export function getRandomValueFromArray<T>(possibilities: T[]): T {
   return possibilities[Math.floor(Math.random() * possibilities.length)];
 }
+
+export function getRandomColor(): string {
+  return '#'.concat(Math.floor(Math.random() * 16777215).toString(16));
+}
