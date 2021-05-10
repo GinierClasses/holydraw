@@ -14,7 +14,6 @@ export const colors = [
   '#F1C40F', // #FFC312
   '#E67E22',
   '#FEAFA8',
-  '#f3a683',
 ];
 
 export const colorsMobileModal = [

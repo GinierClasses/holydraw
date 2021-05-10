@@ -35,10 +35,6 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
-import CircleButtons from '../components/circle-button/CircleButtons';
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
-import CloseIcon from '@material-ui/icons/Close';
-import BrushIcon from '@material-ui/icons/Brush';
 import { colors } from 'utils/app-constant';
 import SizePickerV2 from 'components/room/draw/SizePickerV2';
 import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
@@ -68,21 +64,6 @@ export default function ComponentTest() {
         alignItems="center"
         width="100%"
         gridGap={32}>
-        <Box>
-          <CircleButtons
-            circleBg="border"
-            spacing={1.2}
-            action={open => (
-              <IconButton>{open ? <CloseIcon /> : <BrushIcon />}</IconButton>
-            )}>
-            <IconButton>
-              <AccessibilityNewIcon />
-            </IconButton>
-            <IconButton>
-              <FormatColorFillIcon />
-            </IconButton>
-          </CircleButtons>
-        </Box>
         <HolyDrawLogo />
 
         <Box>
