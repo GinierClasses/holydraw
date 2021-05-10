@@ -56,7 +56,7 @@ export default function ColorPickerMobileModal({
           display="flex"
           flexDirection="row"
           flexWrap="wrap"
-          justifyContent="flex-start"
+          justifyContent="center"
           mt={6}
           ml={12}
           mr={12}>

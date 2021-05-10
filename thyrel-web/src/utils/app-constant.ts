@@ -36,4 +36,6 @@ export const colorsMobileModal = [
   '#9645CD',
   '#C1CF2C',
   '#EE090D',
+  '#99ff66',
+  '#0000e6',
 ];
