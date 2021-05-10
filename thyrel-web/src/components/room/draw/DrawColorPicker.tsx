@@ -1,6 +1,8 @@
+import React from 'react';
 import { Box } from '@material-ui/core';
 import { colors } from 'utils/app-constant';
 import RandomColor from './RandomColor';
+import PreciseColorPicker from './PreciseColorPicker';
 
 type DrawColorPickerProps = {
   currentColor: string;
@@ -45,9 +47,12 @@ export default function DrawColorPicker({
       })}
       <RandomColor
         currentColor={currentColor}
-        onRandomClick={color => {
-          onColorChange?.(color);
-        }}></RandomColor>
+        onRandomClick={color => onColorChange?.(color)}
+      />
+      <PreciseColorPicker
+        currentColor={currentColor}
+        onColorChange={color => onColorChange?.(color)}
+      />
     </Box>
   );
 }
