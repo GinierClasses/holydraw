@@ -12,13 +12,20 @@ export default function Album({ album }: AlbumProps) {
     return null;
   }
   return (
-    <Box display="flex" flexDirection="column" width="100%">
+    <Box
+      display="flex"
+      flexDirection="column"
+      width="100%"
+      bgcolor="background.paper"
+      p={2}
+      alignItems="center">
       <Typography variant="h4">{album[0].creator?.username}'s album</Typography>
       {album.map(element => {
         const isSentence = element.type === ElementType.Sentence;
         return (
           <Box
             display="flex"
+            width="100%"
             flexDirection={isSentence ? 'row' : 'row-reverse'}>
             {isSentence ? (
               <BookSentenceElement
