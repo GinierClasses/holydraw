@@ -1,6 +1,6 @@
 import { copyToClipboard } from 'utils/clipboard';
 import { Button } from '@material-ui/core';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import VpnKeyIcon from '@material-ui/icons/VpnKeyRounded';
 import { useSnackbar } from 'notistack';
 
 type ShareRoomButtonProps = {
@@ -20,7 +20,6 @@ export default function ShareRoomButton({ identifier }: ShareRoomButtonProps) {
     <Button
       startIcon={<VpnKeyIcon style={{ fontSize: 32 }} />}
       onClick={onShared}
-      size="large"
       variant="contained">
       {identifier || 'loading...'}
     </Button>
