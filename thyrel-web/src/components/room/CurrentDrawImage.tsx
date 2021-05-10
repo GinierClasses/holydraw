@@ -12,9 +12,10 @@ export default function CurrentDrawImage({
   return (
     <Box
       bgcolor="common.white"
-      border={4}
-      borderColor="secondary.main"
+      borderColor="custom.main"
+      borderRadius={32}
       boxShadow={1}
+      border={4}
       display="flex">
       <img src={src} alt="" className={className} />
     </Box>

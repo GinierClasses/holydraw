@@ -1,6 +1,6 @@
 import React from 'react';
 import BigButton from '../BigButton';
-import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import {
   Dialog,
   DialogActions,
@@ -10,28 +10,32 @@ import {
   TextField,
 } from '@material-ui/core';
 
-type ModalJoinProps = {
+type ButtonModalJoinProps = {
   identifier?: string;
   onClick: (identifier: string) => void;
   loading?: boolean;
   className?: string;
 };
 
-export default function ModalJoin({
+export default function ButtonModalJoin({
   identifier: urlIdentifier,
   loading,
   onClick,
   className,
-}: ModalJoinProps) {
+}: ButtonModalJoinProps) {
   const [open, setOpen] = React.useState(false);
   const [identifier, setIdentifier] = React.useState('');
   return (
     <>
       <BigButton
-        startIcon={<PlayForWorkIcon style={{ fontSize: 32 }} />}
+        startIcon={
+          urlIdentifier ? <PlayArrowIcon style={{ fontSize: 32 }} /> : undefined
+        }
+        fullWidth
         loading={loading}
         className={className}
-        size="large"
+        size="medium"
+        color={urlIdentifier ? 'primary' : 'default'}
         onClick={() =>
           urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
         }>
@@ -46,6 +50,7 @@ export default function ModalJoin({
         <DialogTitle>Join a game 👨‍🎨</DialogTitle>
         <DialogContent>
           <TextField
+            color="secondary"
             autoFocus
             margin="dense"
             id="name"
@@ -56,7 +61,7 @@ export default function ModalJoin({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color="primary">
+          <Button onClick={() => setOpen(false)} color="secondary">
             Cancel 👋
           </Button>
           <Button
@@ -64,7 +69,7 @@ export default function ModalJoin({
               onClick(identifier);
               setOpen(false);
             }}
-            color="primary">
+            color="secondary">
             Join 🥳
           </Button>
         </DialogActions>

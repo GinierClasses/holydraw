@@ -3,7 +3,9 @@ import BigButton from 'components/BigButton';
 import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import { OnSaveAction } from 'components/canvas/DrawingCanvasActions';
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
-import CanvasActionButtons from 'components/room/draw/CanvasActionButtons';
+import CanvasActionButtons, {
+  CanvasLineTypeButton,
+} from 'components/room/draw/CanvasActionButtons';
 import { useSessionContext } from 'hooks/SessionProvider';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
@@ -15,41 +17,24 @@ type GameCanvasProps = {
   color: string;
 };
 
-const canvasWidth = {
-  md: {
-    width: 512,
-    height: 320,
-    border: 4,
-    scale: 2,
-    lineScale: 2,
-  },
-  xs: {
-    width: 332.8,
-    height: 208,
-    border: 2,
-    scale: 4,
-    lineScale: 2,
-  },
-};
-
 export default function GameCanvas({ size, color }: GameCanvasProps) {
+  // will be used when we will implement the GameCanvasV2
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const { currentElement, onSave } = useSessionContext();
   const isEditing = Boolean(!currentElement?.finishAt);
   const [loading, setLoading] = useState(false);
 
   return (
-    <DrawingCanvasProvider
-      color={color}
-      disabled={!isEditing}
-      lineSize={size}
-      canvasSize={isDeviceSM ? canvasWidth.md : canvasWidth.xs}>
+    <DrawingCanvasProvider color={color} disabled={!isEditing} lineSize={size}>
       <Box
         display="flex"
         flexDirection="column"
         gridGap={8}
         alignItems="center">
-        <DrawingCanvas disabled={!isEditing} />
+        <Box maxWidth={512} width="100%">
+          <DrawingCanvas disabled={!isEditing} />
+        </Box>
         <Box
           display="flex"
           flexDirection="row"
@@ -58,6 +43,7 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
           justifyContent="space-between"
           width="100%">
           <CanvasActionButtons />
+          <CanvasLineTypeButton />
           <OnSaveAction
             onSave={canvasImage => {
               if (!canvasImage) return;
@@ -73,7 +59,8 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
                   <EditIcon style={{ fontSize: 32 }} />
                 )
               }
-              size="large">
+              color="primary"
+              size="medium">
               {isEditing ? 'Save' : 'Edit'}
             </BigButton>
           </OnSaveAction>

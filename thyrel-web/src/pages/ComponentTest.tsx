@@ -35,42 +35,11 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
-
-const colors = [
-  '#000000',
-  '#7f8c8d',
-  '#bdc3c7',
-  '#ecf0f1',
-  '#00a8ff',
-  '#1e3799',
-  '#2ecc71',
-  '#009432',
-  '#e74c3c',
-  '#c0392b',
-  '#FA00FF',
-  '#FDA7DF',
-  '#FEAFA8',
-  '#CB5A57',
-  '#FFC312',
-  '#F79F1F',
-];
-
-const canvasWidth = {
-  md: {
-    width: 512,
-    height: 320,
-    border: 4,
-    scale: 2,
-    lineScale: 2,
-  },
-  xs: {
-    width: 256,
-    height: 160,
-    border: 2,
-    scale: 4,
-    lineScale: 2,
-  },
-};
+import { colors } from 'utils/app-constant';
+import SizePickerV2 from 'components/room/draw/SizePickerV2';
+import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
+import Button from '@material-ui/core/Button';
+import PaletteIcon from '@material-ui/icons/Palette';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -78,7 +47,9 @@ export default function ComponentTest() {
   const [mobileCanvas, setMobileCanvas] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [size, setSize] = useState(8);
+  const [size2, setSize2] = useState<number>(10);
   const [progress, setProgress] = React.useState<number>(1);
+  const [open, setOpen] = React.useState(false);
 
   const handleChange = (event: any, newValue: any) => {
     setProgress(newValue);
@@ -99,11 +70,36 @@ export default function ComponentTest() {
         <HolyDrawLogo />
 
         <Box>
-          <BookSentenceElement
-            username="Luca thb"
-            avatarUrl={profilesPictures[ppIndex]}
-            sentence={'Hey banane poil vert'}></BookSentenceElement>
+          <Button
+            onClick={() => {
+              setOpen(true);
+            }}>
+            <PaletteIcon />
+          </Button>
+          <ColorPickerMobileModal
+            open={open}
+            onClose={() => setOpen(false)}
+            currentColor={color}
+            onColorChange={color => setColor(color)}
+          />
         </Box>
+
+        <Box>
+          <DrawColorPicker
+            currentColor={color}
+            onColorChange={color => setColor(color)}
+          />
+        </Box>
+
+        <Box>
+          <BookSentenceElement
+            username="Houn Salade"
+            avatarUrl={profilesPictures[ppIndex]}>
+            Combien sont ces six saucissons-ci ?
+          </BookSentenceElement>
+        </Box>
+
+        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
 
         <FormControlLabel
           control={
@@ -123,24 +119,15 @@ export default function ComponentTest() {
           }
           label="Is canvas disabled"
         />
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" width="100%" maxWidth={1000} flexDirection="column">
           <DrawingCanvasProvider
             color={color}
             disabled={disabled}
-            lineSize={size}
-            canvasSize={mobileCanvas ? canvasWidth.xs : canvasWidth.md}>
-            <Box display="flex">
-              <DrawColorPicker
-                colors={colors}
-                currentColor={color}
-                onColorChange={color => setColor(color)}
-              />
-              <SizePicker
-                currentSize={size}
-                onSizeChange={size => setSize(size)}
-                flexDirection="column"
-              />
-              <DrawingCanvas disabled={disabled} />
+            lineSize={size}>
+            <Box display="flex" width="100%" flexWrap="wrap">
+              <Box width="100%">
+                <DrawingCanvas disabled={disabled} />
+              </Box>
               <Box display="flex" flexDirection="column">
                 <OnClearAction>
                   <IconButton>
@@ -158,6 +145,16 @@ export default function ComponentTest() {
                   </IconButton>
                 </OnRedoAction>
               </Box>
+
+              <DrawColorPicker
+                currentColor={color}
+                onColorChange={color => setColor(color)}
+              />
+              <SizePicker
+                currentSize={size}
+                onSizeChange={size => setSize(size)}
+                flexDirection="column"
+              />
             </Box>
 
             <OnSaveAction
@@ -179,7 +176,6 @@ export default function ComponentTest() {
           finishAt={new Date('2021-03-30T08:31:00')}
           timeDuration={120}
         />
-        <BookDrawingElement username="Jean-Philippes-Pascal" src={GymGuy} />
         <ButtonModalJoin
           loading={false}
           identifier={undefined}
@@ -204,10 +200,7 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <StartButton
-          player={testPlayerList[1]}
-          onStart={() => void 0}
-        />
+        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
 
         <PlayerCardList
           players={testPlayerList}
@@ -237,6 +230,18 @@ export default function ComponentTest() {
           step={1}
           min={1}
           max={7}
+        />
+
+        <SizePickerV2
+          size={size2}
+          onSizeChange={(e, value) => setSize2(value)}
+        />
+
+        <Box
+          bgcolor="#C6C6C6"
+          borderRadius="50%"
+          height={size2}
+          width={size2}
         />
 
         <StepProgress stepActual={progress} stepMax={7} />

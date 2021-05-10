@@ -2,7 +2,7 @@ import { Box, makeStyles, Avatar, Typography } from '@material-ui/core';
 
 type BookSentenceElementProps = {
   username?: string;
-  sentence?: string;
+  children?: string;
   avatarUrl?: string;
 };
 
@@ -10,21 +10,26 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: 32,
     height: 32,
-    backgroundColor: theme.palette.secondary.dark,
-    border: `1px solid ${theme.palette.secondary.dark}`,
+    backgroundColor: theme.palette.primary.dark,
     overflow: 'visible',
+    boxShadow: theme.shadows[2],
     '&> img': {
-      height: 32,
+      height: 26,
       width: 'auto',
       margin: 'auto',
       position: 'unset',
     },
   },
+  box: {
+    backgroundColor: theme.palette.custom.main,
+    borderRadius: 20,
+    border: 'none',
+  },
 }));
 
 export default function BookSentenceElement({
   username,
-  sentence,
+  children,
   avatarUrl,
 }: BookSentenceElementProps) {
   const classes = useStyles();
@@ -34,15 +39,12 @@ export default function BookSentenceElement({
       <Box
         display="flex"
         flexDirection="row"
-        alignItems="center"
-        p={1}
-        border={1}
-        borderColor="secondary.main"
-        borderRadius={4}
-        maxWidth={336}>
+        p={0.5}
+        width={320}
+        className={classes.box}>
         <Avatar src={avatarUrl} className={classes.avatar} />
-        <Box ml={1} mr={1}>
-          <Typography variant="body1">{sentence}</Typography>
+        <Box ml={1} mr={1} alignSelf="center">
+          <Typography variant="body1">{children}</Typography>
         </Box>
       </Box>
     </Box>

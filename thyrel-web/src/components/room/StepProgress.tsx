@@ -21,7 +21,8 @@ const CustomLinearProgress = withStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.default,
     },
     bar: {
-      backgroundColor: theme.palette.secondary.main,
+      borderRadius: 8,
+      backgroundColor: theme.palette.primary.dark,
     },
   }),
 )(LinearProgress);
@@ -33,21 +34,16 @@ export default function StepProgress({
   const progress = stepPercentage(stepActual, stepMax);
 
   return (
-    <Box
-      overflow="hidden"
-      width="100%"
-      position="relative"
-      borderTop={1}
-      borderColor="secondary.main">
+    <Box overflow="hidden" width="100%" position="relative" p={1}>
       <Box
         alignItems="center"
         justifyContent="center"
         display="flex"
         position="absolute"
         zIndex={1}
-        top={0}
+        top={4}
         bottom={0}
-        left={5}>
+        left={16}>
         <Typography variant="subtitle1">
           {stepActual}/{stepMax}
         </Typography>

@@ -3,6 +3,7 @@ import { Coordinate, Line, LineType } from 'types/canvas.types';
 import {
   clearDraw,
   drawCanvasLine,
+  fillCanvas,
   getQuadraticCurveCoordinates,
   rerenderDraw,
 } from 'utils/canvas.utils';
@@ -12,6 +13,7 @@ type useCanvasMouseProps = {
   size: number;
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   scale: number;
+  lineType: LineType;
 };
 
 function useCanvasPaint({
@@ -19,11 +21,9 @@ function useCanvasPaint({
   size,
   canvasRef,
   scale,
+  lineType,
 }: useCanvasMouseProps) {
-  const mouseCoordinate = React.useRef<Coordinate>({
-    x: 0,
-    y: 0,
-  });
+  const mouseCoordinate = React.useRef<Coordinate>({ x: 0, y: 0 });
   const lines = React.useRef<Line[]>([]);
   const deletedLines = React.useRef<Line[]>([]);
 
@@ -49,32 +49,52 @@ function useCanvasPaint({
         lastLine.points,
       );
 
-      drawCanvasLine(
-        context,
-        mouseCoordinate.current,
-        controlPoint,
-        endPoint,
-        lastLine,
-      );
+      drawCanvasLine(context, lastLine, {
+        beginPosition: mouseCoordinate.current,
+        controlPosition: controlPoint,
+        endPosition: endPoint,
+      });
       mouseCoordinate.current = endPoint;
     },
     [canvasRef],
+  );
+
+  const fill = React.useCallback(
+    (coordinate: Coordinate) => {
+      if (!canvasRef.current) return;
+      fillCanvas(canvasRef.current, coordinate, color);
+    },
+    [canvasRef, color],
   );
 
   const create = React.useCallback(
     (coordinate: Coordinate, isNewLine?: boolean) => {
       mouseCoordinate.current = coordinate;
       deletedLines.current = [];
-      if (isNewLine)
+      if (isNewLine) {
         lines.current.push({
-          type: LineType.LINE,
+          type: lineType,
           color,
           size: size * scale,
           points: [coordinate],
         });
-      else paint(coordinate);
+        switch (lineType) {
+          case LineType.LINE:
+            const context = canvasRef?.current?.getContext('2d');
+            if (!context) return;
+            drawCanvasLine(
+              context,
+              { ...getLastLine(), type: LineType.CIRCLE },
+              { beginPosition: coordinate },
+            );
+            break;
+          case LineType.FILL:
+            fill(coordinate);
+            break;
+        }
+      } else paint(coordinate);
     },
-    [color, paint, scale, size],
+    [canvasRef, color, fill, lineType, paint, scale, size],
   );
 
   const refresh = React.useCallback(() => {
@@ -109,12 +129,15 @@ function useCanvasPaint({
 
   React.useEffect(() => {
     if (!canvasRef.current) return;
-    const onKeyDown = (event: any) => {
-      if (event.keyCode === 90 && (event.ctrlKey || event.metaKey)) undo();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+        event.shiftKey ? redo() : undo();
+      }
+      if (event.key === 'c') clear();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [canvasRef, undo]);
+  }, [canvasRef, clear, redo, undo]);
 
   return {
     paint,
@@ -126,6 +149,7 @@ function useCanvasPaint({
     clear,
     redo,
     refresh,
+    fill,
   };
 }
 

@@ -10,20 +10,13 @@ import BigInput from '../BigInput';
 import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import CreateIcon from '@material-ui/icons/Create';
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, Grid, makeStyles } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import useMobileHorizontal from 'hooks/useMobileHorizontal';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    '&>*': {
-      marginBottom: theme.spacing(4),
-    },
-  },
-  buttonContainer: {
-    '&>*': {
-      marginBottom: theme.spacing(2),
-    },
+  marginButton: {
+    marginLeft: theme.spacing(2),
   },
 }));
 
@@ -35,6 +28,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   const history = useHistory();
   const defaultUsername = useRandomUsername();
   const classes = useStyles();
+  const isHorizontal = useMobileHorizontal();
 
   const nextPp = () => {
     setPpIndex((p: number) => (p >= profilesPictures.length - 1 ? 0 : p + 1));
@@ -46,7 +40,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
     history?.push('/r/lobby');
   }
 
-  function onStart() {
+  function onCreate() {
     setLoading(true);
     client<Player>('room', {
       data: {
@@ -93,42 +87,56 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   }
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      width="100%"
-      className={classes.container}>
-      <PlayerAvatar image={profilesPictures[ppIndex]} onShuffle={nextPp} />
-
-      <BigInput
-        startIcon={<CreateIcon />}
-        value={username}
-        onChange={e => setUsername(e.target.value)}
-        placeholder={defaultUsername}
-      />
-
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        className={classes.buttonContainer}>
-        <ButtonModalJoin
-          identifier={identifier}
-          onClick={onJoin}
-          loading={loading}
+    <>
+      <Grid item>
+        <PlayerAvatar
+          image={profilesPictures[ppIndex]}
+          onShuffle={nextPp}
+          size={isHorizontal ? 192 : 256}
         />
+      </Grid>
 
-        {!identifier && (
-          <BigButton
-            size="large"
-            startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
-            onClick={onStart}
-            loading={loading}>
-            Start
-          </BigButton>
-        )}
-      </Box>
-    </Box>
+      <Grid item>
+        <Box
+          display="flex"
+          flexDirection={isHorizontal ? 'row' : 'column'}
+          mb={1}
+          px={1}
+          height={isHorizontal ? 72 : undefined}
+          maxWidth={isHorizontal ? undefined : 356}>
+          <BigInput
+            value={username}
+            fullWidth
+            onChange={e => setUsername(e.target.value)}
+            placeholder={defaultUsername}
+          />
+
+          <Box
+            display="flex"
+            mt={isHorizontal ? 0 : 2}
+            ml={isHorizontal ? 1 : 0}>
+            {(!isHorizontal || identifier) && (
+              <ButtonModalJoin
+                identifier={identifier}
+                onClick={onJoin}
+                loading={loading}
+              />
+            )}
+
+            {!identifier && (
+              <BigButton
+                fullWidth={!isHorizontal}
+                className={isHorizontal ? undefined : classes.marginButton}
+                color="primary"
+                startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
+                onClick={onCreate}
+                loading={loading}>
+                Create
+              </BigButton>
+            )}
+          </Box>
+        </Box>
+      </Grid>
+    </>
   );
 }

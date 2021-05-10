@@ -1,4 +1,5 @@
 import React from 'react';
+import { LineType } from 'types/canvas.types';
 import { getCoordinates } from 'utils/canvas.utils';
 import { DrawingCanvasProviderProps } from './canvas.type';
 import { DrawingCanvasContext } from './DrawingCanvasContext';
@@ -10,18 +11,43 @@ const canvasWidth = {
   height: 320,
   border: 4,
   scale: 2,
-  lineScale: 2,
 };
+
+const ratio = 1.6;
 
 export function DrawingCanvasProvider({
   color = '#900050',
   lineSize = 4,
   disabled = false,
-  canvasSize: size = canvasWidth,
   children,
 }: DrawingCanvasProviderProps) {
+  const [currentSize, setCurrentSize] = React.useState(canvasWidth);
+  const [lineType, setLineType] = React.useState<LineType>(LineType.LINE);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [isPainting, setIsPainting] = React.useState(false);
+
+  const onResize = React.useCallback(() => {
+    const newWidth = canvasRef.current?.parentElement?.parentElement?.getBoundingClientRect()
+      .width;
+    if (!newWidth || newWidth < 64) return;
+
+    const scale = 1024 / newWidth;
+    const newHeight = newWidth / ratio;
+    const border = newWidth < 400 ? 2 : 4;
+    const noUpdateRange = 1;
+
+    if (
+      newWidth - noUpdateRange > currentSize.width ||
+      newWidth + noUpdateRange < currentSize.width
+    ) {
+      setCurrentSize({
+        width: newWidth - border * 2,
+        height: newHeight - border * 2,
+        border,
+        scale,
+      });
+    }
+  }, [currentSize.width]);
 
   const {
     paint,
@@ -35,27 +61,35 @@ export function DrawingCanvasProvider({
     color,
     size: lineSize,
     canvasRef,
-    scale: size.lineScale,
+    scale: currentSize.scale,
+    lineType,
   });
 
   const onMouseDown = React.useCallback(
     (event: MouseEvent, isNewLine: boolean = true) => {
-      const coordinates = getCoordinates(event, size.scale, canvasRef.current);
+      const coordinates = getCoordinates(
+        event,
+        currentSize.scale,
+        canvasRef.current,
+      );
       if (!coordinates) return;
-      setIsPainting(true);
+
+      if (lineType !== LineType.FILL) {
+        setIsPainting(true);
+      }
 
       create(coordinates, isNewLine);
     },
-    [canvasRef, create, size.scale],
+    [create, currentSize.scale, lineType],
   );
 
   const onMouseUp = React.useCallback(
     (event: MouseEvent) => {
       setIsPainting(false);
-      const coordinate = getCoordinates(event, size.scale);
+      const coordinate = getCoordinates(event, currentSize.scale);
       addLastLine(coordinate);
     },
-    [addLastLine, size.scale],
+    [addLastLine, currentSize.scale],
   );
 
   const onMouseEnter = React.useCallback(
@@ -70,12 +104,12 @@ export function DrawingCanvasProvider({
       if (!isPainting || !canvasRef.current) return;
       const newMousePosition = getCoordinates(
         event,
-        size.scale,
+        currentSize.scale,
         canvasRef.current,
       );
       paint(newMousePosition);
     },
-    [canvasRef, isPainting, paint, size.scale],
+    [currentSize.scale, isPainting, paint],
   );
 
   useCanvasEventListener({
@@ -85,6 +119,7 @@ export function DrawingCanvasProvider({
     onMouseEnter,
     onMouseMove,
     isPainting,
+    onResize,
     disabled,
   });
 
@@ -92,17 +127,23 @@ export function DrawingCanvasProvider({
     if (!canvasRef.current) return;
     const canvas: HTMLCanvasElement = canvasRef.current;
 
-    canvas.width = size.width * size.scale;
-    canvas.height = size.height * size.scale;
+    canvas.width = currentSize.width * currentSize.scale;
+    canvas.height = currentSize.height * currentSize.scale;
     refresh();
-  }, [canvasRef, refresh, size]);
+  }, [canvasRef, refresh, currentSize]);
 
-  const values = React.useMemo(() => ({ clear, undo, canvasRef, redo, size }), [
-    clear,
-    size,
-    redo,
-    undo,
-  ]);
+  const values = React.useMemo(
+    () => ({
+      clear,
+      undo,
+      canvasRef,
+      redo,
+      size: currentSize,
+      setLineType,
+      lineType,
+    }),
+    [clear, undo, redo, currentSize, lineType],
+  );
 
   return (
     <DrawingCanvasContext.Provider value={values}>
