@@ -1,4 +1,4 @@
-# HolyDraw 👨‍🎨 - 6
+# HolyDraw 👨‍🎨 - 7
 
 *Draw! Guess! Don't Fail!*
 
