@@ -1,5 +1,7 @@
 import { Box } from '@material-ui/core';
 import { colors } from 'utils/app-constant';
+import { HexColorPicker } from 'react-colorful';
+import React from 'react';
 
 type DrawColorPickerProps = {
   flexDirection?: 'row' | 'column';
@@ -11,6 +13,7 @@ export default function DrawColorPicker({
   currentColor,
   onColorChange,
 }: DrawColorPickerProps) {
+  const [showColorPicker, setShowColorPicker] = React.useState(false);
   return (
     <Box
       display="flex"
@@ -41,6 +44,29 @@ export default function DrawColorPicker({
           />
         );
       })}
+      <Box
+        component="button"
+        onClick={
+          showColorPicker
+            ? () => setShowColorPicker(false)
+            : () => setShowColorPicker(true)
+        }
+        border={2}
+        m={0.5}
+        p={0}
+        bgcolor={currentColor}
+        boxShadow={showColorPicker ? 4 : 0}
+        borderColor={showColorPicker ? '#ffffff' : currentColor}
+        width={92}
+        height={42}
+        borderRadius={21}
+        className="cursor-pointer"
+      />
+      {showColorPicker && (
+        <Box height={20}>
+          <HexColorPicker color={currentColor} onChange={onColorChange} />
+        </Box>
+      )}
     </Box>
   );
 }
