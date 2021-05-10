@@ -35,25 +35,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
-
-const colors = [
-  '#000000',
-  '#7f8c8d',
-  '#bdc3c7',
-  '#ecf0f1',
-  '#00a8ff',
-  '#1e3799',
-  '#2ecc71',
-  '#009432',
-  '#e74c3c',
-  '#c0392b',
-  '#FA00FF',
-  '#FDA7DF',
-  '#FEAFA8',
-  '#CB5A57',
-  '#FFC312',
-  '#F79F1F',
-];
+import { colors } from 'utils/app-constant';
+import SizePickerV2 from 'components/room/draw/SizePickerV2';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -61,6 +44,7 @@ export default function ComponentTest() {
   const [mobileCanvas, setMobileCanvas] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [size, setSize] = useState(8);
+  const [size2, setSize2] = useState<number>(10);
   const [progress, setProgress] = React.useState<number>(1);
 
   const handleChange = (event: any, newValue: any) => {
@@ -80,6 +64,12 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <HolyDrawLogo />
+        <Box>
+          <DrawColorPicker
+            currentColor={color}
+            onColorChange={color => setColor(color)}
+          />
+        </Box>
 
         <Box>
           <BookSentenceElement
@@ -137,7 +127,6 @@ export default function ComponentTest() {
               </Box>
 
               <DrawColorPicker
-                colors={colors}
                 currentColor={color}
                 onColorChange={color => setColor(color)}
               />
@@ -221,6 +210,18 @@ export default function ComponentTest() {
           step={1}
           min={1}
           max={7}
+        />
+
+        <SizePickerV2
+          size={size2}
+          onSizeChange={(e, value) => setSize2(value)}
+        />
+
+        <Box
+          bgcolor="#C6C6C6"
+          borderRadius="50%"
+          height={size2}
+          width={size2}
         />
 
         <StepProgress stepActual={progress} stepMax={7} />

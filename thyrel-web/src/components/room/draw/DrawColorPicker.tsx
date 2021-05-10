@@ -1,49 +1,53 @@
-import { primaryFade } from 'styles/colors';
-import React from 'react';
 import { Box } from '@material-ui/core';
+import { colors } from 'utils/app-constant';
+import RandomColor from './RandomColor';
 
 type DrawColorPickerProps = {
-  colors: string[];
-  onColorChange?: (color: string) => void;
   currentColor: string;
-  flexDirection?: 'row' | 'column';
+  onColorChange?: (color: string) => void;
 };
 
 export default function DrawColorPicker({
-  colors,
   currentColor,
   onColorChange,
-  flexDirection = 'column',
 }: DrawColorPickerProps) {
   return (
     <Box
       display="flex"
-      flexDirection={'row'}
-      borderRadius={4}
-      border={1}
-      width={flexDirection === 'row' ? '100%' : 88}
       flexWrap="wrap"
-      borderColor="#000000"
+      borderRadius={30}
+      // to use adventage of flexWrap
+      maxWidth={116}
       justifyContent="center"
-      bgcolor={primaryFade(0.2)}>
+      bgcolor="#272B31"
+      padding={1}>
       {colors.map(color => {
         const isSelected = color === currentColor;
         return (
           <Box
             component="button"
             key={color}
-            onClick={() => onColorChange?.(color)}
-            border={1.5}
+            onClick={() => {
+              onColorChange?.(color);
+            }}
+            border={2}
             m={0.5}
+            p={0}
             bgcolor={color}
-            borderColor={isSelected ? '#FFFFFF' : '#000000'}
-            width={32}
-            height={32}
-            borderRadius={4}
+            boxShadow={isSelected ? 4 : 0}
+            borderColor={isSelected ? '#ffffff' : color}
+            width={42}
+            height={42}
+            borderRadius="50%"
             className="cursor-pointer"
           />
         );
       })}
+      <RandomColor
+        currentColor={currentColor}
+        onRandomClick={color => {
+          onColorChange?.(color);
+        }}></RandomColor>
     </Box>
   );
 }

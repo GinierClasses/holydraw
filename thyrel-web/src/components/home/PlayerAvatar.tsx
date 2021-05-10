@@ -1,5 +1,5 @@
 import { Box, fade, makeStyles } from '@material-ui/core';
-import ShuffleIcon from '@material-ui/icons/Shuffle';
+import ShuffleRoundedIcon from '@material-ui/icons/ShuffleRounded';
 
 type PlayerAvatarProps = {
   image: string;
@@ -16,11 +16,11 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     cursor: 'pointer',
     border: 'none',
-    width: 48,
+    width: 64,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 48,
+    height: 64,
     boxShadow: `0px 4px 1px ${fade(theme.palette.background.default, 0.8)}`,
     '&:active': {
       bottom: -4,
@@ -35,14 +35,29 @@ const useStyles = makeStyles(theme => ({
     width: 'auto',
     margin: 'auto',
   },
+  root: {
+    animation: 'float 4s infinite ease-in-out',
+  },
+  '@global': {
+    '@keyframes float': {
+      '0%': { transform: 'translateY(-10px)' },
+      '50%': { transform: 'translateY(10px)' },
+      '100%': { transform: 'translateY(-10px)' },
+    },
+  },
 }));
 
 export default function PlayerAvatar({ image, onShuffle }: PlayerAvatarProps) {
   const classes = useStyles();
   return (
-    <Box alignItems="center" width={256} position="relative" height={256}>
+    <Box
+      alignItems="center"
+      width={256}
+      position="relative"
+      height={256}
+      className={classes.root}>
       <button className={classes.button} onClick={onShuffle}>
-        <ShuffleIcon style={{ color: '#FFFFFF' }} />
+        <ShuffleRoundedIcon style={{ color: '#FFFFFF', fontSize: 32 }} />
       </button>
       <Box
         border={2}
