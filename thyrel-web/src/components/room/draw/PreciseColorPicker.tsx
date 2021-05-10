@@ -30,11 +30,7 @@ export default function PreciseColorPicker({
       <Box>
         <Box
           component="button"
-          onClick={
-            showColorPicker
-              ? () => setShowColorPicker(false)
-              : () => setShowColorPicker(true)
-          }
+          onClick={() => setShowColorPicker(prev => !prev)}
           border={2}
           m={0.5}
           p={0}
