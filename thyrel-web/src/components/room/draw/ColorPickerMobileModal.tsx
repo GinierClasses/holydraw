@@ -29,53 +29,49 @@ export default function ColorPickerMobileModal({
 }: ColorPickerMobileModalProps) {
   const classes = useStyles();
   return (
-    <Box>
-      <Dialog fullScreen onClose={() => onClose()} open={open}>
-        <Box
-          display="flex"
-          flexDirection="row"
-          maxWidth="100%"
-          justifyContent="center">
-          <Box mt={2}>
-            <Typography variant="h6">Choose a color</Typography>
-            <IconButton
-              className={classes.closeButton}
-              onClick={() => onClose()}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
+    <Dialog fullScreen onClose={() => onClose()} open={open}>
+      <Box
+        display="flex"
+        flexDirection="row"
+        maxWidth="100%"
+        justifyContent="center">
+        <Box mt={2}>
+          <Typography variant="h6">Choose a color</Typography>
+          <IconButton className={classes.closeButton} onClick={() => onClose()}>
+            <CloseIcon />
+          </IconButton>
         </Box>
-        <Box
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          justifyContent="center"
-          mt={6}
-          ml={12}
-          mr={12}>
-          {colorsMobile.map(color => {
-            const isSelected = color === currentColor;
-            return (
-              <Box
-                alignContent="center"
-                component="button"
-                key={color}
-                onClick={() => onColorChange?.(color)}
-                border={2}
-                m={0.5}
-                p={0}
-                bgcolor={color}
-                boxShadow={isSelected ? 4 : 0}
-                borderColor={isSelected ? '#ffffff' : color}
-                width={50}
-                height={50}
-                borderRadius="50%"
-                className="cursor-pointer"
-              />
-            );
-          })}
-        </Box>
-      </Dialog>
-    </Box>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="row"
+        flexWrap="wrap"
+        justifyContent="center"
+        mt={6}
+        ml={12}
+        mr={12}>
+        {colorsMobile.map(color => {
+          const isSelected = color === currentColor;
+          return (
+            <Box
+              alignContent="center"
+              component="button"
+              key={color}
+              onClick={() => onColorChange?.(color)}
+              border={2}
+              m={0.5}
+              p={0}
+              bgcolor={color}
+              boxShadow={isSelected ? 4 : 0}
+              borderColor={isSelected ? '#ffffff' : color}
+              width={50}
+              height={50}
+              borderRadius="50%"
+              className="cursor-pointer"
+            />
+          );
+        })}
+      </Box>
+    </Dialog>
   );
 }
