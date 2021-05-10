@@ -16,3 +16,24 @@ export const colors = [
   '#FEAFA8',
   '#f3a683',
 ];
+
+export const colorsMobileModal = [
+  '#7f8c8d',
+  '#000001',
+  '#ecf0f1',
+  '#bdc3c7',
+  '#00a8ff',
+  '#1e3799',
+  '#2ecc71',
+  '#009432',
+  '#FA00FF',
+  '#8E44AD',
+  '#F1C40F',
+  '#E67E22',
+  '#FEAFA8',
+  '#f3a683',
+  '#76b5c5',
+  '#9645CD',
+  '#C1CF2C',
+  '#EE090D',
+];
