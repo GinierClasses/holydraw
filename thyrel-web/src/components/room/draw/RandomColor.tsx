@@ -18,7 +18,7 @@ export default function RandomColor({
   return (
     <Box
       component="button"
-      key={randomColor}
+      key={currentColor}
       onClick={() => {
         const newRandomColor = getRandomColor();
         setRandomColor(newRandomColor);
@@ -27,14 +27,14 @@ export default function RandomColor({
       border={2}
       m={0.5}
       p={0}
-      bgcolor={randomColor}
+      bgcolor={currentColor}
       boxShadow={isSelected ? 4 : 0}
-      borderColor={isSelected ? '#ffffff' : randomColor}
+      borderColor={isSelected ? '#ffffff' : currentColor}
       width={42}
       height={42}
       borderRadius="50%"
       className="cursor-pointer">
-      <Shuffle></Shuffle>
+      <Shuffle />
     </Box>
   );
 }
