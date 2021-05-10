@@ -11,8 +11,9 @@ import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverf
 import { colors } from 'utils/app-constant';
 
 export default function Draw() {
-  const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const [color, setColor] = useState(colors[5]);
+
+  const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const [size, setSize] = useState(8);
   useDisableBodyOverflow();
   return (
@@ -36,7 +37,6 @@ export default function Draw() {
             <DrawColorPicker
               currentColor={color}
               onColorChange={color => setColor(color)}
-              flexDirection={isDeviceSM ? 'column' : 'row'}
             />
           </Box>
 
