@@ -6,10 +6,9 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import PaletteIcon from '@material-ui/icons/Palette';
 import { Box, Typography } from '@material-ui/core';
-import { colorsMobileModal } from 'utils/app-constant';
+import { colorsMobile } from 'utils/app-constant';
 
 type ColorPickerMobileModalProps = {
-  flexDirection?: 'row' | 'column';
   currentColor: string;
   onColorChange?: (color: string) => void;
 };
@@ -31,10 +30,7 @@ export default function ColorPickerMobileModal({
   const classes = useStyles();
   return (
     <Box>
-      <Button
-        onClick={() => {
-          setOpen(true);
-        }}>
+      <Button onClick={() => setOpen(true)}>
         <PaletteIcon />
       </Button>
       <Dialog fullScreen onClose={() => setOpen(false)} open={open}>
@@ -60,7 +56,7 @@ export default function ColorPickerMobileModal({
           mt={6}
           ml={12}
           mr={12}>
-          {colorsMobileModal.map(color => {
+          {colorsMobile.map(color => {
             const isSelected = color === currentColor;
             return (
               <Box
