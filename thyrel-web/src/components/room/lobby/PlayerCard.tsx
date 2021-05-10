@@ -52,6 +52,7 @@ const useStyles = makeStyles(theme => ({
   username: {
     fontFamily: 'Work Sans',
     fontSize: 20,
+    width: '100%',
     fontWeight: 'bold',
     overflow: 'hidden',
     maxWidth: 128,
