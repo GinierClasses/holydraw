@@ -1,10 +1,10 @@
+import React from 'react';
 import { Box } from '@material-ui/core';
 import { colors } from 'utils/app-constant';
 import { HexColorPicker } from 'react-colorful';
-import React from 'react';
+import RandomColor from './RandomColor';
 
 type DrawColorPickerProps = {
-  flexDirection?: 'row' | 'column';
   currentColor: string;
   onColorChange?: (color: string) => void;
 };
@@ -30,7 +30,9 @@ export default function DrawColorPicker({
           <Box
             component="button"
             key={color}
-            onClick={() => onColorChange?.(color)}
+            onClick={() => {
+              onColorChange?.(color);
+            }}
             border={2}
             m={0.5}
             p={0}
@@ -44,6 +46,11 @@ export default function DrawColorPicker({
           />
         );
       })}
+      <RandomColor
+        currentColor={currentColor}
+        onRandomClick={color => {
+          onColorChange?.(color);
+      }}></RandomColor>
       <Box
         component="button"
         onClick={
