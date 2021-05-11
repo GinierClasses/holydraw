@@ -24,7 +24,7 @@ const useStyles = makeStyles<Theme, StylesProps>(theme => ({
     height: 32,
     [theme.breakpoints.up('sm')]: {
       fontSize: 28,
-      height: 32,
+      height: 36,
     },
   },
   inputLarge: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles<Theme, StylesProps>(theme => ({
   },
   container: {
     display: 'flex',
-    padding: props => (props.variant === 'medium' ? '18px 20px' : '20px 20px'),
+    padding: props => (props.variant === 'medium' ? '16px 20px' : '20px 20px'),
     backgroundColor: props =>
       props.disabled ? '#15181F' : theme.palette.background.paper,
     cursor: props => (props.disabled ? 'not-allowed' : 'text'),

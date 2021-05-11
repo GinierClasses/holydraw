@@ -1,20 +1,26 @@
 import React from 'react';
 
-export default function useMobileHorizontalHook() {
+export default function useMobileHorizontal() {
   const [isHorizontal, setIsHorizontal] = React.useState(false);
 
   React.useEffect(() => {
     function onOrientationChange() {
-      if (
-        window.screen.orientation.angle === 90 ||
-        window.screen.orientation.angle === -90
-      ) {
+      const isSafari =
+        navigator.vendor.match(/apple/i) &&
+        !navigator.userAgent.match(/crios/i) &&
+        !navigator.userAgent.match(/fxios/i);
+
+      const angle = isSafari
+        ? window.orientation
+        : window.screen.orientation.angle;
+      if (angle === 90 || angle === -90) {
         setIsHorizontal(true);
         return;
       }
       setIsHorizontal(false);
     }
 
+    onOrientationChange();
     window.addEventListener('orientationchange', onOrientationChange);
     return () =>
       window.removeEventListener('orientationchange', onOrientationChange);

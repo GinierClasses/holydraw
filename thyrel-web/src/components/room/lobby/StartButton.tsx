@@ -39,7 +39,6 @@ export default function StartButton({
           <BigButton
             loading={isLoading}
             onClick={onStart}
-            size="medium"
             color="primary"
             startIcon={<PlayArrowRoundedIcon style={{ fontSize: 48 }} />}>
             {label}

@@ -1,12 +1,13 @@
-import { Box, fade, makeStyles } from '@material-ui/core';
+import { Box, fade, makeStyles, Theme } from '@material-ui/core';
 import ShuffleRoundedIcon from '@material-ui/icons/ShuffleRounded';
 
 type PlayerAvatarProps = {
   image: string;
   onShuffle?: () => void;
+  size?: number;
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles<Theme, { size: number }>(theme => ({
   button: {
     backgroundColor: theme.palette.primary.main,
     outline: 'none',
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     boxShadow: `0px 4px 1px ${fade(theme.palette.background.default, 0.8)}`,
   },
   img: {
-    height: 256,
+    height: props => props.size,
     width: 'auto',
     margin: 'auto',
   },
@@ -47,15 +48,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PlayerAvatar({ image, onShuffle }: PlayerAvatarProps) {
-  const classes = useStyles();
+export default function PlayerAvatar({
+  image,
+  onShuffle,
+  size = 256,
+}: PlayerAvatarProps) {
+  const classes = useStyles({ size });
   return (
-    <Box
-      alignItems="center"
-      width={256}
-      position="relative"
-      height={256}
-      className={classes.root}>
+    <Box alignItems="center" width={size} position="relative" height={size}>
       <button className={classes.button} onClick={onShuffle}>
         <ShuffleRoundedIcon style={{ color: '#FFFFFF', fontSize: 32 }} />
       </button>
@@ -64,8 +64,8 @@ export default function PlayerAvatar({ image, onShuffle }: PlayerAvatarProps) {
         display="flex"
         borderColor="primary.main"
         borderRadius="50%"
-        width={256}
-        height={256}
+        width={size}
+        height={size}
         bgcolor="background.default"
         className={classes.imgBox}>
         <img src={image} className={classes.img} alt="Avatar" />

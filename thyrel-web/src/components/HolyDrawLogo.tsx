@@ -1,4 +1,5 @@
-import { makeStyles, Theme } from '@material-ui/core';
+import { Box, makeStyles, Theme } from '@material-ui/core';
+import useMobileHorizontal from 'hooks/useMobileHorizontal';
 import HolyDrawImage from 'images/holydraw-logo.svg';
 
 const useStyles = makeStyles<Theme, { width: number }>(theme => ({
@@ -13,7 +14,24 @@ const useStyles = makeStyles<Theme, { width: number }>(theme => ({
 }));
 
 export default function HolyDrawLogo({ width = 24 }: { width?: number }) {
+  const isHorizontal = useMobileHorizontal();
+  if (isHorizontal) {
+    width = 16;
+  }
   const classes = useStyles({ width });
+
+  if (isHorizontal) {
+    return (
+      <Box position="absolute" top={2} left={8}>
+        <img
+          src={HolyDrawImage}
+          className={classes.logo}
+          alt="holy draw logo"
+        />
+      </Box>
+    );
+  }
+
   return (
     <img src={HolyDrawImage} className={classes.logo} alt="holy draw logo" />
   );

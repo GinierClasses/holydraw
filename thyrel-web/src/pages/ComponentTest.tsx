@@ -37,6 +37,9 @@ import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import { colors } from 'utils/app-constant';
 import SizePickerV2 from 'components/room/draw/SizePickerV2';
+import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
+import Button from '@material-ui/core/Button';
+import PaletteIcon from '@material-ui/icons/Palette';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -46,6 +49,7 @@ export default function ComponentTest() {
   const [size, setSize] = useState(8);
   const [size2, setSize2] = useState<number>(10);
   const [progress, setProgress] = React.useState<number>(1);
+  const [open, setOpen] = React.useState(false);
 
   const handleChange = (event: any, newValue: any) => {
     setProgress(newValue);
@@ -64,6 +68,22 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <HolyDrawLogo />
+
+        <Box>
+          <Button
+            onClick={() => {
+              setOpen(true);
+            }}>
+            <PaletteIcon />
+          </Button>
+          <ColorPickerMobileModal
+            open={open}
+            onClose={() => setOpen(false)}
+            currentColor={color}
+            onColorChange={color => setColor(color)}
+          />
+        </Box>
+
         <Box>
           <DrawColorPicker
             currentColor={color}
