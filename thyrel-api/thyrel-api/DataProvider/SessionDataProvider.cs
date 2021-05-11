@@ -89,11 +89,33 @@ namespace thyrel_api.DataProvider
                     Id = s.Id,
                     StepFinishAt = s.StepFinishAt,
                     StepType = s.StepType,
-                    TotalPlayers = s.TotalPlayers
+                    TotalPlayers = s.TotalPlayers,
+                    CurrentAlbumId = s.CurrentAlbumId
                 })
                 .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
 
             return sessionDto;
+        }
+        
+        /// <summary>
+        /// Get current session of a room
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public async Task<List<PlayerDto>> GetCurrentPlayersInSession(int roomId)
+        {
+            var playersDto = await _holyDrawDbContext.Player.Where(p => p.RoomId == roomId && p.IsPlaying)
+                .Select(p => new PlayerDto
+                {
+                    Id = p.Id,
+                    Username = p.Username,
+                    AvatarUrl = p.AvatarUrl,
+                    IsOwner = p.IsOwner,
+                    CreatedAt = p.CreatedAt,
+                    RoomId = p.RoomId
+                }).ToListAsync();
+
+            return playersDto;
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
@@ -46,6 +48,18 @@ namespace thyrel_api.Controllers
 
             var sessionDto = new SessionDto(session);
             return sessionDto;
+        }
+        
+        // Call this endpoint to get players of a room
+        // GET : api/session/players
+        [HttpGet("players")]
+        public async Task<ActionResult<List<PlayerDto>>> GetPlayersByRoom()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
+            var players = await new SessionDataProvider(_context).GetCurrentPlayersInSession((int) player.RoomId);
+            return players;
         }
 
         // Get the current session
