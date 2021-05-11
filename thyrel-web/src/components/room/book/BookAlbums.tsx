@@ -1,8 +1,7 @@
 import { Grid } from '@material-ui/core';
 import { useAlbumContext } from 'hooks/AlbumProvider';
 import { useSessionContext } from 'hooks/SessionProvider';
-import React from 'react';
-import Album from './Album';
+import Album, { AlbumSkeleton } from './Album';
 import BookStartAction from './BookStartAction';
 
 export default function BookAlbums() {
@@ -16,15 +15,19 @@ export default function BookAlbums() {
 
   return (
     <>
-      {currentAlbum && (
-        <Grid item>
+      {currentAlbum ? (
+        <Grid item className="full-width">
           <Album album={currentAlbum} />
         </Grid>
-      )}
-      {(isFinish || !currentAlbum) && (
+      ) : session?.currentAlbumId ? (
+        <AlbumSkeleton />
+      ) : null}
+      {isFinish || !currentAlbum ? (
         <Grid item>
-          <BookStartAction />
+          <BookStartAction label={session?.currentAlbumId ? 'Next' : 'Start'} />
         </Grid>
+      ) : (
+        <div></div>
       )}
     </>
   );

@@ -76,6 +76,7 @@ export default function CircleButtons({
         />
         {children.map((button, index) => (
           <CircleButton
+            key={index}
             open={open}
             spacing={spacing}
             width={width}

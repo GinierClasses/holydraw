@@ -59,6 +59,8 @@ export function SessionContextProvider({
   }
 
   React.useEffect(() => {
+    if (!websocket) return;
+
     function onMessage(event: { data: string }) {
       const websocketMessage = parseJson<WebsocketMessage>(event.data);
       if (!websocketMessage) return;
@@ -69,10 +71,8 @@ export function SessionContextProvider({
           break;
       }
     }
-    if (websocket) {
-      websocket.addEventListener('message', onMessage);
-      return () => websocket.removeEventListener('message', onMessage);
-    }
+    websocket.addEventListener('message', onMessage);
+    return () => websocket.removeEventListener('message', onMessage);
   }, [session, setSession, websocket]);
 
   React.useEffect(() => {

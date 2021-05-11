@@ -5,7 +5,7 @@ import { getToken } from 'api/player-provider';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
-export default function BookStartAction() {
+export default function BookStartAction({label}: {label?: string}) {
   const { enqueueSnackbar } = useSnackbar();
   const { player } = usePlayerContext();
   const [isLoading, setIsLoading] = useState(false);
@@ -30,5 +30,5 @@ export default function BookStartAction() {
       .finally(() => setIsLoading(false));
   }
 
-  return <StartButton onStart={onStart} isLoading={isLoading} startName="book" player={player} />;
+  return <StartButton onStart={onStart} isLoading={isLoading} startName="book" player={player} label={label} />;
 }
