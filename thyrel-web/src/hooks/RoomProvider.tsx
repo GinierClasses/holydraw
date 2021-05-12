@@ -30,6 +30,7 @@ export function RoomContextProvider({
 }: RoomSocketContextProviderProps) {
   const { room, players, updatePlayer, removePlayer, addPlayer } =
     useRoomStates();
+
   const history = useHistory();
   const { wsState, websocket } = useWebsocketContext();
   const { enqueueSnackbar } = useSnackbar();

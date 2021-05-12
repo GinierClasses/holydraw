@@ -22,8 +22,6 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const { currentElement, onSave } = useSessionContext();
-  // currentElement?.finishAt === "any string" => il a finit
-  // currentElement?.finishAt === null => il a pas finit
   const isFinish = Boolean(currentElement?.finishAt);
   const [loading, setLoading] = useState(false);
 
