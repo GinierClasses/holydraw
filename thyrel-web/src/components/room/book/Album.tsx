@@ -26,6 +26,7 @@ export default function Album({ album }: AlbumProps) {
         return (
           <Box
             display="flex"
+            key={element.id}
             mt={1}
             width="100%"
             flexDirection={isSentence ? 'row' : 'row-reverse'}>

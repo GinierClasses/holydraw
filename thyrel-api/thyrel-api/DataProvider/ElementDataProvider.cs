@@ -163,7 +163,8 @@ namespace thyrel_api.DataProvider
         public async Task<ElementStepDto> GetCurrentElement(int playerId)
         {
             var currentElement = await _holyDrawDbContext.Element
-                .OrderByDescending(e => e.Step)
+                .OrderByDescending(e => e.SessionId)
+                .ThenByDescending(e => e.Step)
                 .Where(e => e.CreatorId == playerId)
                 .Select(e => new CurrentElementDto
                 {

@@ -40,6 +40,6 @@ const BookPlayerListWithContext = () => {
   const { players } = useRoomContext();
   const { session } = useSessionContext();
   return (
-    <BookPlayerList playerId={session?.currentAlbumId} players={players} />
+    <BookPlayerList playerId={session?.albumInitiatorId} players={players} />
   );
 };

@@ -90,13 +90,14 @@ namespace thyrel_api.DataProvider
                     StepFinishAt = s.StepFinishAt,
                     StepType = s.StepType,
                     TotalPlayers = s.TotalPlayers,
-                    CurrentAlbumId = s.CurrentAlbumId
+                    AlbumInitiatorId = s.AlbumInitiatorId,
+                    BookState = s.BookState
                 })
                 .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
 
             return sessionDto;
         }
-        
+
         /// <summary>
         /// Get current session of a room
         /// </summary>
@@ -200,11 +201,12 @@ namespace thyrel_api.DataProvider
             if (session.StepType != SessionStepType.Book)
             {
                 var candidates = await elementProvider.GetNextCandidateElements(session.Id);
-                
+
                 var elements = GetNextCandidatesElements(players, candidates, nextStep, session.Id,
                     session.StepType == SessionStepType.Write ? ElementType.Sentence : ElementType.Drawing);
                 await elementProvider.AddElements(elements);
             }
+            else session.BookState = BookState.Pending;
 
             await SaveChanges();
             return session;
@@ -220,18 +222,24 @@ namespace thyrel_api.DataProvider
             var session = await _holyDrawDbContext.Session.OrderBy(e => e.CreatedAt)
                 .LastOrDefaultAsync(s => s.RoomId == roomId && s.FinishAt == null);
 
+            if (session.BookState == BookState.Pending)
+                session.BookState = BookState.Started;
+
             var creators = await _holyDrawDbContext.Element
                 .Where(e => e.SessionId == session.Id && e.Step == 1)
                 .OrderBy(e => e.CreatorId)
                 .Select(e => e.CreatorId)
                 .ToListAsync();
-            if (session.CurrentAlbumId == null)
-                session.CurrentAlbumId = creators.First();
+            if (session.AlbumInitiatorId == null)
+                session.AlbumInitiatorId = creators.First();
             else
             {
-                var prevAlbumIdIndex = creators.IndexOf((int) session.CurrentAlbumId);
+                var prevAlbumIdIndex = creators.IndexOf((int) session.AlbumInitiatorId);
                 if (prevAlbumIdIndex + 1 == creators.Count) return null;
-                session.CurrentAlbumId = creators[prevAlbumIdIndex + 1];
+                // check if we are in the last album to change state
+                if (prevAlbumIdIndex + 1 == creators.Count - 1)
+                    session.BookState = BookState.Finished;
+                session.AlbumInitiatorId = creators[prevAlbumIdIndex + 1];
             }
 
             await SaveChanges();
@@ -271,6 +279,42 @@ namespace thyrel_api.DataProvider
                 elements.Add(element);
             });
             return elements;
+        }
+
+        /// <summary>
+        /// Recovery the album in the current state
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public async Task<List<ElementAlbumDto>> AlbumRecovery(int roomId)
+        {
+            var session = await GetCurrentSessionByRoomId(roomId);
+
+            if (session.BookState == BookState.Idle || session.BookState == BookState.Pending)
+                return new List<ElementAlbumDto>();
+
+            var recoveryBook = await _holyDrawDbContext.Element
+                .Include(e => e.Creator)
+                .Select(e => new ElementAlbumDto
+                {
+                    Creator = new ElementAlbumCreatorDto
+                    {
+                        Id = e.Creator.Id,
+                        Username = e.Creator.Username,
+                        AvatarUrl = e.Creator.AvatarUrl,
+                    },
+                    Type = e.Type,
+                    DrawImage = e.DrawImage,
+                    Text = e.Text,
+                    Id = e.Id,
+                    InitiatorId = e.InitiatorId,
+                    Step = e.Step,
+                    SessionId = e.SessionId
+                }).Where(e =>
+                    e.InitiatorId <= session.AlbumInitiatorId &&
+                    e.SessionId == session.Id).ToListAsync();
+
+            return recoveryBook;
         }
 
         private async Task SaveChanges()

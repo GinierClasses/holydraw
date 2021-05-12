@@ -8,10 +8,10 @@ export default function BookAlbums() {
   const { session } = useSessionContext();
   const { albums } = useAlbumContext();
 
-  const currentAlbum = session?.currentAlbumId
-    ? albums?.[session?.currentAlbumId]
+  const currentAlbum = session?.albumInitiatorId
+    ? albums?.[session?.albumInitiatorId]
     : undefined;
-  const isFinish = currentAlbum?.length === session?.totalPlayers;
+  const isAlbumFinish = currentAlbum?.length === session?.totalPlayers;
 
   return (
     <>
@@ -19,16 +19,14 @@ export default function BookAlbums() {
         <Grid item className="full-width">
           <Album album={currentAlbum} />
         </Grid>
-      ) : session?.currentAlbumId ? (
+      ) : session?.albumInitiatorId ? (
         <AlbumSkeleton />
       ) : null}
-      {isFinish || !currentAlbum ? (
-        <Grid item>
-          <BookStartAction label={session?.currentAlbumId ? 'Next' : 'Start'} />
-        </Grid>
-      ) : (
-        <div></div>
-      )}
+      <Grid item>
+        {(isAlbumFinish || !(currentAlbum || session?.albumInitiatorId)) && (
+          <BookStartAction />
+        )}
+      </Grid>
     </>
   );
 }

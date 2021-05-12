@@ -17,8 +17,9 @@ namespace thyrel_api.Models.DTO
             ActualStep = session.ActualStep;
             StepType = session.StepType;
             RoomId = session.RoomId;
-            CurrentAlbumId = session.CurrentAlbumId;
+            AlbumInitiatorId = session.AlbumInitiatorId;
             TotalPlayers = session.TotalPlayers;
+            BookState = session.BookState;
         }
 
         public SessionDto()
@@ -33,8 +34,10 @@ namespace thyrel_api.Models.DTO
         public int ActualStep { get; set; }
         public SessionStepType StepType { get; set; }
         public int RoomId { get; set; }
-        public int? CurrentAlbumId { get; set; }
+        public int? AlbumInitiatorId { get; set; }
         public int TotalPlayers { get; set; }
+        
+        public BookState BookState { get; set; }
 
     }
 }

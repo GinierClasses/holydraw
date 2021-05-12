@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Json;
@@ -84,17 +85,27 @@ namespace thyrel_api.Controllers
             var sessionDataProvider = new SessionDataProvider(_context);
             var session = await sessionDataProvider.NextAlbum((int) player.RoomId);
 
-            if (session?.CurrentAlbumId == null) return BadRequest();
+            if (session?.AlbumInitiatorId == null) return BadRequest();
 
-            new AlbumStepTimeout((int) session.CurrentAlbumId, session.Id, _context, 1, _websocketHandler)
+            new AlbumStepTimeout((int) session.AlbumInitiatorId, session.Id, _context, 1, _websocketHandler)
                 .RunTimeout(3);
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
-                    new SessionCurrentAlbumIdUpdateEventJson(session.CurrentAlbumId)), 
+                    new SessionAlbumEventJson(session.AlbumInitiatorId, session.BookState)), 
                 session.RoomId);
 
             return Ok("success");
         }
+
+        [HttpGet("album/recovery")]
+        public async Task<ActionResult<List<ElementAlbumDto>>> AlbumRecovery()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+            
+            var sessionDataProvider = new SessionDataProvider(_context);
+            return await sessionDataProvider.AlbumRecovery((int) player.RoomId);
+        } 
     }
 }
