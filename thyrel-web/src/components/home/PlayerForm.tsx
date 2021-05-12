@@ -13,6 +13,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { Box, Grid, makeStyles } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import useMobileHorizontal from 'hooks/useMobileHorizontal';
+import { randomInt } from 'utils/utils';
 
 const useStyles = makeStyles(theme => ({
   marginButton: {
@@ -22,7 +23,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
-  const [ppIndex, setPpIndex] = React.useState(0);
+  const [ppIndex, setPpIndex] = React.useState(
+    randomInt(0, profilesPictures.length - 1),
+  );
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();

@@ -269,11 +269,16 @@ namespace thyrel_api.DataProvider
 
                 // choose an prev element that has not yet been chosen by another player.
                 var candidate = candidates
-                    .LastOrDefault(c =>
+                    .OrderBy(c => player.Id > c.InitiatorId)
+                    .ThenBy(c => c.InitiatorId)
+                    .FirstOrDefault(c =>
                         elements.All(e => e.InitiatorId != c.InitiatorId) &&
                         bannedCandidates.All(e => e.InitiatorId != c.InitiatorId));
                 if (candidate == null)
+                {
+                    Console.WriteLine("Prod Debug: No element candidate valid.");
                     throw new Exception("No element candidate valid.");
+                }
 
                 var element = new Element(nextStep, player.Id, candidate.InitiatorId, sessionId, type);
                 elements.Add(element);

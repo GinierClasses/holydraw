@@ -15,9 +15,13 @@ export default function Album({ album }: AlbumProps) {
   return (
     <Box
       display="flex"
+      border={2}
+      borderColor="custom.main"
+      borderRadius={32}
       flexDirection="column"
       width="100%"
-      p={2}
+      height="100%"
+      p={{ xs: 1, sm: 2 }}
       minHeight={400}
       alignItems="center">
       <Typography variant="h4">{album[0].creator?.username}'s album</Typography>

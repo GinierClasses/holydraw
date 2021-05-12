@@ -1,8 +1,7 @@
 import BookPlayerList from 'components/room/book/BookPlayerList';
 import { Container, Grid, Typography, Box } from '@material-ui/core';
-import { useRoomContext } from 'hooks/RoomProvider';
 import BookAlbums from 'components/room/book/BookAlbums';
-import { AlbumContextProvider } from 'hooks/AlbumProvider';
+import { AlbumContextProvider, useAlbumContext } from 'hooks/AlbumProvider';
 import { useSessionContext } from 'hooks/SessionProvider';
 
 export default function Book() {
@@ -37,7 +36,7 @@ export default function Book() {
 }
 
 const BookPlayerListWithContext = () => {
-  const { players } = useRoomContext();
+  const { players } = useAlbumContext();
   const { session } = useSessionContext();
   return (
     <BookPlayerList playerId={session?.albumInitiatorId} players={players} />

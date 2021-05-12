@@ -114,7 +114,7 @@ namespace thyrel_api.DataProvider
             {
                 element.FinishAt = null;
             }
-            
+
             await SaveChanges();
             return element;
         }
@@ -180,25 +180,21 @@ namespace thyrel_api.DataProvider
                 })
                 .FirstAsync();
 
-            ElementDto parentElement = null;
 
-            if (currentElement.Step != 1)
-            {
-                parentElement = await _holyDrawDbContext.Element
-                    .OrderByDescending(e => e.Step)
-                    .Where(e => e.InitiatorId == currentElement.InitiatorId && e.Step == currentElement.Step - 1)
-                    .Select(e => new ElementDto
-                    {
-                        Id = e.Id,
-                        Text = e.Text,
-                        DrawImage = e.DrawImage
-                    })
-                    .FirstAsync();
-            }
+            if (currentElement.Step == 1) return new ElementStepDto(currentElement);
 
-            var result = new ElementStepDto(currentElement, parentElement);
-
-            return result;
+            var parentElement = await _holyDrawDbContext.Element
+                .OrderByDescending(e => e.SessionId)
+                .ThenByDescending(e => e.Step)
+                .Where(e => e.InitiatorId == currentElement.InitiatorId && e.Step == currentElement.Step - 1)
+                .Select(e => new ElementDto
+                {
+                    Id = e.Id,
+                    Text = e.Text,
+                    DrawImage = e.DrawImage
+                })
+                .FirstAsync();
+            return new ElementStepDto(currentElement, parentElement);
         }
 
         /// <summary>
@@ -209,7 +205,9 @@ namespace thyrel_api.DataProvider
         public async Task<List<ElementCandidateDto>> GetNextCandidateElements(int sessionId)
         {
             var elements = await _holyDrawDbContext.Element
-                .Where(e => e.SessionId == sessionId).Select(e => new ElementCandidateDto
+                .OrderBy(e => e.InitiatorId)
+                .Where(e => e.SessionId == sessionId)
+                .Select(e => new ElementCandidateDto
                 {
                     Id = e.Id,
                     Step = e.Step,

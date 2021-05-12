@@ -9,9 +9,12 @@ import Player from 'types/Player.type';
 
 type AlbumContextProps = {
   albums?: Record<number, HolyElement[]>;
+  players: Player[];
 };
 
-const AlbumContext = React.createContext<AlbumContextProps>({});
+const AlbumContext = React.createContext<AlbumContextProps>({
+  players: [],
+});
 
 type AlbumContextProviderProps = { children: React.ReactElement };
 
