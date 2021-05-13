@@ -1,4 +1,4 @@
-import { SessionState } from 'node:http2';
+import { Session } from 'inspector';
 import Player from 'types/Player.type';
 import { HolyElement } from './HolyElement.type';
 
@@ -31,6 +31,6 @@ export type WebsocketMessage = {
   player?: Player;
   playerId?: number;
   album?: HolyElement;
-  session?: Partial<SessionState>;
+  session?: Partial<Session>;
   error?: string;
 };
