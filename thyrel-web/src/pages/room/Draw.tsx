@@ -1,65 +1,24 @@
-import { Box, useMediaQuery } from '@material-ui/core';
-import DirectiveLabel from 'components/room/DirectiveLabel';
-import DrawColorPicker from 'components/room/draw/DrawColorPicker';
-import SizePicker from 'components/room/draw/SizePicker';
-import GameLayout from 'components/room/GameLayout';
-import GameCanvas from 'components/room/draw/GameCanvas';
-import { useState } from 'react';
+import { useMediaQuery } from '@material-ui/core';
 import theme from 'theme';
-import { useSessionContext } from 'hooks/SessionProvider';
-import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
-import { colors } from 'utils/app-constant';
+import DrawDesktop from 'components/room/draw/DrawDesktop';
+import useMobileHorizontal from 'hooks/useMobileHorizontal';
+import DrawMobileHorizontal from 'components/room/draw/DrawMobileHorizontal';
+import DrawMobileVertical from 'components/room/draw/DrawMobileVertical';
 
 export default function Draw() {
-  const [color, setColor] = useState(colors[5]);
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
-  const [size, setSize] = useState(8);
-  useDisableBodyOverflow();
-  return (
-    <GameLayout maxWidth="md">
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gridGap={16}>
-        <Box width="100%" maxWidth={682}>
-          <CurrentDirectiveLabel />
-        </Box>
-
-        <Box
-          display="flex"
-          width="100%"
-          justifyContent={{ xs: 'center', sm: 'auto' }}
-          flexDirection={{ xs: 'column', sm: 'row' }}
-          gridGap={16}>
-          <Box order={{ xs: 1, sm: 0 }}>
-            <DrawColorPicker
-              currentColor={color}
-              onColorChange={color => setColor(color)}
-            />
-          </Box>
-
-          <GameCanvas size={size} color={color} />
-          <Box order={{ xs: 2, sm: 0 }}>
-            <SizePicker
-              currentSize={size}
-              onSizeChange={size => setSize(size)}
-              flexDirection={isDeviceSM ? 'column' : 'row'}
-            />
-          </Box>
-        </Box>
-      </Box>
-    </GameLayout>
-  );
+  if (isDesktop) {
+    return <DrawDesktop />;
+  }
+  return <DrawMobile />;
 }
 
-function CurrentDirectiveLabel() {
-  const { currentElement } = useSessionContext();
-  return (
-    <DirectiveLabel
-      directive="Time to Draw"
-      sentence={currentElement?.parent?.text}
-    />
-  );
+function DrawMobile() {
+  const isHorizontal = useMobileHorizontal();
+
+  if (isHorizontal) {
+    return <DrawMobileHorizontal />;
+  }
+  return <DrawMobileVertical />;
 }

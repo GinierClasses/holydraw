@@ -17,28 +17,31 @@ import { LineType } from 'types/canvas.types';
 
 export default function CanvasActionButtons() {
   return (
-    <Box display="flex" flexDirection="row">
-      <OnClearAction>
-        <IconButton>
-          <Tooltip title="hotkey: C">
-            <DeleteIcon />
-          </Tooltip>
-        </IconButton>
-      </OnClearAction>
-      <OnUndoAction>
-        <IconButton>
-          <Tooltip title="CMD + Z">
-            <UndoIcon />
-          </Tooltip>
-        </IconButton>
-      </OnUndoAction>
-      <OnRedoAction>
-        <IconButton>
-          <Tooltip title="CMD + SHIFT + Z">
-            <RedoIcon />
-          </Tooltip>
-        </IconButton>
-      </OnRedoAction>
+    <Box display="flex" flexDirection="row" justifyContent="space-between">
+      <CanvasLineTypeButton />
+      <Box display="flex" alignItems="center">
+        <OnClearAction>
+          <IconButton>
+            <Tooltip title="hotkey: C">
+              <DeleteIcon />
+            </Tooltip>
+          </IconButton>
+        </OnClearAction>
+        <OnUndoAction>
+          <IconButton>
+            <Tooltip title="CMD + Z">
+              <UndoIcon />
+            </Tooltip>
+          </IconButton>
+        </OnUndoAction>
+        <OnRedoAction>
+          <IconButton>
+            <Tooltip title="CMD + SHIFT + Z">
+              <RedoIcon />
+            </Tooltip>
+          </IconButton>
+        </OnRedoAction>
+      </Box>
     </Box>
   );
 }

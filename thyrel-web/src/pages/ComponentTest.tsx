@@ -232,10 +232,7 @@ export default function ComponentTest() {
           max={7}
         />
 
-        <SizePickerV2
-          size={size2}
-          onSizeChange={(e, value) => setSize2(value)}
-        />
+        <SizePickerV2 size={size2} onSizeChange={value => setSize2(value)} />
 
         <Box
           bgcolor="#C6C6C6"
