@@ -26,6 +26,7 @@ export function PlayerContextProvider({
   const history = useHistory();
 
   React.useEffect(() => {
+    if (!websocket || !player) return;
     function onMessage(event: { data: string }) {
       const websocketMessage = parseJson<WebsocketMessage>(event.data);
       if (!websocketMessage) return;
@@ -38,10 +39,8 @@ export function PlayerContextProvider({
           break;
       }
     }
-    if (websocket && player) {
-      websocket.addEventListener('message', onMessage);
-      return () => websocket.removeEventListener('message', onMessage);
-    }
+    websocket.addEventListener('message', onMessage);
+    return () => websocket.removeEventListener('message', onMessage);
   }, [player, websocket]);
 
   React.useEffect(() => {

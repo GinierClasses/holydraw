@@ -99,7 +99,7 @@ namespace thyrel_api.Controllers
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
-                    new BaseWebsocketEventJson(WebsocketEvent.SessionRestart)), player.RoomId);
+                    new BaseWebsocketEventJson(WebsocketEvent.Restart)), player.RoomId);
 
             return Ok();
         }

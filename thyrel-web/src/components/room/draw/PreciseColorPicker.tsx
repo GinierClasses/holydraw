@@ -4,7 +4,7 @@ import { HexColorPicker } from 'react-colorful';
 
 type PreciseColorPickerProps = {
   currentColor: string;
-  onColorChange?: (color: string) => void;
+  onColorChange: (color: string) => void;
 };
 
 const useStyles = makeStyles(theme => ({
@@ -19,7 +19,12 @@ export default function PreciseColorPicker({
   currentColor,
   onColorChange,
 }: PreciseColorPickerProps) {
+  const [color, setColor] = React.useState(currentColor);
   const [showColorPicker, setShowColorPicker] = React.useState(false);
+
+  React.useEffect(() => {
+    setColor(currentColor);
+  }, [currentColor]);
 
   const handleClickAway = () => {
     setShowColorPicker(false);
@@ -34,9 +39,9 @@ export default function PreciseColorPicker({
           border={2}
           m={0.5}
           p={0}
-          bgcolor={currentColor}
+          bgcolor={color}
           boxShadow={showColorPicker ? 4 : 0}
-          borderColor={showColorPicker ? '#ffffff' : currentColor}
+          borderColor={showColorPicker ? '#ffffff' : color}
           width={92}
           height={42}
           borderRadius={21}
@@ -44,7 +49,11 @@ export default function PreciseColorPicker({
         />
         {showColorPicker && (
           <Box height={20} position="absolute" className={classes.container}>
-            <HexColorPicker color={currentColor} onChange={onColorChange} />
+            <HexColorPicker
+              color={color}
+              onMouseUp={() => onColorChange(color)}
+              onChange={setColor}
+            />
           </Box>
         )}
       </Box>
