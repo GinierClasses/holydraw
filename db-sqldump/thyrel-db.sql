@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Apr 21, 2021 at 10:46 AM
+-- Generation Time: May 13, 2021 at 11:16 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.13
 
@@ -98,11 +98,25 @@ INSERT INTO `Player` (`Id`, `Username`, `AvatarUrl`, `IsOwner`, `DisableAt`, `Cr
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `Reaction`
+--
+
+CREATE TABLE `Reaction` (
+  `Id` int NOT NULL,
+  `ElementId` int DEFAULT NULL,
+  `PlayerId` int DEFAULT NULL,
+  `Emoji` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Room`
 --
 
 CREATE TABLE `Room` (
   `Id` int NOT NULL,
+  `Mode` int DEFAULT NULL,
   `FinishAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Identifier` varchar(255) NOT NULL
@@ -112,9 +126,9 @@ CREATE TABLE `Room` (
 -- Dumping data for table `Room`
 --
 
-INSERT INTO `Room` (`Id`, `FinishAt`, `CreatedAt`, `Identifier`) VALUES
-(23, NULL, '2021-02-17 11:38:58', 'Vy0nWtXyTJ7JipVz'),
-(24, '2021-04-21 08:35:32', '2021-04-21 08:29:40', 'Q56hteDtu5IK');
+INSERT INTO `Room` (`Id`, `Mode`, `FinishAt`, `CreatedAt`, `Identifier`) VALUES
+(23, NULL, NULL, '2021-02-17 11:38:58', 'Vy0nWtXyTJ7JipVz'),
+(24, NULL, '2021-04-21 08:35:32', '2021-04-21 08:29:40', 'Q56hteDtu5IK');
 
 -- --------------------------------------------------------
 
@@ -188,6 +202,14 @@ ALTER TABLE `Player`
   ADD KEY `fk_tokenid` (`TokenId`);
 
 --
+-- Indexes for table `Reaction`
+--
+ALTER TABLE `Reaction`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `fk_element_id_reaction` (`ElementId`),
+  ADD KEY `fk_player_id_reaction` (`PlayerId`);
+
+--
 -- Indexes for table `Room`
 --
 ALTER TABLE `Room`
@@ -225,6 +247,12 @@ ALTER TABLE `Player`
   MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT for table `Reaction`
+--
+ALTER TABLE `Reaction`
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `Room`
 --
 ALTER TABLE `Room`
@@ -260,6 +288,13 @@ ALTER TABLE `Element`
 ALTER TABLE `Player`
   ADD CONSTRAINT `fk_roomid_player` FOREIGN KEY (`RoomId`) REFERENCES `Room` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `fk_tokenid_player` FOREIGN KEY (`TokenId`) REFERENCES `Token` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `Reaction`
+--
+ALTER TABLE `Reaction`
+  ADD CONSTRAINT `fk_element_id_reaction` FOREIGN KEY (`ElementId`) REFERENCES `Element` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `fk_player_id_reaction` FOREIGN KEY (`PlayerId`) REFERENCES `Player` (`Id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `Session`
