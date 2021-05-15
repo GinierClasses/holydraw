@@ -109,11 +109,11 @@ namespace test_thyrel_api
 
             await _roomController.Restart();
 
-            var playerRestarted = Context.Player.FirstOrDefault(p => p.Id == player.Id);
+            var playerRestarted = Context.Player.First(p => p.Id == player.Id);
             //assert the same player is not playing anymore
             Assert.IsFalse(playerRestarted.IsPlaying);
 
-            var session = Context.Session.FirstOrDefault(s => s.RoomId == room.Id);
+            var session = Context.Session.First(s => s.RoomId == room.Id);
             //assert the session of the room is finished
             Assert.IsNotNull(session.FinishAt);
         }

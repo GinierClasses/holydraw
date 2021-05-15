@@ -24,40 +24,33 @@ export default function Lobby() {
       flexDirection="column"
       height="100vh"
       alignItems="center"
-      width="100%">
+      justifyContent="space-between"
+      width="100%"
+      pb={2}>
       <Box mb={2} width="100%" display="flex" justifyContent="center">
         <HolyDrawLogo width={20} />
       </Box>
       <Box
         display="flex"
-        justifyContent="space-between"
-        width="100%"
-        m={3}
-        height="100vh"
-        alignItems="center"
-        flexDirection="column">
+        flexDirection="column"
+        bgcolor="background.paper"
+        maxWidth={656}
+        borderRadius={16}
+        py={1}
+        px={2}
+        alignItems="flex-end"
+        width="100%">
+        <PlayerCountBox />
         <Box
           display="flex"
-          flexDirection="column"
-          bgcolor="background.paper"
-          maxWidth={656}
-          borderRadius={16}
-          py={1}
-          px={2}
-          alignItems="flex-end"
-          width="100%">
-          <PlayerCountBox />
-          <Box
-            display="flex"
-            justifyContent="space-around"
-            width="100%"
-            className={classes.playersContainer}>
-            <SettingsMenu />
-            <Players />
-          </Box>
+          justifyContent="space-around"
+          width="100%"
+          className={classes.playersContainer}>
+          <SettingsMenu />
+          <Players />
         </Box>
-        <LobbyStartButton />
       </Box>
+      <LobbyStartButton />
     </Box>
   );
 }

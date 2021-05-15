@@ -33,7 +33,9 @@ namespace thyrel_api.Models
         public SessionStepType StepType { get; set; }
         public int TotalPlayers { get; set; }
 
-        public int? CurrentAlbumId { get; set; }
+        public int? AlbumInitiatorId { get; set; }
+        
+        public BookState BookState { get; set; }
 
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
@@ -55,7 +57,7 @@ namespace thyrel_api.Models
             await websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
                     new SessionWebsocketEventJson(WebsocketEvent.SessionUpdate, ActualStep,
-                        StepType, StepFinishAt, TimeDuration, 0)), RoomId);
+                        StepType, StepFinishAt, TimeDuration, 0, BookState)), RoomId);
         }
     }
 }

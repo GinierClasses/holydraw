@@ -81,20 +81,21 @@ namespace test_thyrel_api
             await Context.SaveChangesAsync();
 
             var elementsCount = await Context.Element
-                .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null).CountAsync();
+                .Where(e => e.SessionId == session.Id && e.Step == session.ActualStep && e.FinishAt != null)
+                .CountAsync();
 
             var result = await _sessionDataProvider.GetPlayerStatus(session);
 
             Assert.AreEqual(result.PlayerCount, playersCount);
             Assert.AreEqual(result.PlayerFinished, elementsCount);
-
         }
 
         [Test]
         public async Task RunStartSession()
         {
             var room = await Context.Room.LastAsync();
-            var expectedElementCount = Context.Element.Count() + (await _playerDataProvider.GetPlayersByRoom(room.Id)).Count;
+            var expectedElementCount =
+                Context.Element.Count() + (await _playerDataProvider.GetPlayersByRoom(room.Id)).Count;
             var sessionsCount = Context.Session.Count();
 
             await _sessionDataProvider.StartSession(room.Id);
@@ -120,7 +121,7 @@ namespace test_thyrel_api
             Assert.AreEqual(sessionStep + 1, editedSession.ActualStep);
             Assert.AreEqual(session.StepType, SessionStepType.Draw);
         }
-        
+
         [Test]
         public async Task RunNextStepSessionTestOnLastStep()
         {
@@ -129,7 +130,7 @@ namespace test_thyrel_api
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).ToList();
             session.ActualStep = players.Count;
             await Context.SaveChangesAsync();
-            
+
             var sessionStep = session.ActualStep;
             var elementsCount = Context.Element.Count(e => e.SessionId == session.Id);
             await _sessionDataProvider.NextStep(session);
@@ -148,7 +149,8 @@ namespace test_thyrel_api
             var players = Context.Player
                 .Where(p => p.RoomId == session.RoomId && p.IsPlaying).ToList();
             var elements = await new ElementDataProvider(Context).GetNextCandidateElements(session.Id);
-            var elementsCreated = _sessionDataProvider.GetNextCandidatesElements(players, elements, session.ActualStep + 1, session.Id, ElementType.Drawing);
+            var elementsCreated = _sessionDataProvider.GetNextCandidatesElements(players, elements,
+                session.ActualStep + 1, session.Id, ElementType.Drawing);
             Assert.AreEqual(elementsCreated.Count, players.Count);
             Assert.AreEqual(elementsCreated.First().Type, ElementType.Drawing);
             Assert.AreEqual(elementsCreated.First().Step, session.ActualStep + 1);
@@ -161,25 +163,74 @@ namespace test_thyrel_api
         public async Task GetNextAlbum()
         {
             var session = await Context.Session.FirstAsync();
-            Assert.IsNull(session.CurrentAlbumId);
-            
+            Assert.IsNull(session.AlbumInitiatorId);
+
             var creatorsId = await Context.Element
                 .Where(e => e.SessionId == session.Id && e.Step == 1)
                 .OrderBy(e => e.CreatorId)
                 .Select(e => e.CreatorId)
                 .ToListAsync();
-            
+
             // try the current album id for each possibilities
             foreach (var creatorId in creatorsId)
             {
                 var updatedSession = await _sessionDataProvider.NextAlbum(session.RoomId);
-                Assert.AreEqual(creatorId, updatedSession.CurrentAlbumId);
+                Assert.AreEqual(creatorId, updatedSession.AlbumInitiatorId);
             }
-            
+
             // try to update Session but it's was the last creator
             var updatedSession2 = await _sessionDataProvider.NextAlbum(session.RoomId);
             Assert.AreEqual(null, updatedSession2);
         }
 
+        [Test]
+        public async Task GetCurrentPlayersInSessionTest()
+        {
+            const int roomId = 1;
+            var noPlayingPlayers = await _sessionDataProvider.GetCurrentPlayersInSession(roomId);
+            Assert.IsEmpty(noPlayingPlayers);
+
+            await _playerDataProvider.SetIsPlaying(roomId);
+            var playersBefore = await _sessionDataProvider.GetCurrentPlayersInSession(roomId);
+
+            var notPlayingPlayer = Context.Player.First(p => p.RoomId == roomId);
+            notPlayingPlayer.IsPlaying = false;
+            await Context.SaveChangesAsync();
+
+            var playersAfter = await _sessionDataProvider.GetCurrentPlayersInSession(roomId);
+
+            Assert.AreEqual(playersBefore.Count - 1, playersAfter.Count);
+
+            var count = Context.Player.Count(p => p.RoomId == roomId && p.IsPlaying);
+            Assert.AreEqual(count, playersAfter.Count);
+        }
+
+        [Test]
+        public async Task AlbumRecoveryTest()
+        {
+            const int roomId = 1;
+            var session = Context.Session.First(s => s.RoomId == roomId);
+
+            session.BookState = BookState.Idle;
+            await Context.SaveChangesAsync();
+            var emptyRecovery = await _sessionDataProvider.AlbumRecovery(roomId);
+            Assert.IsEmpty(emptyRecovery);
+
+            session.BookState = BookState.Pending;
+            await Context.SaveChangesAsync();
+            var emptyRecovery2 = await _sessionDataProvider.AlbumRecovery(roomId);
+            Assert.IsEmpty(emptyRecovery2);
+
+            session.BookState = BookState.Started;
+            var players = Context.Player.Where(s => s.RoomId == roomId).ToList();
+            session.AlbumInitiatorId = players[1].Id;
+            await Context.SaveChangesAsync();
+            var recovery = await _sessionDataProvider.AlbumRecovery(roomId);
+
+            var expected =
+                Context.Element.Count(e => e.InitiatorId <= session.AlbumInitiatorId && e.SessionId == session.Id);
+
+            Assert.AreEqual(expected, recovery.Count);
+        }
     }
 }

@@ -34,7 +34,6 @@ export default function ButtonModalJoin({
         fullWidth
         loading={loading}
         className={className}
-        size="medium"
         color={urlIdentifier ? 'primary' : 'default'}
         onClick={() =>
           urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
