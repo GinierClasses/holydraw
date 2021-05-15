@@ -1,7 +1,7 @@
 import { Box, useMediaQuery } from '@material-ui/core';
 import DirectiveLabel from 'components/room/DirectiveLabel';
-import DrawColorPicker from 'components/room/draw/DrawColorPicker';
-import SizePicker from 'components/room/draw/SizePicker';
+import DrawColorPicker from 'components/room/draw/desktop/DesktopColorPicker';
+import SizePicker from 'components/room/draw/desktop/SizePicker';
 import GameLayout from 'components/room/GameLayout';
 import GameCanvas from 'components/room/draw/GameCanvas';
 import { useState } from 'react';

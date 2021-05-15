@@ -1,15 +1,15 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { colors } from 'utils/app-constant';
-import RandomColor from './RandomColor';
-import PreciseColorPicker from './PreciseColorPicker';
+import RandomColor from '../RandomColor';
+import PreciseColorPicker from '../PreciseColorPicker';
 
 type DrawColorPickerProps = {
   currentColor: string;
   onColorChange?: (color: string) => void;
 };
 
-export default function DrawColorPicker({
+export default function DesktopColorPicker({
   currentColor,
   onColorChange,
 }: DrawColorPickerProps) {

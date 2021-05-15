@@ -9,8 +9,8 @@ import StepTimer from '../components/room/StepTimer';
 import profilesPictures from '../images/profiles/profiles-pictures';
 import DirectiveLabel from '../components/room/DirectiveLabel';
 import PlayerAvatar from '../components/home/PlayerAvatar';
-import DrawColorPicker from '../components/room/draw/DrawColorPicker';
-import SizePicker from '../components/room/draw/SizePicker';
+import DesktopColorPicker from '../components/room/draw/desktop/DesktopColorPicker';
+import SizePicker from '../components/room/draw/desktop/SizePicker';
 import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
 import BookPlayerList from '../components/room/book/BookPlayerList';
 import ButtonModalJoin from '../components/home/ButtonModalJoin';
@@ -36,7 +36,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import { colors } from 'utils/app-constant';
-import SizePickerV2 from 'components/room/draw/SizePickerV2';
+import SizePickerV2 from 'components/room/draw/desktop/SizePickerV2';
 import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
 import Button from '@material-ui/core/Button';
 import PaletteIcon from '@material-ui/icons/Palette';
@@ -85,7 +85,7 @@ export default function ComponentTest() {
         </Box>
 
         <Box>
-          <DrawColorPicker
+          <DesktopColorPicker
             currentColor={color}
             onColorChange={color => setColor(color)}
           />
@@ -146,7 +146,7 @@ export default function ComponentTest() {
                 </OnRedoAction>
               </Box>
 
-              <DrawColorPicker
+              <DesktopColorPicker
                 currentColor={color}
                 onColorChange={color => setColor(color)}
               />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Coordinate, Line, LineType } from 'types/canvas.types';
 
 export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
@@ -21,9 +22,8 @@ export const rerenderDraw = (canvas: HTMLCanvasElement, lines: Line[]) => {
           line.points.forEach(coordinate => {
             positionCopy.push(coordinate);
             if (positionCopy.length > 3) {
-              const { controlPoint, endPoint } = getQuadraticCurveCoordinates(
-                positionCopy,
-              );
+              const { controlPoint, endPoint } =
+                getQuadraticCurveCoordinates(positionCopy);
 
               drawCanvasLine(context, line, {
                 beginPosition: currentPosition,
@@ -87,9 +87,7 @@ export const drawCanvasLine = (
   ctx.closePath();
 };
 
-export function getQuadraticCurveCoordinates(
-  positions: Coordinate[],
-): {
+export function getQuadraticCurveCoordinates(positions: Coordinate[]): {
   controlPoint: Coordinate;
   endPoint: Coordinate;
 } {
@@ -109,6 +107,14 @@ export const getCoordinates = (
   canvas?: HTMLCanvasElement | null,
 ): Coordinate | undefined => {
   if (!canvas) return;
+  console.log(
+    'Coord',
+    event.pageX,
+    canvas.offsetLeft,
+    canvasScale,
+    event.pageX - canvas.offsetLeft,
+    event.pageX - canvas.offsetLeft * canvasScale,
+  );
   return {
     x: (event.pageX - canvas.offsetLeft) * canvasScale,
     y: (event.pageY - canvas.offsetTop) * canvasScale,
@@ -138,6 +144,7 @@ const getStartColor = (
   colorLayer: Uint8ClampedArray,
 ): Color => {
   const startCoordinate = (coordinate.y * width + coordinate.x) * 4;
+  console.log(coordinate);
   return {
     r: colorLayer[startCoordinate],
     g: colorLayer[startCoordinate + 1],
@@ -154,8 +161,10 @@ export function fillCanvas(
   const context = canvas?.getContext('2d');
   if (!context) return;
 
+  // console.log(coordinate.y, canvas.width, coordinate.x);
   const colorLayer = context.getImageData(0, 0, canvas.width, canvas.height);
   const startColor = getStartColor(coordinate, canvas.width, colorLayer.data);
+  console.log('Startcolor', startColor);
   const endColor = hexToRgb(color);
 
   // can not possible to fill a point alredy with the endcolor
@@ -193,7 +202,7 @@ export function fillCanvas(
   // and add the pixel on the right or left in pixelStack if it's not the same color
   const pixelStack = [coordinate];
 
-  const colorCanvasWidth = canvas.width * 4;
+  const colorCanvasWidth = Math.round(canvas.width * 4);
   while (pixelStack.length) {
     const newCoordinate = pixelStack.pop();
     if (!newCoordinate) return;
@@ -202,8 +211,9 @@ export function fillCanvas(
     // ooooo - width is 4
     // oooxo - `x` coordinate is 3, 1
     // ooooo - so 1 * 4 + 3 = 8, is the place of `x`
-    let currentPosition =
-      (newCoordinate.y * canvas.width + newCoordinate.x) * 4;
+    let currentPosition = Math.round(
+      (newCoordinate.y * canvas.width + newCoordinate.x) * 4,
+    );
     let y = newCoordinate.y;
 
     // find the toppest position with the same color

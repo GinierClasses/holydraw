@@ -7,7 +7,7 @@ type PreciseColorPickerProps = {
   onColorChange: (color: string) => void;
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   container: {
     '& .$react-colorful': {
       height: 100,

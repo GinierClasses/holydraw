@@ -26,7 +26,7 @@ export default function RandomColor({
       }}
       border={2}
       m={0.5}
-      p={0}
+      pt={0.5}
       bgcolor={currentColor}
       boxShadow={isSelected ? 4 : 0}
       borderColor={isSelected ? '#ffffff' : currentColor}

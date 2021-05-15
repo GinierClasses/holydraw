@@ -1,26 +1,40 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { useSessionContext } from 'hooks/SessionProvider';
-import DrawColorPicker from './DrawColorPicker';
+import DesktopColorPicker from './DesktopColorPicker';
 import SizePickerV2 from './SizePickerV2';
 import { colors } from 'utils/app-constant';
-import DirectiveLabel from '../DirectiveLabel';
+import DirectiveLabel from '../../DirectiveLabel';
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
 import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import CanvasActionButtons from './CanvasActionButtons';
 
-export default function DrawDesktop() {
+export default function DrawDesktopCanvas() {
   const [color, setColor] = React.useState(colors[5]);
   const [size, setSize] = React.useState(8);
+  const { onSave } = useSessionContext();
 
   return (
-    <Box display="flex" justifyContent="center">
-      <DrawColorPicker currentColor={color} onColorChange={setColor} />
-      <Box display="flex" flexDirection="column">
-        <CurrentDirectiveLabel />
+    <Box
+      display="flex"
+      justifyContent="center"
+      width="100%"
+      alignItems="center">
+      <DesktopColorPicker currentColor={color} onColorChange={setColor} />
+      <Box display="flex" flexDirection="column" mx={2}>
+        <Box mb={2}>
+          <CurrentDirectiveLabel />
+        </Box>
         <DrawingCanvasProvider color={color} lineSize={size} disabled={false}>
-          <DrawingCanvas />
-          <CanvasActionButtons />
+          <Box width={768}>
+            <DrawingCanvas />
+          </Box>
+          <CanvasActionButtons
+            onSave={canvasImage => {
+              if (!canvasImage) return;
+              onSave(canvasImage);
+            }}
+          />
         </DrawingCanvasProvider>
       </Box>
       <Box>

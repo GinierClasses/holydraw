@@ -27,43 +27,37 @@ export function DrawingCanvasProvider({
   const [isPainting, setIsPainting] = React.useState(false);
 
   const onResize = React.useCallback(() => {
-    const newWidth = canvasRef.current?.parentElement?.parentElement?.getBoundingClientRect()
-      .width;
+    const newWidth =
+      canvasRef.current?.parentElement?.parentElement?.getBoundingClientRect()
+        .width;
     if (!newWidth || newWidth < 64) return;
 
-    const scale = 1024 / newWidth;
     const newHeight = newWidth / ratio;
     const border = newWidth < 400 ? 2 : 4;
     const noUpdateRange = 1;
 
+    const newWidthWitoutBorder = newWidth - border * 2;
     if (
-      newWidth - noUpdateRange > currentSize.width ||
-      newWidth + noUpdateRange < currentSize.width
+      newWidthWitoutBorder - noUpdateRange > currentSize.width ||
+      newWidthWitoutBorder + noUpdateRange < currentSize.width
     ) {
       setCurrentSize({
-        width: newWidth - border * 2,
+        width: newWidthWitoutBorder,
         height: newHeight - border * 2,
         border,
-        scale,
+        scale: 2,
       });
     }
   }, [currentSize.width]);
 
-  const {
-    paint,
-    create,
-    addLastLine,
-    clear,
-    undo,
-    refresh,
-    redo,
-  } = useCanvasPaint({
-    color,
-    size: lineSize,
-    canvasRef,
-    scale: currentSize.scale,
-    lineType,
-  });
+  const { paint, create, addLastLine, clear, undo, refresh, redo } =
+    useCanvasPaint({
+      color,
+      size: lineSize,
+      canvasRef,
+      scale: currentSize.scale,
+      lineType,
+    });
 
   const onMouseDown = React.useCallback(
     (event: MouseEvent, isNewLine: boolean = true) => {
@@ -129,8 +123,10 @@ export function DrawingCanvasProvider({
 
     canvas.width = currentSize.width * currentSize.scale;
     canvas.height = currentSize.height * currentSize.scale;
+    console.log(canvas.width, canvas.height);
+
     refresh();
-  }, [canvasRef, refresh, currentSize]);
+  }, [canvasRef, refresh, currentSize, onResize]);
 
   const values = React.useMemo(
     () => ({
