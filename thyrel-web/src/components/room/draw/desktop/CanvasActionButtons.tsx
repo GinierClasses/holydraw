@@ -142,7 +142,7 @@ export function CanvasLineTypeButton() {
 
   return (
     <CircleButtons
-      circleBg="none"
+      circleBg="border"
       spacing={1}
       action={open => (
         <ActionButton ml={0} title={open ? 'Close' : 'Open'}>

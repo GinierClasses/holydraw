@@ -107,14 +107,7 @@ export const getCoordinates = (
   canvas?: HTMLCanvasElement | null,
 ): Coordinate | undefined => {
   if (!canvas) return;
-  console.log(
-    'Coord',
-    event.pageX,
-    canvas.offsetLeft,
-    canvasScale,
-    event.pageX - canvas.offsetLeft,
-    event.pageX - canvas.offsetLeft * canvasScale,
-  );
+
   return {
     x: (event.pageX - canvas.offsetLeft) * canvasScale,
     y: (event.pageY - canvas.offsetTop) * canvasScale,
@@ -144,7 +137,7 @@ const getStartColor = (
   colorLayer: Uint8ClampedArray,
 ): Color => {
   const startCoordinate = (coordinate.y * width + coordinate.x) * 4;
-  console.log(coordinate);
+
   return {
     r: colorLayer[startCoordinate],
     g: colorLayer[startCoordinate + 1],
@@ -161,10 +154,8 @@ export function fillCanvas(
   const context = canvas?.getContext('2d');
   if (!context) return;
 
-  // console.log(coordinate.y, canvas.width, coordinate.x);
   const colorLayer = context.getImageData(0, 0, canvas.width, canvas.height);
   const startColor = getStartColor(coordinate, canvas.width, colorLayer.data);
-  console.log('Startcolor', startColor);
   const endColor = hexToRgb(color);
 
   // can not possible to fill a point alredy with the endcolor

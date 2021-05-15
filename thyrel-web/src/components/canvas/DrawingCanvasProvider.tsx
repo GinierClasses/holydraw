@@ -123,7 +123,6 @@ export function DrawingCanvasProvider({
 
     canvas.width = currentSize.width * currentSize.scale;
     canvas.height = currentSize.height * currentSize.scale;
-    console.log(canvas.width, canvas.height);
 
     refresh();
   }, [canvasRef, refresh, currentSize, onResize]);

@@ -34,7 +34,9 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   const isHorizontal = useMobileHorizontal();
 
   const nextPp = () => {
-    setAvatarIndex((p: number) => (p >= profilesPictures.length - 1 ? 0 : p + 1));
+    setAvatarIndex((p: number) =>
+      p >= profilesPictures.length - 1 ? 0 : p + 1,
+    );
   };
 
   function onConnect(token: string, text: string, isSuccess: boolean = true) {
@@ -104,7 +106,6 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
         <Box
           display="flex"
           flexDirection={isHorizontal ? 'row' : 'column'}
-          mb={1}
           px={1}
           height={isHorizontal ? 72 : undefined}
           maxWidth={isHorizontal ? undefined : 356}>
