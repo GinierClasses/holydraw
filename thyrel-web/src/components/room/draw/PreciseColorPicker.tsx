@@ -5,12 +5,14 @@ import { HexColorPicker } from 'react-colorful';
 type PreciseColorPickerProps = {
   currentColor: string;
   onColorChange: (color: string) => void;
+  disabledColor?: string;
 };
 
 const useStyles = makeStyles(() => ({
   container: {
     '& .$react-colorful': {
       height: 100,
+      zIndex: 5,
     },
   },
 }));
@@ -18,9 +20,12 @@ const useStyles = makeStyles(() => ({
 export default function PreciseColorPicker({
   currentColor,
   onColorChange,
+  disabledColor,
 }: PreciseColorPickerProps) {
   const [color, setColor] = React.useState(currentColor);
   const [showColorPicker, setShowColorPicker] = React.useState(false);
+
+  const colorWithDisabled = disabledColor ? disabledColor : currentColor;
 
   React.useEffect(() => {
     setColor(currentColor);
@@ -32,16 +37,16 @@ export default function PreciseColorPicker({
   const classes = useStyles();
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <Box>
+      <div>
         <Box
           component="button"
-          onClick={() => setShowColorPicker(prev => !prev)}
+          onClick={() => !disabledColor && setShowColorPicker(prev => !prev)}
           border={2}
           m={0.5}
           p={0}
-          bgcolor={color}
+          bgcolor={colorWithDisabled}
           boxShadow={showColorPicker ? 4 : 0}
-          borderColor={showColorPicker ? '#ffffff' : color}
+          borderColor={showColorPicker ? '#ffffff' : colorWithDisabled}
           width={92}
           height={42}
           borderRadius={21}
@@ -56,7 +61,7 @@ export default function PreciseColorPicker({
             />
           </Box>
         )}
-      </Box>
+      </div>
     </ClickAwayListener>
   );
 }

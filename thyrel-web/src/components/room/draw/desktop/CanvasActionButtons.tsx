@@ -36,25 +36,25 @@ export default function CanvasActionButtons({
       flexDirection="row"
       alignItems="flex-start"
       justifyContent="space-between">
-      <CanvasLineTypeButton />
+      <CanvasLineTypeButton disabled={isFinish} />
       <Box display="flex" alignItems="center">
         <OnClearAction>
-          <ActionButton title="hotkey: C">
+          <ActionButton disabled={isFinish} title="hotkey: C">
             <DeleteIcon />
           </ActionButton>
         </OnClearAction>
         <OnUndoAction>
-          <ActionButton title="CMD + Z">
+          <ActionButton disabled={isFinish} title="CMD + Z">
             <UndoIcon />
           </ActionButton>
         </OnUndoAction>
         <OnRedoAction>
-          <ActionButton title="CMD + SHIFT + Z">
+          <ActionButton disabled={isFinish} title="CMD + SHIFT + Z">
             <RedoIcon />
           </ActionButton>
         </OnRedoAction>
         <OnSaveAction onSave={onSave}>
-          <ActionButton color="primary" title="Save you're drawing">
+          <ActionButton color="primary" title={isFinish ? 'Edit' : 'Finish'}>
             {isFinish ? <EditIcon /> : <CheckIcon />}
           </ActionButton>
         </OnSaveAction>
@@ -63,7 +63,13 @@ export default function CanvasActionButtons({
   );
 }
 
-const useStyles = makeStyles<Theme, { color: string; ml: number }>(theme => ({
+type ActionButtonStylesProps = {
+  color: string;
+  ml: number;
+  disabled?: boolean;
+};
+
+const useStyles = makeStyles<Theme, ActionButtonStylesProps>(theme => ({
   root: {
     backgroundColor: props =>
       props.color === 'primary'
@@ -78,6 +84,12 @@ const useStyles = makeStyles<Theme, { color: string; ml: number }>(theme => ({
   label: {
     color: theme.palette.common.white,
   },
+  icon: {
+    color: props =>
+      props.disabled
+        ? theme.palette.text.secondary
+        : theme.palette.text.primary,
+  },
 }));
 
 type ActionButtonProps = {
@@ -85,6 +97,7 @@ type ActionButtonProps = {
   title: string;
   color?: 'primary' | 'default';
   ml?: number;
+  disabled?: boolean;
   className?: string;
   onClick?: () => void;
 };
@@ -95,17 +108,21 @@ function ActionButton({
   color = 'default',
   ml = 1,
   className,
+  disabled,
   onClick,
 }: ActionButtonProps) {
-  const classes = useStyles({ color, ml });
+  const classes = useStyles({ color, ml, disabled });
 
   return (
     <IconButton
       color={color}
       onClick={onClick}
+      disabled={disabled}
       className={className}
       classes={{ root: classes.root, label: classes.label }}>
-      <Tooltip title={title}>{children}</Tooltip>
+      <Tooltip title={title}>
+        {React.cloneElement(children, { className: classes.icon })}
+      </Tooltip>
     </IconButton>
   );
 }
@@ -120,7 +137,7 @@ function getCurrentIcon(lineType: LineType) {
   return BrushIcon;
 }
 
-export function CanvasLineTypeButton() {
+export function CanvasLineTypeButton({ disabled }: { disabled?: boolean }) {
   const { lineType, setLineType } = useCanvasContext();
   const Icon = getCurrentIcon(lineType);
 
@@ -145,7 +162,10 @@ export function CanvasLineTypeButton() {
       circleBg="border"
       spacing={1}
       action={open => (
-        <ActionButton ml={0} title={open ? 'Close' : 'Open'}>
+        <ActionButton
+          disabled={disabled}
+          ml={0}
+          title={open ? 'Close' : 'Open'}>
           {open ? <CloseIcon /> : <Icon />}
         </ActionButton>
       )}>

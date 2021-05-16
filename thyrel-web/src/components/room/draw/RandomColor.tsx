@@ -6,14 +6,18 @@ import { getRandomColor } from 'utils/utils';
 type RandomColorProps = {
   currentColor: string;
   onRandomClick?: (color: string) => void;
+  disabledColor?: string;
 };
 
 export default function RandomColor({
   currentColor,
   onRandomClick,
+  disabledColor,
 }: RandomColorProps) {
   const [randomColor, setRandomColor] = useState(getRandomColor());
   const isSelected = currentColor === randomColor;
+
+  const colorWithDisabled = disabledColor ? disabledColor : currentColor;
 
   return (
     <Box
@@ -27,9 +31,9 @@ export default function RandomColor({
       border={2}
       m={0.5}
       pt={0.5}
-      bgcolor={currentColor}
+      bgcolor={colorWithDisabled}
       boxShadow={isSelected ? 4 : 0}
-      borderColor={isSelected ? '#ffffff' : currentColor}
+      borderColor={isSelected ? '#ffffff' : colorWithDisabled}
       width={42}
       height={42}
       borderRadius="50%"

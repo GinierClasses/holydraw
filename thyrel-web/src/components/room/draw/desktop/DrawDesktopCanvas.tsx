@@ -13,6 +13,9 @@ export default function DrawDesktopCanvas() {
   const [color, setColor] = React.useState(colors[5]);
   const [size, setSize] = React.useState(8);
   const { onSave } = useSessionContext();
+  const { currentElement } = useSessionContext();
+
+  const isFinish = Boolean(currentElement?.finishAt);
 
   return (
     <Box
@@ -20,20 +23,31 @@ export default function DrawDesktopCanvas() {
       justifyContent="center"
       width="100%"
       alignItems="center">
-      <DesktopColorPicker currentColor={color} onColorChange={setColor} />
+      <DesktopColorPicker
+        disabled={isFinish}
+        currentColor={color}
+        onColorChange={setColor}
+      />
       <Box display="flex" flexDirection="column" mx={2}>
         <Box mb={2}>
-          <CurrentDirectiveLabel />
+          <DirectiveLabel
+            directive="Time to Draw"
+            sentence={currentElement?.parent?.text || 'Default sentence text'}
+          />
         </Box>
-        <DrawingCanvasProvider color={color} lineSize={size} disabled={false}>
+        <DrawingCanvasProvider
+          color={color}
+          lineSize={size}
+          disabled={isFinish}>
           <Box width={768}>
-            <DrawingCanvas />
+            <DrawingCanvas disabled={isFinish} />
           </Box>
           <CanvasActionButtons
             onSave={canvasImage => {
               if (!canvasImage) return;
               onSave(canvasImage);
             }}
+            isFinish={isFinish}
           />
         </DrawingCanvasProvider>
       </Box>
@@ -41,15 +55,5 @@ export default function DrawDesktopCanvas() {
         <SizePickerV2 size={size} onSizeChange={setSize} />
       </Box>
     </Box>
-  );
-}
-
-function CurrentDirectiveLabel() {
-  const { currentElement } = useSessionContext();
-  return (
-    <DirectiveLabel
-      directive="Time to Draw"
-      sentence={currentElement?.parent?.text || 'Default sentence text'}
-    />
   );
 }
