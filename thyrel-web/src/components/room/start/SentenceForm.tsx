@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function StartForm() {
   const { session, currentElement, onSave } = useSessionContext();
-  const [sentence, setSentence] = React.useState('');
+  const [sentence, setSentence] = React.useState(currentElement?.text || '');
   const [loading, setLoading] = React.useState(false);
   const isEditing = Boolean(!currentElement?.finishAt);
   const defaultSentence = useRandomSentence();

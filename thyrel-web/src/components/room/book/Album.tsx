@@ -2,6 +2,7 @@ import { Box, Typography } from '@material-ui/core';
 import BookDrawingElement from 'components/room/book/BookDrawingElement';
 import BookSentenceElement from 'components/room/book/BookSentenceElement';
 import profilesPictures from 'images/profiles/profiles-pictures';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 import { ElementType, HolyElement } from 'types/HolyElement.type';
 
@@ -12,13 +13,26 @@ export default function Album({ album }: AlbumProps) {
     return null;
   }
   return (
-    <Box display="flex" flexDirection="column" width={300}>
+    <Box
+      display="flex"
+      border={2}
+      borderColor="custom.main"
+      borderRadius={32}
+      flexDirection="column"
+      width="100%"
+      height="100%"
+      p={{ xs: 1, sm: 2 }}
+      minHeight={400}
+      alignItems="center">
       <Typography variant="h4">{album[0].creator?.username}'s album</Typography>
       {album.map(element => {
         const isSentence = element.type === ElementType.Sentence;
         return (
           <Box
             display="flex"
+            key={element.id}
+            mt={1}
+            width="100%"
             flexDirection={isSentence ? 'row' : 'row-reverse'}>
             {isSentence ? (
               <BookSentenceElement
@@ -39,6 +53,22 @@ export default function Album({ album }: AlbumProps) {
           </Box>
         );
       })}
+    </Box>
+  );
+}
+
+export function AlbumSkeleton() {
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      width="100%"
+      p={2}
+      alignItems="center">
+      <Skeleton height={40} width="100%" />
+      <Box display="flex" mt={1} width="100%">
+        <Skeleton height={64} width="100%" />
+      </Box>
     </Box>
   );
 }

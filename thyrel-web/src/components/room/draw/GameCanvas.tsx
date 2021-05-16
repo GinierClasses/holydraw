@@ -22,18 +22,18 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const { currentElement, onSave } = useSessionContext();
-  const isEditing = Boolean(!currentElement?.finishAt);
+  const isFinish = Boolean(currentElement?.finishAt);
   const [loading, setLoading] = useState(false);
 
   return (
-    <DrawingCanvasProvider color={color} disabled={!isEditing} lineSize={size}>
+    <DrawingCanvasProvider color={color} disabled={isFinish} lineSize={size}>
       <Box
         display="flex"
         flexDirection="column"
         gridGap={8}
         alignItems="center">
         <Box maxWidth={512} width="100%">
-          <DrawingCanvas disabled={!isEditing} />
+          <DrawingCanvas disabled={isFinish} />
         </Box>
         <Box
           display="flex"
@@ -53,15 +53,15 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
             <BigButton
               loading={loading}
               startIcon={
-                isEditing ? (
-                  <SaveIcon style={{ fontSize: 32 }} />
-                ) : (
+                isFinish ? (
                   <EditIcon style={{ fontSize: 32 }} />
+                ) : (
+                  <SaveIcon style={{ fontSize: 32 }} />
                 )
               }
               color="primary"
               size="medium">
-              {isEditing ? 'Save' : 'Edit'}
+              {isFinish ? 'Edit' : 'Save'}
             </BigButton>
           </OnSaveAction>
         </Box>

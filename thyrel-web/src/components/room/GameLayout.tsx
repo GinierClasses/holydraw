@@ -20,7 +20,7 @@ export default function GameLayout({
       <Container maxWidth={maxWidth} className="full-height">
         {children}
       </Container>
-      {<StepProgressWithContext />}
+      <StepProgressWithContext />
     </Box>
   );
 }

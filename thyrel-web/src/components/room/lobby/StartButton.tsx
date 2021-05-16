@@ -9,6 +9,7 @@ type StartButtonProps = {
   startName?: string;
   onStart: () => void;
   isLoading?: boolean;
+  label?: string;
 };
 
 export default function StartButton({
@@ -16,10 +17,11 @@ export default function StartButton({
   startName = 'game',
   isLoading,
   onStart,
+  label = 'Start',
 }: StartButtonProps) {
   const theme = useTheme();
   return (
-    <Box m={3} display="flex" flexDirection="column" alignItems="center">
+    <Box mt={3} display="flex" flexDirection="column" alignItems="center">
       <Box display="flex" alignItems="center">
         {!player?.isOwner && (
           <SpinnerIcon
@@ -39,7 +41,7 @@ export default function StartButton({
             onClick={onStart}
             color="primary"
             startIcon={<PlayArrowRoundedIcon style={{ fontSize: 48 }} />}>
-            Start
+            {label}
           </BigButton>
         </Box>
       )}

@@ -47,7 +47,7 @@ describe('PlayerForm', () => {
     await waitFor(() => expect(serverMock).toHaveBeenCalledTimes(1));
     await waitFor(() =>
       expect(serverMock).toHaveBeenCalledWith({
-        avatarUrl: '0',
+        avatarUrl: '7',
         username: playerUsername,
       }),
     );
@@ -66,7 +66,7 @@ describe('PlayerForm', () => {
     await waitFor(() =>
       expect(serverMock).toHaveBeenCalledWith(
         {
-          avatarUrl: '0',
+          avatarUrl: '7',
           username: playerUsername,
         },
         { identifier },

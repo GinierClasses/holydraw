@@ -8,7 +8,8 @@ type Session = {
   actualStep: number;
   timeDuration: number;
   roomId: number;
-  currentAlbumId?: number;
+  albumInitiatorId?: number;
+  bookState?: BookState;
   room?: Room;
   stepType: SessionStepType;
   totalPlayers: number;
@@ -20,6 +21,13 @@ export enum SessionStepType {
   Draw = 1,
   Write = 2,
   Book = 3,
+}
+
+export enum BookState {
+  IDLE = 0, // when album page is not show
+  PENDING = 1, // when album page is show but the owner didn't start
+  STARTED = 2, // when album is started
+  FINISHED = 3, // when album is finished
 }
 
 export default Session;
