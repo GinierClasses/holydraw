@@ -71,7 +71,7 @@ export default function BookPlayerList({
       className={classes.container}
       alignItems="center"
       flexDirection="row">
-      {players.map((player, i) => {
+      {players.map(player => {
         const isPlayerSelected = playerId === player.id;
         return (
           <Tooltip key={player.id} title={player.username} placement="top">

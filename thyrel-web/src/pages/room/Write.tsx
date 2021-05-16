@@ -35,7 +35,7 @@ export default function Write() {
           <Grid item className="full-width">
             <CurrentDrawImageWithContext className={classes.width} />
           </Grid>
-          <StartForm />
+          <StartFormLoading />
         </Grid>
       </Box>
     </GameLayout>
@@ -50,4 +50,11 @@ function CurrentDrawImageWithContext({ className }: { className: string }) {
       className={className}
     />
   );
+}
+
+function StartFormLoading() {
+  const { currentElement } = useSessionContext();
+  if (!currentElement) return null;
+
+  return <StartForm />;
 }

@@ -19,6 +19,7 @@ export default function BigButton({
   loading,
   color = 'default',
   startIcon,
+  size = 'medium',
   ...props
 }: BigButtonProps) {
   return (
@@ -26,9 +27,10 @@ export default function BigButton({
       variant="contained"
       color={color}
       startIcon={loading ? undefined : startIcon}
+      size={size}
       {...props}>
       {loading ? (
-        <SpinnerIcon style={{ fontSize: props.size === 'medium' ? 32 : 40 }} />
+        <SpinnerIcon style={{ fontSize: size === 'medium' ? 32 : 40 }} />
       ) : (
         children
       )}

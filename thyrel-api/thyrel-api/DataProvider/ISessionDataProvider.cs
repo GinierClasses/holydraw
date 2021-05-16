@@ -78,5 +78,19 @@ namespace thyrel_api.DataProvider
         /// <param name="roomId"></param>
         /// <returns>Session that start the album</returns>
         Task<Session> NextAlbum(int roomId);
+
+        /// <summary>
+        /// Get current session of a room
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        Task<List<PlayerDto>> GetCurrentPlayersInSession(int roomId);
+
+        /// <summary>
+        /// Recovery the album in the current state
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        Task<List<ElementAlbumDto>> AlbumRecovery(int roomId);
     }
 }

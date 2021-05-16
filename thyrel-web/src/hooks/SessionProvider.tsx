@@ -5,7 +5,7 @@ import StepElement, { ElementType } from 'types/HolyElement.type';
 import HolyElement from 'types/HolyElement.type';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
-import Session from '../types/Session.type';
+import Session, { SessionStepType } from '../types/Session.type';
 import { parseJson } from '../utils/json';
 import useSessionStates from './useSessionStates';
 import { WebsocketEvent, WebsocketMessage } from 'types/websocket.types';
@@ -59,6 +59,8 @@ export function SessionContextProvider({
   }
 
   React.useEffect(() => {
+    if (!websocket) return;
+
     function onMessage(event: { data: string }) {
       const websocketMessage = parseJson<WebsocketMessage>(event.data);
       if (!websocketMessage) return;
@@ -69,14 +71,13 @@ export function SessionContextProvider({
           break;
       }
     }
-    if (websocket) {
-      websocket.addEventListener('message', onMessage);
-      return () => websocket.removeEventListener('message', onMessage);
-    }
+    websocket.addEventListener('message', onMessage);
+    return () => websocket.removeEventListener('message', onMessage);
   }, [session, setSession, websocket]);
 
   React.useEffect(() => {
-    if (!session?.actualStep) return;
+    if (!session?.actualStep || session.stepType === SessionStepType.Book)
+      return;
 
     let deleted = false;
     client<HolyElement>('element/current', { token: getToken() }).then(
@@ -90,7 +91,7 @@ export function SessionContextProvider({
     return () => {
       deleted = true;
     };
-  }, [enqueueSnackbar, session?.actualStep]);
+  }, [enqueueSnackbar, session?.actualStep, session?.stepType]);
 
   const values = { session, currentElement, onSave };
 
