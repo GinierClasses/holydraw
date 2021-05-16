@@ -18,7 +18,7 @@ export default function SettingsMenu() {
       alignItems={{ xs: 'center', sm: 'flex-start' }}
       gridGap={24}>
       <ShareRoomButton identifier={room?.identifier} player={player} />
-      <Typography variant="body1">{wsState}</Typography>
+      <Typography variant="body1">Debug: {wsState}</Typography>
     </Box>
   );
 }
