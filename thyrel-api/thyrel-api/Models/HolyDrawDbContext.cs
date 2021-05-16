@@ -72,6 +72,13 @@ namespace thyrel_api.Models
                 entity.HasOne(e => e.Token)
                     .WithMany(e => e.Players);
             });
+
+            modelBuilder.Entity<Reaction>(entity =>
+            {
+                entity.ToTable("Reaction");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Emoji).IsRequired();
+            });
         }
     }
 }
