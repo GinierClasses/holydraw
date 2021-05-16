@@ -57,7 +57,10 @@ export default function PlayerAvatar({
   return (
     <Box alignItems="center" width={size} position="relative" height={size}>
       <button className={classes.button} onClick={onShuffle}>
-        <ShuffleRoundedIcon style={{ color: '#FFFFFF', fontSize: 32 }} />
+        <ShuffleRoundedIcon
+          data-testid="shuffle-icon"
+          style={{ color: '#FFFFFF', fontSize: 32 }}
+        />
       </button>
       <Box
         border={2}

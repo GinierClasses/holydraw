@@ -40,26 +40,41 @@ namespace thyrel_api.Controllers
 
             var session = await sessionDataProvider.GetSessionById(elementDto.SessionId);
             if (elementDto.Step != session.ActualStep) return Unauthorized("You can't modify a previous element.");
-            
+
             var remainingStepTime = session.StepFinishAt == null
                 ? new TimeSpan()
                 : (TimeSpan) (session.StepFinishAt - DateTime.Now);
 
-            if (session.ActualStep != elementDto.Step) return BadRequest("You are trying to modify a previous element.");
+            if (session.ActualStep != elementDto.Step)
+                return BadRequest("You are trying to modify a previous element.");
 
             var element = await elementDataProvider.HandleFinish(id, body);
 
-            var stepState = await sessionDataProvider.GetPlayerStatus(session);
-            if (stepState.PlayerCount == stepState.PlayerFinished && remainingStepTime.TotalMilliseconds > 5000)
+            // special syntaxe to run task after answer
+            try
             {
-                session = await sessionDataProvider.NextStep(session);
-                await session.RunNewTimeout(_context, _websocketHandler);
+                return Ok(element);
             }
-            else
-                await _websocketHandler.SendMessageToSockets(
-                    JsonBase.Serialize(
-                        new PlayerFinishStepWebsocketEventJson(WebsocketEvent.SessionUpdate, stepState.PlayerFinished)),
-                    session.RoomId);
+            finally
+            {
+                Response.OnCompleted(async () =>
+                {
+                    // don't await this call to avoid bug and quickly send answer
+                    var stepState = await sessionDataProvider.GetPlayerStatus(session);
+                    if (stepState.PlayerCount == stepState.PlayerFinished &&
+                        (remainingStepTime.TotalMilliseconds > 5000 || remainingStepTime.TotalMilliseconds < -2000))
+                    {
+                        session = await sessionDataProvider.NextStep(session);
+                        await session.RunNewTimeout(_context, _websocketHandler);
+                    }
+                    else
+                        await _websocketHandler.SendMessageToSockets(
+                            JsonBase.Serialize(
+                                new PlayerFinishStepWebsocketEventJson(WebsocketEvent.SessionUpdate,
+                                    stepState.PlayerFinished)),
+                            session.RoomId);
+                });
+            }
 
             return Ok(element);
         }
@@ -79,7 +94,9 @@ namespace thyrel_api.Controllers
             if (element.CreatorId != player.Id) return Unauthorized("You're not the creator of this element.");
 
             var session = await sessionDataProvider.GetSessionById(element.SessionId);
-            if (element.Step != session.ActualStep) return Unauthorized("You can't modify a previous element.");
+            if (element.Step != session.ActualStep && element.Step != session.ActualStep + 1 ||
+                session.StepType == SessionStepType.Book)
+                return Unauthorized("You can't modify a previous element.");
 
             if (element.Type == ElementType.Sentence)
             {
@@ -90,7 +107,7 @@ namespace thyrel_api.Controllers
                 await elementDataProvider.SetDrawing(element.Id, body.DrawImage);
             }
 
-            return Ok();
+            return NoContent();
         }
 
         // Call this endpoint to get an Element by Id

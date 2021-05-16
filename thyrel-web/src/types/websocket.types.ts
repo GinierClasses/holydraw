@@ -1,4 +1,4 @@
-import { SessionState } from 'node:http2';
+import { Session } from 'inspector';
 import Player from 'types/Player.type';
 import { HolyElement } from './HolyElement.type';
 
@@ -16,6 +16,7 @@ export enum WebsocketEvent {
   PlayerFinished = 3,
   NewOwnerPlayer = 4,
   PlayerKicked = 5,
+  Restart = 6,
   SessionStart = 11,
   SessionUpdate = 12,
   NextStep = 13, // on a step is finish
@@ -31,6 +32,6 @@ export type WebsocketMessage = {
   player?: Player;
   playerId?: number;
   album?: HolyElement;
-  session?: Partial<SessionState>;
+  session?: Partial<Session>;
   error?: string;
 };

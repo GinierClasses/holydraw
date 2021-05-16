@@ -9,6 +9,7 @@ namespace thyrel_api.Models.DTO
         public DateTime? StepFinishAt { get; set; }
         public int TimeDuration { get; set; }
         public int PlayerFinished { get; set; }
+        public BookState BookState { get; set; }
     }
     
     public class PlayerFinishStepSocketDto
@@ -16,8 +17,10 @@ namespace thyrel_api.Models.DTO
         public int PlayerFinished { get; set; }
     }
     
-    public class SessionCurrentAlbumIdUpdateSocketDto
+    public class SessionAlbumSocketDto
     {
-        public int? CurrentAlbumId { get; set; }
+        public int? AlbumInitiatorId { get; set; }
+        public BookState BookState { get; set; }
+        
     }
 }

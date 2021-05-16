@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core';
 
 type KickModalProps = {
