@@ -14,6 +14,7 @@ namespace thyrel_api.Models
         public DbSet<Element> Element { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<Player> Player { get; set; }
+        public DbSet<Reaction> Reaction { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -78,6 +79,10 @@ namespace thyrel_api.Models
                 entity.ToTable("Reaction");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Emoji).IsRequired();
+                entity.HasOne(e => e.Element)
+                    .WithMany(e => e.Reactions);
+                entity.HasOne(e => e.Player)
+                    .WithMany(e => e.Reactions);
             });
         }
     }

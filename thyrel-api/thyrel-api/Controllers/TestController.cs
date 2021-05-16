@@ -27,9 +27,9 @@ namespace thyrel_api.Controllers
 
         // GET: api/Test
         [HttpGet]
-        public async Task<ActionResult<List<ElementCandidateDto>>> Get()
+        public async Task<ActionResult<Reaction>> Get()
         {
-            var elements = await new ElementDataProvider(_context).GetNextCandidateElements(33);
+            var elements = _context.Reaction.Find(1);
             // var element = await _context.Element.OrderBy(e => e.CreatedAt).LastAsync();
             return elements;
         }

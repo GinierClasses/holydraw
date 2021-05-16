@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace thyrel_api.Models
 {
@@ -41,6 +42,8 @@ namespace thyrel_api.Models
 
         public int SessionId { get; set; }
         public Session Session { get; set; }
+
+        public virtual List<Reaction> Reactions { get; set; }
 
         public bool IsFinish()
         {
