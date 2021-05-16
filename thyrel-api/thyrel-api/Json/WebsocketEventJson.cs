@@ -25,6 +25,17 @@ namespace thyrel_api.Json
         }
     }
     
+    public class RoomReloadIdentifierEventJson : BaseWebsocketEventJson
+    {
+        public RoomReloadIdentifierDto Room { get; }
+
+        public RoomReloadIdentifierEventJson(Room room)
+        {
+            WebsocketEvent = WebsocketEvent.ReloadIdentifier;
+            Room = new RoomReloadIdentifierDto {Id = room.Id, Identifier = room.Identifier};
+        }
+    }
+    
     public class ErrorWebsocketEventJson : BaseWebsocketEventJson
     {
         public string Error { get; }
