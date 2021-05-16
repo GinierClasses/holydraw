@@ -13,18 +13,18 @@ namespace thyrel_api.Handler
 {
     public class AlbumStepTimeout
     {
-        private readonly int _currentAlbumId;
+        private readonly int _albumInitiatorId;
         private readonly int _sessionId;
         private readonly string _connectionString;
         private readonly int _step;
         private readonly IWebsocketHandler _websocketHandler;
 
-        public AlbumStepTimeout(int currentAlbumId, int sessionId, DbContext context, int step,
+        public AlbumStepTimeout(int albumInitiatorId, int sessionId, DbContext context, int step,
             IWebsocketHandler websocketHandler)
         {
             _connectionString = context.Database.GetConnectionString();
             _sessionId = sessionId;
-            _currentAlbumId = currentAlbumId;
+            _albumInitiatorId = albumInitiatorId;
             _step = step;
             _websocketHandler = websocketHandler;
         }
@@ -41,7 +41,7 @@ namespace thyrel_api.Handler
                 var sessionProvider = new SessionDataProvider(context);
                 var session = await sessionProvider.GetSessionById(_sessionId);
                 // test if step is already finish
-                if (session.CurrentAlbumId != _currentAlbumId) return;
+                if (session.AlbumInitiatorId != _albumInitiatorId) return;
                 var album = await context.Element
                     .Include(e => e.Creator)
                     .Select(e => new ElementAlbumDto
@@ -60,7 +60,7 @@ namespace thyrel_api.Handler
                         Step = e.Step,
                         SessionId = e.SessionId
                     }).SingleOrDefaultAsync(e =>
-                        e.InitiatorId == _currentAlbumId &&
+                        e.InitiatorId == _albumInitiatorId &&
                         e.Step == _step &&
                         e.SessionId == _sessionId);
 
@@ -72,7 +72,7 @@ namespace thyrel_api.Handler
                         new AlbumWebsocketEventJson(album)), session.RoomId);
 
                 if (!isFinish)
-                    new AlbumStepTimeout(_currentAlbumId, _sessionId, context, _step + 1, _websocketHandler)
+                    new AlbumStepTimeout(_albumInitiatorId, _sessionId, context, _step + 1, _websocketHandler)
                         .RunTimeout(3);
 
                 await context.DisposeAsync();
