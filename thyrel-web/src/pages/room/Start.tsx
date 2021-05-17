@@ -6,7 +6,6 @@ import { useRoomContext } from 'hooks/RoomProvider';
 import { RoomMode } from 'types/Room.type';
 
 export default function Start() {
-  const { room } = useRoomContext();
   return (
     <GameLayout maxWidth="sm">
       <Grid
@@ -21,14 +20,19 @@ export default function Start() {
           <img src={GymGuy} alt="" width={256} />
         </Grid>
         <Grid item>
-          <Typography variant="h4">
-            {room?.roomMode === RoomMode.Standard
-              ? 'Start a story'
-              : 'Choose a word'}
-          </Typography>
+          <CurrentStartDirective />
         </Grid>
         <SentenceForm />
       </Grid>
     </GameLayout>
+  );
+}
+
+function CurrentStartDirective() {
+  const { room } = useRoomContext();
+  return (
+    <Typography variant="h4">
+      {room?.roomMode === RoomMode.Standard ? 'Start a story' : 'Choose a word'}
+    </Typography>
   );
 }
