@@ -89,4 +89,32 @@ namespace thyrel_api.Json
             };
         }
     }
+
+    public class EmojiReactionWebSocketEventJson : BaseWebsocketEventJson
+    {
+        public int PlayerId;
+        public int ElementId;
+        public EmojiReaction EmojiReaction;
+
+        public EmojiReactionWebSocketEventJson(int playerId, int elementId, EmojiReaction emojiReaction)
+        {
+            PlayerId = playerId;
+            ElementId = elementId;
+            EmojiReaction = emojiReaction;
+            WebsocketEvent = WebsocketEvent.NewReactionToElement;
+        }
+    }
+
+    public class RemovedEmojiReactionWebSocketEventJson : BaseWebsocketEventJson
+    {
+        public int PlayerId;
+        public int ElementId;
+
+        public RemovedEmojiReactionWebSocketEventJson(int playerId, int elementId)
+        {
+            PlayerId = playerId;
+            ElementId = elementId;
+            WebsocketEvent = WebsocketEvent.ReactionDeletedToElement;
+        }
+    }
 }

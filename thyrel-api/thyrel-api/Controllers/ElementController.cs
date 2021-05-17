@@ -134,27 +134,53 @@ namespace thyrel_api.Controllers
             return await new ElementDataProvider(_context).GetCurrentElement(player.Id);
         }
 
+        /// <summary>
+        /// call this endpoint to add a new emojiReaction to an element
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="emojiReaction"></param>
+        /// <returns></returns>
         [HttpPost("{elementId}/reaction")]
         public async Task<ActionResult> AddReaction(int elementId, [FromBody] EmojiReaction emojiReaction)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
-            if (player?.RoomId == null) return Unauthorized();
+            if (player?.RoomId == null && isElementInLastSession(elementId, (int)player.RoomId)) return Unauthorized();
 
-            await _reactionDataProvider.AddReaction(player.Id, elementId, emojiReaction);
+            var reaction = await _reactionDataProvider.AddReaction(player.Id, elementId, emojiReaction);
 
-            //webocket
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new EmojiReactionWebSocketEventJson(player.Id, elementId, reaction.Emoji)), player.RoomId);
 
             return Ok(200);
         }
 
+        /// <summary>
+        /// call this endpoint to delete a player Reaction to an element by reaction Id
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{elementId}/reaction/{id}")]
-        public async Task<ActionResult> DeleteReaction(int id)
+        public async Task<ActionResult> DeleteReaction(int elementId, int id)
         {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null && isElementInLastSession(elementId, (int)player.RoomId)) return Unauthorized();
+
             await _reactionDataProvider.RemoveReaction(id);
 
-            //envoi websocket
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new RemovedEmojiReactionWebSocketEventJson(player.Id, elementId)), player.RoomId);
 
             return Ok(200);
+        }
+
+        public bool isElementInLastSession(int elementId, int roomId)
+        {
+            var session = new SessionDataProvider(_context).GetCurrentSessionByRoomId(roomId);            
+            var element = new ElementDataProvider(_context).GetElement(elementId);
+            return session.Result.Id == element.Result.SessionId;
         }
     }
 }
