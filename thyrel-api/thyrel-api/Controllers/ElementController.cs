@@ -176,6 +176,12 @@ namespace thyrel_api.Controllers
             return Ok(200);
         }
 
+        /// <summary>
+        /// method to check if the element is in the last session
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
         public bool isElementInLastSession(int elementId, int roomId)
         {
             var session = new SessionDataProvider(_context).GetCurrentSessionByRoomId(roomId);            
