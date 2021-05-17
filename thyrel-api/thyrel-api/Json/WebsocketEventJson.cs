@@ -70,9 +70,9 @@ namespace thyrel_api.Json
     {
         public RoomSettingsDto Room;   
 
-        public RoomUpdateWebsocketEventJson(RoomSettingsDto room)
+        public RoomUpdateWebsocketEventJson(Room room)
         {
-            Room = room;
+            Room = new RoomSettingsDto { Mode = room.Mode };
             WebsocketEvent = WebsocketEvent.RoomUpdate;
         }
     }

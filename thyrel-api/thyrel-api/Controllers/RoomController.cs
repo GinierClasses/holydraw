@@ -29,7 +29,7 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult<Player>> Post([FromBody] PlayerRoomBody body)
         {
             if (body.Username == null || body.AvatarUrl == null)
-                return NotFound(); // 404 : most of api error
+                return NotFound();
             var roomDataProvider = new RoomDataProvider(_context);
             var playerDataProvider = new PlayerDataProvider(_context);
 
@@ -52,9 +52,8 @@ namespace thyrel_api.Controllers
             
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
-                    new BaseWebsocketEventJson(WebsocketEvent.Restart)), roomId);
+                    new RoomUpdateWebsocketEventJson(room)), roomId);
 
-            
             return Ok(room);
         }
 
