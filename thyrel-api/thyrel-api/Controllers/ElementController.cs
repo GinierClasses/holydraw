@@ -133,5 +133,16 @@ namespace thyrel_api.Controllers
 
             return await new ElementDataProvider(_context).GetCurrentElement(player.Id);
         }
+
+        [HttpPatch("{id}/reaction")]
+        public async Task<ActionResult> HandleReaction()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
+
+
+            return Ok(200);
+        }
     }
 }
