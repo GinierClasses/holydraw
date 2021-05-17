@@ -13,8 +13,10 @@ const useStyles = makeStyles<Theme, { size: CanvasWidth; disabled?: boolean }>(
     canvasBox: {
       width: props => props.size.width + props.size.border * 2,
       height: props => props.size.height + props.size.border * 2,
+      borderRadius: 32,
+      overflow: 'hidden',
       border: props =>
-        `${props.size.border}px solid ${theme.palette.primary.main}`,
+        `${props.size.border}px solid ${theme.palette.custom.main}`,
       boxShadow: theme.shadows[1],
     },
   }),

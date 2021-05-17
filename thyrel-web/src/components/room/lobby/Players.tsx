@@ -16,10 +16,8 @@ export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
-  const [playerToKick, setPlayerToKick] = React.useState<{
-    id: number;
-    name: string;
-  } | null>(null);
+  const [playerToKick, setPlayerToKick] =
+    React.useState<{ id: number; name: string } | null>(null);
 
   function onKick(id: number, name: string) {
     setPlayerToKick({ id, name });
@@ -37,6 +35,16 @@ export function Players() {
           variant: 'error',
         }),
     );
+    client(url, {
+      token: player?.token?.tokenKey,
+      method: 'PATCH',
+    })
+      .then(() => enqueueSnackbar('Player kicked 😎', { variant: 'success' }))
+      .catch(() =>
+        enqueueSnackbar('Sorry, an error occured 😕 [kick-PATCH]', {
+          variant: 'error',
+        }),
+      );
   }
 
   return (
