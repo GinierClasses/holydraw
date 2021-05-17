@@ -50,7 +50,7 @@ namespace thyrel_api.Controllers
 
             var element = await elementDataProvider.HandleFinish(id, body);
 
-            // special syntaxe to run task after answer
+            // special syntax to run task after answer
             try
             {
                 return Ok(element);
@@ -75,8 +75,6 @@ namespace thyrel_api.Controllers
                             session.RoomId);
                 });
             }
-
-            return Ok(element);
         }
 
         // Automaticly call this endpoint to handle finish state
