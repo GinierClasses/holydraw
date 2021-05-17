@@ -9,4 +9,9 @@ namespace thyrel_api.Models.DTO
         public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
     }
+
+    public class RoomSettingsDto
+    {
+        public RoomMode? Mode { get; set; }
+    }
 }

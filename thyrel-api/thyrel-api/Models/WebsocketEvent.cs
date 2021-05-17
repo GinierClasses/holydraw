@@ -16,6 +16,7 @@ namespace thyrel_api.Models
         NewOwnerPlayer = 4,
         PlayerKicked = 5,
         Restart = 6,
+        RoomUpdate = 7,
         SessionStart = 11,
         SessionUpdate = 12,
         NextStep = 13, // on a step is finish

@@ -39,6 +39,24 @@ namespace thyrel_api.Controllers
             // use `GetPlayer` to include `Token` and `Room`
             return await playerDataProvider.GetPlayer(player.Id);
         }
+        
+        // To edit room settings
+        // PATCH : api/room/13
+        [HttpPatch("{roomId}")]
+        public async Task<ActionResult> Patch(int roomId, [FromBody] RoomSettingsDto roomSettings)
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player == null || !player.IsInRoom(roomId)) return Unauthorized();
+            
+            var room = await new RoomDataProvider(_context).Edit(roomId, roomSettings);
+            
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new BaseWebsocketEventJson(WebsocketEvent.Restart)), roomId);
+
+            
+            return Ok(room);
+        }
 
         // Call this endpoint to join a room
         // PATCH: api/room/join/roomidentifier
@@ -103,6 +121,7 @@ namespace thyrel_api.Controllers
 
             return Ok();
         }
+        
 
         public class PlayerRoomBody
         {
