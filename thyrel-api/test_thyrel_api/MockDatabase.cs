@@ -99,10 +99,10 @@ namespace test_thyrel_api
         {
             var rooms = new List<Room>
             {
-                new ("room-1-id"),
-                new ("room-2-id"),
-                new ("room-3-id"),
-                new ("room-4-id"),
+                new ("room-1-id", RoomMode.OneWord),
+                new ("room-2-id", RoomMode.Standard),
+                new ("room-3-id", RoomMode.OneWord),
+                new ("room-4-id", RoomMode.Standard),
             };
 
             await Context.Room.AddRangeAsync(rooms);
