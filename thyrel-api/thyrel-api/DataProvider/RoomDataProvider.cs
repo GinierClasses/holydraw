@@ -15,23 +15,31 @@ namespace thyrel_api.DataProvider
         {
             _holyDrawDbContext = context;
         }
-        
+
         /// <summary>
         ///     Add a new room
         /// </summary>
         public async Task<Room> Add()
         {
-            const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
-            var random = new Random();
-            var givenIdentifier = new string(
-                Enumerable.Repeat(allChar, 12)
-                    .Select(identifier => identifier[random.Next(identifier.Length)]).ToArray());
-
-            var room = new Room(givenIdentifier);
+            var room = new Room(GenerateIdentifier());
 
             var entity = await _holyDrawDbContext.Room.AddAsync(room);
             await SaveChanges();
             return entity.Entity;
+        }
+
+        /// <summary>
+        ///     Refresh token
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public async Task<Room> GenerateNewIdentifier(int roomId)
+        {
+            var room = await _holyDrawDbContext.Room.FirstAsync(r => r.Id == roomId);
+            room.Identifier = GenerateIdentifier();
+            await SaveChanges();
+            
+            return room;
         }
 
         /// <summary>
@@ -99,6 +107,16 @@ namespace thyrel_api.DataProvider
                     s.StepFinishAt = null;
                 });
             await SaveChanges();
+        }
+
+        private string GenerateIdentifier()
+        {
+            const string allChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+            var random = new Random();
+            var givenIdentifier = new string(
+                Enumerable.Repeat(allChar, 12)
+                    .Select(identifier => identifier[random.Next(identifier.Length)]).ToArray());
+            return givenIdentifier;
         }
 
         private async Task SaveChanges()

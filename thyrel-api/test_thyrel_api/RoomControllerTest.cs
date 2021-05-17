@@ -117,5 +117,33 @@ namespace test_thyrel_api
             //assert the session of the room is finished
             Assert.IsNotNull(session.FinishAt);
         }
+        
+        [Test]
+        public async Task ReloadTest()
+        {
+            var room = Context.Room.First();
+            var prevIdentifier = room.Identifier;
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && p.IsOwner);
+            await ConnectApi(_roomController.HttpContext, player);
+
+            await _roomController.ReloadIdentifier();
+            var newIdentifier = room.Identifier;
+            
+            Assert.AreNotEqual(prevIdentifier, newIdentifier);
+        }
+        
+        [Test]
+        public async Task ReloadTestWithUnOwnerAccount()
+        {
+            var room = Context.Room.First();
+            var prevIdentifier = room.Identifier;
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && !p.IsOwner);
+            await ConnectApi(_roomController.HttpContext, player);
+
+            await _roomController.ReloadIdentifier();
+            var newIdentifier = room.Identifier;
+            
+            Assert.AreEqual(prevIdentifier, newIdentifier);
+        }
     }
 }

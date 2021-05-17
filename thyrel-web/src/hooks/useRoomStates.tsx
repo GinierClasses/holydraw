@@ -65,5 +65,5 @@ export function useRoomStates() {
     updatePlayer();
   }, [history, player?.roomId, updatePlayer, updateRoom]);
 
-  return { updatePlayer, updateRoom, removePlayer, addPlayer, room, players };
+  return { updatePlayer, updateRoom, removePlayer, addPlayer, room, players, setRoom };
 }

@@ -103,6 +103,23 @@ namespace thyrel_api.Controllers
 
             return Ok();
         }
+        
+        // Call this endpoint to close the session and restart another one
+        // PATCH : api/room/reload_identifier
+        [HttpPatch("reload_identifier")]
+        public async Task<ActionResult<Room>> ReloadIdentifier()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null || !player.IsOwner) return Unauthorized();
+
+            var room = await new RoomDataProvider(_context).GenerateNewIdentifier((int) player.RoomId);
+            
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new RoomReloadIdentifierEventJson(room)), player.RoomId);
+            
+            return NoContent();
+        }
 
         public class PlayerRoomBody
         {
