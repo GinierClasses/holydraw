@@ -5,7 +5,7 @@ import { OnSaveAction } from 'components/canvas/DrawingCanvasActions';
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
 import CanvasActionButtons, {
   CanvasLineTypeButton,
-} from 'components/room/draw/CanvasActionButtons';
+} from 'components/room/draw/desktop/CanvasActionButtons';
 import { useSessionContext } from 'hooks/SessionProvider';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
@@ -42,7 +42,7 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
           alignItems="center"
           justifyContent="space-between"
           width="100%">
-          <CanvasActionButtons />
+          <CanvasActionButtons onSave={() => void 0} />
           <CanvasLineTypeButton />
           <OnSaveAction
             onSave={canvasImage => {
