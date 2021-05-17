@@ -9,11 +9,11 @@ namespace thyrel_api.Models
         {
         }
 
-        public Room(string identifier, RoomMode mode)
+        public Room(string identifier)
         {
             Identifier = identifier;
-            Mode = mode;
             CreatedAt = DateTime.Now;
+            Mode = RoomMode.Standard;
         }
 
         public int Id { get; set; }
