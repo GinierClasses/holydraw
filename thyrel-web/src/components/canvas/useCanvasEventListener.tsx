@@ -7,7 +7,7 @@ type UseCanvasEventListenerProps = {
   onMouseEnter: (event: MouseEvent) => void;
   onMouseMove: (event: MouseEvent) => void;
   onMouseDown: (event: MouseEvent) => void;
-  onResize: (event: UIEvent) => void;
+  onResize: (event?: UIEvent) => void;
   disabled?: boolean;
 };
 
@@ -73,6 +73,7 @@ export default function useCanvasEventListener({
   }, [canvasRef, disabled, onMouseDown, onMouseUp]);
 
   React.useEffect(() => {
+    onResize();
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, [onResize]);
