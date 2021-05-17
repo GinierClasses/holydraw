@@ -16,11 +16,13 @@ namespace thyrel_api.Controllers
     {
         private readonly IWebsocketHandler _websocketHandler;
         private readonly HolyDrawDbContext _context;
+        private readonly ReactionDataProvider _reactionDataProvider;
 
-        public ElementController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
+        public ElementController(IWebsocketHandler websocketHandler, HolyDrawDbContext context, ReactionDataProvider reactionDataProvider)
         {
             _websocketHandler = websocketHandler;
             _context = context;
+            _reactionDataProvider = reactionDataProvider;
         }
 
 
@@ -132,13 +134,25 @@ namespace thyrel_api.Controllers
             return await new ElementDataProvider(_context).GetCurrentElement(player.Id);
         }
 
-        [HttpPatch("{id}/reaction")]
-        public async Task<ActionResult> HandleReaction()
+        [HttpPost("{elementId}/reaction")]
+        public async Task<ActionResult> AddReaction(int elementId, [FromBody] EmojiReaction emojiReaction)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
 
+            await _reactionDataProvider.AddReaction(player.Id, elementId, emojiReaction);
 
+            //webocket
+
+            return Ok(200);
+        }
+
+        [HttpDelete("{elementId}/reaction/{id}")]
+        public async Task<ActionResult> DeleteReaction(int id)
+        {
+            await _reactionDataProvider.RemoveReaction(id);
+
+            //envoi websocket
 
             return Ok(200);
         }
