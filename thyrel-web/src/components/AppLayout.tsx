@@ -21,7 +21,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         display="block"
         margin="auto"
         height="100%"
-        pb={{ xs: 1, sm: 2, md: 3 }}
+        pb={{ xs: 0, sm: 2 }}
         width="100%"
         minWidth={320}>
         {children}
