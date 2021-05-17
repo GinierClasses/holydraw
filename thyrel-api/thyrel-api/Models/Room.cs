@@ -14,6 +14,7 @@ namespace thyrel_api.Models
             Identifier = identifier;
             Mode = mode;
             CreatedAt = DateTime.Now;
+            Mode = RoomMode.Standard;
         }
 
         public int Id { get; set; }

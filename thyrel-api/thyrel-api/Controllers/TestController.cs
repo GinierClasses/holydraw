@@ -29,7 +29,7 @@ namespace thyrel_api.Controllers
         [HttpGet]
         public async Task<ActionResult<Reaction>> Get()
         {
-            var elements = _context.Reaction.Find(1);
+            var elements = await _context.Reaction.FindAsync(1);
             // var element = await _context.Element.OrderBy(e => e.CreatedAt).LastAsync();
             return elements;
         }
