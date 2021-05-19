@@ -28,7 +28,7 @@ type RoomSocketContextProviderProps = { children: React.ReactElement };
 export function RoomContextProvider({
   children,
 }: RoomSocketContextProviderProps) {
-  const { room, players, updatePlayer, removePlayer, addPlayer } =
+  const { room, players, updatePlayer, removePlayer, addPlayer, setRoom } =
     useRoomStates();
 
   const history = useHistory();
@@ -64,6 +64,11 @@ export function RoomContextProvider({
         case WebsocketEvent.Restart:
           history?.push('/r/lobby');
           break;
+        case WebsocketEvent.ReloadIdentifier:
+          const room = websocketMessage.room;
+          if (!room) break;
+          setRoom(prev => prev && { ...prev, ...room });
+          break;
       }
     }
     if (websocket) {
@@ -73,6 +78,7 @@ export function RoomContextProvider({
   }, [
     addPlayer,
     enqueueSnackbar,
+    setRoom,
     history,
     removePlayer,
     updatePlayer,
