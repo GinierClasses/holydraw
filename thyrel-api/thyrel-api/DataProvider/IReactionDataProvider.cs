@@ -10,6 +10,6 @@ namespace thyrel_api.DataProvider
     {
         Task<Reaction> AddReaction(int playerId, int elementId, EmojiReaction emojiReaction);
 
-        Task RemoveReaction(int reactionId);
+        Task<Reaction> RemoveReaction(int reactionId, int playerId);
     }
 }

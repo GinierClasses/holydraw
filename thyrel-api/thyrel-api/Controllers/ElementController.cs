@@ -142,9 +142,12 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult> AddReaction(int elementId, [FromBody] EmojiReaction emojiReaction)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
-            if (player?.RoomId == null && await isElementInLastSession(elementId, (int)player.RoomId)) return Unauthorized();
+            if (player?.RoomId == null) return Unauthorized();
 
-            var reaction = await  new ReactionDataProvider(_context).AddReaction(player.Id, elementId, emojiReaction);
+            var reaction = await new ReactionDataProvider(_context).AddReaction(player.Id, elementId, emojiReaction);
+
+            if (reaction == null)
+                return BadRequest("Reaction already exist.");
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
@@ -163,9 +166,12 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult> DeleteReaction(int elementId, int id)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
-            if (player?.RoomId == null && await isElementInLastSession(elementId, (int)player.RoomId)) return Unauthorized();
+            if (player?.RoomId == null) return Unauthorized();
 
-            await _reactionDataProvider.RemoveReaction(id);
+            var reaction = await new ReactionDataProvider(_context).RemoveReaction(id, player.Id);
+
+            if (reaction == null)
+                return Unauthorized("You can't delete a reaction who is not created by you.");
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
@@ -180,9 +186,9 @@ namespace thyrel_api.Controllers
         /// <param name="elementId"></param>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        public async Task<bool> isElementInLastSession(int elementId, int roomId)
+        public async Task<bool> IsElementInLastSession(int elementId, int roomId)
         {
-            var session = await new SessionDataProvider(_context).GetCurrentSessionByRoomId(roomId);            
+            var session = await new SessionDataProvider(_context).GetCurrentSessionByRoomId(roomId);
             var element = await new ElementDataProvider(_context).GetElement(elementId);
             return session.Id == element.SessionId;
         }
