@@ -101,7 +101,7 @@ namespace thyrel_api.Json
             PlayerId = playerId;
             ElementId = elementId;
             EmojiReaction = emojiReaction;
-            WebsocketEvent = WebsocketEvent.NewReactionToElement;
+            WebsocketEvent = WebsocketEvent.NewReaction;
         }
     }
 
@@ -114,7 +114,7 @@ namespace thyrel_api.Json
         {
             PlayerId = playerId;
             ElementId = elementId;
-            WebsocketEvent = WebsocketEvent.ReactionDeletedToElement;
+            WebsocketEvent = WebsocketEvent.ReactionDeleted;
         }
     }
 }

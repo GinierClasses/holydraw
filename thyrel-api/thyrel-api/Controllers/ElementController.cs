@@ -18,11 +18,10 @@ namespace thyrel_api.Controllers
         private readonly HolyDrawDbContext _context;
         private readonly ReactionDataProvider _reactionDataProvider;
 
-        public ElementController(IWebsocketHandler websocketHandler, HolyDrawDbContext context, ReactionDataProvider reactionDataProvider)
+        public ElementController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
             _websocketHandler = websocketHandler;
             _context = context;
-            _reactionDataProvider = reactionDataProvider;
         }
 
 
@@ -144,15 +143,15 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult> AddReaction(int elementId, [FromBody] EmojiReaction emojiReaction)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
-            if (player?.RoomId == null && isElementInLastSession(elementId, (int)player.RoomId)) return Unauthorized();
+            if (player?.RoomId == null && await isElementInLastSession(elementId, (int)player.RoomId)) return Unauthorized();
 
-            var reaction = await _reactionDataProvider.AddReaction(player.Id, elementId, emojiReaction);
+            var reaction = await  new ReactionDataProvider(_context).AddReaction(player.Id, elementId, emojiReaction);
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
                     new EmojiReactionWebSocketEventJson(player.Id, elementId, reaction.Emoji)), player.RoomId);
 
-            return Ok(200);
+            return NoContent();
         }
 
         /// <summary>
@@ -165,7 +164,7 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult> DeleteReaction(int elementId, int id)
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
-            if (player?.RoomId == null && isElementInLastSession(elementId, (int)player.RoomId)) return Unauthorized();
+            if (player?.RoomId == null && await isElementInLastSession(elementId, (int)player.RoomId)) return Unauthorized();
 
             await _reactionDataProvider.RemoveReaction(id);
 
@@ -182,11 +181,11 @@ namespace thyrel_api.Controllers
         /// <param name="elementId"></param>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        public bool isElementInLastSession(int elementId, int roomId)
+        public async Task<bool> isElementInLastSession(int elementId, int roomId)
         {
-            var session = new SessionDataProvider(_context).GetCurrentSessionByRoomId(roomId);            
-            var element = new ElementDataProvider(_context).GetElement(elementId);
-            return session.Result.Id == element.Result.SessionId;
+            var session = await new SessionDataProvider(_context).GetCurrentSessionByRoomId(roomId);            
+            var element = await new ElementDataProvider(_context).GetElement(elementId);
+            return session.Id == element.SessionId;
         }
     }
 }
