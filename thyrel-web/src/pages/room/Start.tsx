@@ -32,7 +32,7 @@ function CurrentStartDirective() {
   const { room } = useRoomContext();
   return (
     <Typography variant="h4">
-      {room?.roomMode === RoomMode.Standard ? 'Start a story' : 'Choose a word'}
+      {room?.roomMode === RoomMode.OneWord ? 'Choose a word' : 'Start a story'}
     </Typography>
   );
 }
