@@ -133,7 +133,7 @@ function useCanvasPaint({
       if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
         event.shiftKey ? redo() : undo();
       }
-      if (event.key === 'c') clear();
+      if (event.key === 'c' && !(event.ctrlKey || event.metaKey)) clear();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
@@ -152,5 +152,20 @@ function useCanvasPaint({
     fill,
   };
 }
+
+function asyncWithPromise() {
+  return new Promise(r => {
+    setTimeout(() => {
+      r('vlaue');
+    }, 100);
+  });
+}
+async function asyncWithoutPromise() {
+  await new Promise(r => setTimeout(() => r(''), 100));
+  return 'value';
+}
+
+asyncWithPromise();
+asyncWithoutPromise();
 
 export default useCanvasPaint;
