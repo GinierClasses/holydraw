@@ -3,6 +3,7 @@ import { Box, useTheme } from '@material-ui/core';
 import { colors } from 'utils/app-constant';
 import RandomColor from '../RandomColor';
 import PreciseColorPicker from '../PreciseColorPicker';
+import RoundColor from '../RoundColor';
 
 type DrawColorPickerProps = {
   currentColor: string;
@@ -28,24 +29,16 @@ export default function DesktopColorPicker({
       padding={1}>
       {colors.map(color => {
         const isSelected = color === currentColor;
-        const colorWithDisabled = disabled ? disabledColor : color;
         return (
-          <Box
-            component="button"
+          <RoundColor
+            width={42}
             key={color}
+            color={color}
+            isSelected={isSelected}
+            disabled={disabled}
             onClick={() => {
               onColorChange?.(color);
             }}
-            border={2}
-            m={0.5}
-            p={0}
-            bgcolor={colorWithDisabled}
-            boxShadow={isSelected ? 4 : 0}
-            borderColor={isSelected ? '#ffffff' : colorWithDisabled}
-            width={42}
-            height={42}
-            borderRadius="50%"
-            className="cursor-pointer"
           />
         );
       })}
