@@ -45,5 +45,10 @@ namespace thyrel_api.DataProvider
         /// <param name="roomId"></param>
         /// <returns></returns>
         Task FinishSessionsByRoomId(int? roomId);
+
+        /// <summary>
+        ///     Add a new room
+        /// </summary>
+        Task<Room> Edit(int roomId, RoomSettingsDto roomSettings);
     }
 }

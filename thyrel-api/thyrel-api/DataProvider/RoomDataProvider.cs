@@ -37,6 +37,18 @@ namespace thyrel_api.DataProvider
         {
             var room = await _holyDrawDbContext.Room.FirstAsync(r => r.Id == roomId);
             room.Identifier = GenerateIdentifier();
+        }
+
+        /// <summary>
+        ///     Add a new room
+        /// </summary>
+        public async Task<Room> Edit(int roomId, RoomSettingsDto roomSettings)
+        {
+            var room = await _holyDrawDbContext.Room.FindAsync(roomId);
+            
+            if (roomSettings.Mode != null)
+                room.Mode = (RoomMode) roomSettings.Mode;
+
             await SaveChanges();
             
             return room;

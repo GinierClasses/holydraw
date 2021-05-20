@@ -15,4 +15,9 @@ namespace thyrel_api.Models.DTO
         public int Id { get; set; }
         public string Identifier { get; set; }
     }
+
+    public class RoomSettingsDto
+    {
+        public RoomMode? Mode { get; set; }
+    }
 }
