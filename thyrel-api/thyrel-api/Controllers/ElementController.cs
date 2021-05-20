@@ -16,7 +16,6 @@ namespace thyrel_api.Controllers
     {
         private readonly IWebsocketHandler _websocketHandler;
         private readonly HolyDrawDbContext _context;
-        private readonly ReactionDataProvider _reactionDataProvider;
 
         public ElementController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
