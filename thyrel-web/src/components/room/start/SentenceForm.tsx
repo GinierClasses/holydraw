@@ -32,7 +32,7 @@ export default function StartForm() {
   const [loading, setLoading] = React.useState(false);
   const isEditing = Boolean(!currentElement?.finishAt);
   const { room } = useRoomContext();
-  const isOneWord = room?.roomMode === RoomMode.OneWord;
+  const isOneWord = room?.mode === RoomMode.OneWord;
   const defaultSentence = useRandomSentence(isOneWord);
   const classes = useStyles();
 

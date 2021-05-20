@@ -30,9 +30,10 @@ export default function Start() {
 
 function CurrentStartDirective() {
   const { room } = useRoomContext();
+
   return (
     <Typography variant="h4">
-      {room?.roomMode === RoomMode.OneWord ? 'Choose a word' : 'Start a story'}
+      {room?.mode === RoomMode.OneWord ? 'Choose a word' : 'Start a story'}
     </Typography>
   );
 }

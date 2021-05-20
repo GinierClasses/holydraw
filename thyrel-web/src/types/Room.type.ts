@@ -7,7 +7,7 @@ type Room = {
   createdAt: string;
   sessions: any;
   players?: Player[];
-  roomMode: RoomMode;
+  mode: RoomMode;
 };
 
 export enum RoomMode {
