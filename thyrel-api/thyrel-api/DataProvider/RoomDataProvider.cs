@@ -37,6 +37,8 @@ namespace thyrel_api.DataProvider
         {
             var room = await _holyDrawDbContext.Room.FirstAsync(r => r.Id == roomId);
             room.Identifier = GenerateIdentifier();
+
+            return room;
         }
 
         /// <summary>
