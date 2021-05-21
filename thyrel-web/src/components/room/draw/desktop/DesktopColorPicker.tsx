@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, useTheme } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { colors } from 'utils/app-constant';
 import RandomColor from '../RandomColor';
 import PreciseColorPicker from '../PreciseColorPicker';
@@ -16,8 +16,8 @@ export default function DesktopColorPicker({
   disabled,
   onColorChange,
 }: DrawColorPickerProps) {
-  const theme = useTheme();
-  const disabledColor = theme.palette.action.disabled;
+  // const theme = useTheme();
+  // const disabledColor = theme.palette.action.disabled;
   return (
     <Box
       display="flex"
@@ -31,8 +31,7 @@ export default function DesktopColorPicker({
         const isSelected = color === currentColor;
         return (
           <RoundColor
-            width={42}
-            key={color}
+            size={1}
             color={color}
             isSelected={isSelected}
             disabled={disabled}
@@ -44,12 +43,14 @@ export default function DesktopColorPicker({
       })}
       <RandomColor
         currentColor={currentColor}
-        disabledColor={disabled ? disabledColor : ''}
+        // disabledColor={disabled ? disabledColor : ''}
+        disabled={disabled}
         onRandomClick={color => !disabled && onColorChange?.(color)}
       />
       <PreciseColorPicker
         currentColor={currentColor}
-        disabledColor={disabled ? disabledColor : ''}
+        // disabledColor={disabled ? disabledColor : ''}
+        disabled={disabled}
         onColorChange={color => !disabled && onColorChange?.(color)}
       />
     </Box>

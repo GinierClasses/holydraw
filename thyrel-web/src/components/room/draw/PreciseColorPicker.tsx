@@ -1,11 +1,13 @@
 import React from 'react';
 import { Box, ClickAwayListener, makeStyles } from '@material-ui/core';
 import { HexColorPicker } from 'react-colorful';
+import RoundColor from './RoundColor';
 
 type PreciseColorPickerProps = {
   currentColor: string;
   onColorChange: (color: string) => void;
-  disabledColor?: string;
+  // disabledColor?: string;
+  disabled?: boolean;
 };
 
 const useStyles = makeStyles(() => ({
@@ -20,12 +22,13 @@ const useStyles = makeStyles(() => ({
 export default function PreciseColorPicker({
   currentColor,
   onColorChange,
-  disabledColor,
+  // disabledColor,
+  disabled,
 }: PreciseColorPickerProps) {
   const [color, setColor] = React.useState(currentColor);
   const [showColorPicker, setShowColorPicker] = React.useState(false);
 
-  const colorWithDisabled = disabledColor ? disabledColor : currentColor;
+  // const colorWithDisabled = disabledColor ? disabledColor : currentColor;
 
   React.useEffect(() => {
     setColor(currentColor);
@@ -35,10 +38,18 @@ export default function PreciseColorPicker({
     setShowColorPicker(false);
   };
   const classes = useStyles();
+  const isSelected = color === currentColor;
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div>
-        <Box
+        <RoundColor
+          size={2}
+          color={currentColor}
+          disabled={disabled}
+          isSelected={isSelected}
+          onClick={() => !disabled && setShowColorPicker(prev => !prev)}
+        />
+        {/* <Box
           component="button"
           onClick={() => !disabledColor && setShowColorPicker(prev => !prev)}
           border={2}
@@ -51,7 +62,7 @@ export default function PreciseColorPicker({
           height={42}
           borderRadius={21}
           className="cursor-pointer"
-        />
+        /> */}
         {showColorPicker && (
           <Box height={20} position="absolute" className={classes.container}>
             <HexColorPicker

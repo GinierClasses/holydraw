@@ -1,26 +1,39 @@
-import { Box } from '@material-ui/core';
-import Shuffle from '@material-ui/icons/Shuffle';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { getRandomColor } from 'utils/utils';
+import RoundColor from './RoundColor';
 
 type RandomColorProps = {
   currentColor: string;
   onRandomClick?: (color: string) => void;
-  disabledColor?: string;
+  // disabledColor?: string;
+  disabled?: boolean;
 };
 
 export default function RandomColor({
   currentColor,
   onRandomClick,
-  disabledColor,
+  // disabledColor,
+  disabled,
 }: RandomColorProps) {
   const [randomColor, setRandomColor] = useState(getRandomColor());
   const isSelected = currentColor === randomColor;
 
-  const colorWithDisabled = disabledColor ? disabledColor : currentColor;
+  // const colorWithDisabled = disabledColor ? disabledColor : currentColor;
 
   return (
-    <Box
+    <RoundColor
+      size={1}
+      color={currentColor}
+      isSelected={isSelected}
+      disabled={disabled}
+      isRandom={true}
+      onClick={() => {
+        const newRandomColor = getRandomColor();
+        setRandomColor(newRandomColor);
+        onRandomClick?.(newRandomColor);
+      }}
+    />
+    /*{<Box
       component="button"
       key={currentColor}
       onClick={() => {
@@ -39,6 +52,6 @@ export default function RandomColor({
       borderRadius="50%"
       className="cursor-pointer">
       <Shuffle />
-    </Box>
+    </Box>}*/
   );
 }

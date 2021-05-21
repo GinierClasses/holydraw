@@ -1,22 +1,25 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
-import theme from 'theme';
+import { Box, useTheme } from '@material-ui/core';
+import { Shuffle } from '@material-ui/icons';
 
 type RoundColorProps = {
-  width: number;
+  size: number;
   color: string;
-  isSelected: boolean;
+  isSelected?: boolean;
   disabled?: boolean;
+  isRandom?: boolean;
   onClick: () => void;
 };
 
 export default function RoundColor({
-  width,
+  size,
   color,
   isSelected,
   disabled,
+  isRandom,
   onClick,
 }: RoundColorProps) {
+  const theme = useTheme();
   const disabledColor = theme.palette.action.disabled;
   const colorWithDisabled = disabled ? disabledColor : color;
 
@@ -31,10 +34,11 @@ export default function RoundColor({
       bgcolor={colorWithDisabled}
       boxShadow={isSelected ? 4 : 0}
       borderColor={isSelected ? '#ffffff' : colorWithDisabled}
-      width={width}
+      width={size === 1 ? 42 : 92}
       height={42}
-      borderRadius="50%"
-      className="cursor-pointer"
-    />
+      borderRadius={size === 1 ? 50 : 21}
+      className="cursor-pointer">
+      {isRandom ? <Shuffle /> : ''}
+    </Box>
   );
 }
