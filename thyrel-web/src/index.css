@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
 
+/*
+ * Base styles of the page
+*/
 body,
 html,
 #root {
@@ -49,6 +52,10 @@ code {
   background: #53013c;
 }
 
+/*
+ * Utilitiy classes to avoid using of `makeStyles`
+*/
+
 .full-height {
   height: 100%;
 }
@@ -59,4 +66,8 @@ code {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.font_roboto-mono {
+  font-family: 'Roboto Mono';
 }
