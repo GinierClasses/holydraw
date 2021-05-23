@@ -39,7 +39,7 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d ./build",
     "deploy-skip-predeploy": "gh-pages -d ./build",
-    "gh:linter": "eslint --ext ."
+    "gh:linter": "eslint ./src --max-warnings 0"
   },
   "eslintConfig": {
     "extends": [

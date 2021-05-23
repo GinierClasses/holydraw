@@ -8,12 +8,14 @@ import DirectiveLabel from '../../DirectiveLabel';
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
 import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import CanvasActionButtons from './CanvasActionButtons';
+import { useDisableBodyOverflow } from '../useDisableBodyOverflow';
 
 export default function DrawDesktopCanvas() {
   const [color, setColor] = React.useState(colors[5]);
   const [size, setSize] = React.useState(8);
   const { onSave } = useSessionContext();
   const { currentElement } = useSessionContext();
+  useDisableBodyOverflow();
 
   const isFinish = Boolean(currentElement?.finishAt);
 
