@@ -153,19 +153,4 @@ function useCanvasPaint({
   };
 }
 
-function asyncWithPromise() {
-  return new Promise(r => {
-    setTimeout(() => {
-      r('vlaue');
-    }, 100);
-  });
-}
-async function asyncWithoutPromise() {
-  await new Promise(r => setTimeout(() => r(''), 100));
-  return 'value';
-}
-
-asyncWithPromise();
-asyncWithoutPromise();
-
 export default useCanvasPaint;
