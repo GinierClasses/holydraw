@@ -22,5 +22,7 @@ namespace thyrel_api.Models
         SessionUpdate = 12,
         NextStep = 13, // on a step is finish
         NewAlbumElement = 14,
+        NewReaction = 15,
+        ReactionDeleted = 16,
     }
 }
