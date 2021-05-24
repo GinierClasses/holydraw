@@ -38,10 +38,7 @@ export default function DrawDesktopCanvas() {
         <Box mb={2}>
           <DirectiveLabel
             directive="Time to Draw"
-            sentence={
-              currentElement?.parent?.text ||
-              'Default sentence text very long and will not finish any time oh yeah my baby'
-            }
+            sentence={currentElement?.parent?.text || 'Default sentence'}
           />
         </Box>
         <DrawingCanvasProvider
