@@ -1,7 +1,9 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
+import { useRoomContext } from 'hooks/RoomProvider';
 import React from 'react';
 import 'styles/roboto-mono-font.css';
+import { RoomMode } from 'types/Room.type';
 import ModeModal from './ModeModal';
 
 const useStyles = makeStyles(theme => ({
@@ -14,6 +16,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function RoomModeSelector() {
   const classes = useStyles();
+  const { room } = useRoomContext();
   const [open, setOpen] = React.useState(false);
   return (
     <Box
@@ -30,7 +33,7 @@ export default function RoomModeSelector() {
         onClick={() => {
           setOpen(true);
         }}>
-        Standard
+        {room?.mode === RoomMode.OneWord ? 'OneWord' : 'Standard'}
       </Button>
       <ModeModal open={open} onClose={() => setOpen(false)} />
     </Box>
