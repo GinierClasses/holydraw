@@ -36,6 +36,12 @@ export default function StartForm() {
   const defaultSentence = useRandomSentence(isOneWord);
   const classes = useStyles();
 
+  function handleChange(e: any) {
+    isOneWord
+      ? setSentence(e.target.value.trim())
+      : setSentence(e.target.value);
+  }
+
   useTimerEvent({
     finishAt: new Date(session?.stepFinishAt || ''),
     timeDuration: session?.timeDuration || 60,
@@ -65,7 +71,8 @@ export default function StartForm() {
                 : 'Your description here'
             }
             value={sentence}
-            onChange={e => setSentence(e.target.value)}
+            onChange={handleChange}
+            maxLength={isOneWord ? 20 : undefined}
           />
 
           <BigButton
