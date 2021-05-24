@@ -19,6 +19,7 @@ export enum WebsocketEvent {
   PlayerKicked = 5,
   Restart = 6,
   ReloadIdentifier = 7,
+  RoomUpdate = 8,
   SessionStart = 11,
   SessionUpdate = 12,
   NextStep = 13, // on a step is finish

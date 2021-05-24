@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using thyrel_api.Controllers;
+using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 using thyrel_api.Websocket;
 using static thyrel_api.Controllers.RoomController;
 
@@ -144,6 +146,22 @@ namespace test_thyrel_api
             var newIdentifier = room.Identifier;
             
             Assert.AreEqual(prevIdentifier, newIdentifier);
+        }
+
+        [Test]
+        public async Task PatchTest()
+        {
+            const RoomMode mode = RoomMode.OneWord;
+            var room = Context.Room.First();
+
+            Assert.AreNotEqual(mode, room.Mode);
+
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id);
+            await ConnectApi(_roomController.HttpContext, player);
+
+            await _roomController.Patch(room.Id, new RoomSettingsDto {Mode = mode});
+
+            Assert.AreEqual(mode, room.Mode);
         }
     }
 }
