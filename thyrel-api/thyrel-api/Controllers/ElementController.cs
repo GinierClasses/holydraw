@@ -131,5 +131,66 @@ namespace thyrel_api.Controllers
 
             return await new ElementDataProvider(_context).GetCurrentElement(player.Id);
         }
+
+        /// <summary>
+        /// call this endpoint to add a new emojiReaction to an element
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="emojiReaction"></param>
+        /// <returns></returns>
+        [HttpPost("{elementId}/reaction")]
+        public async Task<ActionResult> AddReaction(int elementId, [FromBody] EmojiReaction emojiReaction)
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
+            var reaction = await new ReactionDataProvider(_context).AddReaction(player.Id, elementId, emojiReaction);
+
+            if (reaction == null)
+                return BadRequest("Reaction already exist.");
+
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new EmojiReactionWebSocketEventJson(player.Id, elementId, reaction.Emoji)), player.RoomId);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// call this endpoint to delete a player Reaction to an element by reaction Id
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{elementId}/reaction/{id}")]
+        public async Task<ActionResult> DeleteReaction(int elementId, int id)
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null) return Unauthorized();
+
+            var reaction = await new ReactionDataProvider(_context).RemoveReaction(id, player.Id);
+
+            if (reaction == null)
+                return Unauthorized("You can't delete a reaction who is not created by you.");
+
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new RemovedEmojiReactionWebSocketEventJson(player.Id, elementId)), player.RoomId);
+
+            return Ok(200);
+        }
+
+        /// <summary>
+        /// method to check if the element is in the last session
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public async Task<bool> IsElementInLastSession(int elementId, int roomId)
+        {
+            var session = await new SessionDataProvider(_context).GetCurrentSessionByRoomId(roomId);
+            var element = await new ElementDataProvider(_context).GetElement(elementId);
+            return session.Id == element.SessionId;
+        }
     }
 }
