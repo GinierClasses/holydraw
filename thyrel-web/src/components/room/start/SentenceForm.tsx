@@ -42,6 +42,13 @@ export default function StartForm() {
       : setSentence(e.target.value);
   }
 
+  function handleKeyPress(e: any) {
+    if (e.key === 'Enter') {
+      setLoading(true);
+      onSave(sentence).then(() => setLoading(false));
+    }
+  }
+
   useTimerEvent({
     finishAt: new Date(session?.stepFinishAt || ''),
     timeDuration: session?.timeDuration || 60,
@@ -72,6 +79,7 @@ export default function StartForm() {
             }
             value={sentence}
             onChange={handleChange}
+            onKeyPress={handleKeyPress}
             maxLength={isOneWord ? 20 : undefined}
           />
 
