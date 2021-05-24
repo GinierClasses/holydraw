@@ -8,8 +8,8 @@ type BookDrawingElementProps = {
 
 const useStyles = makeStyles(theme => ({
   width: {
-    width: 256,
-    height: 160,
+    width: 296,
+    height: 186,
     [theme.breakpoints.down('xs')]: {
       width: '100%',
     },
@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 256,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
+    marginRight: theme.spacing(2),
   },
 }));
 
@@ -29,7 +30,11 @@ export default function BookDrawingElement({
 }: BookDrawingElementProps) {
   const classes = useStyles();
   return (
-    <Box display="flex" flexDirection="column">
+    <Box
+      display="flex"
+      alignItems="flex-end"
+      flexDirection="column"
+      maxWidth={{ xs: '84%', sm: 'auto' }}>
       <Typography variant="subtitle1" className={classes.username}>
         {username}
       </Typography>

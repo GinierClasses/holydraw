@@ -14,14 +14,25 @@ namespace thyrel_api.Json
         }
     }
     
-    public class SessionCurrentAlbumIdUpdateEventJson : BaseWebsocketEventJson
+    public class SessionAlbumEventJson : BaseWebsocketEventJson
     {
-        public SessionCurrentAlbumIdUpdateSocketDto Session { get; }
+        public SessionAlbumSocketDto Session { get; }
 
-        public SessionCurrentAlbumIdUpdateEventJson(int? currentAlbumId)
+        public SessionAlbumEventJson(int? albumInitiatorId, BookState bookState)
         {
             WebsocketEvent = WebsocketEvent.SessionUpdate;
-            Session = new SessionCurrentAlbumIdUpdateSocketDto { CurrentAlbumId = currentAlbumId };
+            Session = new SessionAlbumSocketDto { AlbumInitiatorId = albumInitiatorId, BookState = bookState};
+        }
+    }
+    
+    public class RoomReloadIdentifierEventJson : BaseWebsocketEventJson
+    {
+        public RoomReloadIdentifierDto Room { get; }
+
+        public RoomReloadIdentifierEventJson(Room room)
+        {
+            WebsocketEvent = WebsocketEvent.ReloadIdentifier;
+            Room = new RoomReloadIdentifierDto {Id = room.Id, Identifier = room.Identifier};
         }
     }
     
@@ -51,7 +62,7 @@ namespace thyrel_api.Json
         public SessionSocketDto Session { get; }
 
         public SessionWebsocketEventJson(WebsocketEvent websocketEvent, int step, SessionStepType stepType,
-            DateTime? stepFinishAt, int timeDuration, int playerFinished) : base(websocketEvent)
+            DateTime? stepFinishAt, int timeDuration, int playerFinished, BookState bookState) : base(websocketEvent)
         {
             Session = new SessionSocketDto
             {
@@ -59,10 +70,24 @@ namespace thyrel_api.Json
                 StepFinishAt = stepFinishAt,
                 TimeDuration = timeDuration,
                 StepType = stepType,
-                PlayerFinished = playerFinished
+                PlayerFinished = playerFinished,
+                BookState = bookState
             };
         }
     }
+    
+    
+    public class RoomUpdateWebsocketEventJson : BaseWebsocketEventJson
+    {
+        public RoomSettingsDto Room;   
+
+        public RoomUpdateWebsocketEventJson(Room room)
+        {
+            Room = new RoomSettingsDto { Mode = room.Mode };
+            WebsocketEvent = WebsocketEvent.RoomUpdate;
+        }
+    }
+
 
     public class AlbumWebsocketEventJson : BaseWebsocketEventJson
     {
@@ -86,6 +111,34 @@ namespace thyrel_api.Json
             {
                 PlayerFinished = playerFinished
             };
+        }
+    }
+
+    public class EmojiReactionWebSocketEventJson : BaseWebsocketEventJson
+    {
+        public int PlayerId;
+        public int ElementId;
+        public EmojiReaction EmojiReaction;
+
+        public EmojiReactionWebSocketEventJson(int playerId, int elementId, EmojiReaction emojiReaction)
+        {
+            PlayerId = playerId;
+            ElementId = elementId;
+            EmojiReaction = emojiReaction;
+            WebsocketEvent = WebsocketEvent.NewReaction;
+        }
+    }
+
+    public class RemovedEmojiReactionWebSocketEventJson : BaseWebsocketEventJson
+    {
+        public int PlayerId;
+        public int ElementId;
+
+        public RemovedEmojiReactionWebSocketEventJson(int playerId, int elementId)
+        {
+            PlayerId = playerId;
+            ElementId = elementId;
+            WebsocketEvent = WebsocketEvent.ReactionDeleted;
         }
     }
 }

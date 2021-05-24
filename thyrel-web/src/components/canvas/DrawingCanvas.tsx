@@ -9,12 +9,15 @@ const useStyles = makeStyles<Theme, { size: CanvasWidth; disabled?: boolean }>(
       width: props => props.size.width,
       height: props => props.size.height,
       cursor: props => (props.disabled ? 'not-allowed' : 'crosshair'),
+      borderRadius: 32,
     },
     canvasBox: {
       width: props => props.size.width + props.size.border * 2,
       height: props => props.size.height + props.size.border * 2,
+      borderRadius: 32,
+      overflow: 'hidden',
       border: props =>
-        `${props.size.border}px solid ${theme.palette.primary.main}`,
+        `${props.size.border}px solid ${theme.palette.custom.main}`,
       boxShadow: theme.shadows[1],
     },
   }),

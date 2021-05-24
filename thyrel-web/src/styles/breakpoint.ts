@@ -1,9 +1,9 @@
-const Mq: Record<MediaQuery, string> = {
-  XS: '@media (min-width: 0px)',
-  SM: '@media (min-width: 600px)',
-  MD: '@media (min-width: 960px)',
-  LG: '@media (min-width: 1280px)',
-  XL: '@media (min-width: 1920px)',
+const MediaqueryHeight: Record<MediaQuery, string> = {
+  XS: '@media (max-height: 0px)',
+  SM: '@media (max-height: 600px)',
+  MD: '@media (max-height: 960px)',
+  LG: '@media (max-height: 1280px)',
+  XL: '@media (max-height: 1920px)',
 };
 
 export enum MediaQuery {
@@ -14,4 +14,4 @@ export enum MediaQuery {
   XL = 'XL',
 }
 
-export default Mq;
+export default MediaqueryHeight;

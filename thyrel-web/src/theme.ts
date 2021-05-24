@@ -55,6 +55,7 @@ function createBaseTheme(palette: Palette) {
         label: {
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
+          height: 20,
         },
         root: {
           textTransform: 'none',
@@ -70,9 +71,6 @@ function createBaseTheme(palette: Palette) {
           fontFamily: 'Work Sans',
           backgroundColor: palette.custom.main,
           position: 'relative',
-          '& .$MuiButton-label': {
-            height: 20,
-          },
           '@media (min-width: 600px)': {
             fontSize: 28,
             height: 72,
@@ -114,25 +112,25 @@ declare module '@material-ui/core/styles/createPalette' {
   }
 }
 
-let theme = createBaseTheme(
-  createPalette({
-    type: 'dark',
-    primary: {
-      main: PRIMARY,
-    },
-    secondary: {
-      main: SECONDARY,
-    },
-    background: {
-      default: '#0f131a',
-      paper: '#1a1d24',
-    },
-    custom: {
-      main: '#272B31',
-    },
-  }),
+const theme = responsiveFontSizes(
+  createBaseTheme(
+    createPalette({
+      type: 'dark',
+      primary: {
+        main: PRIMARY,
+      },
+      secondary: {
+        main: SECONDARY,
+      },
+      background: {
+        default: '#0f131a',
+        paper: '#1a1d24',
+      },
+      custom: {
+        main: '#272B31',
+      },
+    }),
+  ),
 );
-
-theme = responsiveFontSizes(theme);
 
 export default theme;

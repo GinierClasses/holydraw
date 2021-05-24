@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 type SizePickerV2Props = {
   size: number;
-  onSizeChange?: (event: any, newValue: any) => void;
+  onSizeChange: (newValue: number) => void;
   orientation?: 'vertical' | 'horizontal';
 };
 
@@ -42,7 +42,7 @@ const SizeSlider = withStyles({
       width: 8,
     },
     '& .$MuiSlider-thumb': {
-      marginLeft: '-4.15px',
+      marginLeft: '-4px',
     },
   },
 })(Slider);
@@ -71,7 +71,8 @@ export default function SizePickerV2({
   const isVertical = orientation === 'vertical';
   return (
     <Box
-      p={2}
+      px={1}
+      py={isVertical ? 1 : 2}
       bgcolor="#272B31"
       borderRadius={40}
       display="flex"
@@ -83,18 +84,18 @@ export default function SizePickerV2({
         mr={isVertical ? 0 : 2}
         mb={isVertical ? 2 : 0}
         borderRadius="50%"
-        height={8}
-        width={8}
+        width={isVertical ? 32 : 8}
+        height={isVertical ? 32 : 8}
       />
       <SizeSlider
         step={2}
         min={2}
-        style={isVertical ? { height: 300 } : { width: 300 }}
+        style={isVertical ? { height: 256 } : { width: 256 }}
         max={60}
         aria-labelledby="size-picker-slider"
         orientation={orientation}
         value={size}
-        onChange={onSizeChange}
+        onChange={(e, value) => onSizeChange(value as number)}
         ValueLabelComponent={ValueLabelComponent}
       />
       <Box
@@ -102,8 +103,8 @@ export default function SizePickerV2({
         ml={isVertical ? 0 : 2}
         mt={isVertical ? 2 : 0}
         borderRadius="50%"
-        height={24}
-        width={24}
+        height={isVertical ? 8 : 32}
+        width={isVertical ? 8 : 32}
       />
     </Box>
   );

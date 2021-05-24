@@ -55,8 +55,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     fontWeight: 'bold',
     overflow: 'hidden',
-    maxWidth: 128,
     whiteSpace: 'nowrap',
+    margin: `0 ${theme.spacing(1)}px`,
   },
   kickButton: {
     cursor: 'pointer',

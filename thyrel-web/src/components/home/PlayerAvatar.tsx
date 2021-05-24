@@ -37,10 +37,10 @@ const useStyles = makeStyles<Theme, { size: number }>(theme => ({
     margin: 'auto',
   },
   root: {
-    animation: 'float 4s infinite ease-in-out',
+    animation: 'player-avatar-float 4s infinite ease-in-out',
   },
   '@global': {
-    '@keyframes float': {
+    '@keyframes player-avatar-float': {
       '0%': { transform: 'translateY(-10px)' },
       '50%': { transform: 'translateY(10px)' },
       '100%': { transform: 'translateY(-10px)' },
@@ -55,9 +55,17 @@ export default function PlayerAvatar({
 }: PlayerAvatarProps) {
   const classes = useStyles({ size });
   return (
-    <Box alignItems="center" width={size} position="relative" height={size}>
+    <Box
+      alignItems="center"
+      width={size}
+      position="relative"
+      height={size}
+      className={classes.root}>
       <button className={classes.button} onClick={onShuffle}>
-        <ShuffleRoundedIcon style={{ color: '#FFFFFF', fontSize: 32 }} />
+        <ShuffleRoundedIcon
+          data-testid="shuffle-icon"
+          style={{ color: '#FFFFFF', fontSize: 32 }}
+        />
       </button>
       <Box
         border={2}

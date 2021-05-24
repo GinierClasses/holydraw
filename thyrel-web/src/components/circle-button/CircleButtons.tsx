@@ -14,7 +14,6 @@ type CircleStylesProps = {
 };
 
 const useStyles = makeStyles<Theme, CircleStylesProps>(theme => ({
-  root: {},
   action: {
     position: 'absolute',
     width: props => props.width,
@@ -55,7 +54,9 @@ export default function CircleButtons({
 }: CircleButtonsProps) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles({ count: 4, width, open, circleBg });
+
   const actionComponent = action(open);
+
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
       <Box
@@ -64,8 +65,8 @@ export default function CircleButtons({
         height={width}
         className={classes.root}>
         {React.cloneElement(actionComponent, {
-          onClick: () => setOpen(!open),
-          className: clsx(actionComponent.props.className, classes.action),
+          onClick: () => setOpen(prev => !prev),
+          className: clsx(classes.action),
         })}
         <Box
           position="absolute"
@@ -76,6 +77,7 @@ export default function CircleButtons({
         />
         {children.map((button, index) => (
           <CircleButton
+            key={index}
             open={open}
             spacing={spacing}
             width={width}

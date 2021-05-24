@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using thyrel_api.Controllers;
+using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 using thyrel_api.Websocket;
 using static thyrel_api.Controllers.RoomController;
 
@@ -109,13 +111,57 @@ namespace test_thyrel_api
 
             await _roomController.Restart();
 
-            var playerRestarted = Context.Player.FirstOrDefault(p => p.Id == player.Id);
+            var playerRestarted = Context.Player.First(p => p.Id == player.Id);
             //assert the same player is not playing anymore
             Assert.IsFalse(playerRestarted.IsPlaying);
 
-            var session = Context.Session.FirstOrDefault(s => s.RoomId == room.Id);
+            var session = Context.Session.First(s => s.RoomId == room.Id);
             //assert the session of the room is finished
             Assert.IsNotNull(session.FinishAt);
+        }
+        
+        [Test]
+        public async Task ReloadTest()
+        {
+            var room = Context.Room.First();
+            var prevIdentifier = room.Identifier;
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && p.IsOwner);
+            await ConnectApi(_roomController.HttpContext, player);
+
+            await _roomController.ReloadIdentifier();
+            var newIdentifier = room.Identifier;
+            
+            Assert.AreNotEqual(prevIdentifier, newIdentifier);
+        }
+        
+        [Test]
+        public async Task ReloadTestWithUnOwnerAccount()
+        {
+            var room = Context.Room.First();
+            var prevIdentifier = room.Identifier;
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && !p.IsOwner);
+            await ConnectApi(_roomController.HttpContext, player);
+
+            await _roomController.ReloadIdentifier();
+            var newIdentifier = room.Identifier;
+            
+            Assert.AreEqual(prevIdentifier, newIdentifier);
+        }
+
+        [Test]
+        public async Task PatchTest()
+        {
+            const RoomMode mode = RoomMode.OneWord;
+            var room = Context.Room.First();
+
+            Assert.AreNotEqual(mode, room.Mode);
+
+            var player = Context.Player.FirstOrDefault(p => p.RoomId == room.Id);
+            await ConnectApi(_roomController.HttpContext, player);
+
+            await _roomController.Patch(room.Id, new RoomSettingsDto {Mode = mode});
+
+            Assert.AreEqual(mode, room.Mode);
         }
     }
 }

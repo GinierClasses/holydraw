@@ -1,27 +1,59 @@
 import { copyToClipboard } from 'utils/clipboard';
-import { Button } from '@material-ui/core';
+import { Box, Button, Link } from '@material-ui/core';
 import VpnKeyIcon from '@material-ui/icons/VpnKeyRounded';
 import { useSnackbar } from 'notistack';
+import Player from 'types/Player.type';
+import { client } from 'api/client';
+import { getToken } from 'api/player-provider';
+import 'styles/roboto-mono-font.css';
 
 type ShareRoomButtonProps = {
+  player?: Player;
   identifier?: string;
 };
 
-export default function ShareRoomButton({ identifier }: ShareRoomButtonProps) {
+export default function ShareRoomButton({
+  identifier,
+  player,
+}: ShareRoomButtonProps) {
   const { enqueueSnackbar } = useSnackbar();
 
   function onShared() {
-    if (identifier) {
-      copyToClipboard(`${window.location.origin}/join/${identifier}`);
-      enqueueSnackbar('URL successfully copied 😎', { variant: 'success' });
-    }
+    if (!identifier) return;
+    copyToClipboard(`${window.location.origin}/join/${identifier}`);
+    enqueueSnackbar('URL successfully copied 😎', { variant: 'success' });
   }
+
+  function onGenerate() {
+    if (!identifier || !player?.isOwner) return;
+    client('room/reload_identifier', {
+      token: getToken(),
+      method: 'PATCH',
+    }).then(() =>
+      enqueueSnackbar('Identifier successfully regenerated 😎', {
+        variant: 'success',
+      }),
+    );
+  }
+
   return (
-    <Button
-      startIcon={<VpnKeyIcon style={{ fontSize: 32 }} />}
-      onClick={onShared}
-      variant="contained">
-      {identifier || 'loading...'}
-    </Button>
+    <Box display="flex" flexDirection="column" alignItems="center">
+      <Button
+        startIcon={<VpnKeyIcon style={{ fontSize: 32 }} />}
+        onClick={onShared}
+        classes={{ label: 'font_roboto-mono' }}
+        variant="contained">
+        {identifier || 'loading...'}
+      </Button>
+      {player?.isOwner && identifier && (
+        <Link
+          onClick={onGenerate}
+          component="button"
+          variant="body2"
+          color="textSecondary">
+          Generate new code
+        </Link>
+      )}
+    </Box>
   );
 }

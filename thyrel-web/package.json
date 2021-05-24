@@ -7,6 +7,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -38,7 +39,7 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d ./build",
     "deploy-skip-predeploy": "gh-pages -d ./build",
-    "gh:linter": "eslint --ext ."
+    "gh:linter": "eslint ./src --max-warnings 0"
   },
   "eslintConfig": {
     "extends": [

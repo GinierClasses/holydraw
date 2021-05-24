@@ -70,7 +70,7 @@ namespace thyrel_api.DataProvider
         public async Task<List<PlayerDto>> GetPlayersByRoom(int roomId)
         {
             var players = await _holyDrawDbContext.Player
-                .Where(p => p.RoomId == roomId && p.IsConnected).Select(p => new PlayerDto()
+                .Where(p => p.RoomId == roomId && p.IsConnected).Select(p => new PlayerDto
                 {
                     Id = p.Id,
                     Username = p.Username,

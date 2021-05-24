@@ -4,16 +4,16 @@ import React from 'react';
   This hook will add style with `overflow: hidden` and remove it on cleanup
 */
 export function useDisableBodyOverflow() {
-  const styleElement = React.useRef(document.createElement('style'));
+  const styleElementRef = React.useRef(document.createElement('style'));
 
   React.useEffect(() => {
-    const currentStyle = styleElement.current;
+    const styleElement = styleElementRef.current;
 
-    currentStyle.innerHTML = 'body { overflow: hidden; }';
+    styleElement.innerHTML = 'body, #root { overflow: hidden; }';
 
-    document.getElementsByTagName('head')[0].appendChild(currentStyle);
+    document.getElementsByTagName('head')[0].appendChild(styleElement);
     return () => {
-      document.getElementsByTagName('head')[0].removeChild(currentStyle);
+      document.getElementsByTagName('head')[0].removeChild(styleElement);
     };
   }, []);
 }
