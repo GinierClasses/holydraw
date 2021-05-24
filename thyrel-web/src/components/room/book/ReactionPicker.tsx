@@ -5,8 +5,6 @@ import AddIcon from '@material-ui/icons/Add';
 import ReactionEmoji from './ReactionEmoji';
 
 type ReactionPickerProps = {
-  emoji?: number;
-  count?: number;
   onClick?: (emoji: number) => void;
 };
 
@@ -24,11 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 const emojiList = ['😓', '😅', '😐', '😂', '🤣'];
 
-export default function ReactionPicker({
-  emoji,
-  count,
-  onClick,
-}: ReactionPickerProps) {
+export default function ReactionPicker({ onClick }: ReactionPickerProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
