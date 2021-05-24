@@ -40,6 +40,7 @@ import SizePickerV2 from 'components/room/draw/desktop/SizePickerV2';
 import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
 import Button from '@material-ui/core/Button';
 import PaletteIcon from '@material-ui/icons/Palette';
+import ReactionPicker from 'components/room/book/ReactionPicker';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -240,6 +241,10 @@ export default function ComponentTest() {
           height={size2}
           width={size2}
         />
+
+        <Box bgcolor="primary.main" p={4}>
+          <ReactionPicker onClick={emoji => console.log(emoji)} />
+        </Box>
 
         <StepProgress stepActual={progress} stepMax={7} />
       </Box>
