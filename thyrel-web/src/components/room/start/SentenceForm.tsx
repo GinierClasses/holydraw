@@ -11,6 +11,8 @@ import { client } from 'api/client';
 import { HolyElement } from 'types/HolyElement.type';
 import { getToken } from 'api/player-provider';
 import { SessionStepType } from 'types/Session.type';
+import { RoomMode } from 'types/Room.type';
+import { useRoomContext } from 'hooks/RoomProvider';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -29,7 +31,9 @@ export default function StartForm() {
   const [sentence, setSentence] = React.useState(currentElement?.text || '');
   const [loading, setLoading] = React.useState(false);
   const isEditing = Boolean(!currentElement?.finishAt);
-  const defaultSentence = useRandomSentence();
+  const { room } = useRoomContext();
+  const isOneWord = room?.mode === RoomMode.OneWord;
+  const defaultSentence = useRandomSentence(isOneWord);
   const classes = useStyles();
 
   useTimerEvent({
