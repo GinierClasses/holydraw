@@ -9,7 +9,7 @@ type BookDrawingElementProps = {
 const useStyles = makeStyles(theme => ({
   width: {
     width: 296,
-    height: 'auto',
+    height: 186,
     [theme.breakpoints.down('xs')]: {
       width: '100%',
     },
