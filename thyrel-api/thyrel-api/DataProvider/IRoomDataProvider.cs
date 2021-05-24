@@ -33,10 +33,22 @@ namespace thyrel_api.DataProvider
         Task<Room> Finish(int? roomId);
 
         /// <summary>
+        ///     Refresh token
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        Task<Room> GenerateNewIdentifier(int roomId);
+
+        /// <summary>
         /// To finish all sessions of a Room by its Id
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
         Task FinishSessionsByRoomId(int? roomId);
+
+        /// <summary>
+        ///     Add a new room
+        /// </summary>
+        Task<Room> Edit(int roomId, RoomSettingsDto roomSettings);
     }
 }

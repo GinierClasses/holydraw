@@ -16,9 +16,13 @@ namespace thyrel_api.Models
         NewOwnerPlayer = 4,
         PlayerKicked = 5,
         Restart = 6,
+        ReloadIdentifier = 7,
+        RoomUpdate = 8,
         SessionStart = 11,
         SessionUpdate = 12,
         NextStep = 13, // on a step is finish
         NewAlbumElement = 14,
+        NewReaction = 15,
+        ReactionDeleted = 16,
     }
 }

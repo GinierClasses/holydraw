@@ -1,8 +1,11 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
+using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace test_thyrel_api
 {
@@ -55,6 +58,30 @@ namespace test_thyrel_api
             await _roomDataProvider.Finish(room.Id);
             var roomEdited = await _roomDataProvider.GetRoom(room.Id);
             Assert.IsNotNull(roomEdited.FinishAt);
+        }
+
+        [Test]
+        public async Task ReloadIdentifier()
+        {
+            var room = await Context.Room.FirstAsync(r => r.FinishAt == null);
+            var identifier = room.Identifier;
+            var returnedRoom = await _roomDataProvider.GenerateNewIdentifier(room.Id);
+            var returnedRoomIdentifier = returnedRoom.Identifier;
+            var roomEdited = await Context.Room.FirstAsync(r => r.FinishAt == null);
+            
+            Assert.AreNotEqual(identifier, returnedRoomIdentifier);
+            Assert.AreEqual(returnedRoomIdentifier, roomEdited.Identifier);
+        }
+
+        [Test]
+        public async Task EditRoomTest()
+        {
+            var mode = RoomMode.OneWord;
+            var room = await Context.Room.FirstAsync(r => r.FinishAt == null);
+            var editedRoom = await _roomDataProvider.Edit(room.Id, new RoomSettingsDto { Mode = mode });
+            
+            Assert.AreEqual(mode, editedRoom.Mode);
+            Assert.AreEqual(room.Mode, editedRoom.Mode);
         }
     }
 }

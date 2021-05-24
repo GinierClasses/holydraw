@@ -29,7 +29,7 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult<Player>> Post([FromBody] PlayerRoomBody body)
         {
             if (body.Username == null || body.AvatarUrl == null)
-                return NotFound(); // 404 : most of api error
+                return NotFound();
             var roomDataProvider = new RoomDataProvider(_context);
             var playerDataProvider = new PlayerDataProvider(_context);
 
@@ -38,6 +38,23 @@ namespace thyrel_api.Controllers
             var player = await playerDataProvider.Add(body.Username, body.AvatarUrl, true, room.Id, token.Id);
             // use `GetPlayer` to include `Token` and `Room`
             return await playerDataProvider.GetPlayer(player.Id);
+        }
+        
+        // To edit room settings
+        // PATCH : api/room/13
+        [HttpPatch("{roomId}")]
+        public async Task<ActionResult> Patch(int roomId, [FromBody] RoomSettingsDto roomSettings)
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player == null || !player.IsInRoom(roomId)) return Unauthorized();
+            
+            var room = await new RoomDataProvider(_context).Edit(roomId, roomSettings);
+            
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new RoomUpdateWebsocketEventJson(room)), roomId);
+
+            return Ok(room);
         }
 
         // Call this endpoint to join a room
@@ -102,6 +119,23 @@ namespace thyrel_api.Controllers
                     new BaseWebsocketEventJson(WebsocketEvent.Restart)), player.RoomId);
 
             return Ok();
+        }
+        
+        // Call this endpoint to close the session and restart another one
+        // PATCH : api/room/reload_identifier
+        [HttpPatch("reload_identifier")]
+        public async Task<ActionResult<Room>> ReloadIdentifier()
+        {
+            var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
+            if (player?.RoomId == null || !player.IsOwner) return Unauthorized();
+
+            var room = await new RoomDataProvider(_context).GenerateNewIdentifier((int) player.RoomId);
+            
+            await _websocketHandler.SendMessageToSockets(
+                JsonBase.Serialize(
+                    new RoomReloadIdentifierEventJson(room)), player.RoomId);
+            
+            return NoContent();
         }
 
         public class PlayerRoomBody

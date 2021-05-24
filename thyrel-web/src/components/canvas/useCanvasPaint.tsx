@@ -133,7 +133,7 @@ function useCanvasPaint({
       if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
         event.shiftKey ? redo() : undo();
       }
-      if (event.key === 'c') clear();
+      if (event.key === 'c' && !(event.ctrlKey || event.metaKey)) clear();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);

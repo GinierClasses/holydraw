@@ -1,6 +1,7 @@
 import { Session } from 'inspector';
 import Player from 'types/Player.type';
 import { HolyElement } from './HolyElement.type';
+import Room from './Room.type';
 
 export enum WsStates {
   IDLE = 'Loading...',
@@ -17,6 +18,8 @@ export enum WebsocketEvent {
   NewOwnerPlayer = 4,
   PlayerKicked = 5,
   Restart = 6,
+  ReloadIdentifier = 7,
+  RoomUpdate = 8,
   SessionStart = 11,
   SessionUpdate = 12,
   NextStep = 13, // on a step is finish
@@ -34,4 +37,5 @@ export type WebsocketMessage = {
   album?: HolyElement;
   session?: Partial<Session>;
   error?: string;
+  room?: Partial<Room>;
 };

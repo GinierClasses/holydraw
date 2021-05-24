@@ -9,7 +9,7 @@ export function useDisableBodyOverflow() {
   React.useEffect(() => {
     const styleElement = styleElementRef.current;
 
-    styleElement.innerHTML = 'body { overflow: hidden; }';
+    styleElement.innerHTML = 'body, #root { overflow: hidden; }';
 
     document.getElementsByTagName('head')[0].appendChild(styleElement);
     return () => {
