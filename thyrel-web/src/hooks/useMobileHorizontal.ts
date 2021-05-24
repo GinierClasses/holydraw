@@ -1,7 +1,10 @@
+import { useMediaQuery, useTheme } from '@material-ui/core';
 import React from 'react';
 
 export default function useMobileHorizontal() {
   const [isHorizontal, setIsHorizontal] = React.useState(false);
+  const theme = useTheme();
+  const isValidForHorizontal = useMediaQuery(theme.breakpoints.down('sm'));
 
   React.useEffect(() => {
     function onOrientationChange() {
@@ -26,5 +29,5 @@ export default function useMobileHorizontal() {
       window.removeEventListener('orientationchange', onOrientationChange);
   }, []);
 
-  return isHorizontal;
+  return isHorizontal && isValidForHorizontal;
 }

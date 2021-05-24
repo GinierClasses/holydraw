@@ -1,6 +1,7 @@
 import { Box, makeStyles, Theme } from '@material-ui/core';
 import useMobileHorizontal from 'hooks/useMobileHorizontal';
 import HolyDrawImage from 'images/holydraw-logo.svg';
+import MediaqueryHeight from 'styles/breakpoint';
 
 const useStyles = makeStyles<Theme, { width: number }>(theme => ({
   logo: {
@@ -8,6 +9,9 @@ const useStyles = makeStyles<Theme, { width: number }>(theme => ({
     width: props => props.width * 8,
     height: 'auto',
     [theme.breakpoints.down('xs')]: {
+      width: props => ((props.width * 8) / 3) * 2,
+    },
+    [MediaqueryHeight.SM]: {
       width: props => ((props.width * 8) / 3) * 2,
     },
   },
