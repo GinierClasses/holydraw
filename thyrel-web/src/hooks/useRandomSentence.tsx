@@ -22,8 +22,31 @@ const sentences = [
   "Stitch meeting The Rock at Shrek's birthday",
 ];
 
-export function useRandomSentence() {
-  const sentenceRef = React.useRef(getRandomValueFromArray(sentences));
+const words = [
+  'Kebab',
+  'Cat',
+  'Banana',
+  'Monkey',
+  'Pinocchio',
+  'Mountain',
+  'Computer',
+  'Happy',
+  'Beaver',
+  'Boat',
+  'Wood',
+  'Spongebob',
+  'Colony',
+  'Airport',
+  'Godzilla',
+  'Peru',
+  'Steak',
+  'Revolution',
+];
+
+export function useRandomSentence(oneword?: boolean) {
+  const sentenceRef = React.useRef(
+    getRandomValueFromArray(oneword ? words : sentences),
+  );
 
   return sentenceRef.current;
 }

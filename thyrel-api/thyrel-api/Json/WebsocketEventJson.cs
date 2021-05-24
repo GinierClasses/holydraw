@@ -75,6 +75,19 @@ namespace thyrel_api.Json
             };
         }
     }
+    
+    
+    public class RoomUpdateWebsocketEventJson : BaseWebsocketEventJson
+    {
+        public RoomSettingsDto Room;   
+
+        public RoomUpdateWebsocketEventJson(Room room)
+        {
+            Room = new RoomSettingsDto { Mode = room.Mode };
+            WebsocketEvent = WebsocketEvent.RoomUpdate;
+        }
+    }
+
 
     public class AlbumWebsocketEventJson : BaseWebsocketEventJson
     {
