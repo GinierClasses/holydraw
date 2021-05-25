@@ -42,7 +42,7 @@ export default function StartForm() {
       : setSentence(e.target.value);
   }
 
-  function handleKeyPress(e: any) {
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       setLoading(true);
       onSave(sentence).then(() => setLoading(false));
