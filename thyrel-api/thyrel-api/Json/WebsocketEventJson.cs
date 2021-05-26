@@ -75,6 +75,19 @@ namespace thyrel_api.Json
             };
         }
     }
+    
+    
+    public class RoomUpdateWebsocketEventJson : BaseWebsocketEventJson
+    {
+        public RoomSettingsDto Room;   
+
+        public RoomUpdateWebsocketEventJson(Room room)
+        {
+            Room = new RoomSettingsDto { Mode = room.Mode };
+            WebsocketEvent = WebsocketEvent.RoomUpdate;
+        }
+    }
+
 
     public class AlbumWebsocketEventJson : BaseWebsocketEventJson
     {
@@ -98,6 +111,34 @@ namespace thyrel_api.Json
             {
                 PlayerFinished = playerFinished
             };
+        }
+    }
+
+    public class EmojiReactionWebSocketEventJson : BaseWebsocketEventJson
+    {
+        public int PlayerId;
+        public int ElementId;
+        public EmojiReaction EmojiReaction;
+
+        public EmojiReactionWebSocketEventJson(int playerId, int elementId, EmojiReaction emojiReaction)
+        {
+            PlayerId = playerId;
+            ElementId = elementId;
+            EmojiReaction = emojiReaction;
+            WebsocketEvent = WebsocketEvent.NewReaction;
+        }
+    }
+
+    public class RemovedEmojiReactionWebSocketEventJson : BaseWebsocketEventJson
+    {
+        public int PlayerId;
+        public int ElementId;
+
+        public RemovedEmojiReactionWebSocketEventJson(int playerId, int elementId)
+        {
+            PlayerId = playerId;
+            ElementId = elementId;
+            WebsocketEvent = WebsocketEvent.ReactionDeleted;
         }
     }
 }

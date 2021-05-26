@@ -25,6 +25,8 @@ export default function useCanvasEventListener({
     if (!isPainting || disabled) return;
 
     function touchMove(event: TouchEvent) {
+      if (!event) return;
+
       const mouseEvent = new MouseEvent('mousedown', {
         clientX: event.touches[0].clientX,
         clientY: event.touches[0].clientY,
@@ -39,6 +41,25 @@ export default function useCanvasEventListener({
       window.document.removeEventListener('touchmove', touchMove);
     };
   }, [disabled, isPainting, onMouseMove]);
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const preventDefault = (event: Event) => event.preventDefault();
+
+    canvas.addEventListener('touchstart', preventDefault);
+    canvas.addEventListener('touchmove', preventDefault);
+    canvas.addEventListener('touchend', preventDefault);
+    canvas.addEventListener('touchcancel', preventDefault);
+
+    return () => {
+      canvas.removeEventListener('touchstart', preventDefault);
+      canvas.removeEventListener('touchmove', preventDefault);
+      canvas.removeEventListener('touchend', preventDefault);
+      canvas.removeEventListener('touchcancel', preventDefault);
+    };
+  }, [canvasRef]);
 
   React.useEffect(() => {
     if (!canvasRef.current || disabled) return;

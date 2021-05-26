@@ -12,6 +12,7 @@ export default function Home(
     <Grid
       container
       direction="column"
+      wrap="nowrap"
       alignItems="center"
       className="full-height"
       justify="space-between">

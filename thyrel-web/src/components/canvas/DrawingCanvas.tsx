@@ -9,6 +9,7 @@ const useStyles = makeStyles<Theme, { size: CanvasWidth; disabled?: boolean }>(
       width: props => props.size.width,
       height: props => props.size.height,
       cursor: props => (props.disabled ? 'not-allowed' : 'crosshair'),
+      borderRadius: 32,
     },
     canvasBox: {
       width: props => props.size.width + props.size.border * 2,

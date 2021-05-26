@@ -63,7 +63,8 @@ async function client<T>(
       return Promise.reject({ message: 'Please re-authenticate.' });
     }
 
-    const data = await response.json();
+    const data = response.status === 204 ? null : await response.json();
+
     if (response.ok) {
       return data;
     } else {

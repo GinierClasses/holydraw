@@ -7,6 +7,12 @@ type Room = {
   createdAt: string;
   sessions: any;
   players?: Player[];
+  mode: RoomMode;
 };
+
+export enum RoomMode {
+  Standard = 0,
+  OneWord = 1,
+}
 
 export default Room;
