@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, useTheme } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { colors } from 'utils/app-constant';
 import RandomColor from '../RandomColor';
 import PreciseColorPicker from '../PreciseColorPicker';
+import RoundColor from '../RoundColor';
 
 type DrawColorPickerProps = {
   currentColor: string;
@@ -15,8 +16,8 @@ export default function DesktopColorPicker({
   disabled,
   onColorChange,
 }: DrawColorPickerProps) {
-  const theme = useTheme();
-  const disabledColor = theme.palette.action.disabled;
+  // const theme = useTheme();
+  // const disabledColor = theme.palette.action.disabled;
   return (
     <Box
       display="flex"
@@ -28,35 +29,28 @@ export default function DesktopColorPicker({
       padding={1}>
       {colors.map(color => {
         const isSelected = color === currentColor;
-        const colorWithDisabled = disabled ? disabledColor : color;
         return (
-          <Box
-            component="button"
-            key={color}
+          <RoundColor
+            size={1}
+            color={color}
+            isSelected={isSelected}
+            disabled={disabled}
             onClick={() => {
               onColorChange?.(color);
             }}
-            border={2}
-            m={0.5}
-            p={0}
-            bgcolor={colorWithDisabled}
-            boxShadow={isSelected ? 4 : 0}
-            borderColor={isSelected ? '#ffffff' : colorWithDisabled}
-            width={42}
-            height={42}
-            borderRadius="50%"
-            className="cursor-pointer"
           />
         );
       })}
       <RandomColor
         currentColor={currentColor}
-        disabledColor={disabled ? disabledColor : ''}
+        // disabledColor={disabled ? disabledColor : ''}
+        disabled={disabled}
         onRandomClick={color => !disabled && onColorChange?.(color)}
       />
       <PreciseColorPicker
         currentColor={currentColor}
-        disabledColor={disabled ? disabledColor : ''}
+        // disabledColor={disabled ? disabledColor : ''}
+        disabled={disabled}
         onColorChange={color => !disabled && onColorChange?.(color)}
       />
     </Box>
