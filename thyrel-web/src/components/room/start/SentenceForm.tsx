@@ -43,10 +43,11 @@ export default function StartForm() {
   }
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') {
-      setLoading(true);
-      onSave(sentence).then(() => setLoading(false));
+    if (loading || e.key !== 'Enter') {
+      return;
     }
+    setLoading(true);
+    onSave(sentence).then(() => setLoading(false));
   }
 
   useTimerEvent({
