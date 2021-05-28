@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -165,6 +166,24 @@ namespace test_thyrel_api
 
             var expectedWithParent = await _elementDataProvider.GetCurrentElement(playerId);
             Assert.IsNull(expectedWithParent.Parent);
+        }
+
+        [Test]
+        public void TestEditFinishBody()
+        {
+            const string text = "Red";
+            var session = new Session(1, DateTime.Now, 12, SessionStepType.Book, 12,
+                new RoomSettingsDto {Mode = RoomMode.OneWord});
+            
+            var elementFinish = new FinishElementDto
+            {
+                DrawImage = "",
+                Text = $"{text} car"
+            };
+
+            _elementDataProvider.UpdateFinishElementDto(elementFinish, session);
+            
+            Assert.AreEqual(elementFinish.Text, text);
         }
     }
 }

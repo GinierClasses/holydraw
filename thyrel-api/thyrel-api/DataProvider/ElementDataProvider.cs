@@ -154,6 +154,19 @@ namespace thyrel_api.DataProvider
             }).FirstOrDefaultAsync(e => e.Id == elementId);
         }
 
+        /// <summary>
+        ///     Will edit the Body with verified values using the session settings
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        public void UpdateFinishElementDto(FinishElementDto body, Session session)
+        {
+            if (session.Mode == RoomMode.OneWord)
+            {
+                body.Text = body.Text.Substring(0, body.Text.IndexOf(" ", StringComparison.Ordinal));
+            }
+        }
 
         /// <summary>
         ///   Get The Current Element Of a player

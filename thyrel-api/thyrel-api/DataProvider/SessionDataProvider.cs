@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Handler;
 using thyrel_api.Models;
@@ -26,11 +25,13 @@ namespace thyrel_api.DataProvider
         /// <param name="stepFinishAt"></param>
         /// <param name="timeDuration"></param>
         /// <param name="playerCount"></param>
+        /// <param name="roomSettings"></param>
         /// <returns></returns>
-        public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount)
+        public async Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount,
+            RoomSettingsDto roomSettings)
         {
             var sessionToAdd =
-                new Session(roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount);
+                new Session(roomId, stepFinishAt, timeDuration, SessionStepType.Start, playerCount, roomSettings);
 
             // test if no session is already start
             if (await _holyDrawDbContext.Session.AnyAsync(s => s.RoomId == roomId && s.FinishAt == null))
@@ -147,7 +148,11 @@ namespace thyrel_api.DataProvider
         public async Task<Session> StartSession(int roomId)
         {
             const int step = 1;
-            var duration = StepTimeHandler.GetTimeForStep(SessionStepType.Start);
+
+            var room = await new RoomDataProvider(_holyDrawDbContext).GetRoom(roomId);
+            var roomSetting = new RoomSettingsDto {Mode = room.Mode};
+
+            var duration = StepTimeHandler.GetTimeForStep(SessionStepType.Start, roomSetting.Mode);
 
             var playerDataProvider = new PlayerDataProvider(_holyDrawDbContext);
             var elementDataProvider = new ElementDataProvider(_holyDrawDbContext);
@@ -155,7 +160,8 @@ namespace thyrel_api.DataProvider
             var playerCount = await _holyDrawDbContext.Player
                 .Where(p => p.RoomId == roomId && p.IsConnected).CountAsync();
 
-            var addedSession = await Add(roomId, DateTime.Now.AddSeconds(duration), duration, playerCount);
+
+            var addedSession = await Add(roomId, DateTime.Now.AddSeconds(duration), duration, playerCount, roomSetting);
 
             if (addedSession == null)
                 return null;
@@ -196,7 +202,7 @@ namespace thyrel_api.DataProvider
                 _ => throw new Exception("Impossible Session.StepType case")
             };
 
-            session.UpdateTimeForStep(StepTimeHandler.GetTimeForStep(session.StepType));
+            session.UpdateTimeForStep(StepTimeHandler.GetTimeForStep(session.StepType, session.Mode));
 
             if (session.StepType != SessionStepType.Book)
             {

@@ -39,6 +39,9 @@ namespace thyrel_api.Controllers
             if (elementDto.CreatorId != player.Id) return Unauthorized("You're not the creator of this element.");
 
             var session = await sessionDataProvider.GetSessionById(elementDto.SessionId);
+
+            elementDataProvider.UpdateFinishElementDto(body, session);
+
             if (elementDto.Step != session.ActualStep) return Unauthorized("You can't modify a previous element.");
 
             var remainingStepTime = session.StepFinishAt == null
@@ -50,7 +53,7 @@ namespace thyrel_api.Controllers
 
             var element = await elementDataProvider.HandleFinish(id, body);
 
-            // special syntax to run task after answer
+            // special syntax to run task after response
             try
             {
                 return Ok(element);
@@ -59,7 +62,6 @@ namespace thyrel_api.Controllers
             {
                 Response.OnCompleted(async () =>
                 {
-                    // don't await this call to avoid bug and quickly send answer
                     var stepState = await sessionDataProvider.GetPlayerStatus(session);
                     if (stepState.PlayerCount == stepState.PlayerFinished &&
                         (remainingStepTime.TotalMilliseconds > 5000 || remainingStepTime.TotalMilliseconds < -2000))

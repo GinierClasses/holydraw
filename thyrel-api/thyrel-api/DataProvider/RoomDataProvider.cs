@@ -38,7 +38,7 @@ namespace thyrel_api.DataProvider
             var room = await _holyDrawDbContext.Room.FirstAsync(r => r.Id == roomId);
             room.Identifier = GenerateIdentifier();
             await SaveChanges();
-            
+
             return room;
         }
 
@@ -55,7 +55,8 @@ namespace thyrel_api.DataProvider
                     Id = r.Id,
                     CreatedAt = r.CreatedAt,
                     FinishAt = r.FinishAt,
-                    Identifier = r.Identifier
+                    Identifier = r.Identifier,
+                    Mode = r.Mode
                 })
                 .SingleOrDefaultAsync(p => p.Id == id);
             return room;

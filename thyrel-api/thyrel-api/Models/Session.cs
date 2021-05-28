@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using thyrel_api.Handler;
 using thyrel_api.Json;
+using thyrel_api.Models.DTO;
 using thyrel_api.Websocket;
 
 namespace thyrel_api.Models
@@ -13,7 +14,7 @@ namespace thyrel_api.Models
         {
         }
 
-        public Session(int roomId, DateTime stepFinishAt, int timeDuration, SessionStepType stepType, int totalPlayers)
+        public Session(int roomId, DateTime stepFinishAt, int timeDuration, SessionStepType stepType, int totalPlayers, RoomSettingsDto roomSettings)
         {
             CreatedAt = DateTime.Now;
             RoomId = roomId;
@@ -22,6 +23,7 @@ namespace thyrel_api.Models
             TimeDuration = timeDuration;
             StepType = stepType;
             TotalPlayers = totalPlayers;
+            Mode = roomSettings.Mode;
         }
 
         public int Id { get; set; }
@@ -34,7 +36,9 @@ namespace thyrel_api.Models
         public int TotalPlayers { get; set; }
 
         public int? AlbumInitiatorId { get; set; }
-        
+
+        public RoomMode Mode { get; set; }
+
         public BookState BookState { get; set; }
 
         public int RoomId { get; set; }

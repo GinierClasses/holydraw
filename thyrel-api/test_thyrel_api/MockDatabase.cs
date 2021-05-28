@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace test_thyrel_api
 {
@@ -20,7 +21,7 @@ namespace test_thyrel_api
         public async Task AddMockData()
         {
             await Context.Database.EnsureDeletedAsync();
-            
+
             await CreateRoom();
             await CreateToken();
             await CreatePlayer();
@@ -33,15 +34,15 @@ namespace test_thyrel_api
         {
             var elements = new List<Element>
             {
-                new (1, 1, 1, 1, ElementType.Sentence),
-                new (2, 2, 1, 1, ElementType.Sentence),
-                new (1, 2, 2, 1, ElementType.Sentence),
-                new (1, 3, 3, 1, ElementType.Sentence),
-                new (1, 4, 4, 1, ElementType.Sentence),
-                new (1, 6, 6, 1, ElementType.Sentence),
-                new (1, 7, 7, 1, ElementType.Sentence),
+                new(1, 1, 1, 1, ElementType.Sentence),
+                new(2, 2, 1, 1, ElementType.Sentence),
+                new(1, 2, 2, 1, ElementType.Sentence),
+                new(1, 3, 3, 1, ElementType.Sentence),
+                new(1, 4, 4, 1, ElementType.Sentence),
+                new(1, 6, 6, 1, ElementType.Sentence),
+                new(1, 7, 7, 1, ElementType.Sentence),
             };
-            
+
             await Context.Element.AddRangeAsync(elements);
         }
 
@@ -50,16 +51,16 @@ namespace test_thyrel_api
         {
             var sessions = new List<Session>
             {
-                new(1, DateTime.Now, 100, SessionStepType.Book, 3),
-                new(2, DateTime.Now, 100, SessionStepType.Draw, 3),
+                new(1, DateTime.Now, 100, SessionStepType.Book, 3, new RoomSettingsDto {Mode = RoomMode.Standard}),
+                new(2, DateTime.Now, 100, SessionStepType.Draw, 3, new RoomSettingsDto {Mode = RoomMode.Standard}),
             };
-            
+
             await Context.Session.AddRangeAsync(sessions);
         }
 
 
         private async Task CreatePlayer()
-        {   
+        {
             var players = new List<Player>
             {
                 new("player-1-owner", "player-1-avatarurl", true, 1, 1),
@@ -74,24 +75,24 @@ namespace test_thyrel_api
             };
 
             await Context.Player.AddRangeAsync(players);
-        } 
+        }
 
         private async Task CreateToken()
         {
             var tokens = new List<Token>
             {
-                new ("token-1-key"),
-                new ("token-2-key"),
-                new ("token-3-key"),
-                new ("token-4-key"),
-                new ("token-5-key"),
-                new ("token-6-key"),
-                new ("token-7-key"),
-                new ("token-8-key"),
-                new ("token-9-key"),
-                new ("token-10-key"),
+                new("token-1-key"),
+                new("token-2-key"),
+                new("token-3-key"),
+                new("token-4-key"),
+                new("token-5-key"),
+                new("token-6-key"),
+                new("token-7-key"),
+                new("token-8-key"),
+                new("token-9-key"),
+                new("token-10-key"),
             };
-            
+
             await Context.Token.AddRangeAsync(tokens);
         }
 
@@ -99,10 +100,10 @@ namespace test_thyrel_api
         {
             var rooms = new List<Room>
             {
-                new ("room-1-id"),
-                new ("room-2-id"),
-                new ("room-3-id"),
-                new ("room-4-id"),
+                new("room-1-id"),
+                new("room-2-id"),
+                new("room-3-id"),
+                new("room-4-id"),
             };
 
             await Context.Room.AddRangeAsync(rooms);
