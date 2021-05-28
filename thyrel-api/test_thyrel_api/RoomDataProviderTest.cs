@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
+using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace test_thyrel_api
 {
@@ -69,6 +71,17 @@ namespace test_thyrel_api
             
             Assert.AreNotEqual(identifier, returnedRoomIdentifier);
             Assert.AreEqual(returnedRoomIdentifier, roomEdited.Identifier);
+        }
+
+        [Test]
+        public async Task EditRoomTest()
+        {
+            var mode = RoomMode.OneWord;
+            var room = await Context.Room.FirstAsync(r => r.FinishAt == null);
+            var editedRoom = await _roomDataProvider.Edit(room.Id, new RoomSettingsDto { Mode = mode });
+            
+            Assert.AreEqual(mode, editedRoom.Mode);
+            Assert.AreEqual(room.Mode, editedRoom.Mode);
         }
     }
 }

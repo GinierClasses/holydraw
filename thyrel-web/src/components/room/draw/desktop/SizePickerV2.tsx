@@ -72,7 +72,7 @@ export default function SizePickerV2({
   return (
     <Box
       px={1}
-      py={2}
+      py={isVertical ? 1 : 2}
       bgcolor="#272B31"
       borderRadius={40}
       display="flex"
@@ -84,8 +84,8 @@ export default function SizePickerV2({
         mr={isVertical ? 0 : 2}
         mb={isVertical ? 2 : 0}
         borderRadius="50%"
-        height={8}
-        width={8}
+        width={isVertical ? 32 : 8}
+        height={isVertical ? 32 : 8}
       />
       <SizeSlider
         step={2}
@@ -103,8 +103,8 @@ export default function SizePickerV2({
         ml={isVertical ? 0 : 2}
         mt={isVertical ? 2 : 0}
         borderRadius="50%"
-        height={24}
-        width={24}
+        height={isVertical ? 8 : 32}
+        width={isVertical ? 8 : 32}
       />
     </Box>
   );

@@ -43,6 +43,21 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
+        ///     Add a new room
+        /// </summary>
+        public async Task<Room> Edit(int roomId, RoomSettingsDto roomSettings)
+        {
+            var room = await _holyDrawDbContext.Room.FindAsync(roomId);
+
+            if (roomSettings.Mode != null)
+                room.Mode = (RoomMode)roomSettings.Mode;
+
+            await SaveChanges();
+
+            return room;
+        }
+
+        /// <summary>
         ///     To get a Room by it's ID
         /// </summary>
         /// <param name="id"></param>

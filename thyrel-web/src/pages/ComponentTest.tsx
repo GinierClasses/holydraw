@@ -37,10 +37,10 @@ import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import { colors } from 'utils/app-constant';
 import SizePickerV2 from 'components/room/draw/desktop/SizePickerV2';
+import RoomModeSelector from 'components/room/lobby/RoomModeSelector';
 import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
 import Button from '@material-ui/core/Button';
 import PaletteIcon from '@material-ui/icons/Palette';
-
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
@@ -68,6 +68,10 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <HolyDrawLogo />
+
+        <Box>
+          <RoomModeSelector></RoomModeSelector>
+        </Box>
 
         <Box>
           <Button
@@ -232,7 +236,11 @@ export default function ComponentTest() {
           max={7}
         />
 
-        <SizePickerV2 size={size2} onSizeChange={value => setSize2(value)} />
+        <SizePickerV2
+          size={size2}
+          orientation="vertical"
+          onSizeChange={value => setSize2(value)}
+        />
 
         <Box
           bgcolor="#C6C6C6"
