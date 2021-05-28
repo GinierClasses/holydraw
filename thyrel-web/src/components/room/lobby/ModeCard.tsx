@@ -1,11 +1,12 @@
 import { Box, Typography } from '@material-ui/core';
 
-type ModeCardProps = {
+export type InfoModeProps = {
   title: string;
   description: string;
+};
+type ModeCardProps = InfoModeProps & {
   onClick: () => void;
 };
-
 export default function ModeCard({
   title,
   description,
@@ -14,7 +15,6 @@ export default function ModeCard({
   return (
     <Box
       component="button"
-      borderColor="custom.main"
       bgcolor="custom.main"
       flexDirection="column"
       justifyContent="space-between"
@@ -22,7 +22,7 @@ export default function ModeCard({
       borderRadius={32}
       width={133}
       height={155}
-      border={2}
+      border="none"
       className="cursor-pointer"
       onClick={onClick}>
       <Typography variant="h6" color="textPrimary">

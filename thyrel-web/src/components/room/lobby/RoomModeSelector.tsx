@@ -14,6 +14,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const modeName: Record<RoomMode, string> = {
+  [RoomMode.Standard]: 'Standard',
+  [RoomMode.OneWord]: 'One Word',
+};
+
 export default function RoomModeSelector() {
   const classes = useStyles();
   const { room } = useRoomContext();
@@ -33,7 +38,7 @@ export default function RoomModeSelector() {
         onClick={() => {
           setOpen(true);
         }}>
-        {room?.mode === RoomMode.OneWord ? 'OneWord' : 'Standard'}
+        {room?.mode ? modeName[room?.mode] : 'loading...'}
       </Button>
       <ModeModal
         open={open}
