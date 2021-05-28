@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { Box, DialogTitle } from '@material-ui/core';
+import { Box, DialogContent, DialogTitle } from '@material-ui/core';
 import { RoomMode } from 'types/Room.type';
 import ModeCard, { InfoModeProps } from './ModeCard';
 
@@ -36,30 +36,30 @@ export default function ModeModal({ open, onClose, onSelect }: ModeModalProps) {
   const classes = useStyles();
 
   return (
-    <Dialog onClose={() => onClose()} open={open}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        bgcolor="background.paper"
-        width={500}
-        height={312}>
-        <DialogTitle>Settings</DialogTitle>
-        <IconButton className={classes.closeButton} onClick={() => onClose()}>
-          <CloseIcon />
-        </IconButton>
+    <Dialog onClose={() => onClose()} open={open} maxWidth="sm" fullWidth>
+      <DialogTitle>Settings</DialogTitle>
+      <IconButton className={classes.closeButton} onClick={() => onClose()}>
+        <CloseIcon />
+      </IconButton>
+      <DialogContent>
         <Box
           display="flex"
           flexDirection="row"
           flexWrap="wrap"
-          justifyContent="center"
-          mt={4}>
+          justifyContent="center">
           {Object.keys(infoMode).map((key: string) => {
             const roomMode = Number(key) as RoomMode;
             const mode = infoMode[roomMode];
-            return <ModeCard {...mode} onClick={() => onSelect(roomMode)} />;
+            return (
+              <ModeCard
+                key={key}
+                {...mode}
+                onClick={() => onSelect(roomMode)}
+              />
+            );
           })}
         </Box>
-      </Box>
+      </DialogContent>
     </Dialog>
   );
 }

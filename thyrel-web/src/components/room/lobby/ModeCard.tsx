@@ -21,9 +21,9 @@ export default function ModeCard({
       flexDirection="column"
       justifyContent="space-between"
       mr={1}
+      maxWidth={256}
+      p={1}
       borderRadius={32}
-      width={133}
-      height={155}
       border="none"
       className="cursor-pointer"
       onClick={onClick}>

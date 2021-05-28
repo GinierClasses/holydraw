@@ -1,5 +1,7 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
+import { client } from 'api/client';
+import { getToken } from 'api/player-provider';
 import { useRoomContext } from 'hooks/RoomProvider';
 import React from 'react';
 import 'styles/roboto-mono-font.css';
@@ -23,6 +25,20 @@ export default function RoomModeSelector() {
   const classes = useStyles();
   const { room } = useRoomContext();
   const [open, setOpen] = React.useState(false);
+
+  const onSelect = (mode: RoomMode) => {
+    if (room?.mode === mode) {
+      setOpen(false);
+      return;
+    }
+
+    client(`room/${room?.id}`, {
+      method: 'PATCH',
+      token: getToken(),
+      data: { mode },
+    }).then(() => setOpen(false));
+  };
+
   return (
     <Box
       display="flex"
@@ -38,12 +54,12 @@ export default function RoomModeSelector() {
         onClick={() => {
           setOpen(true);
         }}>
-        {room?.mode ? modeName[room?.mode] : 'loading...'}
+        {room?.mode != null ? modeName[room?.mode] : 'loading...'}
       </Button>
       <ModeModal
         open={open}
         onClose={() => setOpen(false)}
-        onSelect={() => {}}
+        onSelect={mode => onSelect(mode)}
       />
     </Box>
   );
