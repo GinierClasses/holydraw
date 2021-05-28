@@ -14,7 +14,8 @@ namespace thyrel_api.Models
         {
         }
 
-        public Session(int roomId, DateTime stepFinishAt, int timeDuration, SessionStepType stepType, int totalPlayers, RoomSettingsDto roomSettings)
+        public Session(int roomId, DateTime stepFinishAt, int timeDuration, SessionStepType stepType, int totalPlayers,
+            RoomSettingsDto roomSettings)
         {
             CreatedAt = DateTime.Now;
             RoomId = roomId;
@@ -23,7 +24,8 @@ namespace thyrel_api.Models
             TimeDuration = timeDuration;
             StepType = stepType;
             TotalPlayers = totalPlayers;
-            Mode = roomSettings.Mode;
+            if (roomSettings.Mode != null)
+                Mode = (RoomMode) roomSettings.Mode;
         }
 
         public int Id { get; set; }
