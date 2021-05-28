@@ -35,7 +35,11 @@ export default function RoomModeSelector() {
         }}>
         {room?.mode === RoomMode.OneWord ? 'OneWord' : 'Standard'}
       </Button>
-      <ModeModal open={open} onClose={() => setOpen(false)} />
+      <ModeModal
+        open={open}
+        onClose={() => setOpen(false)}
+        onSelect={() => {}}
+      />
     </Box>
   );
 }
