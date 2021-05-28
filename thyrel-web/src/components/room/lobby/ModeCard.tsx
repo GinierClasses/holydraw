@@ -4,9 +4,11 @@ export type InfoModeProps = {
   title: string;
   description: string;
 };
+
 type ModeCardProps = InfoModeProps & {
   onClick: () => void;
 };
+
 export default function ModeCard({
   title,
   description,
