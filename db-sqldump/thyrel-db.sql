@@ -138,6 +138,7 @@ INSERT INTO `Room` (`Id`, `Mode`, `FinishAt`, `CreatedAt`, `Identifier`) VALUES
 
 CREATE TABLE `Session` (
   `Id` int NOT NULL,
+  `Mode` int DEFAULT NULL,
   `FinishAt` datetime DEFAULT NULL,
   `StepFinishAt` datetime DEFAULT NULL,
   `ActualStep` int DEFAULT NULL,
