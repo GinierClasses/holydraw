@@ -3,9 +3,17 @@ import Popper from '@material-ui/core/Popper';
 import { Box, makeStyles } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import ReactionEmoji from './ReactionEmoji';
+import { EmojiMapping } from 'types/Reaction.type';
+
+type Reaction = {
+  emoji: string;
+  count: number;
+  isSelected: boolean;
+};
 
 type ReactionPickerProps = {
-  onClick?: (emoji: number) => void;
+  reactions: Reaction[];
+  onClick?: (emoji: string) => void;
 };
 
 const useStyles = makeStyles(theme => ({
@@ -16,13 +24,18 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'transparent',
     outline: 'none',
     border: 'none',
-    paddingRight: 4,
+    cursor: 'pointer',
   },
 }));
 
-const emojiList = ['😓', '😅', '😐', '😂', '🤣'];
+const reactionsExample: Reaction[] = [
+  { emoji: '😓', count: 6, isSelected: false },
+];
 
-export default function ReactionPicker({ onClick }: ReactionPickerProps) {
+export default function ReactionPicker({
+  onClick,
+  reactions,
+}: ReactionPickerProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -61,12 +74,12 @@ export default function ReactionPicker({ onClick }: ReactionPickerProps) {
           justifyContent="center"
           flexDirection="row"
           className={classes.container}>
-          {emojiList.map((emj, index) => {
+          {Object.keys(EmojiMapping).map(emjNum => {
             return (
               <button
                 className={classes.button}
-                onClick={() => onClick?.(index)}>
-                <ReactionEmoji emoji={index} />
+                onClick={() => onClick?.(emjNum)}>
+                <ReactionEmoji emoji={EmojiMapping[1]} />
               </button>
             );
           })}
@@ -93,7 +106,17 @@ export default function ReactionPicker({ onClick }: ReactionPickerProps) {
             </Box>
           </button>
         </Box>
-        {/* <ReactionEmoji emoji={1} count={6} /> */}
+        {reactions.map(reaction => {
+          if (reaction.count > 0) {
+            return (
+              <button
+                className={classes.button}
+                onClick={() => onClick?.(reaction.emoji)}>
+                <ReactionEmoji emoji={reaction.emoji} count={reaction.count} />
+              </button>
+            );
+          }
+        })}
       </Box>
     </Box>
   );

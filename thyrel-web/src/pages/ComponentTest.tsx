@@ -41,6 +41,8 @@ import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal'
 import Button from '@material-ui/core/Button';
 import PaletteIcon from '@material-ui/icons/Palette';
 import ReactionPicker from 'components/room/book/ReactionPicker';
+import Reaction from 'types/Reaction.type';
+import { EmojiMapping } from 'types/Reaction.type';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -59,6 +61,16 @@ export default function ComponentTest() {
   const nextPp = () => {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
+
+  type Reaction = {
+    emoji: string;
+    count: number;
+    isSelected: boolean;
+  };
+
+  const reactionsExample: Reaction[] = [
+    { emoji: '😓', count: 6, isSelected: false },
+  ];
 
   return (
     <Box>
@@ -247,7 +259,10 @@ export default function ComponentTest() {
         />
 
         <Box bgcolor="primary.main" p={4}>
-          <ReactionPicker onClick={emoji => console.log(emoji)} />
+          <ReactionPicker
+            onClick={emoji => console.log(emoji)}
+            reactions={reactionsExample}
+          />
         </Box>
 
         <StepProgress stepActual={progress} stepMax={7} />

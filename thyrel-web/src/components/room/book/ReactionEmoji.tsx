@@ -1,17 +1,18 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 
 type ReactionEmojiProps = {
-  emoji: number;
+  emoji: string;
   count?: number;
 };
 
 const useStyles = makeStyles(theme => ({
   container: {
     backgroundColor: theme.palette.background.default,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.dark,
+    },
   },
 }));
-
-const emojiList = ['😓', '😅', '😐', '😂', '🤣'];
 
 export default function ReactionEmoji({ emoji, count }: ReactionEmojiProps) {
   const classes = useStyles();
@@ -25,7 +26,7 @@ export default function ReactionEmoji({ emoji, count }: ReactionEmojiProps) {
       flexDirection="row"
       className={classes.container}>
       <Typography variant="subtitle1" color="textSecondary">
-        {emojiList[emoji]} {count}
+        {emoji} {count}
       </Typography>
     </Box>
   );
