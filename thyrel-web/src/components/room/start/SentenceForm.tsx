@@ -42,6 +42,12 @@ export default function StartForm() {
       : setSentence(e.target.value);
   }
 
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (loading || e.key !== 'Enter') return;
+    setLoading(true);
+    onSave(sentence).then(() => setLoading(false));
+  }
+
   useTimerEvent({
     finishAt: new Date(session?.stepFinishAt || ''),
     timeDuration: session?.timeDuration || 60,
@@ -72,6 +78,7 @@ export default function StartForm() {
             }
             value={sentence}
             onChange={handleChange}
+            onKeyPress={handleKeyPress}
             maxLength={isOneWord ? 20 : undefined}
           />
 
