@@ -35,6 +35,8 @@ export default function Lobby() {
         bgcolor="background.paper"
         maxWidth={656}
         borderRadius={16}
+        maxHeight={384}
+        height="100%"
         py={1}
         px={2}
         alignItems="flex-end"
@@ -42,8 +44,9 @@ export default function Lobby() {
         <PlayerCountBox />
         <Box
           display="flex"
-          justifyContent="space-around"
+          justifyContent="space-between"
           width="100%"
+          height="100%"
           className={classes.playersContainer}>
           <SettingsMenu />
           <Players />

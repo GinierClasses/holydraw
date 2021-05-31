@@ -30,6 +30,7 @@ export default function SettingsMenu() {
         width="100%"
         alignItems="inherit"
         mt={{ xs: 4, sm: 0 }}
+        pb={{ xs: 0, sm: 1 }}
         flexDirection="column">
         <RoomModeSelector />
       </Box>
