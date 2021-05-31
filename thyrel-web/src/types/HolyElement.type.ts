@@ -1,4 +1,5 @@
 import Player from './Player.type';
+import Reaction from './Reaction.type';
 
 export type HolyElement = {
   id: number;
@@ -10,6 +11,7 @@ export type HolyElement = {
   drawImage: string;
   initiatorId?: number;
   creator?: Player;
+  reactions?: Array<Reaction>;
 };
 
 export enum ElementType {

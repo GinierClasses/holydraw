@@ -1,6 +1,7 @@
 import { Session } from 'inspector';
 import Player from 'types/Player.type';
 import { HolyElement } from './HolyElement.type';
+import Reaction from './Reaction.type';
 import Room from './Room.type';
 
 export enum WsStates {
@@ -40,5 +41,5 @@ export type WebsocketMessage = {
   session?: Partial<Session>;
   error?: string;
   room?: Partial<Room>;
-  newReaction?: NewReaction;
+  newReaction?: Reaction;
 };

@@ -57,15 +57,28 @@ export function AlbumContextProvider({ children }: AlbumContextProviderProps) {
             return prevAlbumsCopy;
           });
           break;
+
         case WebsocketEvent.NewReaction:
+          const reaction = websocketMessage.newReaction;
+
           setAlbums(prevAlbums => {
             const prevAlbumsCopy = { ...prevAlbums };
-            const reaction = websocketMessage.prevAlbums.forEach(element => {
-              if (element.Id === websocketMessage.emojiReaction) {
-              }
+
+            Object.keys(prevAlbumsCopy).map(initiatorId => {
+              const InitiatorId = Number(initiatorId);
+              prevAlbumsCopy[InitiatorId].forEach(element => {
+                if (element.id === reaction?.elementId) {
+                  if (element.reactions) {
+                    element.reactions?.push(reaction);
+                  } else {
+                    element.reactions = [reaction];
+                  }
+                }
+              });
             });
             return prevAlbumsCopy;
           });
+          break;
       }
     }
     websocket.addEventListener('message', onMessage);
