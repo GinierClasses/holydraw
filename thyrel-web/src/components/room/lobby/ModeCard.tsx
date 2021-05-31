@@ -1,19 +1,15 @@
 import { Box, Typography } from '@material-ui/core';
+import { InfoRoomModeProps } from 'types/Room.type';
 
-export type InfoModeProps = {
-  title: string;
-  description: string;
-};
-
-type ModeCardProps = InfoModeProps & {
+type RoomModeCardProps = InfoRoomModeProps & {
   onClick: () => void;
 };
 
-export default function ModeCard({
+export default function RoomModeCard({
   title,
   description,
   onClick,
-}: ModeCardProps) {
+}: RoomModeCardProps) {
   return (
     <Box
       component="button"

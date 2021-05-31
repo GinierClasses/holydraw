@@ -3,10 +3,10 @@ import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Box, DialogContent, DialogTitle } from '@material-ui/core';
-import { RoomMode } from 'types/Room.type';
-import ModeCard, { InfoModeProps } from './ModeCard';
+import { RoomMode, roomModeInformations } from 'types/Room.type';
+import RoomModeCard from './ModeCard';
 
-type ModeModalProps = {
+type RoomModeSettingsModalProps = {
   open: boolean;
   onClose: () => void;
   onSelect: (mode: RoomMode) => void;
@@ -21,18 +21,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const infoMode: Record<RoomMode, InfoModeProps> = {
-  [RoomMode.Standard]: {
-    title: 'Standard',
-    description: 'A simple mode where you draw and guess.',
-  },
-  [RoomMode.OneWord]: {
-    title: 'OneWord',
-    description: 'As Standard Mode but with only one word.',
-  },
-};
-
-export default function ModeModal({ open, onClose, onSelect }: ModeModalProps) {
+export default function RoomModeSettingsModal({
+  open,
+  onClose,
+  onSelect,
+}: RoomModeSettingsModalProps) {
   const classes = useStyles();
 
   return (
@@ -47,14 +40,14 @@ export default function ModeModal({ open, onClose, onSelect }: ModeModalProps) {
           flexDirection="row"
           flexWrap="wrap"
           justifyContent="center">
-          {Object.keys(infoMode).map((key: string) => {
+          {Object.keys(roomModeInformations).map((key: string) => {
             const roomMode = Number(key) as RoomMode;
-            const mode = infoMode[roomMode];
+            const mode = roomModeInformations[roomMode];
             return (
-              <ModeCard
+              <RoomModeCard
                 key={key}
-                {...mode}
                 onClick={() => onSelect(roomMode)}
+                {...mode}
               />
             );
           })}

@@ -12,6 +12,8 @@ export function getRandomColor(): string {
 }
 
 export function randomInt(min: number, max: number): number {
-  if (process.env.NODE_ENV === "test") return max - min;
+  if (process.env.NODE_ENV === 'test') return max - min;
   return Math.floor(Math.random() * (max + 1 - min)) + min;
 }
+
+export const loadingText = 'loading...';

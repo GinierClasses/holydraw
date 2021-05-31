@@ -10,17 +10,29 @@ export default function SettingsMenu() {
 
   return (
     <Box
-      borderRadius="0 4px 4px 0"
-      minWidth={328}
+      minWidth={288}
       pl={2}
-      height="auto"
+      height="100%"
       display="flex"
+      justifyContent="space-between"
       flexDirection="column"
-      alignItems={{ xs: 'center', sm: 'flex-start' }}
-      gridGap={24}>
-      <ShareRoomButton identifier={room?.identifier} player={player} />
-      <Typography variant="body1">Debug: {wsState}</Typography>
-      <RoomModeSelector />
+      alignItems={{ xs: 'center', sm: 'flex-start' }}>
+      <Box
+        display="flex"
+        width="100%"
+        alignItems="inherit"
+        flexDirection="column">
+        <ShareRoomButton identifier={room?.identifier} player={player} />
+        <Typography variant="body1">Debug: {wsState}</Typography>
+      </Box>
+      <Box
+        display="flex"
+        width="100%"
+        alignItems="inherit"
+        mt={{ xs: 4, sm: 0 }}
+        flexDirection="column">
+        <RoomModeSelector />
+      </Box>
     </Box>
   );
 }

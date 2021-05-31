@@ -162,9 +162,16 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public void UpdateFinishElementDto(FinishElementDto body, Session session)
         {
-            if (session.Mode == RoomMode.OneWord)
+            try
             {
-                body.Text = body.Text.Substring(0, body.Text.IndexOf(" ", StringComparison.Ordinal));
+                if (session.Mode == RoomMode.OneWord)
+                {
+                    body.Text = body.Text.Split(" ")[0];
+                }
+            }
+            catch (Exception e)
+            {
+                // ignored
             }
         }
 

@@ -8,7 +8,6 @@ const useStyles = makeStyles(theme => ({
   playersContainer: {
     alignItems: 'center',
     flexDirection: 'column',
-    gap: 64,
     [theme.breakpoints.up('sm')]: {
       alignItems: 'flex-start',
       flexDirection: 'row',

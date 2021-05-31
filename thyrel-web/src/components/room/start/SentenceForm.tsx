@@ -61,6 +61,11 @@ export default function StartForm() {
     onFinishPercentage: 98,
   });
 
+  React.useEffect(() => {
+    if (!currentElement?.text) return;
+    setSentence(currentElement?.text);
+  }, [currentElement]);
+
   return (
     <>
       <Grid item className="full-width">

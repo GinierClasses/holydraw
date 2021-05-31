@@ -1,29 +1,17 @@
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import React from 'react';
+import ModeModal from './RoomModeSettingsModal';
+import RoomSettingsSelector from './RoomSettingsButton';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
+import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
-import React from 'react';
+import { RoomMode, roomModeInformations } from 'types/Room.type';
+import { loadingText } from 'utils/utils';
 import 'styles/roboto-mono-font.css';
-import { RoomMode } from 'types/Room.type';
-import ModeModal from './ModeModal';
-
-const useStyles = makeStyles(theme => ({
-  button: {
-    marginLeft: theme.spacing(4),
-    fontSize: 20,
-    height: 32,
-  },
-}));
-
-const modeName: Record<RoomMode, string> = {
-  [RoomMode.Standard]: 'Standard',
-  [RoomMode.OneWord]: 'One Word',
-};
 
 export default function RoomModeSelector() {
-  const classes = useStyles();
   const { room } = useRoomContext();
+  const { player } = usePlayerContext();
   const [open, setOpen] = React.useState(false);
 
   const onSelect = (mode: RoomMode) => {
@@ -39,28 +27,31 @@ export default function RoomModeSelector() {
     }).then(() => setOpen(false));
   };
 
+  const handleOpen = () => {
+    if (!player?.isOwner) return;
+    setOpen(true);
+  };
   return (
-    <Box
-      display="flex"
-      flexDirection="row"
-      alignItems="center"
-      height={32}
-      width={262}>
-      <Typography variant="body1">Mode:</Typography>
-      <Button
-        className={classes.button}
-        endIcon={<InfoIcon />}
-        variant="contained"
-        onClick={() => {
-          setOpen(true);
-        }}>
-        {room?.mode != null ? modeName[room?.mode] : 'loading...'}
-      </Button>
+    <>
+      <RoomSettingsSelector
+        title="Mode"
+        description={
+          room?.mode != null
+            ? roomModeInformations[room?.mode].description
+            : loadingText
+        }
+        value={
+          room?.mode != null
+            ? roomModeInformations[room?.mode].title
+            : loadingText
+        }
+        onClick={handleOpen}
+      />
       <ModeModal
         open={open}
         onClose={() => setOpen(false)}
         onSelect={mode => onSelect(mode)}
       />
-    </Box>
+    </>
   );
 }
