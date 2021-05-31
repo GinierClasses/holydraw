@@ -16,8 +16,10 @@ export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
-  const [playerToKick, setPlayerToKick] =
-    React.useState<{ id: number; name: string } | null>(null);
+  const [playerToKick, setPlayerToKick] = React.useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
   function onKick(id: number, name: string) {
     setPlayerToKick({ id, name });
