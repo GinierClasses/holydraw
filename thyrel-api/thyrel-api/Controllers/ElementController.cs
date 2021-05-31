@@ -181,18 +181,5 @@ namespace thyrel_api.Controllers
 
             return Ok(200);
         }
-
-        /// <summary>
-        /// method to check if the element is in the last session
-        /// </summary>
-        /// <param name="elementId"></param>
-        /// <param name="roomId"></param>
-        /// <returns></returns>
-        public async Task<bool> IsElementInLastSession(int elementId, int roomId)
-        {
-            var session = await new SessionDataProvider(_context).GetCurrentSessionByRoomId(roomId);
-            var element = await new ElementDataProvider(_context).GetElement(elementId);
-            return session.Id == element.SessionId;
-        }
     }
 }
