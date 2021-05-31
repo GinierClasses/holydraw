@@ -151,7 +151,7 @@ namespace thyrel_api.Controllers
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
-                    new EmojiReactionWebSocketEventJson(player.Id, elementId, reaction.Emoji)), player.RoomId);
+                    new EmojiReactionWebSocketEventJson(reaction.Id, player.Id, elementId, reaction.Emoji)), player.RoomId);
 
             return NoContent();
         }
@@ -175,7 +175,7 @@ namespace thyrel_api.Controllers
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
-                    new RemovedEmojiReactionWebSocketEventJson(player.Id, elementId)), player.RoomId);
+                    new RemovedEmojiReactionWebSocketEventJson( reaction.Id, player.Id, elementId)), player.RoomId);
 
             return Ok(200);
         }

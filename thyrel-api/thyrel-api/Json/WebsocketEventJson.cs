@@ -118,9 +118,10 @@ namespace thyrel_api.Json
     {
         public NewReactionDto newReactionDto;
 
-        public EmojiReactionWebSocketEventJson(int playerId, int elementId, EmojiReaction emojiReaction)
+        public EmojiReactionWebSocketEventJson(int id ,int playerId, int elementId, EmojiReaction emojiReaction)
         {
             newReactionDto = new NewReactionDto {
+                Id = id,
                 PlayerId = playerId,
                 ElementId = elementId,
                 EmojiReaction = emojiReaction,
@@ -133,10 +134,11 @@ namespace thyrel_api.Json
     {
         public RemoveReactionDto RemoveReaction;
 
-        public RemovedEmojiReactionWebSocketEventJson(int playerId, int elementId)
+        public RemovedEmojiReactionWebSocketEventJson(int id, int playerId, int elementId)
         {
             RemoveReaction = new RemoveReactionDto
             {
+                Id = id,
                 PlayerId = playerId,
                 ElementId = elementId,
             };
