@@ -57,6 +57,15 @@ export function AlbumContextProvider({ children }: AlbumContextProviderProps) {
             return prevAlbumsCopy;
           });
           break;
+        case WebsocketEvent.NewReaction:
+          setAlbums(prevAlbums => {
+            const prevAlbumsCopy = { ...prevAlbums };
+            const reaction = websocketMessage.prevAlbums.forEach(element => {
+              if (element.Id === websocketMessage.emojiReaction) {
+              }
+            });
+            return prevAlbumsCopy;
+          });
       }
     }
     websocket.addEventListener('message', onMessage);

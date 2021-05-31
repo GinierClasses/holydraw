@@ -116,28 +116,30 @@ namespace thyrel_api.Json
 
     public class EmojiReactionWebSocketEventJson : BaseWebsocketEventJson
     {
-        public int PlayerId;
-        public int ElementId;
-        public EmojiReaction EmojiReaction;
+        public NewReactionDto newReactionDto;
 
         public EmojiReactionWebSocketEventJson(int playerId, int elementId, EmojiReaction emojiReaction)
         {
-            PlayerId = playerId;
-            ElementId = elementId;
-            EmojiReaction = emojiReaction;
+            newReactionDto = new NewReactionDto {
+                PlayerId = playerId,
+                ElementId = elementId,
+                EmojiReaction = emojiReaction,
+            };
             WebsocketEvent = WebsocketEvent.NewReaction;
         }
     }
 
     public class RemovedEmojiReactionWebSocketEventJson : BaseWebsocketEventJson
     {
-        public int PlayerId;
-        public int ElementId;
+        public RemoveReactionDto RemoveReaction;
 
         public RemovedEmojiReactionWebSocketEventJson(int playerId, int elementId)
         {
-            PlayerId = playerId;
-            ElementId = elementId;
+            RemoveReaction = new RemoveReactionDto
+            {
+                PlayerId = playerId,
+                ElementId = elementId,
+            };
             WebsocketEvent = WebsocketEvent.ReactionDeleted;
         }
     }

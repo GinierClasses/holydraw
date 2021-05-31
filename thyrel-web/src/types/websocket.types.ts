@@ -24,6 +24,8 @@ export enum WebsocketEvent {
   SessionUpdate = 12,
   NextStep = 13, // on a step is finish
   NewAlbumElement = 14,
+  NewReaction = 15,
+  ReactionDeleted = 16,
 }
 
 export enum SendMessageType {
@@ -38,4 +40,5 @@ export type WebsocketMessage = {
   session?: Partial<Session>;
   error?: string;
   room?: Partial<Room>;
+  newReaction?: NewReaction;
 };
