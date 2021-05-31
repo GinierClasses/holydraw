@@ -33,11 +33,11 @@ export default function CanvasActionButtons({
       mt={2}
       minHeight={80}
       display="flex"
-      flexDirection="row"
-      alignItems="flex-start"
+      flexDirection="column"
+      alignItems="center"
       justifyContent="space-between">
       <CanvasLineTypeButton disabled={isFinish} />
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" flexDirection="column">
         <OnClearAction>
           <ActionButton disabled={isFinish} title="hotkey: C">
             <DeleteIcon />

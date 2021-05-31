@@ -36,7 +36,6 @@ export default function ReactionPicker({
       <BookPopper anchorEl={anchorEl} onClick={onClick} />
       <Box
         display="flex"
-        p={0.5}
         borderRadius={24}
         alignItems="space-between"
         justifyContent="center"

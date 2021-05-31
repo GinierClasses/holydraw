@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import theme from 'theme';
 import { useState } from 'react';
+import DirectiveLabel from 'components/room/DirectiveLabel';
 
 type GameCanvasProps = {
   size: number;
@@ -23,17 +24,24 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
   const { currentElement, onSave } = useSessionContext();
   const isFinish = Boolean(currentElement?.finishAt);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   return (
     <DrawingCanvasProvider color={color} disabled={isFinish} lineSize={size}>
       <Box
         display="flex"
-        flexDirection="column"
+        flexDirection={isDeviceSM ? 'row' : 'column'}
         gridGap={8}
-        alignItems="center">
-        <Box maxWidth={512} width="100%">
-          <DrawingCanvas disabled={isFinish} />
+        alignItems="center"
+        justifyContent="center">
+        <Box width="100%" maxWidth={682} position="relative">
+          <Box width="100%" maxWidth={682} top={0}>
+            <CurrentDirectiveLabel />
+          </Box>
+
+          <Box maxWidth={512} width="100%">
+            <DrawingCanvas disabled={isFinish} />
+          </Box>
         </Box>
         <Box
           display="flex"
@@ -43,29 +51,18 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
           justifyContent="space-between"
           width="100%">
           <CanvasActionButtons onSave={() => void 0} />
-          <CanvasLineTypeButton />
-          <OnSaveAction
-            onSave={canvasImage => {
-              if (!canvasImage) return;
-              setLoading(true);
-              onSave(canvasImage).then(() => setLoading(false));
-            }}>
-            <BigButton
-              loading={loading}
-              startIcon={
-                isFinish ? (
-                  <EditIcon style={{ fontSize: 32 }} />
-                ) : (
-                  <SaveIcon style={{ fontSize: 32 }} />
-                )
-              }
-              color="primary"
-              size="medium">
-              {isFinish ? 'Edit' : 'Save'}
-            </BigButton>
-          </OnSaveAction>
         </Box>
       </Box>
     </DrawingCanvasProvider>
+  );
+}
+
+function CurrentDirectiveLabel() {
+  const { currentElement } = useSessionContext();
+  return (
+    <DirectiveLabel
+      directive="Time to Draw"
+      sentence={currentElement?.parent?.text}
+    />
   );
 }

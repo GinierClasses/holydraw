@@ -1,5 +1,6 @@
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import CurrentDrawImage from '../CurrentDrawImage';
+import ReactionPicker from './ReactionPicker';
 
 type BookDrawingElementProps = {
   username?: string;
@@ -24,21 +25,46 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+type Reaction = {
+  emojiId: number;
+  count: number;
+  isSelected: boolean;
+};
+
 export default function BookDrawingElement({
   username,
   src,
 }: BookDrawingElementProps) {
   const classes = useStyles();
+
+  const reactionsExample: Reaction[] = [
+    { emojiId: 0, count: 1, isSelected: false },
+    { emojiId: 1, count: 2, isSelected: false },
+    { emojiId: 2, count: 0, isSelected: false },
+    { emojiId: 3, count: 3, isSelected: false },
+    { emojiId: 4, count: 2, isSelected: false },
+  ];
   return (
-    <Box
-      display="flex"
-      alignItems="flex-end"
-      flexDirection="column"
-      maxWidth={{ xs: '84%', sm: 'auto' }}>
-      <Typography variant="subtitle1" className={classes.username}>
-        {username}
-      </Typography>
-      <CurrentDrawImage src={src} className={classes.width} />
-    </Box>
+    <>
+      <Box position="relative">
+        <Box
+          display="flex"
+          alignItems="flex-end"
+          flexDirection="column"
+          maxWidth={{ xs: '84%', sm: 'auto' }}>
+          <Typography variant="subtitle1" className={classes.username}>
+            {username}
+          </Typography>
+
+          <CurrentDrawImage src={src} className={classes.width} />
+        </Box>
+        <Box position="absolute" bottom={0} left={0} zIndex={1}>
+          <ReactionPicker
+            onClick={emj => console.log(emj)}
+            reactions={reactionsExample}
+          />
+        </Box>
+      </Box>
+    </>
   );
 }
