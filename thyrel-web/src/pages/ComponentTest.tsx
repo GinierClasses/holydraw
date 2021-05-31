@@ -67,7 +67,8 @@ export default function ComponentTest() {
   };
 
   const reactionsExample: Reaction[] = [
-    { emojiId: 1, count: 6, isSelected: false },
+    { emojiId: 0, count: 2, isSelected: false },
+    { emojiId: 1, count: 6, isSelected: true },
   ];
 
   return (

@@ -1,14 +1,19 @@
-import { Box, makeStyles, Typography } from '@material-ui/core';
+import { Box, makeStyles, Typography, Theme } from '@material-ui/core';
 
 type ReactionEmojiProps = {
   emoji: string;
   onClick: () => void;
+  isSelected?: boolean;
   count?: number;
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles<Theme, { isSelected: boolean }>(theme => ({
   container: {
     backgroundColor: theme.palette.background.default,
+    borderWidth: props => (props.isSelected ? '1px' : undefined),
+    borderStyle: props => (props.isSelected ? 'solid' : undefined),
+    borderColor: props =>
+      props.isSelected ? theme.palette.primary.main : undefined,
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
     },
@@ -24,9 +29,10 @@ const useStyles = makeStyles(theme => ({
 export default function ReactionEmoji({
   emoji,
   count,
+  isSelected = false,
   onClick,
 }: ReactionEmojiProps) {
-  const classes = useStyles();
+  const classes = useStyles({ isSelected });
   return (
     <button className={classes.button} onClick={onClick}>
       <Box

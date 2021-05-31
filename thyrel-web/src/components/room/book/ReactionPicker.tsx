@@ -50,6 +50,7 @@ export default function ReactionPicker({
             <ReactionEmoji
               emoji={getEmoji(x)}
               count={reaction.count}
+              isSelected={reaction.isSelected}
               onClick={() => onClick(reaction.emojiId)}
             />
           );
