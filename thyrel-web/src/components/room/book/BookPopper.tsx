@@ -46,11 +46,11 @@ export default function BookPopper({ onClick, anchorEl }: BookPopperProps) {
         flexDirection="row"
         className={classes.container}>
         {Object.keys(EmojiMapping).map(emjKey => {
-          const x = Number(emjKey) as keyof typeof EmojiMapping;
+          const MappingKey = Number(emjKey) as keyof typeof EmojiMapping;
           return (
             <ReactionEmoji
-              emoji={EmojiMapping[x]}
-              onClick={() => onClick(Number(emjKey))}
+              emoji={EmojiMapping[MappingKey]}
+              onClick={() => onClick(MappingKey)}
             />
           );
         })}

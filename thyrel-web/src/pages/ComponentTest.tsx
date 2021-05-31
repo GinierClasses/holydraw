@@ -43,7 +43,6 @@ import Button from '@material-ui/core/Button';
 import PaletteIcon from '@material-ui/icons/Palette';
 import ReactionPicker from 'components/room/book/ReactionPicker';
 
-
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
   const [color, setColor] = useState(colors[5]);
@@ -71,6 +70,9 @@ export default function ComponentTest() {
   const reactionsExample: Reaction[] = [
     { emojiId: 0, count: 2, isSelected: false },
     { emojiId: 1, count: 6, isSelected: true },
+    { emojiId: 2, count: 3, isSelected: false },
+    { emojiId: 3, count: 2, isSelected: false },
+    { emojiId: 4, count: 1, isSelected: false },
   ];
 
   return (

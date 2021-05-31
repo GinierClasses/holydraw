@@ -17,18 +17,16 @@ const useStyles = makeStyles(theme => ({
 export default function BookAddReaction({ onClick }: BookAddReactionProps) {
   const classes = useStyles();
   return (
-    <Box display="flex" flexDirection="column">
-      <button className={classes.button} onClick={onClick}>
-        <Box
-          display="flex"
-          maxWidth={24}
-          borderRadius="50%"
-          alignItems="center"
-          justifyContent="center"
-          bgcolor="background.default">
-          <AddIcon color="action" />
-        </Box>
-      </button>
-    </Box>
+    <button className={classes.button} onClick={onClick}>
+      <Box
+        display="flex"
+        maxWidth={24}
+        borderRadius="50%"
+        alignItems="center"
+        justifyContent="center"
+        bgcolor="background.default">
+        <AddIcon color="action" />
+      </Box>
+    </button>
   );
 }

@@ -44,11 +44,11 @@ export default function ReactionPicker({
         className={classes.container}>
         <BookAddReaction onClick={handleClick} />
         {reactions.map(reaction => {
-          const x = reaction.emojiId as keyof typeof EmojiMapping;
+          const MappingKey = reaction.emojiId as keyof typeof EmojiMapping;
           if (reaction.count === 0) return null;
           return (
             <ReactionEmoji
-              emoji={getEmoji(x)}
+              emoji={getEmoji(MappingKey)}
               count={reaction.count}
               isSelected={reaction.isSelected}
               onClick={() => onClick(reaction.emojiId)}
