@@ -1,4 +1,7 @@
-import { Box, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import { CardActionArea, Typography } from '@material-ui/core';
 
 export type InfoModeProps = {
   title: string;
@@ -9,30 +12,34 @@ type ModeCardProps = InfoModeProps & {
   onClick: () => void;
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    maxWidth: 200,
+    borderRadius: 32,
+    backgroundColor: theme.palette.action.hover,
+    marginRight: 4,
+  },
+  title: {
+    marginBottom: 12,
+  },
+}));
+
 export default function ModeCard({
   title,
   description,
   onClick,
 }: ModeCardProps) {
+  const classes = useStyles();
   return (
-    <Box
-      component="button"
-      bgcolor="custom.main"
-      flexDirection="column"
-      justifyContent="space-between"
-      mr={1}
-      borderRadius={32}
-      width={133}
-      height={155}
-      border="none"
-      className="cursor-pointer"
-      onClick={onClick}>
-      <Typography variant="h6" color="textPrimary">
-        {title}
-      </Typography>
-      <Typography variant="body1" color="textPrimary" align="center">
-        {description}
-      </Typography>
-    </Box>
+    <Card className={classes.root} onClick={onClick}>
+      <CardActionArea>
+        <CardContent>
+          <Typography className={classes.title} variant="h5">
+            {title}
+          </Typography>
+          <Typography variant="body2">{description}</Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
   );
 }
