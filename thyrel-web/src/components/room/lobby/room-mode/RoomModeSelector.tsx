@@ -1,6 +1,6 @@
 import React from 'react';
-import ModeModal from './RoomModeSettingsModal';
-import RoomSettingsSelector from './RoomSettingsButton';
+import RoomModeSettingsModal from './RoomModeSettingsModal';
+import RoomSettingsSelector from '../RoomSettingsButton';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
 import { usePlayerContext } from 'hooks/PlayerProvider';
@@ -47,7 +47,7 @@ export default function RoomModeSelector() {
         }
         onClick={handleOpen}
       />
-      <ModeModal
+      <RoomModeSettingsModal
         open={open}
         onClose={() => setOpen(false)}
         onSelect={mode => onSelect(mode)}

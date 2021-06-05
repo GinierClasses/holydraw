@@ -2,9 +2,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { Box, DialogContent, DialogTitle } from '@material-ui/core';
+import { DialogContent, DialogTitle, Grid } from '@material-ui/core';
 import { RoomMode, roomModeInformations } from 'types/Room.type';
-import RoomModeCard from './ModeCard';
+import RoomModeCard from './RoomModeCard';
 
 type RoomModeSettingsModalProps = {
   open: boolean;
@@ -29,29 +29,23 @@ export default function RoomModeSettingsModal({
   const classes = useStyles();
 
   return (
-    <Dialog onClose={() => onClose()} open={open} maxWidth="sm" fullWidth>
+    <Dialog onClose={() => onClose()} open={open}>
       <DialogTitle>Settings</DialogTitle>
       <IconButton className={classes.closeButton} onClick={() => onClose()}>
         <CloseIcon />
       </IconButton>
       <DialogContent>
-        <Box
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          justifyContent="center">
+        <Grid container wrap="wrap" justify="center" spacing={2}>
           {Object.keys(roomModeInformations).map((key: string) => {
             const roomMode = Number(key) as RoomMode;
             const mode = roomModeInformations[roomMode];
             return (
-              <RoomModeCard
-                key={key}
-                onClick={() => onSelect(roomMode)}
-                {...mode}
-              />
+              <Grid item key={key}>
+                <RoomModeCard onClick={() => onSelect(roomMode)} {...mode} />
+              </Grid>
             );
           })}
-        </Box>
+        </Grid>
       </DialogContent>
     </Dialog>
   );

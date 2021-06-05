@@ -1,7 +1,7 @@
 import { Box, Typography } from '@material-ui/core';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
-import RoomModeSelector from './RoomModeSelector';
+import RoomModeSelector from './room-mode/RoomModeSelector';
 import ShareRoomButton from './ShareRoomButton';
 
 export default function SettingsMenu() {
