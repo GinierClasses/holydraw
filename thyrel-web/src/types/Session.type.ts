@@ -1,4 +1,4 @@
-import Room from './Room.type';
+import Room, { RoomMode } from './Room.type';
 
 type Session = {
   id: number;
@@ -14,6 +14,7 @@ type Session = {
   stepType: SessionStepType;
   totalPlayers: number;
   playerFinished: number;
+  mode: RoomMode;
 };
 
 export enum SessionStepType {
