@@ -28,8 +28,14 @@ type RoomSocketContextProviderProps = { children: React.ReactElement };
 export function RoomContextProvider({
   children,
 }: RoomSocketContextProviderProps) {
-  const { room, players, updatePlayer, removePlayer, addPlayer, setRoom } =
-    useRoomStates();
+  const {
+    room,
+    players,
+    updatePlayer,
+    removePlayer,
+    addPlayer,
+    setRoom,
+  } = useRoomStates();
 
   const history = useHistory();
   const { wsState, websocket } = useWebsocketContext();
