@@ -45,7 +45,7 @@ export default function StartForm() {
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     if (loading || e.key !== 'Enter') return;
     setLoading(true);
-    onSave(sentence).then(() => setLoading(false));
+    onSave(sentence || defaultSentence).then(() => setLoading(false));
   }
 
   useTimerEvent({
@@ -86,10 +86,9 @@ export default function StartForm() {
             className={classes.button}
             color="primary"
             loading={loading}
-            disabled={sentence.length === 0}
             onClick={() => {
               setLoading(true);
-              onSave(sentence).then(() => setLoading(false));
+              onSave(sentence || defaultSentence).then(() => setLoading(false));
             }}
             startIcon={
               isEditing ? (
