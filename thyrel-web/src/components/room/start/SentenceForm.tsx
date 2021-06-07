@@ -35,6 +35,7 @@ export default function StartForm() {
   const isOneWord = room?.mode === RoomMode.OneWord;
   const defaultSentence = useRandomSentence(isOneWord);
   const classes = useStyles();
+  const saveSentence = sentence || defaultSentence;
 
   function handleChange(e: any) {
     isOneWord
@@ -45,7 +46,7 @@ export default function StartForm() {
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     if (loading || e.key !== 'Enter') return;
     setLoading(true);
-    onSave(sentence || defaultSentence).then(() => setLoading(false));
+    onSave(saveSentence).then(() => setLoading(false));
   }
 
   useTimerEvent({
@@ -55,7 +56,7 @@ export default function StartForm() {
       client<HolyElement>(`element/auto/${currentElement?.id}`, {
         token: getToken(),
         method: 'PATCH',
-        data: { text: sentence || defaultSentence },
+        data: { text: saveSentence },
       });
     },
     onFinishPercentage: 98,
@@ -88,7 +89,7 @@ export default function StartForm() {
             loading={loading}
             onClick={() => {
               setLoading(true);
-              onSave(sentence || defaultSentence).then(() => setLoading(false));
+              onSave(saveSentence).then(() => setLoading(false));
             }}
             startIcon={
               isEditing ? (
