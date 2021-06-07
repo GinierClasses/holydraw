@@ -6,6 +6,7 @@ import Player from 'types/Player.type';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
 import 'styles/roboto-mono-font.css';
+import { loadingText } from 'utils/utils';
 
 type ShareRoomButtonProps = {
   player?: Player;
@@ -37,13 +38,14 @@ export default function ShareRoomButton({
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
+    <Box display="flex" width="100%" flexDirection="column" alignItems="center">
       <Button
         startIcon={<VpnKeyIcon style={{ fontSize: 32 }} />}
         onClick={onShared}
+        fullWidth
         classes={{ label: 'font_roboto-mono' }}
         variant="contained">
-        {identifier || 'loading...'}
+        {identifier || loadingText}
       </Button>
       {player?.isOwner && identifier && (
         <Link

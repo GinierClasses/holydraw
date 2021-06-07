@@ -75,9 +75,7 @@ export default function PlayerCard({
   const classes = useStyles();
   return (
     <Box
-      width={256}
-      height={64}
-      borderRadius={40}
+      borderRadius={32}
       padding={1}
       display="flex"
       alignItems="center"

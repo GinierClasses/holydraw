@@ -16,10 +16,8 @@ export function Players() {
   const { players } = useRoomContext();
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
-  const [playerToKick, setPlayerToKick] = React.useState<{
-    id: number;
-    name: string;
-  } | null>(null);
+  const [playerToKick, setPlayerToKick] =
+    React.useState<{ id: number; name: string } | null>(null);
 
   function onKick(id: number, name: string) {
     setPlayerToKick({ id, name });
@@ -50,7 +48,12 @@ export function Players() {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="flex-end">
+    <Box
+      display="flex"
+      mt={isDeviceSM ? 0 : 4}
+      flexDirection="column"
+      height="100%"
+      justifyContent="flex-end">
       {players?.length > 0 ? (
         isDeviceSM ? (
           <PlayerCardList

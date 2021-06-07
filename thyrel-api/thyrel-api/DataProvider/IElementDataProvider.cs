@@ -76,6 +76,14 @@ namespace thyrel_api.DataProvider
         Task<ElementDto> GetElement(int elementId);
 
         /// <summary>
+        ///     Get one element by those ID
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        void UpdateFinishElementDto(FinishElementDto body, Session session);
+
+        /// <summary>
         ///     Get candidates from Sessions
         /// </summary>
         /// <param name="sessionId">Id of session</param>

@@ -15,4 +15,20 @@ export enum RoomMode {
   OneWord = 1,
 }
 
+export type InfoRoomModeProps = {
+  title: string;
+  description: string;
+};
+
+export const roomModeInformations: Record<RoomMode, InfoRoomModeProps> = {
+  [RoomMode.Standard]: {
+    title: 'Standard',
+    description: 'A simple mode where you draw and guess.',
+  },
+  [RoomMode.OneWord]: {
+    title: 'OneWord',
+    description: 'As Standard Mode but with only one word.',
+  },
+};
+
 export default Room;
