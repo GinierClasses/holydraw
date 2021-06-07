@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace test_thyrel_api
 {
@@ -50,8 +51,8 @@ namespace test_thyrel_api
         {
             var sessions = new List<Session>
             {
-                new(1, DateTime.Now, 100, SessionStepType.Book, 3),
-                new(2, DateTime.Now, 100, SessionStepType.Draw, 3),
+                new(1, DateTime.Now, 100, SessionStepType.Book, 3, new RoomSettingsDto {Mode = RoomMode.Standard}),
+                new(2, DateTime.Now, 100, SessionStepType.Draw, 3, new RoomSettingsDto {Mode = RoomMode.Standard}),
             };
 
             await Context.Session.AddRangeAsync(sessions);

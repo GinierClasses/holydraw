@@ -1,7 +1,7 @@
+import WebsocketStateDebug from 'components/room/WebsocketStateDebug';
 import React from 'react';
 import { WsStates } from 'types/websocket.types';
 import { useWebsocket } from './useWebsocket';
-
 type WebsocketContextProps = {
   wsState: WsStates;
   websocket?: WebSocket;
@@ -20,6 +20,7 @@ export function WebsocketProvider({ children }: WebsocketContextProviderProps) {
 
   return (
     <WebsocketContext.Provider value={values}>
+      <WebsocketStateDebug />
       {children}
     </WebsocketContext.Provider>
   );

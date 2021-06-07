@@ -15,7 +15,9 @@ namespace thyrel_api.DataProvider
         /// <param name="stepFinishAt"></param>
         /// <param name="timeDuration"></param>
         /// <param name="playerCount"></param>
-        Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount);
+        /// <param name="roomSettings"></param>
+        Task<Session> Add(int roomId, DateTime stepFinishAt, int timeDuration, int playerCount,
+            RoomSettingsDto roomSettings);
 
         /// <summary>
         ///     Set finishAt to DateTime.Now

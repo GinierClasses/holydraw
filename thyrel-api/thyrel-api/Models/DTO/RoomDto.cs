@@ -9,7 +9,6 @@ namespace thyrel_api.Models.DTO
         public RoomMode Mode { get; set; }
         public DateTime? FinishAt { get; set; }
         public DateTime CreatedAt { get; set; }
-        
     }
 
     public class RoomReloadIdentifierDto
