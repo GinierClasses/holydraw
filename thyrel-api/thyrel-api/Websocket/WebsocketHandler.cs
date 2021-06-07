@@ -121,16 +121,14 @@ namespace thyrel_api.Websocket
 
                             _websocketConnections = openSockets;
                         }
-                        
+
                         Console.WriteLine($"DEBUG server: openSockets count: {openSockets.Count}");
                         Console.WriteLine($"DEBUG server: closedSockets count: {closedSockets.Count}");
 
                         foreach (var closedSocket in closedSockets.Where(closedSocket =>
                             openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
                         {
-                            var context = CreateContext();
-                            await _websocketService.DisconnectService(closedSocket, context);
-                            await context.DisposeAsync();
+                            CloseSocketWithDelay(closedSocket);
                         }
                     }
                     catch (Exception e)
@@ -143,6 +141,24 @@ namespace thyrel_api.Websocket
             });
         }
 
+        private void CloseSocketWithDelay(SocketConnection closedSocket)
+        {
+            if (closedSocket.PlayerId == null || closedSocket.RoomId == null) return;
+
+            Task.Delay(1000).ContinueWith(async _ =>
+            {
+                lock (_websocketConnections)
+                {
+                    if (_websocketConnections.Any(w => w.PlayerId == closedSocket.PlayerId))
+                        return;
+                }
+
+                var context = CreateContext();
+                await _websocketService.DisconnectService(closedSocket, context);
+                await context.DisposeAsync();
+            });
+        }
+
         /// <summary>
         /// Dispose the context after using it !
         /// `await context.DisposeAsync();`
@@ -152,7 +168,7 @@ namespace thyrel_api.Websocket
         {
             var connectionString = _configuration.GetConnectionString("thyrel_db") == null
                 ? Environment.GetEnvironmentVariable("THYREL_CONNECTION_STRING")
-                : _configuration.GetConnectionString("thyrel_db"); 
+                : _configuration.GetConnectionString("thyrel_db");
 
             var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
             optionsBuilder.UseMySql(
