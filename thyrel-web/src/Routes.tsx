@@ -1,5 +1,5 @@
 import AppLayout from 'components/AppLayout';
-import { BrowserRouter, HashRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { PlayerContextProvider } from 'hooks/PlayerProvider';
 import { RoomContextProvider } from 'hooks/RoomProvider';
 import ComponentTest from 'pages/ComponentTest';
@@ -13,13 +13,10 @@ import Write from 'pages/room/Write';
 import { WebsocketProvider } from 'hooks/WebsocketProvider';
 import { SessionContextProvider } from 'hooks/SessionProvider';
 
-const Router: any =
-  process.env.NODE_ENV === 'production' ? HashRouter : BrowserRouter;
-
 export default function Routes() {
   return (
     <AppLayout>
-      <Router>
+      <BrowserRouter>
         <Switch>
           <Route path="/join/:identifier" component={Home} />
           <Route path="/start" component={Start} />
@@ -31,7 +28,7 @@ export default function Routes() {
           TODO: replace it by `Home` */}
           <Route path="/" component={DevNav} />
         </Switch>
-      </Router>
+      </BrowserRouter>
     </AppLayout>
   );
 }
