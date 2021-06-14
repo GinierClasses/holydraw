@@ -88,10 +88,9 @@ namespace thyrel_api.Json
         }
     }
 
-
     public class AlbumWebsocketEventJson : BaseWebsocketEventJson
     {
-        public ElementAlbumDto Album;   
+        public ElementAlbumDto Album;
 
         public AlbumWebsocketEventJson(ElementAlbumDto album)
         {

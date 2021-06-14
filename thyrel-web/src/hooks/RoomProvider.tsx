@@ -65,9 +65,14 @@ export function RoomContextProvider({
           history?.push('/r/lobby');
           break;
         case WebsocketEvent.ReloadIdentifier:
-          const room = websocketMessage.room;
-          if (!room) break;
-          setRoom(prev => prev && { ...prev, ...room });
+          const roomReload = websocketMessage.room;
+          if (!roomReload) break;
+          setRoom(prev => prev && { ...prev, ...roomReload });
+          break;
+        case WebsocketEvent.RoomUpdate:
+          const roomUpdate = websocketMessage.room;
+          if (!roomUpdate) break;
+          setRoom(prev => prev && { ...prev, ...roomUpdate });
           break;
       }
     }

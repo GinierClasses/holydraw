@@ -48,7 +48,12 @@ export function Players() {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="flex-end">
+    <Box
+      display="flex"
+      mt={isDeviceSM ? 0 : 4}
+      flexDirection="column"
+      height="100%"
+      justifyContent="flex-end">
       {players?.length > 0 ? (
         isDeviceSM ? (
           <PlayerCardList

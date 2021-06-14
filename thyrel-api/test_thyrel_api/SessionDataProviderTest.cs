@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
+using thyrel_api.Models.DTO;
 
 namespace test_thyrel_api
 {
@@ -26,7 +27,8 @@ namespace test_thyrel_api
         {
             var lastRoom = await Context.Room.LastAsync();
             var sessionCount = Context.Session.Count();
-            await _sessionDataProvider.Add(lastRoom.Id, DateTime.Now.AddMinutes(1), 10, 3);
+            await _sessionDataProvider.Add(lastRoom.Id, DateTime.Now.AddMinutes(1), 10, 3,
+                new RoomSettingsDto {Mode = RoomMode.Standard});
             Assert.AreEqual(sessionCount + 1, Context.Session.Count());
         }
 
@@ -35,7 +37,8 @@ namespace test_thyrel_api
         {
             var lastRoom = await Context.Room.FirstAsync();
             var sessionCount = Context.Session.Count();
-            await _sessionDataProvider.Add(lastRoom.Id, DateTime.Now.AddMinutes(1), 10, 3);
+            await _sessionDataProvider.Add(lastRoom.Id, DateTime.Now.AddMinutes(1), 10, 3,
+                new RoomSettingsDto {Mode = RoomMode.Standard});
             Assert.AreEqual(sessionCount, Context.Session.Count());
         }
 

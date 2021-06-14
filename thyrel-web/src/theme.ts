@@ -89,6 +89,16 @@ function createBaseTheme(palette: Palette) {
             borderRadius: 40,
           },
         },
+        containedSizeSmall: {
+          fontSize: 18,
+          height: 34,
+          borderRadius: 16,
+          '@media (min-width: 600px)': {
+            fontSize: 20,
+            height: 40,
+            borderRadius: 18,
+          },
+        },
 
         iconSizeLarge: {
           marginLeft: 0,

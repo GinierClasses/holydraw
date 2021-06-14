@@ -4,8 +4,10 @@ import SentenceForm from 'components/room/start/SentenceForm';
 import GameLayout from 'components/room/GameLayout';
 import { useRoomContext } from 'hooks/RoomProvider';
 import { RoomMode } from 'types/Room.type';
+import useMobileHorizontal from 'hooks/useMobileHorizontal';
 
 export default function Start() {
+  const isHorizontal = useMobileHorizontal();
   return (
     <GameLayout maxWidth="sm">
       <Grid
@@ -16,9 +18,11 @@ export default function Start() {
         className="full-height"
         wrap="nowrap"
         justify="center">
-        <Grid item>
-          <img src={GymGuy} alt="" width={256} />
-        </Grid>
+        {!isHorizontal && (
+          <Grid item>
+            <img src={GymGuy} alt="" width={256} />
+          </Grid>
+        )}
         <Grid item>
           <CurrentStartDirective />
         </Grid>

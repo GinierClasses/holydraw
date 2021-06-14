@@ -37,9 +37,11 @@ import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import { colors } from 'utils/app-constant';
 import SizePickerV2 from 'components/room/draw/desktop/SizePickerV2';
+import RoomModeSelector from 'components/room/lobby/room-mode/RoomModeSelector';
 import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
 import Button from '@material-ui/core/Button';
 import PaletteIcon from '@material-ui/icons/Palette';
+import ReactionPicker from 'components/room/book/ReactionPicker';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -59,6 +61,20 @@ export default function ComponentTest() {
     setPpIndex(p => (p > profilesPictures.length - 2 ? 0 : p + 1));
   };
 
+  type Reaction = {
+    emojiId: number;
+    count: number;
+    isSelected: boolean;
+  };
+
+  const reactionsExample: Reaction[] = [
+    { emojiId: 0, count: 2, isSelected: false },
+    { emojiId: 1, count: 6, isSelected: true },
+    { emojiId: 2, count: 3, isSelected: false },
+    { emojiId: 3, count: 2, isSelected: false },
+    { emojiId: 4, count: 1, isSelected: false },
+  ];
+
   return (
     <Box>
       <Box
@@ -68,6 +84,10 @@ export default function ComponentTest() {
         width="100%"
         gridGap={32}>
         <HolyDrawLogo />
+
+        <Box>
+          <RoomModeSelector></RoomModeSelector>
+        </Box>
 
         <Box>
           <Button
@@ -244,6 +264,10 @@ export default function ComponentTest() {
           height={size2}
           width={size2}
         />
+
+        <Box bgcolor="primary.main" p={4}>
+          <ReactionPicker onClick={() => void 0} reactions={reactionsExample} />
+        </Box>
 
         <StepProgress stepActual={progress} stepMax={7} />
       </Box>
