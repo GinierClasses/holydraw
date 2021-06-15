@@ -16,13 +16,13 @@ const CustomLinearProgress = withStyles((theme: Theme) =>
   createStyles({
     root: {
       height: theme.spacing(3),
+      backgroundColor: 'none',
     },
     colorPrimary: {
       backgroundColor: theme.palette.background.default,
     },
     bar: {
       borderRadius: 8,
-      backgroundColor: theme.palette.primary.dark,
     },
   }),
 )(LinearProgress);

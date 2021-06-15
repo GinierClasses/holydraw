@@ -12,6 +12,7 @@ export default function SettingsMenu() {
     <Box
       minWidth={288}
       pl={2}
+      pb={1}
       height="100%"
       display="flex"
       justifyContent="space-between"
