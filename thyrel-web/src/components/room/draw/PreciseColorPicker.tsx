@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, ClickAwayListener, makeStyles } from '@material-ui/core';
 import { HexColorPicker } from 'react-colorful';
+import RoundColor from './RoundColor';
 
 type PreciseColorPickerProps = {
   currentColor: string;
@@ -25,7 +26,11 @@ export default function PreciseColorPicker({
   const [color, setColor] = React.useState(currentColor);
   const [showColorPicker, setShowColorPicker] = React.useState(false);
 
-  const colorWithDisabled = disabledColor ? disabledColor : currentColor;
+  const [preciseColor, setPreciseColor] = React.useState(color);
+
+  const colorWithDisabled = disabledColor ? disabledColor : preciseColor;
+
+  const isSelected = currentColor === preciseColor;
 
   React.useEffect(() => {
     setColor(currentColor);
@@ -38,26 +43,23 @@ export default function PreciseColorPicker({
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div>
-        <Box
-          component="button"
-          onClick={() => !disabledColor && setShowColorPicker(prev => !prev)}
-          border={2}
-          m={0.5}
-          p={0}
-          bgcolor={colorWithDisabled}
-          boxShadow={showColorPicker ? 4 : 0}
-          borderColor={showColorPicker ? '#ffffff' : colorWithDisabled}
+        <RoundColor
+          color={preciseColor}
+          colorWithDisabled={colorWithDisabled}
+          isSelected={isSelected}
           width={92}
-          height={42}
-          borderRadius={21}
-          className="cursor-pointer"
-        />
+          onClick={() =>
+            !disabledColor && setShowColorPicker(prev => !prev)
+          }></RoundColor>
         {showColorPicker && (
           <Box height={20} position="absolute" className={classes.container}>
             <HexColorPicker
               color={color}
               onMouseUp={() => onColorChange(color)}
-              onChange={setColor}
+              onChange={color => {
+                setPreciseColor(color);
+                setColor(color);
+              }}
             />
           </Box>
         )}
