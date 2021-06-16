@@ -2,7 +2,7 @@
 
 *Draw! Guess! Don't Fail!*
 
-https://ginierclasses.github.io/holydraw/
+https://holydraw.vercel.app/
 
 Application qui reprend le concept du téléphone arabe, en y intégrant du dessin 🎨.
 
