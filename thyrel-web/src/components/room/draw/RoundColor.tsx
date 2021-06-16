@@ -19,7 +19,9 @@ export default function DesktopColorPicker({
   Icon,
   width,
 }: DrawColorPickerProps) {
-  !width ? (width = 42) : null;
+  if (!width) {
+    width = 42;
+  }
   return (
     <Box
       component="button"
