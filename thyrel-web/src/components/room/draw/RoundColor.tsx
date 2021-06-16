@@ -1,5 +1,5 @@
 import { SvgIconTypeMap } from '@material-ui/core';
-import { Box, useTheme } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 
 type DrawColorPickerProps = {
@@ -19,7 +19,7 @@ export default function DesktopColorPicker({
   Icon,
   width,
 }: DrawColorPickerProps) {
-  width ? (width = width) : (width = 42);
+  !width ? (width = 42) : null;
   return (
     <Box
       component="button"
