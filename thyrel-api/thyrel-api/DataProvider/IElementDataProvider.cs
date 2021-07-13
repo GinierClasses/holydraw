@@ -31,7 +31,7 @@ namespace thyrel_api.DataProvider
         Task<Element> AddSentence(int creatorId, int initiatorId, int step, int sessionId, string text = "");
 
         /// <summary>
-        /// Add a list of elements
+        ///     Add a list of elements
         /// </summary>
         /// <param name="elements"></param>
         /// <returns></returns>
@@ -46,7 +46,7 @@ namespace thyrel_api.DataProvider
         Task SetSentence(int id, string sentence);
 
         /// <summary>
-        /// ///     Set the DrawImage into a Element
+        ///     ///     Set the DrawImage into a Element
         /// </summary>
         /// <param name="id"></param>
         /// <param name="drawImage"></param>

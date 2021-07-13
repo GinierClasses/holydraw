@@ -1,9 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using thyrel_api.DataProvider;
-using thyrel_api.Json;
 using thyrel_api.Models;
 using thyrel_api.Websocket;
 
@@ -11,9 +8,9 @@ namespace thyrel_api.Handler
 {
     public class SessionStepTimeout
     {
-        private readonly int _step;
-        private readonly int _sessionId;
         private readonly string _connexionString;
+        private readonly int _sessionId;
+        private readonly int _step;
         private readonly IWebsocketHandler _websocketHandler;
 
         public SessionStepTimeout(int step, int sessionId, HolyDrawDbContext context,
@@ -27,7 +24,7 @@ namespace thyrel_api.Handler
         }
 
         /// <summary>
-        ///     Run timeout of delay. At end, is Session step is not already finish this will be automatically finish 
+        ///     Run timeout of delay. At end, is Session step is not already finish this will be automatically finish
         /// </summary>
         /// <param name="delay"></param>
         public void RunTimeout(int delay)
@@ -53,13 +50,7 @@ namespace thyrel_api.Handler
         /// <returns>The context created</returns>
         private HolyDrawDbContext GetContext()
         {
-            var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
-            optionsBuilder.UseMySql(
-                _connexionString,
-                new MySqlServerVersion(new Version(8, 0, 23)),
-                mySqlOptions => mySqlOptions
-                    .CharSetBehavior(CharSetBehavior.NeverAppend));
-            return new HolyDrawDbContext(optionsBuilder.Options);
+            return HolyDrawDbContextUtils.GetHolyDrawDbContext(_connexionString);
         }
     }
 }

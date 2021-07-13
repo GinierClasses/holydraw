@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Json;
@@ -16,8 +14,8 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class SessionController : ControllerBase
     {
-        private readonly IWebsocketHandler _websocketHandler;
         private readonly HolyDrawDbContext _context;
+        private readonly IWebsocketHandler _websocketHandler;
 
         public SessionController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
@@ -50,7 +48,7 @@ namespace thyrel_api.Controllers
             var sessionDto = new SessionDto(session);
             return sessionDto;
         }
-        
+
         // Call this endpoint to get players of a room
         // GET : api/session/players
         [HttpGet("players")]
@@ -92,7 +90,7 @@ namespace thyrel_api.Controllers
 
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
-                    new SessionAlbumEventJson(session.AlbumInitiatorId, session.BookState)), 
+                    new SessionAlbumEventJson(session.AlbumInitiatorId, session.BookState)),
                 session.RoomId);
 
             return Ok("success");
@@ -103,9 +101,9 @@ namespace thyrel_api.Controllers
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player?.RoomId == null) return Unauthorized();
-            
+
             var sessionDataProvider = new SessionDataProvider(_context);
             return await sessionDataProvider.AlbumRecovery((int) player.RoomId);
-        } 
+        }
     }
 }

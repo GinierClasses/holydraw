@@ -1,13 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using thyrel_api.Controllers;
-using thyrel_api.Handler;
 using thyrel_api.Websocket;
 
 namespace test_thyrel_api
@@ -15,6 +12,7 @@ namespace test_thyrel_api
     public class PlayerControllerTest : TestProvider
     {
         private PlayerController _playerController;
+
         [SetUp]
         public async Task Setup()
         {
@@ -25,7 +23,7 @@ namespace test_thyrel_api
             {
                 ControllerContext = new ControllerContext
                 {
-                    HttpContext = httpContext,
+                    HttpContext = httpContext
                 }
             };
             _playerController = controller;
@@ -36,7 +34,7 @@ namespace test_thyrel_api
         {
             var player = Context.Player.First();
             await ConnectApi(_playerController.HttpContext, player);
-            
+
             var actionResult = await _playerController.Get();
             Assert.AreEqual(player.Id, actionResult.Value.Id);
         }
@@ -47,7 +45,7 @@ namespace test_thyrel_api
             var room = Context.Room.First();
             var playerWhoWantToKick = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && p.IsOwner);
             var playerToBeKicked = Context.Player.FirstOrDefault(p => p.RoomId == room.Id && !p.IsOwner);
-            
+
             await ConnectApi(_playerController.HttpContext, playerWhoWantToKick);
             var actionResult = await _playerController.Kick(playerToBeKicked.Id);
             Assert.AreEqual(playerToBeKicked.Id, actionResult.Value.Id);

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +23,7 @@ namespace test_thyrel_api
             {
                 ControllerContext = new ControllerContext
                 {
-                    HttpContext = httpContext,
+                    HttpContext = httpContext
                 }
             };
             _sessionController = controller;

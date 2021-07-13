@@ -9,7 +9,6 @@ namespace thyrel_api.Handler
     {
         /// <summary>
         ///     Usage in your controller :
-        /// 
         ///     var player = await AuthorizationHandler.CheckAuthorization(HttpContext);
         ///     if (player == null) return Unauthorized();
         /// </summary>
@@ -23,7 +22,7 @@ namespace thyrel_api.Handler
             if (authHeader == null || !authHeader.StartsWith("Bearer"))
                 return null;
             // get the token
-            string playerToken = authHeader.Substring("Bearer ".Length).Trim();
+            var playerToken = authHeader.Substring("Bearer ".Length).Trim();
             // use the PlayerDataProvider to get the Player with this Token (func : `GetPlayerByToken`)
             var player = await new PlayerDataProvider(context).GetPlayerByToken(playerToken);
             return player;

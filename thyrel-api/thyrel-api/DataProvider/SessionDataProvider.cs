@@ -19,7 +19,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Create new Session
+        ///     Create new Session
         /// </summary>
         /// <param name="roomId"></param>
         /// <param name="stepFinishAt"></param>
@@ -60,7 +60,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To get a Session by it's id
+        ///     To get a Session by it's id
         /// </summary>
         /// <param name="sessionId"></param>
         /// <returns></returns>
@@ -72,7 +72,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Get current session of a room
+        ///     Get current session of a room
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
@@ -100,7 +100,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Get current session of a room
+        ///     Get current session of a room
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
@@ -121,7 +121,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Checks if current step is finished
+        ///     Checks if current step is finished
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
@@ -212,7 +212,10 @@ namespace thyrel_api.DataProvider
                     session.StepType == SessionStepType.Write ? ElementType.Sentence : ElementType.Drawing);
                 await elementProvider.AddElements(elements);
             }
-            else session.BookState = BookState.Pending;
+            else
+            {
+                session.BookState = BookState.Pending;
+            }
 
             await SaveChanges();
             return session;
@@ -237,7 +240,9 @@ namespace thyrel_api.DataProvider
                 .Select(e => e.CreatorId)
                 .ToListAsync();
             if (session.AlbumInitiatorId == null)
+            {
                 session.AlbumInitiatorId = creators.First();
+            }
             else
             {
                 var prevAlbumIdIndex = creators.IndexOf((int) session.AlbumInitiatorId);
@@ -293,7 +298,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Recovery the album in the current state
+        ///     Recovery the album in the current state
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
@@ -312,7 +317,7 @@ namespace thyrel_api.DataProvider
                     {
                         Id = e.Creator.Id,
                         Username = e.Creator.Username,
-                        AvatarUrl = e.Creator.AvatarUrl,
+                        AvatarUrl = e.Creator.AvatarUrl
                     },
                     Type = e.Type,
                     DrawImage = e.DrawImage,

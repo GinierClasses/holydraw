@@ -40,7 +40,7 @@ namespace thyrel_api.DataProvider
         Task<Room> GenerateNewIdentifier(int roomId);
 
         /// <summary>
-        /// To finish all sessions of a Room by its Id
+        ///     To finish all sessions of a Room by its Id
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>

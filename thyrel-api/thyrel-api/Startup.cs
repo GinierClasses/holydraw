@@ -1,25 +1,26 @@
+using System;
+using System.Net;
+using DotNetEnv;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using thyrel_api.Websocket;
-using System;
-using System.Net;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using thyrel_api.Models;
+using thyrel_api.Websocket;
 
 namespace thyrel_api
 {
     public class Startup
     {
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
@@ -38,14 +39,14 @@ namespace thyrel_api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            DotNetEnv.Env.Load(".env");
+            Env.Load(".env");
 
             services.AddSingleton<IWebsocketHandler, WebsocketHandler>();
-            
+
             // for deployment
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-              options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
             });
 
             var contractResolver = new DefaultContractResolver
@@ -64,9 +65,7 @@ namespace thyrel_api
                 );
 
 
-            var connectionString = _configuration.GetConnectionString("thyrel_db") == null
-                ? Environment.GetEnvironmentVariable("THYREL_CONNECTION_STRING")
-                : _configuration.GetConnectionString("thyrel_db"); 
+            var connectionString = HolyDrawDbContextUtils.GetConnectionString(_configuration);
 
             services.AddDbContextPool<HolyDrawDbContext>(
                 dbContextOptions => dbContextOptions
@@ -106,9 +105,9 @@ namespace thyrel_api
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            var webSocketOptions = new WebSocketOptions()
+            var webSocketOptions = new WebSocketOptions
             {
-                KeepAliveInterval = TimeSpan.FromSeconds(120),
+                KeepAliveInterval = TimeSpan.FromSeconds(120)
             };
 
             app.UseWebSockets(webSocketOptions);

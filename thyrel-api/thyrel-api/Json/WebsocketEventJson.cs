@@ -6,61 +6,59 @@ namespace thyrel_api.Json
 {
     public class PlayerIdWebsocketEventJson : BaseWebsocketEventJson
     {
-        public int? PlayerId { get; }
-
         public PlayerIdWebsocketEventJson(WebsocketEvent websocketEvent, int? playerId) : base(websocketEvent)
         {
             PlayerId = playerId;
         }
+
+        public int? PlayerId { get; }
     }
-    
+
     public class SessionAlbumEventJson : BaseWebsocketEventJson
     {
-        public SessionAlbumSocketDto Session { get; }
-
         public SessionAlbumEventJson(int? albumInitiatorId, BookState bookState)
         {
             WebsocketEvent = WebsocketEvent.SessionUpdate;
-            Session = new SessionAlbumSocketDto { AlbumInitiatorId = albumInitiatorId, BookState = bookState};
+            Session = new SessionAlbumSocketDto {AlbumInitiatorId = albumInitiatorId, BookState = bookState};
         }
+
+        public SessionAlbumSocketDto Session { get; }
     }
-    
+
     public class RoomReloadIdentifierEventJson : BaseWebsocketEventJson
     {
-        public RoomReloadIdentifierDto Room { get; }
-
         public RoomReloadIdentifierEventJson(Room room)
         {
             WebsocketEvent = WebsocketEvent.ReloadIdentifier;
             Room = new RoomReloadIdentifierDto {Id = room.Id, Identifier = room.Identifier};
         }
+
+        public RoomReloadIdentifierDto Room { get; }
     }
-    
+
     public class ErrorWebsocketEventJson : BaseWebsocketEventJson
     {
-        public string Error { get; }
-
         public ErrorWebsocketEventJson(string error)
         {
             WebsocketEvent = WebsocketEvent.Invalid;
             Error = error;
         }
+
+        public string Error { get; }
     }
 
     public class PlayerWebsocketEventJson : BaseWebsocketEventJson
     {
-        public PlayerDto Player { get; }
-        
         public PlayerWebsocketEventJson(WebsocketEvent websocketEvent, Player player) : base(websocketEvent)
         {
             Player = new PlayerDto(player);
         }
+
+        public PlayerDto Player { get; }
     }
 
     public class SessionWebsocketEventJson : BaseWebsocketEventJson
     {
-        public SessionSocketDto Session { get; }
-
         public SessionWebsocketEventJson(WebsocketEvent websocketEvent, int step, SessionStepType stepType,
             DateTime? stepFinishAt, int timeDuration, int playerFinished, BookState bookState) : base(websocketEvent)
         {
@@ -74,16 +72,18 @@ namespace thyrel_api.Json
                 BookState = bookState
             };
         }
+
+        public SessionSocketDto Session { get; }
     }
-    
-    
+
+
     public class RoomUpdateWebsocketEventJson : BaseWebsocketEventJson
     {
-        public RoomSettingsDto Room;   
+        public RoomSettingsDto Room;
 
         public RoomUpdateWebsocketEventJson(Room room)
         {
-            Room = new RoomSettingsDto { Mode = room.Mode };
+            Room = new RoomSettingsDto {Mode = room.Mode};
             WebsocketEvent = WebsocketEvent.RoomUpdate;
         }
     }
@@ -101,8 +101,6 @@ namespace thyrel_api.Json
 
     public class PlayerFinishStepWebsocketEventJson : BaseWebsocketEventJson
     {
-        public PlayerFinishStepSocketDto Session { get; }
-
         public PlayerFinishStepWebsocketEventJson(WebsocketEvent websocketEvent, int playerFinished) : base(
             websocketEvent)
         {
@@ -111,13 +109,15 @@ namespace thyrel_api.Json
                 PlayerFinished = playerFinished
             };
         }
+
+        public PlayerFinishStepSocketDto Session { get; }
     }
 
     public class EmojiReactionWebSocketEventJson : BaseWebsocketEventJson
     {
-        public int PlayerId;
         public int ElementId;
         public EmojiReaction EmojiReaction;
+        public int PlayerId;
 
         public EmojiReactionWebSocketEventJson(int playerId, int elementId, EmojiReaction emojiReaction)
         {
@@ -130,8 +130,8 @@ namespace thyrel_api.Json
 
     public class RemovedEmojiReactionWebSocketEventJson : BaseWebsocketEventJson
     {
-        public int PlayerId;
         public int ElementId;
+        public int PlayerId;
 
         public RemovedEmojiReactionWebSocketEventJson(int playerId, int elementId)
         {

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using thyrel_api.Models;
@@ -40,7 +39,7 @@ namespace test_thyrel_api
                 new(1, 3, 3, 1, ElementType.Sentence),
                 new(1, 4, 4, 1, ElementType.Sentence),
                 new(1, 6, 6, 1, ElementType.Sentence),
-                new(1, 7, 7, 1, ElementType.Sentence),
+                new(1, 7, 7, 1, ElementType.Sentence)
             };
 
             await Context.Element.AddRangeAsync(elements);
@@ -52,7 +51,7 @@ namespace test_thyrel_api
             var sessions = new List<Session>
             {
                 new(1, DateTime.Now, 100, SessionStepType.Book, 3, new RoomSettingsDto {Mode = RoomMode.Standard}),
-                new(2, DateTime.Now, 100, SessionStepType.Draw, 3, new RoomSettingsDto {Mode = RoomMode.Standard}),
+                new(2, DateTime.Now, 100, SessionStepType.Draw, 3, new RoomSettingsDto {Mode = RoomMode.Standard})
             };
 
             await Context.Session.AddRangeAsync(sessions);
@@ -71,7 +70,7 @@ namespace test_thyrel_api
                 new("player-6-owner", "player-1-avatarurl", true, 2, 6),
                 new("player-7-owner", "player-1-avatarurl", false, 2, 7),
                 new("player-8-owner", "player-1-avatarurl", false, 2, 8),
-                new("player-9-owner", "player-1-avatarurl", true, 3, 9),
+                new("player-9-owner", "player-1-avatarurl", true, 3, 9)
             };
 
             await Context.Player.AddRangeAsync(players);
@@ -90,7 +89,7 @@ namespace test_thyrel_api
                 new("token-7-key"),
                 new("token-8-key"),
                 new("token-9-key"),
-                new("token-10-key"),
+                new("token-10-key")
             };
 
             await Context.Token.AddRangeAsync(tokens);
@@ -103,7 +102,7 @@ namespace test_thyrel_api
                 new("room-1-id"),
                 new("room-2-id"),
                 new("room-3-id"),
-                new("room-4-id"),
+                new("room-4-id")
             };
 
             await Context.Room.AddRangeAsync(rooms);
