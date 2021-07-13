@@ -48,7 +48,7 @@ CREATE TABLE `Element` (
   `Step` int NOT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `DrawImage` longtext
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Element`
@@ -82,7 +82,7 @@ CREATE TABLE `Player` (
   `IsPlaying` tinyint(1) NOT NULL DEFAULT '0',
   `IsConnected` tinyint(1) NOT NULL DEFAULT '1',
   `TokenId` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Player`
@@ -106,7 +106,7 @@ CREATE TABLE `Reaction` (
   `ElementId` int DEFAULT NULL,
   `PlayerId` int DEFAULT NULL,
   `Emoji` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -120,7 +120,7 @@ CREATE TABLE `Room` (
   `FinishAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Identifier` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Room`
@@ -149,7 +149,7 @@ CREATE TABLE `Session` (
   `TimeDuration` int NOT NULL,
   `StepType` int NOT NULL,
   `TotalPlayers` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Session`
@@ -169,7 +169,7 @@ CREATE TABLE `Token` (
   `DiscardAt` datetime DEFAULT NULL,
   `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `TokenKey` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Token`

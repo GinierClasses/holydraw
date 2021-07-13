@@ -166,7 +166,7 @@ namespace thyrel_api.DataProvider
             {
                 if (session.Mode == RoomMode.OneWord) body.Text = body.Text.Split(" ")[0];
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }
