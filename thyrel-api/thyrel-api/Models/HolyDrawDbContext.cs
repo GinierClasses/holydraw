@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace thyrel_api.Models
 {
@@ -84,6 +87,33 @@ namespace thyrel_api.Models
                 entity.HasOne(e => e.Player)
                     .WithMany(e => e.Reactions);
             });
+        }
+    }
+
+    public static class HolyDrawDbContextUtils
+    {
+        public static DbContextOptionsBuilder<HolyDrawDbContext> GetOptionsBuilder(string connectionString)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
+            optionsBuilder.UseMySql(
+                connectionString,
+                new MySqlServerVersion(new Version(8, 0, 23)),
+                mySqlOptions => mySqlOptions
+                    .CharSetBehavior(CharSetBehavior.NeverAppend));
+            return optionsBuilder;
+        }
+
+        public static HolyDrawDbContext GetHolyDrawDbContext(string connectionString)
+        {
+            var optionsBuilder = GetOptionsBuilder(connectionString);
+            return new HolyDrawDbContext(optionsBuilder.Options);
+        }
+
+        public static string GetConnectionString(IConfiguration configuration)
+        {
+            return configuration.GetConnectionString("thyrel_db") == null
+                ? Environment.GetEnvironmentVariable("THYREL_CONNECTION_STRING")
+                : configuration.GetConnectionString("thyrel_db");
         }
     }
 }

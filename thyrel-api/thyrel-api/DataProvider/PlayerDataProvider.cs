@@ -63,7 +63,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// To get a Players by it's room
+        ///     To get a Players by it's room
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>

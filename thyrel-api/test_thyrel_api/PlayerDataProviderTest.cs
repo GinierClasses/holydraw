@@ -61,6 +61,7 @@ namespace test_thyrel_api
         {
             Assert.IsNull(await _playerDataProvider.Disable(-1));
         }
+
         [Test]
         public async Task TestDisablePlayer()
         {
@@ -69,12 +70,13 @@ namespace test_thyrel_api
             var disabledPlayer = await _playerDataProvider.Disable(player.Id);
             Assert.IsNotNull(disabledPlayer.DisableAt);
         }
+
         [Test]
         public async Task TestSetOwnerOfNotExistingPlayerShouldReturnNull()
         {
             Assert.IsNull(await _playerDataProvider.SetOwner(null));
         }
-        
+
         [Test]
         public async Task TestSetOwner()
         {
@@ -97,7 +99,7 @@ namespace test_thyrel_api
             Assert.AreEqual(firstPlayerRoomId, roomId);
             Assert.IsFalse(players.Any(p => p.Id == playerNotConnected.Id));
         }
-        
+
         [Test]
         public async Task TestSetIsConnected()
         {
@@ -108,17 +110,18 @@ namespace test_thyrel_api
             var playerEdited = await _playerDataProvider.GetPlayer(playerNotConnected.Id);
             Assert.IsFalse(playerEdited.IsConnected);
         }
-        
+
         [Test]
         public async Task TestSetIsPlaying()
         {
             var playerNotPlaying = Context.Player.First(p => !p.IsPlaying);
             Assert.IsFalse(playerNotPlaying.IsPlaying);
             if (playerNotPlaying.RoomId != null)
-                await _playerDataProvider.SetIsPlaying((int) playerNotPlaying.RoomId, true);
+                await _playerDataProvider.SetIsPlaying((int) playerNotPlaying.RoomId);
             var playerEdited = await _playerDataProvider.GetPlayer(playerNotPlaying.Id);
             Assert.IsTrue(playerEdited.IsPlaying);
         }
+
         [Test]
         public async Task TestSetIsPlayingFalse()
         {
@@ -137,7 +140,7 @@ namespace test_thyrel_api
             var kickedPlayer = await _playerDataProvider.KickPlayerFromRoom(dbPlayer);
             Assert.IsNull(kickedPlayer.RoomId);
         }
-        
+
         [Test]
         public async Task TestFindNewPlayer()
         {

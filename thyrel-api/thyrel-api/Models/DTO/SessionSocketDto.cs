@@ -11,16 +11,15 @@ namespace thyrel_api.Models.DTO
         public int PlayerFinished { get; set; }
         public BookState BookState { get; set; }
     }
-    
+
     public class PlayerFinishStepSocketDto
     {
         public int PlayerFinished { get; set; }
     }
-    
+
     public class SessionAlbumSocketDto
     {
         public int? AlbumInitiatorId { get; set; }
         public BookState BookState { get; set; }
-        
     }
 }

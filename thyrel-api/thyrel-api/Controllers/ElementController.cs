@@ -14,8 +14,8 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class ElementController : ControllerBase
     {
-        private readonly IWebsocketHandler _websocketHandler;
         private readonly HolyDrawDbContext _context;
+        private readonly IWebsocketHandler _websocketHandler;
 
         public ElementController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
@@ -70,11 +70,13 @@ namespace thyrel_api.Controllers
                         await session.RunNewTimeout(_context, _websocketHandler);
                     }
                     else
+                    {
                         await _websocketHandler.SendMessageToSockets(
                             JsonBase.Serialize(
                                 new PlayerFinishStepWebsocketEventJson(WebsocketEvent.SessionUpdate,
                                     stepState.PlayerFinished)),
                             session.RoomId);
+                    }
                 });
             }
         }
@@ -99,13 +101,9 @@ namespace thyrel_api.Controllers
                 return Unauthorized("You can't modify a previous element.");
 
             if (element.Type == ElementType.Sentence)
-            {
                 await elementDataProvider.SetSentence(element.Id, body.Text);
-            }
             else
-            {
                 await elementDataProvider.SetDrawing(element.Id, body.DrawImage);
-            }
 
             return NoContent();
         }
@@ -135,7 +133,7 @@ namespace thyrel_api.Controllers
         }
 
         /// <summary>
-        /// call this endpoint to add a new emojiReaction to an element
+        ///     call this endpoint to add a new emojiReaction to an element
         /// </summary>
         /// <param name="elementId"></param>
         /// <param name="emojiReaction"></param>
@@ -159,7 +157,7 @@ namespace thyrel_api.Controllers
         }
 
         /// <summary>
-        /// call this endpoint to delete a player Reaction to an element by reaction Id
+        ///     call this endpoint to delete a player Reaction to an element by reaction Id
         /// </summary>
         /// <param name="elementId"></param>
         /// <param name="id"></param>

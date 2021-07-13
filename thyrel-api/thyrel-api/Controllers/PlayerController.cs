@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using thyrel_api.DataProvider;
@@ -13,8 +12,8 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private readonly IWebsocketHandler _websocketHandler;
         private readonly HolyDrawDbContext _context;
+        private readonly IWebsocketHandler _websocketHandler;
 
         public PlayerController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {

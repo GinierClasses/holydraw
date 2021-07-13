@@ -1,6 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using thyrel_api.Models;
 
@@ -16,7 +13,7 @@ namespace test_thyrel_api
             Assert.AreEqual("", element.DrawImage);
             Assert.AreEqual(null, element.Text);
         }
-        
+
         [Test]
         public void SentenceElementConstructor()
         {

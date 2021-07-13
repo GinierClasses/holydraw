@@ -26,21 +26,21 @@ namespace thyrel_api.DataProvider
         Task<Session> Finish(int sessionId);
 
         /// <summary>
-        /// To get a Session by it's id
+        ///     To get a Session by it's id
         /// </summary>
         /// <param name="sessionId"></param>
         /// <returns></returns>
         Task<Session> GetSessionById(int sessionId);
 
         /// <summary>
-        /// Get current session of a room
+        ///     Get current session of a room
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
         Task<SessionDto> GetCurrentSessionByRoomId(int roomId);
 
         /// <summary>
-        /// Checks if current step is finished
+        ///     Checks if current step is finished
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
@@ -82,14 +82,14 @@ namespace thyrel_api.DataProvider
         Task<Session> NextAlbum(int roomId);
 
         /// <summary>
-        /// Get current session of a room
+        ///     Get current session of a room
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
         Task<List<PlayerDto>> GetCurrentPlayersInSession(int roomId);
 
         /// <summary>
-        /// Recovery the album in the current state
+        ///     Recovery the album in the current state
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>

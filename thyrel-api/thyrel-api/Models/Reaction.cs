@@ -1,5 +1,4 @@
-﻿using System;
-namespace thyrel_api.Models
+﻿namespace thyrel_api.Models
 {
     public class Reaction
     {

@@ -50,7 +50,7 @@ namespace thyrel_api.DataProvider
             var room = await _holyDrawDbContext.Room.FindAsync(roomId);
 
             if (roomSettings.Mode != null)
-                room.Mode = (RoomMode)roomSettings.Mode;
+                room.Mode = (RoomMode) roomSettings.Mode;
 
             await SaveChanges();
 

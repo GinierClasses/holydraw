@@ -34,7 +34,7 @@ namespace test_thyrel_api
             Assert.IsNotNull(tokenNotDiscordUpdate.DiscardAt);
             Assert.IsNotNull(updatedElement.DiscardAt);
         }
-        
+
         [Test]
         public async Task GetTokenTest()
         {
@@ -42,7 +42,7 @@ namespace test_thyrel_api
             var token1 = await _tokenDataProvider.GetToken(id);
             Assert.AreEqual(1, token1.Id);
         }
-        
+
         [Test]
         public async Task FindPlayerReturnAssociatedPlayer()
         {

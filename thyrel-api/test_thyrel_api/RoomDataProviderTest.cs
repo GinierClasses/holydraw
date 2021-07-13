@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
@@ -12,7 +11,7 @@ namespace test_thyrel_api
     public class RoomDataProviderTest : TestProvider
     {
         private IRoomDataProvider _roomDataProvider;
-        
+
         [SetUp]
         public async Task Setup()
         {
@@ -26,7 +25,6 @@ namespace test_thyrel_api
             var roomCount = Context.Room.Count();
             await _roomDataProvider.Add();
             Assert.AreEqual(roomCount + 1, Context.Room.Count());
-
         }
 
         [Test]
@@ -37,9 +35,9 @@ namespace test_thyrel_api
             Assert.AreEqual(room.Id, roomByProvider.Id);
 
             var roomNull = await _roomDataProvider.GetRoom(-2);
-            Assert.IsNull(roomNull);            
+            Assert.IsNull(roomNull);
         }
-        
+
         [Test]
         public async Task GetRoomByIdentifierTest()
         {
@@ -48,7 +46,7 @@ namespace test_thyrel_api
             Assert.AreEqual(room.Identifier, roomByProvider.Identifier);
 
             var roomNull = await _roomDataProvider.GetRoom("efiwefhiofewiho");
-            Assert.IsNull(roomNull);            
+            Assert.IsNull(roomNull);
         }
 
         [Test]
@@ -68,7 +66,7 @@ namespace test_thyrel_api
             var returnedRoom = await _roomDataProvider.GenerateNewIdentifier(room.Id);
             var returnedRoomIdentifier = returnedRoom.Identifier;
             var roomEdited = await Context.Room.FirstAsync(r => r.FinishAt == null);
-            
+
             Assert.AreNotEqual(identifier, returnedRoomIdentifier);
             Assert.AreEqual(returnedRoomIdentifier, roomEdited.Identifier);
         }
@@ -78,8 +76,8 @@ namespace test_thyrel_api
         {
             var mode = RoomMode.OneWord;
             var room = await Context.Room.FirstAsync(r => r.FinishAt == null);
-            var editedRoom = await _roomDataProvider.Edit(room.Id, new RoomSettingsDto { Mode = mode });
-            
+            var editedRoom = await _roomDataProvider.Edit(room.Id, new RoomSettingsDto {Mode = mode});
+
             Assert.AreEqual(mode, editedRoom.Mode);
             Assert.AreEqual(room.Mode, editedRoom.Mode);
         }
