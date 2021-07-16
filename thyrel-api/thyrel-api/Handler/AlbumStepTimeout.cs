@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using thyrel_api.DataProvider;
 using thyrel_api.Json;
 using thyrel_api.Models;
@@ -14,8 +12,8 @@ namespace thyrel_api.Handler
     public class AlbumStepTimeout
     {
         private readonly int _albumInitiatorId;
-        private readonly int _sessionId;
         private readonly string _connectionString;
+        private readonly int _sessionId;
         private readonly int _step;
         private readonly IWebsocketHandler _websocketHandler;
 
@@ -30,7 +28,7 @@ namespace thyrel_api.Handler
         }
 
         /// <summary>
-        ///     Run timeout of delay. At end, is Session step is not already finish this will be automatically finish 
+        ///     Run timeout of delay. At end, is Session step is not already finish this will be automatically finish
         /// </summary>
         /// <param name="delay"></param>
         public void RunTimeout(int delay)
@@ -50,7 +48,7 @@ namespace thyrel_api.Handler
                         {
                             Id = e.Creator.Id,
                             Username = e.Creator.Username,
-                            AvatarUrl = e.Creator.AvatarUrl,
+                            AvatarUrl = e.Creator.AvatarUrl
                         },
                         Type = e.Type,
                         DrawImage = e.DrawImage,
@@ -66,7 +64,7 @@ namespace thyrel_api.Handler
 
                 var isFinish = session.TotalPlayers == album.Step;
                 album.IsLastAlbum = isFinish;
-                
+
                 await _websocketHandler.SendMessageToSockets(
                     JsonBase.Serialize(
                         new AlbumWebsocketEventJson(album)), session.RoomId);
@@ -85,13 +83,7 @@ namespace thyrel_api.Handler
         /// <returns>The context created</returns>
         private HolyDrawDbContext GetContext()
         {
-            var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
-            optionsBuilder.UseMySql(
-                _connectionString,
-                new MySqlServerVersion(new Version(8, 0, 23)),
-                mySqlOptions => mySqlOptions
-                    .CharSetBehavior(CharSetBehavior.NeverAppend));
-            return new HolyDrawDbContext(optionsBuilder.Options);
+            return HolyDrawDbContextUtils.GetHolyDrawDbContext(_connectionString);
         }
     }
 }

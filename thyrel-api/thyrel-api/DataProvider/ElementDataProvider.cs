@@ -52,7 +52,7 @@ namespace thyrel_api.DataProvider
         }
 
         /// <summary>
-        /// Add a list of elements
+        ///     Add a list of elements
         /// </summary>
         /// <param name="elements"></param>
         /// <returns></returns>
@@ -150,7 +150,7 @@ namespace thyrel_api.DataProvider
                 DrawImage = e.DrawImage,
                 FinishAt = e.FinishAt,
                 CreatedAt = e.CreatedAt,
-                SessionId = e.SessionId,
+                SessionId = e.SessionId
             }).FirstOrDefaultAsync(e => e.Id == elementId);
         }
 
@@ -164,19 +164,16 @@ namespace thyrel_api.DataProvider
         {
             try
             {
-                if (session.Mode == RoomMode.OneWord)
-                {
-                    body.Text = body.Text.Split(" ")[0];
-                }
+                if (session.Mode == RoomMode.OneWord) body.Text = body.Text.Split(" ")[0];
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // ignored
             }
         }
 
         /// <summary>
-        ///   Get The Current Element Of a player
+        ///     Get The Current Element Of a player
         /// </summary>
         /// <param name="playerId"></param>
         /// <returns></returns>

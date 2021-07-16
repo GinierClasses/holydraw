@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace thyrel_api.Models.DTO
 {
@@ -36,8 +33,7 @@ namespace thyrel_api.Models.DTO
         public int RoomId { get; set; }
         public int? AlbumInitiatorId { get; set; }
         public int TotalPlayers { get; set; }
-        
-        public BookState BookState { get; set; }
 
+        public BookState BookState { get; set; }
     }
 }

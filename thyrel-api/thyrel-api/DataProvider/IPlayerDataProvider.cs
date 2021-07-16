@@ -61,21 +61,21 @@ namespace thyrel_api.DataProvider
         Task<Player> SetIsConnected(int playerId, bool isConnected);
 
         /// <summary>
-        /// To get a Players by it's room
+        ///     To get a Players by it's room
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
         Task<List<PlayerDto>> GetPlayersByRoom(int roomId);
 
         /// <summary>
-        /// Kick a player from his room using his ID
+        ///     Kick a player from his room using his ID
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
         Task<Player> KickPlayerFromRoom(Player player);
 
         /// <summary>
-        /// Find a new owner for a room
+        ///     Find a new owner for a room
         /// </summary>
         /// <param name="roomId">Room to find a owner</param>
         /// <returns></returns>

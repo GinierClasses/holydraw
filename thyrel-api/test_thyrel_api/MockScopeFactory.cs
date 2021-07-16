@@ -1,9 +1,5 @@
 using System;
-using System.IO;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting.Internal;
-using thyrel_api;
-using thyrel_api.Models;
 
 namespace test_thyrel_api
 {
@@ -22,7 +18,9 @@ namespace test_thyrel_api
             ServiceProvider = null;
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
 
         public IServiceProvider ServiceProvider { get; }
     }

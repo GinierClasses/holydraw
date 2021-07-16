@@ -40,7 +40,7 @@ namespace test_thyrel_api
                 new(1, 3, 3, 1, ElementType.Sentence),
                 new(1, 4, 4, 1, ElementType.Sentence),
                 new(1, 6, 6, 1, ElementType.Sentence),
-                new(1, 7, 7, 1, ElementType.Sentence),
+                new(1, 7, 7, 1, ElementType.Sentence)
             };
             var elementCount = Context.Element.Count();
 
@@ -90,7 +90,7 @@ namespace test_thyrel_api
                 Text = text,
                 DrawImage = "invalid image"
             });
-            
+
             var element1 = await _elementDataProvider.GetElement(1);
             Assert.IsNotNull(element1.FinishAt);
             Assert.AreEqual(element1.Text, text);
@@ -146,7 +146,7 @@ namespace test_thyrel_api
 
             var player = await Context.Player.FindAsync(1);
             var expected = await Context.Element.OrderByDescending(e => e.Step)
-                .FirstOrDefaultAsync(e => (e.CreatorId == player.Id) && (e.InitiatorId != player.Id));
+                .FirstOrDefaultAsync(e => e.CreatorId == player.Id && e.InitiatorId != player.Id);
             var expectedWithParent = await _elementDataProvider.GetCurrentElement(expected.CreatorId);
             var current = await _elementDataProvider.GetCurrentElement(player.Id);
             Assert.AreEqual(expectedWithParent.Parent.Id, current.Parent.Id);
@@ -174,7 +174,7 @@ namespace test_thyrel_api
             const string text = "Red";
             var session = new Session(1, DateTime.Now, 12, SessionStepType.Book, 12,
                 new RoomSettingsDto {Mode = RoomMode.OneWord});
-            
+
             var elementFinish = new FinishElementDto
             {
                 DrawImage = "",
@@ -182,7 +182,7 @@ namespace test_thyrel_api
             };
 
             _elementDataProvider.UpdateFinishElementDto(elementFinish, session);
-            
+
             Assert.AreEqual(elementFinish.Text, text);
         }
     }

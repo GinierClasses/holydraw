@@ -5,10 +5,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using thyrel_api.Models;
 
 namespace thyrel_api.Websocket
@@ -29,11 +26,13 @@ namespace thyrel_api.Websocket
         public async Task Handle(Guid id, WebSocket webSocket)
         {
             lock (_websocketConnections)
+            {
                 _websocketConnections.Add(new SocketConnection
                 {
                     Id = id,
                     WebSocket = webSocket
                 });
+            }
 
             while (webSocket.State == WebSocketState.Open)
             {
@@ -42,7 +41,9 @@ namespace thyrel_api.Websocket
 
                 SocketConnection connection;
                 lock (_websocketConnections)
+                {
                     connection = _websocketConnections.Find(w => w.Id == id);
+                }
 
                 if (connection == null || connection.RoomId != null) continue;
 
@@ -127,9 +128,7 @@ namespace thyrel_api.Websocket
 
                         foreach (var closedSocket in closedSockets.Where(closedSocket =>
                             openSockets.All(s => s.PlayerId != closedSocket.PlayerId)))
-                        {
                             CloseSocketWithDelay(closedSocket);
-                        }
                     }
                     catch (Exception e)
                     {
@@ -160,23 +159,14 @@ namespace thyrel_api.Websocket
         }
 
         /// <summary>
-        /// Dispose the context after using it !
-        /// `await context.DisposeAsync();`
+        ///     Dispose the context after using it !
+        ///     `await context.DisposeAsync();`
         /// </summary>
         /// <returns>Context able to be used</returns>
         private HolyDrawDbContext CreateContext()
         {
-            var connectionString = _configuration.GetConnectionString("thyrel_db") == null
-                ? Environment.GetEnvironmentVariable("THYREL_CONNECTION_STRING")
-                : _configuration.GetConnectionString("thyrel_db");
-
-            var optionsBuilder = new DbContextOptionsBuilder<HolyDrawDbContext>();
-            optionsBuilder.UseMySql(
-                connectionString ?? throw new InvalidOperationException("No connection string, on WebsocketHandler"),
-                new MySqlServerVersion(new Version(8, 0, 23)),
-                mySqlOptions => mySqlOptions
-                    .CharSetBehavior(CharSetBehavior.NeverAppend));
-            return new HolyDrawDbContext(optionsBuilder.Options);
+            var connectionString = HolyDrawDbContextUtils.GetConnectionString(_configuration);
+            return HolyDrawDbContextUtils.GetHolyDrawDbContext(connectionString);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace test_thyrel_api
 {
     public class SessionDataProviderTest : TestProvider
     {
-        private ISessionDataProvider _sessionDataProvider;
         private IPlayerDataProvider _playerDataProvider;
+        private ISessionDataProvider _sessionDataProvider;
 
         [SetUp]
         public async Task Setup()

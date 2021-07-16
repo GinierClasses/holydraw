@@ -25,7 +25,7 @@ namespace test_thyrel_api
             {
                 ControllerContext = new ControllerContext
                 {
-                    HttpContext = httpContext,
+                    HttpContext = httpContext
                 }
             };
             _roomController = controller;
@@ -119,7 +119,7 @@ namespace test_thyrel_api
             //assert the session of the room is finished
             Assert.IsNotNull(session.FinishAt);
         }
-        
+
         [Test]
         public async Task ReloadTest()
         {
@@ -130,10 +130,10 @@ namespace test_thyrel_api
 
             await _roomController.ReloadIdentifier();
             var newIdentifier = room.Identifier;
-            
+
             Assert.AreNotEqual(prevIdentifier, newIdentifier);
         }
-        
+
         [Test]
         public async Task ReloadTestWithUnOwnerAccount()
         {
@@ -144,7 +144,7 @@ namespace test_thyrel_api
 
             await _roomController.ReloadIdentifier();
             var newIdentifier = room.Identifier;
-            
+
             Assert.AreEqual(prevIdentifier, newIdentifier);
         }
 

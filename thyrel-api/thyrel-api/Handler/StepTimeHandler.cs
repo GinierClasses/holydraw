@@ -22,7 +22,7 @@ namespace thyrel_api.Handler
             {
                 RoomMode.Standard => time,
                 RoomMode.OneWord => time / 2,
-                _ => 0,
+                _ => 0
             };
         }
     }

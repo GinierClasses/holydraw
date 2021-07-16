@@ -20,7 +20,7 @@ namespace thyrel_api.Json
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
         }
-        
+
         public static T Deserialize<T>(string msg)
         {
             var contractResolver = new DefaultContractResolver
@@ -29,7 +29,7 @@ namespace thyrel_api.Json
             };
 
             return JsonConvert.DeserializeObject<T>(msg,
-                new JsonSerializerSettings  
+                new JsonSerializerSettings
                 {
                     ContractResolver = contractResolver,
                     Formatting = Formatting.Indented,

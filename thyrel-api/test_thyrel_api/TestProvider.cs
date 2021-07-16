@@ -9,9 +9,9 @@ namespace test_thyrel_api
 {
     public class TestProvider
     {
-        protected DbContextOptions<HolyDrawDbContext> Options { get; private set;}
-        protected HolyDrawDbContext Context { get; private set; }
         protected readonly IConfiguration TestConfiguration = new ConfigurationRoot(new List<IConfigurationProvider>());
+        protected DbContextOptions<HolyDrawDbContext> Options { get; private set; }
+        protected HolyDrawDbContext Context { get; private set; }
 
 
         protected async Task SetupTest()
@@ -19,7 +19,7 @@ namespace test_thyrel_api
             var options = new DbContextOptionsBuilder<HolyDrawDbContext>()
                 .UseInMemoryDatabase("thyrel_db")
                 .Options;
-            
+
             Options = options;
 
             var mock = new MockDatabase(options);

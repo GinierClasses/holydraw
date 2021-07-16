@@ -1,13 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using thyrel_api.DataProvider;
 using thyrel_api.Handler;
 using thyrel_api.Models;
-using thyrel_api.Models.DTO;
 using thyrel_api.Websocket;
 
 namespace thyrel_api.Controllers
@@ -16,8 +13,8 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
-        private readonly IWebsocketHandler _websocketHandler;
         private readonly HolyDrawDbContext _context;
+        private readonly IWebsocketHandler _websocketHandler;
 
         public TestController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {

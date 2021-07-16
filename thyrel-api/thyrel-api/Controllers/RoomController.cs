@@ -14,8 +14,8 @@ namespace thyrel_api.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        private readonly IWebsocketHandler _websocketHandler;
         private readonly HolyDrawDbContext _context;
+        private readonly IWebsocketHandler _websocketHandler;
 
         public RoomController(IWebsocketHandler websocketHandler, HolyDrawDbContext context)
         {
@@ -39,7 +39,7 @@ namespace thyrel_api.Controllers
             // use `GetPlayer` to include `Token` and `Room`
             return await playerDataProvider.GetPlayer(player.Id);
         }
-        
+
         // To edit room settings
         // PATCH : api/room/13
         [HttpPatch("{roomId}")]
@@ -47,9 +47,9 @@ namespace thyrel_api.Controllers
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player == null || !player.IsInRoom(roomId)) return Unauthorized();
-            
+
             var room = await new RoomDataProvider(_context).Edit(roomId, roomSettings);
-            
+
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
                     new RoomUpdateWebsocketEventJson(room)), roomId);
@@ -80,7 +80,7 @@ namespace thyrel_api.Controllers
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player == null || !player.IsInRoom(id)) return Unauthorized();
-            
+
             var room = await new RoomDataProvider(_context).GetRoom(id);
             return room;
         }
@@ -92,7 +92,7 @@ namespace thyrel_api.Controllers
         {
             var player = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
             if (player == null || !player.IsInRoom(roomId)) return Unauthorized();
-            
+
             var players = await new PlayerDataProvider(_context).GetPlayersByRoom(roomId);
             return players;
         }
@@ -107,10 +107,7 @@ namespace thyrel_api.Controllers
 
             var playerDataProvider = new PlayerDataProvider(_context);
 
-            if (player.RoomId != null)
-            {
-                await playerDataProvider.SetIsPlaying((int)player.RoomId, false);
-            }
+            if (player.RoomId != null) await playerDataProvider.SetIsPlaying((int) player.RoomId, false);
 
             await new RoomDataProvider(_context).FinishSessionsByRoomId(player.RoomId);
 
@@ -120,7 +117,7 @@ namespace thyrel_api.Controllers
 
             return Ok();
         }
-        
+
         // Call this endpoint to close the session and restart another one
         // PATCH : api/room/reload_identifier
         [HttpPatch("reload_identifier")]
@@ -130,11 +127,11 @@ namespace thyrel_api.Controllers
             if (player?.RoomId == null || !player.IsOwner) return Unauthorized();
 
             var room = await new RoomDataProvider(_context).GenerateNewIdentifier((int) player.RoomId);
-            
+
             await _websocketHandler.SendMessageToSockets(
                 JsonBase.Serialize(
                     new RoomReloadIdentifierEventJson(room)), player.RoomId);
-            
+
             return NoContent();
         }
 
