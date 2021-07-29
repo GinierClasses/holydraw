@@ -48,7 +48,7 @@ export default function BookStartAction() {
 
   return (
     <StartButton
-      onStart={onStart}
+      onClick={onStart}
       isLoading={isLoading}
       startName="book"
       player={player}

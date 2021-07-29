@@ -220,7 +220,7 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
+        <StartButton player={testPlayerList[1]} onClick={() => void 0} />
 
         <PlayerCardList
           players={testPlayerList}

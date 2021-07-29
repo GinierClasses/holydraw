@@ -33,6 +33,13 @@ namespace thyrel_api.Controllers
 
             var roomId = (int) player.RoomId;
 
+            var playerCount = await new PlayerDataProvider(_context).GetPlayersCountByRoom(roomId);
+
+            if (playerCount <= 1)
+            {
+                return BadRequest("Impossible to create a session with 1 player");
+            }
+
             var sessionDataProvider = new SessionDataProvider(_context);
             var session = await sessionDataProvider.StartSession(roomId);
             if (session == null)
