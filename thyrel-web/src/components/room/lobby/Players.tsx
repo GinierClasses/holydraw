@@ -10,6 +10,8 @@ import { Box, useMediaQuery, useTheme } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { KickModal } from './KickModal';
 
+type PlayerToKickType = { id: number; name: string };
+
 export function Players() {
   const theme = useTheme();
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
@@ -17,7 +19,7 @@ export function Players() {
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
   const [playerToKick, setPlayerToKick] =
-    React.useState<{ id: number; name: string } | null>(null);
+    React.useState<PlayerToKickType | null>(null);
 
   function onKick(id: number, name: string) {
     setPlayerToKick({ id, name });

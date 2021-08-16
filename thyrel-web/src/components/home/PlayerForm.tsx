@@ -1,19 +1,19 @@
-import { useRandomUsername } from 'hooks/useRandomUsername';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Box, Grid, makeStyles } from '@material-ui/core';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { client } from 'api/client';
 import { setToken } from 'api/player-provider';
+import useMobileHorizontal from 'hooks/useMobileHorizontal';
+import { useRandomUsername } from 'hooks/useRandomUsername';
 import profilesPictures from 'images/profiles/profiles-pictures';
+import { useSnackbar } from 'notistack';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Player from 'types/Player.type';
+import { randomInt } from 'utils/utils';
 import BigButton from '../BigButton';
 import BigInput from '../BigInput';
 import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import { Box, Grid, makeStyles } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
-import useMobileHorizontal from 'hooks/useMobileHorizontal';
-import { randomInt } from 'utils/utils';
 
 const useStyles = makeStyles(theme => ({
   marginButton: {
@@ -107,6 +107,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
           display="flex"
           flexDirection={isHorizontal ? 'row' : 'column'}
           px={1}
+          pb={1}
           height={isHorizontal ? 72 : undefined}
           maxWidth={isHorizontal ? undefined : 356}>
           <BigInput

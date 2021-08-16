@@ -1,11 +1,11 @@
+import { client } from 'api/client';
+import { getToken } from 'api/player-provider';
 import { useSessionContext } from 'hooks/SessionProvider';
 import { useTimerEvent } from 'hooks/useTimerInterval';
 import React from 'react';
+import { HolyElement } from 'types/HolyElement.type';
 import { callAll } from 'utils/utils';
 import { useCanvasContext } from './DrawingCanvasContext';
-import { client } from 'api/client';
-import { HolyElement } from 'types/HolyElement.type';
-import { getToken } from 'api/player-provider';
 
 /*
  * All this component will injected on click event on the children.
