@@ -21,6 +21,5 @@ services:
       - mysql
     environment:
       PMA_HOST: mysql
-    restart: always
     ports:
       - 8080:80
