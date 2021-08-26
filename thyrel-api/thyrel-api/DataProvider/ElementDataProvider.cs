@@ -58,10 +58,14 @@ namespace thyrel_api.DataProvider
         /// <returns></returns>
         public async Task AddElements(List<Element> elements)
         {
-            elements.ForEach(async e =>
-                await _holyDrawDbContext.Element.AddAsync(e));
+            elements.ForEach(AddElementToContext);
 
             await SaveChanges();
+        }
+
+        private async void AddElementToContext(Element element)
+        {
+            await _holyDrawDbContext.Element.AddAsync(element);
         }
 
         /// <summary>
