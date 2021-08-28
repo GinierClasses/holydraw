@@ -42,7 +42,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   function onConnect(token: string, text: string, isSuccess: boolean = true) {
     enqueueSnackbar(text, { variant: 'success' });
     setToken(token);
-    history?.push('/r/lobby');
+    history?.push('/room/lobby');
   }
 
   function onCreate() {

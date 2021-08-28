@@ -13,7 +13,7 @@ export default function SettingsMenu() {
       minWidth={288}
       pl={2}
       pb={1}
-      height="100%"
+      height={{ md: '100%' }}
       display="flex"
       justifyContent="space-between"
       flexDirection="column"

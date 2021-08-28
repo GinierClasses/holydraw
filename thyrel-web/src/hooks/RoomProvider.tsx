@@ -56,13 +56,13 @@ export function RoomContextProvider({
           updatePlayer();
           break;
         case WebsocketEvent.SessionStart:
-          history?.push('/r/start');
+          history?.push('/room/start');
           break;
         case WebsocketEvent.PlayerKicked:
           removePlayer(websocketMessage.playerId);
           break;
         case WebsocketEvent.Restart:
-          history?.push('/r/lobby');
+          history?.push('/room/lobby');
           break;
         case WebsocketEvent.ReloadIdentifier:
           const roomReload = websocketMessage.room;
@@ -92,8 +92,11 @@ export function RoomContextProvider({
 
   React.useEffect(() => {
     const playingPlayers = players.filter(player => player.isPlaying);
-    if (history.location.pathname === '/r/lobby' && playingPlayers.length > 0) {
-      history?.push('/r/start');
+    if (
+      history.location.pathname === '/room/lobby' &&
+      playingPlayers.length > 0
+    ) {
+      history?.push('/room/start');
     }
   }, [players, history]);
 

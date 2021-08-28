@@ -5,7 +5,6 @@ import clsx from 'clsx';
 type Variant = 'medium' | 'large';
 
 type StylesProps = {
-  focus: boolean;
   disabled?: boolean;
   variant: Variant;
 };
@@ -48,10 +47,10 @@ const useStyles = makeStyles<Theme, StylesProps>(theme => ({
     borderRadius: props => (props.variant === 'medium' ? 34 : 38),
     alignItems: 'center',
     transition: 'box-shadow ease-in .2s',
-    boxShadow: props =>
-      props.focus
-        ? `0 0 2px 0.2rem ${fade(theme.palette.primary.main, 0.4)}`
-        : theme.shadows[2],
+    boxShadow: theme.shadows[2],
+    '&:focus-within': {
+      boxShadow: `0 0 2px 0.2rem ${fade(theme.palette.primary.main, 0.4)}`,
+    },
   },
   iconMedium: {
     width: 28,
@@ -93,8 +92,7 @@ export default function BigInput({
   ...props
 }: BigInputProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [focus, setFocus] = React.useState(false);
-  const classes = useStyles({ disabled, focus, variant });
+  const classes = useStyles({ disabled, variant });
 
   return (
     <div
@@ -113,8 +111,6 @@ export default function BigInput({
           variant === 'medium' ? classes.inputMedium : classes.inputLarge,
           'big-input-safari',
         )}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
         disabled={disabled}
         {...props}
       />

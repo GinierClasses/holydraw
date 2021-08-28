@@ -18,15 +18,21 @@ export default function Routes() {
     <AppLayout>
       <BrowserRouter>
         <Switch>
+          {/* Test component */}
+          {process.env.NODE_ENV === 'development' && (
+            <>
+              <Route path="/t" component={ComponentTest} />
+              <Route path="/t" component={DevNav} />
+              <Route path="/start" component={Start} />
+              <Route path="/draw" component={Draw} />
+            </>
+          )}
+
+          {/* Game component */}
           <Route path="/join/:identifier" component={Home} />
-          <Route path="/start" component={Start} />
-          <Route path="/draw" component={Draw} />
-          <Route path="/t" component={ComponentTest} />
           <Route path="/home" component={Home} />
-          <Route path="/r" component={RoomRoutes} />
-          {/* For test, I add a special Nav
-          TODO: replace it by `Home` */}
-          <Route path="/" component={DevNav} />
+          <Route path="/room" component={RoomRoutes} />
+          <Route path="/" component={Home} />
         </Switch>
       </BrowserRouter>
     </AppLayout>
@@ -39,8 +45,8 @@ function RoomRoutes() {
       <PlayerContextProvider>
         <RoomContextProvider>
           <Switch>
-            <Route path="/r/lobby" component={Lobby} />
-            <Route path="/r" component={SessionRoutes} />
+            <Route path="/room/lobby" component={Lobby} />
+            <Route path="/room" component={SessionRoutes} />
           </Switch>
         </RoomContextProvider>
       </PlayerContextProvider>
@@ -52,11 +58,11 @@ function SessionRoutes() {
   return (
     <SessionContextProvider>
       <Switch>
-        <Route path="/r/start" component={Start} />
-        <Route path="/r/draw" component={Draw} />
-        <Route path="/r/write" component={Write} />
-        <Route path="/r/book" component={Book} />
-        <Route path="/r/lobby" component={Lobby} />
+        <Route path="/room/start" component={Start} />
+        <Route path="/room/draw" component={Draw} />
+        <Route path="/room/write" component={Write} />
+        <Route path="/room/book" component={Book} />
+        <Route path="/room/lobby" component={Lobby} />
       </Switch>
     </SessionContextProvider>
   );
