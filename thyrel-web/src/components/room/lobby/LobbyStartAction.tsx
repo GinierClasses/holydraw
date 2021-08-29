@@ -21,10 +21,8 @@ export default function LobbyStartAction() {
           }),
         error =>
           enqueueSnackbar(
-            error || 'Sorry, an error occured 😕 [Session-POST]',
-            {
-              variant: 'error',
-            },
+            error || 'Sorry, an error occurred 😕 [Session-POST]',
+            { variant: 'error' },
           ),
       )
       .finally(() => setIsLoading(false));
