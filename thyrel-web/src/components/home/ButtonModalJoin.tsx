@@ -25,6 +25,12 @@ export default function ButtonModalJoin({
 }: ButtonModalJoinProps) {
   const [open, setOpen] = React.useState(false);
   const [identifier, setIdentifier] = React.useState('');
+
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (loading || e.key !== 'Enter') return;
+    onClick(identifier);
+  }
+
   return (
     <>
       <BigButton
@@ -55,6 +61,7 @@ export default function ButtonModalJoin({
             id="name"
             label="Identifier"
             value={identifier}
+            onKeyPress={handleKeyPress}
             onChange={event => setIdentifier(event.target.value)}
             fullWidth
           />
