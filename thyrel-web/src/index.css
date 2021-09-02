@@ -31,6 +31,27 @@ code {
     monospace;
 }
 
+@keyframes spinnerIconEffect {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes player-avatar-float {
+  0% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
 *:focus {
   outline: none;
 }

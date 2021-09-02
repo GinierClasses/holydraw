@@ -12,9 +12,8 @@ type DrawingCanvasContextProps = {
   size: CanvasWidth;
 };
 
-export const DrawingCanvasContext = React.createContext<DrawingCanvasContextProps>(
-  {} as any,
-);
+export const DrawingCanvasContext =
+  React.createContext<DrawingCanvasContextProps>({} as any);
 
 export function useCanvasContext() {
   const context = React.useContext(DrawingCanvasContext);

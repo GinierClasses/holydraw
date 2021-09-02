@@ -2,12 +2,12 @@ import { Box, useMediaQuery } from '@material-ui/core';
 import DirectiveLabel from 'components/room/DirectiveLabel';
 import DrawColorPicker from 'components/room/draw/desktop/DesktopColorPicker';
 import SizePicker from 'components/room/draw/desktop/SizePicker';
-import GameLayout from 'components/room/GameLayout';
 import GameCanvas from 'components/room/draw/GameCanvas';
+import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
+import GameLayout from 'components/room/GameLayout';
+import { useSessionContext } from 'hooks/SessionProvider';
 import { useState } from 'react';
 import theme from 'theme';
-import { useSessionContext } from 'hooks/SessionProvider';
-import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
 import { colors } from 'utils/app-constant';
 
 export default function DrawMobileVertical() {
@@ -18,11 +18,7 @@ export default function DrawMobileVertical() {
   useDisableBodyOverflow();
   return (
     <GameLayout maxWidth="md">
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gridGap={16}>
+      <Box display="flex" flexDirection="column" alignItems="center" gap={16}>
         <Box width="100%" maxWidth={682}>
           <CurrentDirectiveLabel />
         </Box>
@@ -32,7 +28,7 @@ export default function DrawMobileVertical() {
           width="100%"
           justifyContent={{ xs: 'center', sm: 'auto' }}
           flexDirection={{ xs: 'column', sm: 'row' }}
-          gridGap={16}>
+          gap={16}>
           <Box order={{ xs: 1, sm: 0 }}>
             <DrawColorPicker
               currentColor={color}

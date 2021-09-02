@@ -14,8 +14,6 @@ namespace thyrel_api.DataProvider
         /// <param name="initiatorId"></param>
         /// <param name="step"></param>
         /// <param name="sessionId"></param>
-        /// <param name="drawImage"></param>
-        /// <param name="drawingId"></param>
         /// <returns></returns>
         Task<Element> AddDrawing(int creatorId, int initiatorId, int step, int sessionId);
 

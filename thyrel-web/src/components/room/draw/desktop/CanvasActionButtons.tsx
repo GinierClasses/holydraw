@@ -1,23 +1,23 @@
-import React from 'react';
 import { Box, IconButton, Tooltip } from '@material-ui/core';
+import BrushIcon from '@material-ui/icons/Brush';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
+import RedoIcon from '@material-ui/icons/Redo';
+import UndoIcon from '@material-ui/icons/Undo';
 import {
   OnClearAction,
   OnRedoAction,
   OnSaveAction,
   OnUndoAction,
 } from 'components/canvas/DrawingCanvasActions';
-import DeleteIcon from '@material-ui/icons/Delete';
-import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo';
-import CircleButtons from 'components/circle-button/CircleButtons';
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
-import CloseIcon from '@material-ui/icons/Close';
-import BrushIcon from '@material-ui/icons/Brush';
 import { useCanvasContext } from 'components/canvas/DrawingCanvasContext';
+import CircleButtons from 'components/circle-button/CircleButtons';
+import React from 'react';
 import { LineType } from 'types/canvas.types';
-import { makeStyles, Theme } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import CheckIcon from '@material-ui/icons/Check';
+import ActionButton from './ActionButton';
 
 type CanvasActionButtonsProps = {
   onSave: (image?: string) => void;
@@ -63,70 +63,6 @@ export default function CanvasActionButtons({
   );
 }
 
-type ActionButtonStylesProps = {
-  color: string;
-  ml: number;
-  disabled?: boolean;
-};
-
-const useStyles = makeStyles<Theme, ActionButtonStylesProps>(theme => ({
-  root: {
-    backgroundColor: props =>
-      props.color === 'primary'
-        ? theme.palette.primary.main
-        : theme.palette.custom.main,
-    marginLeft: props => theme.spacing(props.ml),
-    '&:hover': {
-      backgroundColor: props =>
-        props.color === 'primary' ? theme.palette.primary.dark : undefined,
-    },
-  },
-  label: {
-    color: theme.palette.common.white,
-  },
-  icon: {
-    color: props =>
-      props.disabled
-        ? theme.palette.text.secondary
-        : theme.palette.text.primary,
-  },
-}));
-
-type ActionButtonProps = {
-  children: React.ReactElement;
-  title: string;
-  color?: 'primary' | 'default';
-  ml?: number;
-  disabled?: boolean;
-  className?: string;
-  onClick?: () => void;
-};
-
-function ActionButton({
-  children,
-  title,
-  color = 'default',
-  ml = 1,
-  className,
-  disabled,
-  onClick,
-}: ActionButtonProps) {
-  const classes = useStyles({ color, ml, disabled });
-
-  return (
-    <IconButton
-      color={color}
-      onClick={onClick}
-      disabled={disabled}
-      className={className}
-      classes={{ root: classes.root, label: classes.label }}>
-      <Tooltip title={title}>
-        {React.cloneElement(children, { className: classes.icon })}
-      </Tooltip>
-    </IconButton>
-  );
-}
-
 function getCurrentIcon(lineType: LineType) {
   switch (lineType) {
     case LineType.FILL:
@@ -161,20 +97,21 @@ export function CanvasLineTypeButton({ disabled }: { disabled?: boolean }) {
     <CircleButtons
       circleBg="border"
       spacing={1}
-      action={open => (
+      action={({ open, sx }) => (
         <ActionButton
           disabled={disabled}
           ml={0}
+          sx={sx}
           title={open ? 'Close' : 'Open'}>
           {open ? <CloseIcon /> : <Icon />}
         </ActionButton>
       )}>
-      <IconButton onClick={() => setLineType(LineType.LINE)}>
+      <IconButton onClick={() => setLineType(LineType.LINE)} size="large">
         <Tooltip title="hotkey: B">
           <BrushIcon />
         </Tooltip>
       </IconButton>
-      <IconButton onClick={() => setLineType(LineType.FILL)}>
+      <IconButton onClick={() => setLineType(LineType.FILL)} size="large">
         <Tooltip title="hotkey: F">
           <FormatColorFillIcon />
         </Tooltip>

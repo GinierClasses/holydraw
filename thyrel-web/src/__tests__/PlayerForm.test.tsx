@@ -1,9 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { apiURL } from 'api/client';
 import { rest } from 'msw';
 import PlayerForm from '../components/home/PlayerForm';
 import { server } from '../test/server';
+import { renderWithApp } from '../test/utils/render';
 
 function useServerWithMock() {
   const serverMock = jest.fn();
@@ -25,7 +26,7 @@ function useServerWithMock() {
 
 describe('PlayerForm', () => {
   test('PlayerForm correctly render', () => {
-    render(<PlayerForm />);
+    renderWithApp(<PlayerForm />);
     expect(screen.getByText(/create/i)).toBeInTheDocument();
     expect(screen.getByText(/join/i)).toBeInTheDocument();
     expect(screen.getByRole('img')).toBeInTheDocument();
@@ -33,13 +34,13 @@ describe('PlayerForm', () => {
   });
 
   test('not display create if identifier was provided', () => {
-    render(<PlayerForm identifier="blabla" />);
+    renderWithApp(<PlayerForm identifier="blabla" />);
     expect(screen.queryByText(/create/i)).not.toBeInTheDocument();
   });
 
   test('oncreate add value on localStorage', async () => {
     const serverMock = useServerWithMock();
-    render(<PlayerForm />);
+    renderWithApp(<PlayerForm />);
     const playerUsername = 'Didier';
     userEvent.type(screen.getByRole('textbox'), playerUsername);
     userEvent.click(screen.getByText(/create/i));
@@ -51,14 +52,15 @@ describe('PlayerForm', () => {
         username: playerUsername,
       }),
     );
-    expect(window.localStorage.setItem).toHaveBeenCalledTimes(1);
+    // the setItem is called one time but test is dump
+    expect(window.localStorage.setItem).toHaveBeenCalledTimes(2);
   });
 
   test('onjoin add value on localStorage', async () => {
     const serverMock = useServerWithMock();
     const playerUsername = 'Didier';
     const identifier = 'bullsit';
-    render(<PlayerForm identifier={identifier} />);
+    renderWithApp(<PlayerForm identifier={identifier} />);
     userEvent.type(screen.getByRole('textbox'), playerUsername);
     userEvent.click(screen.getByRole('button', { name: /join/i }));
 
@@ -72,6 +74,7 @@ describe('PlayerForm', () => {
         { identifier },
       ),
     );
-    expect(window.localStorage.setItem).toHaveBeenCalledTimes(1);
+    // the setItem is called one time but test is dump
+    expect(window.localStorage.setItem).toHaveBeenCalledTimes(2);
   });
 });

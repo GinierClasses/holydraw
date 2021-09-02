@@ -1,14 +1,16 @@
-import React from 'react';
+import { Box, useMediaQuery, useTheme } from '@material-ui/core';
 import { client } from 'api/client';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
+import { useSnackbar } from 'notistack';
+import React from 'react';
 import Loading from '../../Loading';
 import PlayerCount from '../../room/PlayerCount';
 import BookPlayerList from '../book/BookPlayerList';
-import PlayerCardList from './PlayerCardList';
-import { Box, useMediaQuery, useTheme } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
 import { KickModal } from './KickModal';
+import PlayerCardList from './PlayerCardList';
+
+type PlayerToKickType = { id: number; name: string };
 
 export function Players() {
   const theme = useTheme();
@@ -17,7 +19,7 @@ export function Players() {
   const { player } = usePlayerContext();
   const { enqueueSnackbar } = useSnackbar();
   const [playerToKick, setPlayerToKick] =
-    React.useState<{ id: number; name: string } | null>(null);
+    React.useState<PlayerToKickType | null>(null);
 
   function onKick(id: number, name: string) {
     setPlayerToKick({ id, name });

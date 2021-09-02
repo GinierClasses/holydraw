@@ -1,9 +1,9 @@
+import { Box } from '@material-ui/core';
 import React from 'react';
-import { Box, makeStyles } from '@material-ui/core';
+import { EmojiMapping, getEmoji } from 'types/Reaction.type';
+import BookAddReaction from './BookAddReaction';
 import BookPopper from './BookPopper';
 import ReactionEmoji from './ReactionEmoji';
-import BookAddReaction from './BookAddReaction';
-import { EmojiMapping, getEmoji } from 'types/Reaction.type';
 
 type Reaction = {
   emojiId: number;
@@ -16,17 +16,10 @@ type ReactionPickerProps = {
   onClick: (emj: number) => void;
 };
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
 export default function ReactionPicker({
   onClick,
   reactions,
 }: ReactionPickerProps) {
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event: any) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -37,11 +30,11 @@ export default function ReactionPicker({
       <Box
         display="flex"
         p={0.5}
-        borderRadius={24}
+        borderRadius="24px"
         alignItems="space-between"
         justifyContent="center"
         flexDirection="row"
-        className={classes.container}>
+        bgcolor="background.paper">
         <BookAddReaction onClick={handleClick} />
         {reactions.map(reaction => {
           const MappingKey = reaction.emojiId as keyof typeof EmojiMapping;

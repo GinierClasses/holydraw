@@ -1,14 +1,14 @@
-import React from 'react';
 import { Box } from '@material-ui/core';
+import DrawingCanvas from 'components/canvas/DrawingCanvas';
+import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
 import { useSessionContext } from 'hooks/SessionProvider';
-import DesktopColorPicker from './DesktopColorPicker';
-import SizePickerV2 from './SizePickerV2';
+import React from 'react';
 import { colors } from 'utils/app-constant';
 import DirectiveLabel from '../../DirectiveLabel';
-import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
-import DrawingCanvas from 'components/canvas/DrawingCanvas';
-import CanvasActionButtons from './CanvasActionButtons';
 import { useDisableBodyOverflow } from '../useDisableBodyOverflow';
+import CanvasActionButtons from './CanvasActionButtons';
+import DesktopColorPicker from './DesktopColorPicker';
+import SizePickerV2 from './SizePickerV2';
 
 export default function DrawDesktopCanvas() {
   const [color, setColor] = React.useState(colors[5]);

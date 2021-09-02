@@ -1,9 +1,9 @@
 import { Button, ButtonGroup } from '@material-ui/core';
+import CreateIcon from '@material-ui/icons/Create';
+import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
 import { useCanvasContext } from 'components/canvas/DrawingCanvasContext';
 import React from 'react';
 import { LineType } from 'types/canvas.types';
-import FormatColorFillIcon from '@material-ui/icons/FormatColorFill';
-import CreateIcon from '@material-ui/icons/Create';
 
 export default function CanvasLineTypeButtons() {
   return (
@@ -31,7 +31,7 @@ function LineTypeButton({
     <Button
       onClick={() => setLineType(lineTypeProps)}
       variant="outlined"
-      color={lineType === lineTypeProps ? 'secondary' : 'default'}>
+      color={lineType === lineTypeProps ? 'secondary' : 'info'}>
       {children}
     </Button>
   );

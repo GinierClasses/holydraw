@@ -14,12 +14,13 @@ type BigButtonProps = ButtonProps & {
   <BigButton color="primary">Label</BigButton>: Will create button with the primary background.
   <BigButton size="large">Label</BigButton>: Only large and medium using on this button
 */
+
 export default function BigButton({
   children,
   loading,
-  color = 'default',
+  color = 'primary',
   startIcon,
-  size = 'medium',
+  size = 'large',
   ...props
 }: BigButtonProps) {
   return (

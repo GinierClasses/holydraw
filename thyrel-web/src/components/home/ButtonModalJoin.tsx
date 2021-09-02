@@ -1,14 +1,15 @@
-import React from 'react';
-import BigButton from '../BigButton';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
   TextField,
 } from '@material-ui/core';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import React from 'react';
+import { defaultColorSx } from 'utils/@material-ui-v5-migration';
+import BigButton from '../BigButton';
 
 type ButtonModalJoinProps = {
   identifier?: string;
@@ -40,7 +41,9 @@ export default function ButtonModalJoin({
         fullWidth
         loading={loading}
         className={className}
-        color={urlIdentifier ? 'primary' : 'default'}
+        variant={urlIdentifier ? 'contained' : 'text'}
+        color={urlIdentifier ? 'primary' : 'inherit'}
+        sx={urlIdentifier ? undefined : defaultColorSx}
         onClick={() =>
           urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
         }>

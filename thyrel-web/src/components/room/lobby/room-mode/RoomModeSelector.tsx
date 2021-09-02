@@ -1,13 +1,13 @@
-import React from 'react';
-import RoomModeSettingsModal from './RoomModeSettingsModal';
-import RoomSettingsSelector from '../RoomSettingsButton';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
 import { usePlayerContext } from 'hooks/PlayerProvider';
 import { useRoomContext } from 'hooks/RoomProvider';
+import React from 'react';
+import 'styles/roboto-mono-font.css';
 import { RoomMode, roomModeInformations } from 'types/Room.type';
 import { loadingText } from 'utils/utils';
-import 'styles/roboto-mono-font.css';
+import RoomSettingsSelector from '../RoomSettingsButton';
+import RoomModeSettingsModal from './RoomModeSettingsModal';
 
 export default function RoomModeSelector() {
   const { room } = useRoomContext();

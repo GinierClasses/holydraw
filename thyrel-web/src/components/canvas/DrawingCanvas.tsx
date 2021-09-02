@@ -1,35 +1,30 @@
-import { makeStyles, Theme } from '@material-ui/core';
-import { CanvasWidth } from './canvas.type';
+import { Box } from '@material-ui/system';
 import { useCanvasContext } from './DrawingCanvasContext';
-
-const useStyles = makeStyles<Theme, { size: CanvasWidth; disabled?: boolean }>(
-  theme => ({
-    canvas: {
-      backgroundColor: props => (props.disabled ? '#BBBBBB' : '#DDDDDD'),
-      width: props => props.size.width,
-      height: props => props.size.height,
-      cursor: props => (props.disabled ? 'not-allowed' : 'crosshair'),
-      borderRadius: 32,
-    },
-    canvasBox: {
-      width: props => props.size.width + props.size.border * 2,
-      height: props => props.size.height + props.size.border * 2,
-      borderRadius: 32,
-      overflow: 'hidden',
-      border: props =>
-        `${props.size.border}px solid ${theme.palette.custom.main}`,
-      boxShadow: theme.shadows[1],
-    },
-  }),
-);
 
 export default function DrawingCanvas({ disabled }: { disabled?: boolean }) {
   const { canvasRef, size } = useCanvasContext();
-  const classes = useStyles({ size, disabled });
 
   return (
-    <div className={classes.canvasBox}>
-      <canvas ref={canvasRef} className={classes.canvas} />
-    </div>
+    <Box
+      sx={{
+        width: size.width + size.border * 2,
+        height: size.height + size.border * 2,
+        borderRadius: 8,
+        overflow: 'hidden',
+        border: theme => `${size.border}px solid ${theme.palette.default.main}`,
+        boxShadow: 1,
+      }}>
+      <Box
+        component="canvas"
+        ref={canvasRef}
+        sx={{
+          backgroundColor: disabled ? '#BBBBBB' : '#DDDDDD',
+          width: size.width,
+          height: size.height,
+          cursor: disabled ? 'not-allowed' : 'crosshair',
+          borderRadius: 8,
+        }}
+      />
+    </Box>
   );
 }

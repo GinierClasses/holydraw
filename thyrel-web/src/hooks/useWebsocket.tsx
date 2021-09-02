@@ -1,9 +1,9 @@
+import { apiURL } from 'api/client';
+import useSafeMounted from 'hooks/useSafeMounted';
 import { useSnackbar } from 'notistack';
 import React from 'react';
-import { getToken } from '../api/player-provider';
-import useSafeMounted from 'hooks/useSafeMounted';
 import { SendMessageType, WsStates } from 'types/websocket.types';
-import { apiURL } from 'api/client';
+import { getToken } from '../api/player-provider';
 
 const protocol = process.env.NODE_ENV === 'development' ? 'ws' : 'wss';
 

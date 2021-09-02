@@ -1,31 +1,18 @@
-import {
-  createStyles,
-  withStyles,
-  Theme,
-  Box,
-  LinearProgress,
-  Typography,
-} from '@material-ui/core';
+import { Box, LinearProgress, styled, Typography } from '@material-ui/core';
 
 type StepProgressProps = {
   stepActual?: number;
   stepMax?: number;
 };
 
-const CustomLinearProgress = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      height: theme.spacing(3),
-      backgroundColor: 'none',
-    },
-    colorPrimary: {
-      backgroundColor: theme.palette.background.default,
-    },
-    bar: {
-      borderRadius: 8,
-    },
-  }),
-)(LinearProgress);
+const CustomLinearProgressV2 = styled(LinearProgress)({
+  height: 24,
+  backgroundColor: 'none',
+  borderRadius: 8,
+  '& .MuiLinearProgress-bar': {
+    borderRadius: 8,
+  },
+});
 
 export default function StepProgress({
   stepActual = 0,
@@ -41,14 +28,14 @@ export default function StepProgress({
         display="flex"
         position="absolute"
         zIndex={1}
-        top={4}
+        top={0}
         bottom={0}
         left={16}>
         <Typography variant="subtitle1">
           {stepActual}/{stepMax}
         </Typography>
       </Box>
-      <CustomLinearProgress variant="determinate" value={progress} />
+      <CustomLinearProgressV2 variant="determinate" value={progress} />
     </Box>
   );
 }

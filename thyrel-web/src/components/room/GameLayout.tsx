@@ -1,5 +1,5 @@
 import { Box, Container } from '@material-ui/core';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import { Breakpoint } from '@material-ui/core/styles';
 import GameBar from 'components/GameBar';
 import { useSessionContext } from 'hooks/SessionProvider';
 import React from 'react';

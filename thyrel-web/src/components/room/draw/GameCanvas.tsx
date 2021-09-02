@@ -27,18 +27,14 @@ export default function GameCanvas({ size, color }: GameCanvasProps) {
 
   return (
     <DrawingCanvasProvider color={color} disabled={isFinish} lineSize={size}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        gridGap={8}
-        alignItems="center">
+      <Box display="flex" flexDirection="column" gap={8} alignItems="center">
         <Box maxWidth={512} width="100%">
           <DrawingCanvas disabled={isFinish} />
         </Box>
         <Box
           display="flex"
           flexDirection="row"
-          gridGap={8}
+          gap={8}
           alignItems="center"
           justifyContent="space-between"
           width="100%">

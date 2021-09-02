@@ -84,6 +84,18 @@ namespace thyrel_api.DataProvider
                 }).ToListAsync();
             return players;
         }
+        
+        /// <summary>
+        ///     To get a Players count by it's room
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public async Task<int> GetPlayersCountByRoom(int roomId)
+        {
+            var players = await _holyDrawDbContext.Player
+                .Where(p => p.RoomId == roomId && p.IsConnected).CountAsync();
+            return players;
+        }
 
         /// <summary>
         ///     To disable a Player (set the discard date to now)

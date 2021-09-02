@@ -1,4 +1,5 @@
-import { Box, fade, makeStyles, Theme } from '@material-ui/core';
+import { alpha, Box } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 import ShuffleRoundedIcon from '@material-ui/icons/ShuffleRounded';
 
 type PlayerAvatarProps = {
@@ -7,66 +8,52 @@ type PlayerAvatarProps = {
   size?: number;
 };
 
-const useStyles = makeStyles<Theme, { size: number }>(theme => ({
-  button: {
-    backgroundColor: theme.palette.primary.main,
-    outline: 'none',
-    borderRadius: '50%',
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    cursor: 'pointer',
-    border: 'none',
-    width: 64,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 64,
-    boxShadow: `0px 4px 1px ${fade(theme.palette.background.default, 0.8)}`,
-    '&:active': {
-      bottom: -4,
-      boxShadow: 'none',
-    },
-  },
-  imgBox: {
-    boxShadow: `0px 4px 1px ${fade(theme.palette.background.default, 0.8)}`,
-  },
-  img: {
-    height: props => props.size,
-    width: 'auto',
-    margin: 'auto',
-  },
-  root: {
-    animation: 'player-avatar-float 4s infinite ease-in-out',
-  },
-  '@global': {
-    '@keyframes player-avatar-float': {
-      '0%': { transform: 'translateY(-10px)' },
-      '50%': { transform: 'translateY(10px)' },
-      '100%': { transform: 'translateY(-10px)' },
-    },
-  },
-}));
+const Image = styled('img')({
+  width: 'auto',
+  margin: 'auto',
+});
 
 export default function PlayerAvatar({
   image,
   onShuffle,
   size = 256,
 }: PlayerAvatarProps) {
-  const classes = useStyles({ size });
   return (
     <Box
       alignItems="center"
       width={size}
       position="relative"
       height={size}
-      className={classes.root}>
-      <button className={classes.button} onClick={onShuffle}>
+      sx={{ animation: 'player-avatar-float 4s infinite ease-in-out' }}>
+      <Box
+        component="button"
+        sx={{
+          backgroundColor: theme => theme.palette.primary.main,
+          outline: 'none',
+          borderRadius: '50%',
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+          cursor: 'pointer',
+          border: 'none',
+          width: 64,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: 64,
+          boxShadow: theme =>
+            `0px 4px 1px ${alpha(theme.palette.background.default, 0.8)}`,
+          '&:active': {
+            bottom: -4,
+            boxShadow: 'none',
+          },
+        }}
+        onClick={onShuffle}>
         <ShuffleRoundedIcon
           data-testid="shuffle-icon"
           style={{ color: '#FFFFFF', fontSize: 32 }}
         />
-      </button>
+      </Box>
       <Box
         border={2}
         display="flex"
@@ -75,8 +62,11 @@ export default function PlayerAvatar({
         width={size}
         height={size}
         bgcolor="background.default"
-        className={classes.imgBox}>
-        <img src={image} className={classes.img} alt="Avatar" />
+        sx={{
+          boxShadow: theme =>
+            `0px 4px 1px ${alpha(theme.palette.background.default, 0.8)}`,
+        }}>
+        <Image src={image} height={size} alt="Avatar" />
       </Box>
     </Box>
   );

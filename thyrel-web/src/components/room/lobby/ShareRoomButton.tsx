@@ -1,11 +1,12 @@
-import { copyToClipboard } from 'utils/clipboard';
 import { Box, Button, Link } from '@material-ui/core';
 import VpnKeyIcon from '@material-ui/icons/VpnKeyRounded';
-import { useSnackbar } from 'notistack';
-import Player from 'types/Player.type';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
+import { useSnackbar } from 'notistack';
 import 'styles/roboto-mono-font.css';
+import Player from 'types/Player.type';
+import { defaultColorSx } from 'utils/@material-ui-v5-migration';
+import { copyToClipboard } from 'utils/clipboard';
 import { loadingText } from 'utils/utils';
 
 type ShareRoomButtonProps = {
@@ -38,12 +39,22 @@ export default function ShareRoomButton({
   }
 
   return (
-    <Box display="flex" width="100%" flexDirection="column" alignItems="center">
+    <Box
+      color="textPrimary"
+      display="flex"
+      width="100%"
+      flexDirection="column"
+      alignItems="center">
       <Button
         startIcon={<VpnKeyIcon style={{ fontSize: 32 }} />}
         onClick={onShared}
         fullWidth
-        classes={{ label: 'font_roboto-mono' }}
+        sx={{
+          fontSize: { xs: 24, md: 26 },
+          height: 64,
+          ...defaultColorSx,
+        }}
+        className="font_roboto-mono"
         variant="contained">
         {identifier || loadingText}
       </Button>

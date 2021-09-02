@@ -1,5 +1,6 @@
-import { Box, Typography, Button, Tooltip } from '@material-ui/core';
+import { Box, Button, Tooltip, Typography } from '@material-ui/core';
 import InfoIcon from '@material-ui/icons/Info';
+import { defaultColorSx } from 'utils/@material-ui-v5-migration';
 
 type RoomSettingsSelectorProps = {
   value: string;
@@ -30,6 +31,7 @@ export default function RoomSettingsSelector({
         }
         variant="contained"
         size="small"
+        sx={defaultColorSx}
         onClick={onClick}>
         {value}
       </Button>

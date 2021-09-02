@@ -1,7 +1,8 @@
 import AppLayout from 'components/AppLayout';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { PlayerContextProvider } from 'hooks/PlayerProvider';
 import { RoomContextProvider } from 'hooks/RoomProvider';
+import { SessionContextProvider } from 'hooks/SessionProvider';
+import { WebsocketProvider } from 'hooks/WebsocketProvider';
 import ComponentTest from 'pages/ComponentTest';
 import DevNav from 'pages/DevNav';
 import Home from 'pages/Home';
@@ -10,23 +11,24 @@ import Draw from 'pages/room/Draw';
 import Lobby from 'pages/room/Lobby';
 import Start from 'pages/room/Start';
 import Write from 'pages/room/Write';
-import { WebsocketProvider } from 'hooks/WebsocketProvider';
-import { SessionContextProvider } from 'hooks/SessionProvider';
+import { BrowserRouter, Route, RouteProps, Switch } from 'react-router-dom';
 
 export default function Routes() {
   return (
     <AppLayout>
       <BrowserRouter>
         <Switch>
+          {/* Test routes */}
+          <OnlyForDevRoute path="/t" component={ComponentTest} />
+          <OnlyForDevRoute path="/t" component={DevNav} />
+          <OnlyForDevRoute path="/start" component={Start} />
+          <OnlyForDevRoute path="/draw" component={Draw} />
+
+          {/* Game routes */}
           <Route path="/join/:identifier" component={Home} />
-          <Route path="/start" component={Start} />
-          <Route path="/r" component={RoomRoutes} />
-          <Route path="/draw" component={Draw} />
-          <Route path="/t" component={ComponentTest} />
           <Route path="/home" component={Home} />
-          {/* For test, I add a special Nav
-          TODO: replace it by `Home` */}
-          <Route path="/" component={DevNav} />
+          <Route path="/room" component={RoomRoutes} />
+          <Route path="/" component={Home} />
         </Switch>
       </BrowserRouter>
     </AppLayout>
@@ -39,8 +41,8 @@ function RoomRoutes() {
       <PlayerContextProvider>
         <RoomContextProvider>
           <Switch>
-            <Route path="/r/lobby" component={Lobby} />
-            <Route path="/r" component={SessionRoutes} />
+            <Route path="/room/lobby" component={Lobby} />
+            <Route path="/room" component={SessionRoutes} />
           </Switch>
         </RoomContextProvider>
       </PlayerContextProvider>
@@ -52,12 +54,16 @@ function SessionRoutes() {
   return (
     <SessionContextProvider>
       <Switch>
-        <Route path="/r/start" component={Start} />
-        <Route path="/r/draw" component={Draw} />
-        <Route path="/r/write" component={Write} />
-        <Route path="/r/book" component={Book} />
-        <Route path="/r/lobby" component={Lobby} />
+        <Route path="/room/start" component={Start} />
+        <Route path="/room/draw" component={Draw} />
+        <Route path="/room/write" component={Write} />
+        <Route path="/room/book" component={Book} />
+        <Route path="/room/lobby" component={Lobby} />
       </Switch>
     </SessionContextProvider>
   );
+}
+
+function OnlyForDevRoute(props: RouteProps) {
+  return process.env.NODE_ENV === 'development' ? <Route {...props} /> : null;
 }

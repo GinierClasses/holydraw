@@ -1,9 +1,8 @@
 import { Box, Typography } from '@material-ui/core';
+import Skeleton from '@material-ui/core/Skeleton';
 import BookDrawingElement from 'components/room/book/BookDrawingElement';
 import BookSentenceElement from 'components/room/book/BookSentenceElement';
 import profilesPictures from 'images/profiles/profiles-pictures';
-import Skeleton from '@material-ui/lab/Skeleton';
-
 import { ElementType, HolyElement } from 'types/HolyElement.type';
 
 type AlbumProps = { album: Array<HolyElement> };
@@ -16,8 +15,8 @@ export default function Album({ album }: AlbumProps) {
     <Box
       display="flex"
       border={2}
-      borderColor="custom.main"
-      borderRadius={32}
+      borderColor="default.main"
+      borderRadius="32px"
       flexDirection="column"
       width="100%"
       height="100%"

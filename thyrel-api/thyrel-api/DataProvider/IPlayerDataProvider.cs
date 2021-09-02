@@ -68,6 +68,13 @@ namespace thyrel_api.DataProvider
         Task<List<PlayerDto>> GetPlayersByRoom(int roomId);
 
         /// <summary>
+        ///     To get a Players count by it's room
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        Task<int> GetPlayersCountByRoom(int roomId);
+
+        /// <summary>
         ///     Kick a player from his room using his ID
         /// </summary>
         /// <param name="player"></param>

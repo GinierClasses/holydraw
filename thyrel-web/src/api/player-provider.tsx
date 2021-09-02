@@ -6,13 +6,13 @@ function getToken() {
 }
 
 function destroy() {
-  window.localStorage.removeItem(playerTokenKey);
   // TODO: invalidate the token in API
+  window.localStorage.removeItem(playerTokenKey);
 }
 
 function setToken(token: string) {
-  window.localStorage.setItem(playerTokenKey, token);
   // TODO: invalidate the token in API
+  window.localStorage.setItem(playerTokenKey, token);
 }
 
 export { getToken, destroy, setToken };
