@@ -21,7 +21,7 @@ export default function BookSentenceElement({
           border: 'none',
           display: 'flex',
           flexDirection: 'row',
-          alignItems: center,
+          alignItems: 'center',
           p: 0.5,
           maxWidth: 320,
         }}>

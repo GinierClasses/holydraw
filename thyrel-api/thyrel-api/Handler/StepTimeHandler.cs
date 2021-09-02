@@ -5,7 +5,7 @@ namespace thyrel_api.Handler
     public static class StepTimeHandler
     {
         private const int StartStepTime = 60; // 1 minute
-        private const int WriteStepTime = 10000; // 1 minute
+        private const int WriteStepTime = 60; // 1 minute
         private const int DrawStepTime = 180; // 3 minutes
 
         public static int GetTimeForStep(SessionStepType sessionStepType, RoomMode? mode = RoomMode.Standard)
