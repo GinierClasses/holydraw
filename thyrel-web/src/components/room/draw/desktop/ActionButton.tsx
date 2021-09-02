@@ -9,7 +9,7 @@ import React from 'react';
 
 type ActionButtonProps = {
   children: React.ReactElement;
-  title: string;
+  title?: string;
   color?: 'primary' | 'default';
   ml?: number;
   className?: string;
@@ -36,7 +36,7 @@ export default function ActionButton({
           color === 'primary'
             ? theme.palette.primary.main
             : theme.palette.default.main,
-        marginLeft: theme => theme.spacing(ml),
+        marginLeft: ml,
         '&:hover': {
           backgroundColor: theme =>
             color === 'primary' ? theme.palette.primary.dark : undefined,
@@ -45,15 +45,25 @@ export default function ActionButton({
       className={className}
       size="large"
       {...props}>
-      <Tooltip title={title}>
-        {React.cloneElement(children, {
+      {title ? (
+        <Tooltip title={title}>
+          {React.cloneElement(children, {
+            className: css({
+              color: disabled
+                ? theme.palette.text.secondary
+                : theme.palette.text.primary,
+            }),
+          })}
+        </Tooltip>
+      ) : (
+        React.cloneElement(children, {
           className: css({
             color: disabled
               ? theme.palette.text.secondary
               : theme.palette.text.primary,
           }),
-        })}
-      </Tooltip>
+        })
+      )}
     </IconButton>
   );
 }

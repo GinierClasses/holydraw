@@ -32,7 +32,6 @@ export const colorsMobile = [
   '#FEAFA8',
   '#f3a683',
   '#76b5c5',
-  '#9645CD',
   '#C1CF2C',
   '#EE090D',
   '#99ff66',

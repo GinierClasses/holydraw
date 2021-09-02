@@ -35,9 +35,11 @@ function CurrentDrawImageWithContext() {
     <CurrentDrawImage
       src={currentElement?.parent.drawImage}
       sx={{
-        width: { xs: '100%', sm: 552 },
-        height: 'auto',
-        minHeight: { xs: 0, sm: 320 },
+        '& > img': {
+          width: { xs: '100%', sm: 552 },
+          height: 'auto',
+          minHeight: { xs: 0, sm: 320 },
+        },
       }}
     />
   );

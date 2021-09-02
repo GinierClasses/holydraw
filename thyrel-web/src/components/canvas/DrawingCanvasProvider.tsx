@@ -80,8 +80,10 @@ export function DrawingCanvasProvider({
   const onMouseUp = React.useCallback(
     (event: MouseEvent) => {
       setIsPainting(false);
-      const coordinate = getCoordinates(event, currentSize.scale);
-      addLastLine(coordinate);
+      if (event.clientX && event.clientY) {
+        const coordinate = getCoordinates(event, currentSize.scale);
+        addLastLine(coordinate);
+      }
     },
     [addLastLine, currentSize.scale],
   );

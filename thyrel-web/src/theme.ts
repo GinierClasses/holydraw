@@ -76,6 +76,7 @@ function createBaseTheme() {
         styleOverrides: {
           root: {
             borderRadius: 32,
+            background: '#1a1d24',
           },
         },
       },

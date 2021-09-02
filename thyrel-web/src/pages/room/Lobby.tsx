@@ -24,7 +24,7 @@ export default function Lobby() {
         maxWidth={656}
         borderRadius="16px"
         maxHeight={384}
-        height={{ md: '100%' }}
+        height={{ sm: '100%' }}
         py={1}
         px={2}
         alignItems="flex-end"
@@ -34,7 +34,7 @@ export default function Lobby() {
           display="flex"
           justifyContent="space-between"
           width="100%"
-          height={{ md: '100%' }}
+          height={{ sm: '100%' }}
           sx={{
             alignItems: { xs: 'center', sm: 'flex-start' },
             flexDirection: { xs: 'column', sm: 'row' },
