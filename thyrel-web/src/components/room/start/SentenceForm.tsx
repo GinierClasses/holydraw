@@ -24,8 +24,8 @@ export default function StartForm() {
   const defaultSentence = useRandomSentence(isOneWord);
   const saveSentence = sentence || defaultSentence;
 
-  function handleChange(e: any) {
-    const value: string = e.target.value;
+  function handleChange(event: any) {
+    const value: string = event.target.value;
     if (isOneWord) {
       if (value.length <= 20) {
         setSentence(value.trim());
@@ -34,8 +34,8 @@ export default function StartForm() {
     setSentence(value);
   }
 
-  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (loading || e.key !== 'Enter') return;
+  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (loading || event.key !== 'Enter') return;
     setLoading(true);
     onSave(saveSentence).then(() => setLoading(false));
   }

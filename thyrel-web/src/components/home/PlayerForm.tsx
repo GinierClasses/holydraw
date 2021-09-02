@@ -84,6 +84,11 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
       .finally(() => setLoading(false));
   }
 
+  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (loading || event.key !== 'Enter') return;
+    onCreate();
+  }
+
   return (
     <>
       <Grid item>
@@ -107,6 +112,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
             value={username}
             fullWidth
             onChange={e => setUsername(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder={defaultUsername}
           />
 
