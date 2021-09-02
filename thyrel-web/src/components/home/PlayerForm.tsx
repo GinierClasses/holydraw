@@ -27,12 +27,12 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   const isHorizontal = useMobileHorizontal();
 
   const nextPp = () => {
-    setAvatarIndex((p: number) =>
-      p >= profilesPictures.length - 1 ? 0 : p + 1,
+    setAvatarIndex((prev: number) =>
+      prev >= profilesPictures.length - 1 ? 0 : prev + 1,
     );
   };
 
-  function onConnect(token: string, text: string, isSuccess: boolean = true) {
+  function onConnect(token: string, text: string) {
     enqueueSnackbar(text, { variant: 'success' });
     setToken(token);
     history?.push('/room/lobby');

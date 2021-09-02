@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import BookPlayerList from 'components/room/book/BookPlayerList';
 import setMatchMedia from 'test/media-query-mock';
-import players from './json/players.json';
+import players from '../test/data/players.json';
 
 describe('BookPlayerList', () => {
   test('if device is SM', () => {
@@ -31,10 +31,10 @@ describe('BookPlayerList', () => {
 
     expect(screen.getAllByRole('img')).toHaveLength(players.length);
 
-    expect(screen.queryByText(players[0].username)).not.toBeInTheDocument();
+    expect(screen.queryByText(players[0].username)).toBeInTheDocument();
     expect(
       screen.queryByText(players[players.length - 1].username),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
 
     expect(screen.queryAllByTestId('star-icon')).toHaveLength(0);
 

@@ -31,7 +31,7 @@ import SpinnerIcon from 'components/SpinnerIcon';
 import GymGuy from 'images/gym-guy.svg';
 import React, { useState } from 'react';
 import { colors } from 'utils/app-constant';
-import testPlayerList from '__tests__/json/players.json';
+import testPlayerList from 'test/data/players.json';
 import BigButton from '../components/BigButton';
 import BigInput from '../components/BigInput';
 import HolyDrawLogo from '../components/HolyDrawLogo';

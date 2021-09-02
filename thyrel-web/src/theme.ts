@@ -104,16 +104,6 @@ function createBaseTheme() {
               backgroundColor: palette.action?.hover,
             },
           },
-          // containedSizeLarge: {
-          //   fontSize: 32,
-          //   height: 78,
-          //   borderRadius: 38,
-          //   '@media (min-width: 600px)': {
-          //     fontSize: 36,
-          //     height: 82,
-          //     borderRadius: 40,
-          //   },
-          // },
           containedSizeSmall: {
             fontSize: 18,
             height: 38,
@@ -125,7 +115,6 @@ function createBaseTheme() {
               borderRadius: 22,
             },
           },
-
           iconSizeLarge: {
             marginLeft: 0,
           },
