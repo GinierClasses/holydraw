@@ -1,8 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import BigInput from '../components/BigInput';
 import CreateIcon from '@material-ui/icons/Create';
+import { fireEvent, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithApp } from 'test/utils/render';
+import BigInput from '../components/BigInput';
 
 describe('BigInput', () => {
   test('default input props work', () => {
