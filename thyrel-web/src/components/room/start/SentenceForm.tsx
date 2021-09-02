@@ -37,10 +37,10 @@ export default function StartForm() {
   const classes = useStyles();
   const saveSentence = sentence || defaultSentence;
 
-  function handleChange(e: any) {
+  function handleChange(event: any) {
     isOneWord
-      ? setSentence(e.target.value.trim())
-      : setSentence(e.target.value);
+      ? setSentence(event.target.value.trim())
+      : setSentence(event.target.value);
   }
 
   function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
