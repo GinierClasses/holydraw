@@ -1,11 +1,10 @@
-import { Box } from '@material-ui/core';
-import { Color } from '@material-ui/lab';
+import { AlertColor, Box } from '@material-ui/core';
+import Alert from '@material-ui/core/Alert';
 import { useWebsocketContext } from 'hooks/WebsocketProvider';
 import React from 'react';
 import { WsStates } from 'types/websocket.types';
-import Alert from '@material-ui/lab/Alert';
 
-function getSeverity(state: WsStates): Color {
+function getSeverity(state: WsStates): AlertColor {
   switch (state) {
     case WsStates.CLOSED:
       return 'error';

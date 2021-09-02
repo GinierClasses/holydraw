@@ -4,7 +4,7 @@ import React from 'react';
 export default function useMobileHorizontal() {
   const [isHorizontal, setIsHorizontal] = React.useState(false);
   const theme = useTheme();
-  const isValidForHorizontal = useMediaQuery(theme.breakpoints.down('sm'));
+  const isValidForHorizontal = useMediaQuery(theme.breakpoints.down('md'));
 
   React.useEffect(() => {
     function onOrientationChange() {

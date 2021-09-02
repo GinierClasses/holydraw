@@ -1,8 +1,8 @@
 import { Box, Typography, useTheme } from '@material-ui/core';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import BigButton from 'components/BigButton';
 import SpinnerIcon from 'components/SpinnerIcon';
 import Player from 'types/Player.type';
-import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 
 type StartButtonProps = {
   player?: Player;

@@ -1,22 +1,19 @@
-import { Box, Container, makeStyles } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import React from 'react';
 
 type AppLayoutProps = {
   children?: React.ReactElement | React.ReactElement[];
 };
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    padding: 0,
-    height: '100%',
-    maxWidth: `calc(${theme.breakpoints.values.lg}px - 128px)`,
-  },
-}));
-
 export default function AppLayout({ children }: AppLayoutProps) {
-  const classes = useStyles();
   return (
-    <Container className={classes.container} maxWidth="lg">
+    <Container
+      sx={{
+        padding: 0,
+        height: '100%',
+        maxWidth: theme => `calc(${theme.breakpoints.values.lg}px - 128px)`,
+      }}
+      maxWidth="lg">
       <Box
         display="block"
         margin="auto"

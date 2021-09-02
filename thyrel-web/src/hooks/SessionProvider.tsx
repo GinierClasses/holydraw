@@ -1,14 +1,17 @@
 import Loading from 'components/Loading';
 import { useSnackbar } from 'notistack';
 import React from 'react';
-import StepElement, { ElementType } from 'types/HolyElement.type';
-import HolyElement from 'types/HolyElement.type';
+import {
+  default as HolyElement,
+  default as StepElement,
+  ElementType,
+} from 'types/HolyElement.type';
+import { WebsocketEvent, WebsocketMessage } from 'types/websocket.types';
 import { client } from '../api/client';
 import { getToken } from '../api/player-provider';
 import Session, { SessionStepType } from '../types/Session.type';
 import { parseJson } from '../utils/json';
 import useSessionStates from './useSessionStates';
-import { WebsocketEvent, WebsocketMessage } from 'types/websocket.types';
 import { useWebsocketContext } from './WebsocketProvider';
 
 type SessionContextProps = {

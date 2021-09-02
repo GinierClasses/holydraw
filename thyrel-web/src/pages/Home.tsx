@@ -15,7 +15,7 @@ export default function Home(
       wrap="nowrap"
       alignItems="center"
       className="full-height"
-      justify="space-between">
+      justifyContent="space-between">
       <Grid item>
         <HolyDrawLogo width={32} />
       </Grid>

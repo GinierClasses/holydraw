@@ -1,4 +1,4 @@
-import { Box, fade, makeStyles, Theme, useTheme } from '@material-ui/core';
+import { alpha, Box, useTheme } from '@material-ui/core';
 
 type SizePickerProps = {
   currentSize: number;
@@ -17,10 +17,10 @@ export default function SizePicker({
   return (
     <Box
       padding={1}
-      gridGap={8}
-      bgcolor={fade(theme.palette.primary.main, 0.2)}
+      gap={8}
+      bgcolor={alpha(theme.palette.primary.main, 0.2)}
       display="flex"
-      borderRadius={4}
+      borderRadius="4px"
       border={1}
       flexDirection={flexDirection}
       borderColor="common.black"
@@ -41,26 +41,6 @@ export default function SizePicker({
   );
 }
 
-const useStyles = makeStyles<Theme, { isCurrentSize: boolean }>(theme => ({
-  button: {
-    backgroundColor: 'transparent',
-    outline: 'none',
-    border: '2px solid #000000',
-    borderRadius: '50%',
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    cursor: 'pointer',
-    boxShadow: props =>
-      props.isCurrentSize
-        ? `0 0 .2px 2px ${fade(theme.palette.primary.main, 0.8)}`
-        : 'none',
-  },
-}));
-
 function SizePickerPoint({
   onSizeChange,
   size,
@@ -70,9 +50,27 @@ function SizePickerPoint({
   size: number;
   isCurrentSize: boolean;
 }) {
-  const classes = useStyles({ isCurrentSize });
   return (
-    <button onClick={() => onSizeChange(size)} className={classes.button}>
+    <Box
+      component="button"
+      onClick={() => onSizeChange(size)}
+      sx={{
+        backgroundColor: 'transparent',
+        outline: 'none',
+        border: '2px solid #000000',
+        borderRadius: '50%',
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        boxShadow: theme =>
+          isCurrentSize
+            ? `0 0 .2px 2px ${alpha(theme.palette.primary.main, 0.8)}`
+            : 'none',
+      }}>
       <Box
         borderRadius="50%"
         border="1px solid #000000"
@@ -80,6 +78,6 @@ function SizePickerPoint({
         width={size}
         height={size}
       />
-    </button>
+    </Box>
   );
 }

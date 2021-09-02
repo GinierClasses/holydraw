@@ -1,7 +1,6 @@
 import Player from 'types/Player.type';
 import {
   Box,
-  makeStyles,
   Tooltip,
   Typography,
   useMediaQuery,
@@ -10,6 +9,7 @@ import {
 import StarIcon from '@material-ui/icons/Star';
 import CloseIcon from '@material-ui/icons/Close';
 import BookPlayerAvatar from './BookPlayerAvatar';
+import { SxProps, Theme } from '@material-ui/system';
 
 type BookPlayerListProps = {
   players: Player[];
@@ -18,40 +18,25 @@ type BookPlayerListProps = {
   onClick?: (id: number, username: string) => void;
 };
 
-const useStyles = makeStyles(theme => ({
-  badge: {
-    width: 20,
-    height: 20,
-    borderRadius: '50%',
-    backgroundColor: theme.palette.primary.main,
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
-    border: 0,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    zIndex: 2,
-  },
-  container: {
-    overflowX: 'scroll',
-  },
-  username: {
-    overflow: 'hidden',
-    textAlign: 'center',
-    maxWidth: 64,
-    whiteSpace: 'nowrap',
-  },
-  button: {
-    backgroundColor: 'transparent',
-    outline: 'none',
-    padding: 0,
-  },
-  icon: {
-    fontSize: 16,
-    color: theme.palette.common.white,
-  },
-}));
+const badgeSx: SxProps<Theme> = {
+  width: 20,
+  height: 20,
+  borderRadius: '50%',
+  backgroundColor: 'primary.main',
+  alignItems: 'center',
+  justifyContent: 'center',
+  display: 'flex',
+  border: 0,
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  zIndex: 2,
+};
+
+const iconSx = {
+  fontSize: 16,
+  color: 'common.white',
+};
 
 export default function BookPlayerList({
   players,
@@ -61,14 +46,15 @@ export default function BookPlayerList({
 }: BookPlayerListProps) {
   const theme = useTheme();
   const isDeviceSM = useMediaQuery(theme.breakpoints.up('sm'));
-  const classes = useStyles();
 
   return (
     <Box
       display="flex"
-      gridGap={8}
-      maxWidth={isDeviceSM ? 200 : 285}
-      className={classes.container}
+      gap={2}
+      maxWidth={285}
+      sx={{
+        overflowX: 'scroll',
+      }}
       alignItems="center"
       flexDirection="row">
       {players.map(player => {
@@ -76,29 +62,24 @@ export default function BookPlayerList({
         return (
           <Tooltip key={player.id} title={player.username} placement="top">
             <Box flexDirection="column" alignItems="center" zIndex={4}>
-              <Box position={{ xs: 'relative', sm: 'initial' }}>
+              <Box position={'relative'}>
                 {!isDeviceSM &&
                   (player.isOwner ? (
-                    <div className={classes.badge}>
-                      <StarIcon
-                        data-testid="star-icon"
-                        className={classes.icon}
-                      />
-                    </div>
+                    <Box sx={badgeSx}>
+                      <StarIcon data-testid="star-icon" sx={iconSx} />
+                    </Box>
                   ) : (
                     isKickable && (
-                      <button
-                        onClick={() =>
-                          !player.isOwner &&
-                          isKickable &&
-                          onClick?.(player.id, player.username)
-                        }
-                        className={classes.badge}>
-                        <CloseIcon
-                          data-testid="kick-icon"
-                          className={classes.icon}
-                        />
-                      </button>
+                      <Box
+                        component="button"
+                        onClick={() => {
+                          if (!player.isOwner && isKickable) {
+                            onClick?.(player.id, player.username);
+                          }
+                        }}
+                        sx={badgeSx}>
+                        <CloseIcon data-testid="kick-icon" sx={iconSx} />
+                      </Box>
                     )
                   ))}
                 <BookPlayerAvatar
@@ -106,14 +87,17 @@ export default function BookPlayerList({
                   avatarUrl={player.avatarUrl}
                 />
               </Box>
-              {!isDeviceSM && (
-                <Typography
-                  className={classes.username}
-                  component="p"
-                  variant="subtitle1">
-                  {player.username}
-                </Typography>
-              )}
+              <Typography
+                sx={{
+                  overflow: 'hidden',
+                  textAlign: 'center',
+                  maxWidth: 64,
+                  whiteSpace: 'nowrap',
+                }}
+                component="p"
+                variant="body2">
+                {player.username}
+              </Typography>
             </Box>
           </Tooltip>
         );

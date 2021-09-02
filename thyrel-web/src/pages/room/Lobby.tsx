@@ -1,22 +1,10 @@
+import { Box } from '@material-ui/core';
 import HolyDrawLogo from 'components/HolyDrawLogo';
 import LobbyStartButton from 'components/room/lobby/LobbyStartAction';
-import { Players, PlayerCountBox } from 'components/room/lobby/Players';
+import { PlayerCountBox, Players } from 'components/room/lobby/Players';
 import SettingsMenu from 'components/room/lobby/SettingsMenu';
-import { Box, makeStyles } from '@material-ui/core';
-
-const useStyles = makeStyles(theme => ({
-  playersContainer: {
-    alignItems: 'center',
-    flexDirection: 'column',
-    [theme.breakpoints.up('sm')]: {
-      alignItems: 'flex-start',
-      flexDirection: 'row',
-    },
-  },
-}));
 
 export default function Lobby() {
-  const classes = useStyles();
   return (
     <Box
       display="flex"
@@ -34,7 +22,7 @@ export default function Lobby() {
         flexDirection="column"
         bgcolor="background.paper"
         maxWidth={656}
-        borderRadius={16}
+        borderRadius="16px"
         maxHeight={384}
         height={{ md: '100%' }}
         py={1}
@@ -47,7 +35,10 @@ export default function Lobby() {
           justifyContent="space-between"
           width="100%"
           height={{ md: '100%' }}
-          className={classes.playersContainer}>
+          sx={{
+            alignItems: { xs: 'center', sm: 'flex-start' },
+            flexDirection: { xs: 'column', sm: 'row' },
+          }}>
           <SettingsMenu />
           <Players />
         </Box>

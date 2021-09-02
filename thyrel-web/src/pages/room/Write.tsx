@@ -1,24 +1,11 @@
-import { Box, Grid, makeStyles } from '@material-ui/core';
-import StartForm from 'components/room/start/SentenceForm';
+import { Box, Grid } from '@material-ui/core';
+import CurrentDrawImage from 'components/room/CurrentDrawImage';
 import DirectiveLabel from 'components/room/DirectiveLabel';
 import GameLayout from 'components/room/GameLayout';
-import CurrentDrawImage from 'components/room/CurrentDrawImage';
+import StartForm from 'components/room/start/SentenceForm';
 import { useSessionContext } from 'hooks/SessionProvider';
 
-const useStyles = makeStyles(theme => ({
-  width: {
-    width: 552,
-    height: 'auto',
-    minHeight: 320,
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      minHeight: 0,
-    },
-  },
-}));
-
 export default function Write() {
-  const classes = useStyles();
   return (
     <GameLayout>
       <Box maxWidth={600} alignItems="center" height="100%">
@@ -28,12 +15,12 @@ export default function Write() {
           direction="column"
           alignItems="center"
           className="full-height"
-          justify="center">
+          justifyContent="center">
           <Grid item className="full-width">
             <DirectiveLabel directive="Describe this scene" />
           </Grid>
           <Grid item className="full-width">
-            <CurrentDrawImageWithContext className={classes.width} />
+            <CurrentDrawImageWithContext />
           </Grid>
           <StartFormLoading />
         </Grid>
@@ -42,12 +29,16 @@ export default function Write() {
   );
 }
 
-function CurrentDrawImageWithContext({ className }: { className: string }) {
+function CurrentDrawImageWithContext() {
   const { currentElement } = useSessionContext();
   return (
     <CurrentDrawImage
       src={currentElement?.parent.drawImage}
-      className={className}
+      sx={{
+        width: { xs: '100%', sm: 552 },
+        height: 'auto',
+        minHeight: { xs: 0, sm: 320 },
+      }}
     />
   );
 }

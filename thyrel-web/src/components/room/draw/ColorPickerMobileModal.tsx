@@ -1,8 +1,7 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Typography } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { Box, Typography } from '@material-ui/core';
 import { colorsMobile } from 'utils/app-constant';
 
 type ColorPickerMobileModalProps = {
@@ -12,22 +11,12 @@ type ColorPickerMobileModalProps = {
   onClose: () => void;
 };
 
-const useStyles = makeStyles(theme => ({
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    margin: 0,
-  },
-}));
-
 export default function ColorPickerMobileModal({
   currentColor,
   onColorChange,
   open,
   onClose,
 }: ColorPickerMobileModalProps) {
-  const classes = useStyles();
   return (
     <Dialog fullScreen onClose={() => onClose()} open={open}>
       <Box
@@ -37,7 +26,15 @@ export default function ColorPickerMobileModal({
         justifyContent="center">
         <Box mt={2}>
           <Typography variant="h6">Choose a color</Typography>
-          <IconButton className={classes.closeButton} onClick={() => onClose()}>
+          <IconButton
+            sx={{
+              position: 'absolute',
+              right: theme => theme.spacing(1),
+              top: theme => theme.spacing(1),
+              margin: 0,
+            }}
+            onClick={() => onClose()}
+            size="large">
             <CloseIcon />
           </IconButton>
         </Box>
@@ -57,7 +54,10 @@ export default function ColorPickerMobileModal({
               alignContent="center"
               component="button"
               key={color}
-              onClick={() => onColorChange?.(color)}
+              onClick={() => {
+                onColorChange?.(color);
+                onClose();
+              }}
               border={2}
               m={0.5}
               p={0}

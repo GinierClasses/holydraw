@@ -4,7 +4,7 @@ import { HolyElement } from './HolyElement.type';
 import Room from './Room.type';
 
 export enum WsStates {
-  IDLE = 'Loading...',
+  IDLE = 'loading...',
   CONNECTING = 'You will be connected',
   CONNECTED = 'You are connected',
   CLOSED = "You're disconnected",

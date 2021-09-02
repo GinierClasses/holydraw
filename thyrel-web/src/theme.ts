@@ -1,11 +1,32 @@
-import { responsiveFontSizes, createMuiTheme } from '@material-ui/core';
-import createPalette, { Palette } from '@material-ui/core/styles/createPalette';
+import {
+  createTheme,
+  PaletteOptions,
+  responsiveFontSizes,
+} from '@material-ui/core';
 
 export const PRIMARY = '#880061';
-export const SECONDARY = '#9c27b0';
+export const SECONDARY = '#DB39F8';
 
-function createBaseTheme(palette: Palette) {
-  return createMuiTheme({
+const palette: PaletteOptions = {
+  mode: 'dark',
+  primary: {
+    main: PRIMARY,
+  },
+  secondary: {
+    main: SECONDARY,
+  },
+  background: {
+    default: '#0f131a',
+    paper: '#1a1d24',
+  },
+  default: {
+    hover: '#22262c',
+    main: '#272b31',
+  },
+};
+
+function createBaseTheme() {
+  return createTheme({
     palette: palette,
     typography: {
       h1: {
@@ -50,97 +71,85 @@ function createBaseTheme(palette: Palette) {
       ].join(','),
     },
     spacing: 8,
-    overrides: {
+    components: {
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            borderRadius: 32,
+          },
+        },
+      },
       MuiButton: {
-        label: {
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          height: 20,
-        },
-        root: {
-          textTransform: 'none',
-          borderRadius: 8,
-        },
-        contained: {
-          height: 68,
-          minWidth: 128,
-          fontSize: 24,
-          color: palette.common.white,
-          padding: '18px 24px',
-          borderRadius: 34,
-          fontFamily: 'Work Sans',
-          backgroundColor: palette.custom.main,
-          position: 'relative',
-          '@media (min-width: 600px)': {
-            fontSize: 28,
-            height: 72,
+        styleOverrides: {
+          root: {
+            textTransform: 'none',
+            borderRadius: 32,
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           },
-          '&:hover': {
-            backgroundColor: palette.action.hover,
+          sizeLarge: {
+            height: 68,
+            minWidth: 128,
+            fontSize: 24,
+            color: palette.common?.white,
+            padding: '18px 24px',
+            borderRadius: 34,
+            fontFamily: 'Work Sans',
+            position: 'relative',
+            '@media (min-width: 600px)': {
+              fontSize: 28,
+              height: 72,
+            },
+            '&:hover': {
+              backgroundColor: palette.action?.hover,
+            },
           },
-        },
-        containedSizeLarge: {
-          fontSize: 32,
-          height: 78,
-          borderRadius: 38,
-          '@media (min-width: 600px)': {
-            fontSize: 36,
-            height: 82,
-            borderRadius: 40,
+          // containedSizeLarge: {
+          //   fontSize: 32,
+          //   height: 78,
+          //   borderRadius: 38,
+          //   '@media (min-width: 600px)': {
+          //     fontSize: 36,
+          //     height: 82,
+          //     borderRadius: 40,
+          //   },
+          // },
+          containedSizeSmall: {
+            fontSize: 18,
+            height: 38,
+            borderRadius: 20,
+            '@media (min-width: 600px)': {
+              fontSize: 20,
+              height: 42,
+              padding: '8px 16px',
+              borderRadius: 22,
+            },
           },
-        },
-        containedSizeSmall: {
-          fontSize: 18,
-          height: 34,
-          borderRadius: 16,
-          '@media (min-width: 600px)': {
-            fontSize: 20,
-            height: 40,
-            borderRadius: 18,
-          },
-        },
 
-        iconSizeLarge: {
-          marginLeft: 0,
+          iconSizeLarge: {
+            marginLeft: 0,
+          },
         },
       },
     },
   });
 }
 
-declare module '@material-ui/core/styles/createPalette' {
+type DefaultColor = {
+  main: string;
+  hover: string;
+};
+
+declare module '@material-ui/core' {
   interface Palette {
-    custom: {
-      main: string;
-    };
+    default: DefaultColor;
   }
 
   interface PaletteOptions {
-    custom: {
-      main: string;
-    };
+    default: DefaultColor;
   }
 }
 
-const theme = responsiveFontSizes(
-  createBaseTheme(
-    createPalette({
-      type: 'dark',
-      primary: {
-        main: PRIMARY,
-      },
-      secondary: {
-        main: SECONDARY,
-      },
-      background: {
-        default: '#0f131a',
-        paper: '#1a1d24',
-      },
-      custom: {
-        main: '#272B31',
-      },
-    }),
-  ),
-);
+const theme = responsiveFontSizes(createBaseTheme());
 
 export default theme;

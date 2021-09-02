@@ -1,5 +1,5 @@
+import { Box, ClickAwayListener } from '@material-ui/core';
 import React from 'react';
-import { Box, ClickAwayListener, makeStyles } from '@material-ui/core';
 import { HexColorPicker } from 'react-colorful';
 
 type PreciseColorPickerProps = {
@@ -7,15 +7,6 @@ type PreciseColorPickerProps = {
   onColorChange: (color: string) => void;
   disabledColor?: string;
 };
-
-const useStyles = makeStyles(() => ({
-  container: {
-    '& .$react-colorful': {
-      height: 100,
-      zIndex: 5,
-    },
-  },
-}));
 
 export default function PreciseColorPicker({
   currentColor,
@@ -34,7 +25,6 @@ export default function PreciseColorPicker({
   const handleClickAway = () => {
     setShowColorPicker(false);
   };
-  const classes = useStyles();
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div>
@@ -49,11 +39,19 @@ export default function PreciseColorPicker({
           borderColor={showColorPicker ? '#ffffff' : colorWithDisabled}
           width={92}
           height={42}
-          borderRadius={21}
+          borderRadius="21px"
           className="cursor-pointer"
         />
         {showColorPicker && (
-          <Box height={20} position="absolute" className={classes.container}>
+          <Box
+            height={20}
+            position="absolute"
+            sx={{
+              '& .$react-colorful': {
+                height: 100,
+                zIndex: 5,
+              },
+            }}>
             <HexColorPicker
               color={color}
               onMouseUp={() => onColorChange(color)}

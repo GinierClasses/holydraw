@@ -1,6 +1,6 @@
-import DrawDesktopCanvas from './DrawDesktopCanvas';
-import GameLayout from 'components/room/GameLayout';
 import { Box } from '@material-ui/core';
+import GameLayout from 'components/room/GameLayout';
+import DrawDesktopCanvas from './DrawDesktopCanvas';
 
 export default function DrawDesktop() {
   return (

@@ -1,4 +1,4 @@
-import { Box, Grid, makeStyles } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import { client } from 'api/client';
 import { setToken } from 'api/player-provider';
@@ -15,12 +15,6 @@ import BigInput from '../BigInput';
 import ButtonModalJoin from './ButtonModalJoin';
 import PlayerAvatar from './PlayerAvatar';
 
-const useStyles = makeStyles(theme => ({
-  marginButton: {
-    marginLeft: theme.spacing(2),
-  },
-}));
-
 export default function PlayerForm({ identifier }: { identifier?: string }) {
   const [username, setUsername] = React.useState('');
   const [avatarIndex, setAvatarIndex] = React.useState(
@@ -30,7 +24,6 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const defaultUsername = useRandomUsername();
-  const classes = useStyles();
   const isHorizontal = useMobileHorizontal();
 
   const nextPp = () => {
@@ -132,7 +125,7 @@ export default function PlayerForm({ identifier }: { identifier?: string }) {
             {!identifier && (
               <BigButton
                 fullWidth={!isHorizontal}
-                className={isHorizontal ? undefined : classes.marginButton}
+                sx={isHorizontal ? {} : { marginLeft: 2 }}
                 color="primary"
                 startIcon={<PlayArrowIcon style={{ fontSize: 32 }} />}
                 onClick={onCreate}

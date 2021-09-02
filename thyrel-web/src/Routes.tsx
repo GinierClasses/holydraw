@@ -1,7 +1,8 @@
 import AppLayout from 'components/AppLayout';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { PlayerContextProvider } from 'hooks/PlayerProvider';
 import { RoomContextProvider } from 'hooks/RoomProvider';
+import { SessionContextProvider } from 'hooks/SessionProvider';
+import { WebsocketProvider } from 'hooks/WebsocketProvider';
 import ComponentTest from 'pages/ComponentTest';
 import DevNav from 'pages/DevNav';
 import Home from 'pages/Home';
@@ -10,25 +11,20 @@ import Draw from 'pages/room/Draw';
 import Lobby from 'pages/room/Lobby';
 import Start from 'pages/room/Start';
 import Write from 'pages/room/Write';
-import { WebsocketProvider } from 'hooks/WebsocketProvider';
-import { SessionContextProvider } from 'hooks/SessionProvider';
+import { BrowserRouter, Route, RouteProps, Switch } from 'react-router-dom';
 
 export default function Routes() {
   return (
     <AppLayout>
       <BrowserRouter>
         <Switch>
-          {/* Test component */}
-          {process.env.NODE_ENV === 'development' && (
-            <>
-              <Route path="/t" component={ComponentTest} />
-              <Route path="/t" component={DevNav} />
-              <Route path="/start" component={Start} />
-              <Route path="/draw" component={Draw} />
-            </>
-          )}
+          {/* Test routes */}
+          <OnlyForDevRoute path="/t" component={ComponentTest} />
+          <OnlyForDevRoute path="/t" component={DevNav} />
+          <OnlyForDevRoute path="/start" component={Start} />
+          <OnlyForDevRoute path="/draw" component={Draw} />
 
-          {/* Game component */}
+          {/* Game routes */}
           <Route path="/join/:identifier" component={Home} />
           <Route path="/home" component={Home} />
           <Route path="/room" component={RoomRoutes} />
@@ -66,4 +62,8 @@ function SessionRoutes() {
       </Switch>
     </SessionContextProvider>
   );
+}
+
+function OnlyForDevRoute(props: RouteProps) {
+  return process.env.NODE_ENV === 'development' ? <Route {...props} /> : null;
 }

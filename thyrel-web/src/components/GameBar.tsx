@@ -1,7 +1,7 @@
+import { Box } from '@material-ui/core';
+import { useSessionContext } from 'hooks/SessionProvider';
 import PlayerCount from './room/PlayerCount';
 import StepTimer from './room/StepTimer';
-import { useSessionContext } from 'hooks/SessionProvider';
-import { Box } from '@material-ui/core';
 
 type GameBarProps = {
   onFinish?: () => void;

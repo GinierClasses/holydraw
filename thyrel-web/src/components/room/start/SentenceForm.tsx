@@ -1,30 +1,18 @@
-import React from 'react';
-import { Box, Grid, makeStyles } from '@material-ui/core';
-import BigButton from 'components/BigButton';
-import BigInput from 'components/BigInput';
-import { useSessionContext } from 'hooks/SessionProvider';
+import { Box, Grid } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import { client } from 'api/client';
+import { getToken } from 'api/player-provider';
+import BigButton from 'components/BigButton';
+import BigInput from 'components/BigInput';
+import { useRoomContext } from 'hooks/RoomProvider';
+import { useSessionContext } from 'hooks/SessionProvider';
 import { useRandomSentence } from 'hooks/useRandomSentence';
 import { useTimerEvent } from 'hooks/useTimerInterval';
-import { client } from 'api/client';
+import React from 'react';
 import { HolyElement } from 'types/HolyElement.type';
-import { getToken } from 'api/player-provider';
-import { SessionStepType } from 'types/Session.type';
 import { RoomMode } from 'types/Room.type';
-import { useRoomContext } from 'hooks/RoomProvider';
-
-const useStyles = makeStyles(theme => ({
-  button: {
-    marginLeft: theme.spacing(1),
-    fontSize: 28,
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      marginLeft: theme.spacing(0),
-      marginTop: theme.spacing(1),
-    },
-  },
-}));
+import { SessionStepType } from 'types/Session.type';
 
 export default function StartForm() {
   const { session, currentElement, onSave } = useSessionContext();
@@ -34,13 +22,16 @@ export default function StartForm() {
   const { room } = useRoomContext();
   const isOneWord = room?.mode === RoomMode.OneWord;
   const defaultSentence = useRandomSentence(isOneWord);
-  const classes = useStyles();
   const saveSentence = sentence || defaultSentence;
 
   function handleChange(e: any) {
-    isOneWord
-      ? setSentence(e.target.value.trim())
-      : setSentence(e.target.value);
+    const value: string = e.target.value;
+    if (isOneWord) {
+      if (value.length <= 20) {
+        setSentence(value.trim());
+      }
+    }
+    setSentence(value);
   }
 
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -85,11 +76,15 @@ export default function StartForm() {
             value={sentence}
             onChange={handleChange}
             onKeyPress={handleKeyPress}
-            maxLength={isOneWord ? 20 : undefined}
           />
 
           <BigButton
-            className={classes.button}
+            sx={{
+              marginLeft: { xs: 0, sm: 1 },
+              fontSize: 28,
+              marginTop: { xs: 1, sm: 0 },
+              width: { xs: '100%', sm: 'auto' },
+            }}
             color="primary"
             loading={loading}
             onClick={() => {
