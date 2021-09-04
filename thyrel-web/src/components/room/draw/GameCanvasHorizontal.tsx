@@ -5,7 +5,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import RedoIcon from '@material-ui/icons/Redo';
 import UndoIcon from '@material-ui/icons/Undo';
 import DrawingCanvas from 'components/canvas/DrawingCanvas';
-import PaletteIcon from '@material-ui/icons/Palette';
 import {
   OnClearAction,
   OnRedoAction,
@@ -15,12 +14,12 @@ import {
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
 import { useSessionContext } from 'hooks/SessionProvider';
 import { useState } from 'react';
-import ColorPickerMobileModal from './ColorPickerMobileModal';
-import ActionButton from './desktop/ActionButton';
 import { colors } from 'utils/app-constant';
+import { ColorPickerButton } from './ColorPickerButton';
+import ActionButton from './ActionButton';
 import SizePickerV2 from './desktop/SizePickerV2';
 
-export default function GameCanvas() {
+export default function GameCanvasHorizontal() {
   const { currentElement, onSave } = useSessionContext();
   const isFinish = Boolean(currentElement?.finishAt);
   const [color, setColor] = useState(colors[5]);
@@ -28,7 +27,7 @@ export default function GameCanvas() {
 
   return (
     <DrawingCanvasProvider color={color} disabled={isFinish} lineSize={size}>
-      <Box display="flex" flexDirection="column" gap={4} alignItems="center">
+      <Box display="flex" flexDirection="column" gap={2} alignItems="center">
         <Box width="100%">
           <DrawingCanvas disabled={isFinish} />
         </Box>
@@ -54,7 +53,7 @@ export default function GameCanvas() {
               <RedoIcon />
             </ActionButton>
           </OnRedoAction>
-          <CPicker
+          <ColorPickerButton
             isFinish={isFinish}
             currentColor={color}
             onColorChange={setColor}
@@ -79,30 +78,5 @@ export default function GameCanvas() {
         />
       </Box>
     </DrawingCanvasProvider>
-  );
-}
-
-function CPicker({
-  isFinish,
-  currentColor,
-  onColorChange,
-}: {
-  isFinish: boolean;
-  currentColor: string;
-  onColorChange: (color: string) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <ActionButton ml={0} disabled={isFinish} onClick={() => setOpen(p => !p)}>
-        <PaletteIcon />
-      </ActionButton>
-      <ColorPickerMobileModal
-        open={open}
-        onClose={() => setOpen(false)}
-        currentColor={currentColor}
-        onColorChange={color => onColorChange(color)}
-      />
-    </>
   );
 }

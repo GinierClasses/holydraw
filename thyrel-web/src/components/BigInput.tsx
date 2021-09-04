@@ -23,7 +23,7 @@ export default function BigInput({
   const inputSx =
     variant === 'medium'
       ? {
-          fontSize: { xs: 24, sm: 28 },
+          fontSize: { xs: 26, sm: 28 },
           height: { xs: 32, sm: 36 },
         }
       : {

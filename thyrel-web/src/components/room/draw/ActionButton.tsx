@@ -22,6 +22,7 @@ export default function ActionButton({
   ml = 1,
   className,
   disabled,
+  sx,
   ...props
 }: ActionButtonProps) {
   const theme = useTheme();
@@ -41,6 +42,7 @@ export default function ActionButton({
           backgroundColor: theme =>
             color === 'primary' ? theme.palette.primary.dark : undefined,
         },
+        ...sx,
       }}
       className={className}
       size="large"

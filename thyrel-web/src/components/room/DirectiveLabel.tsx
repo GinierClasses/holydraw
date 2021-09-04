@@ -11,7 +11,6 @@ export default function DirectiveLabel({
 }: DirectiveLabelProps) {
   return (
     <Box
-      width="100%"
       display="flex"
       padding={1}
       borderRadius="32px"

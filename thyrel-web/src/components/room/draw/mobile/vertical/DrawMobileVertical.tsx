@@ -1,6 +1,6 @@
 import { Alert, Box } from '@material-ui/core';
 import DirectiveLabel from 'components/room/DirectiveLabel';
-import GameCanvas from 'components/room/draw/GameCanvas';
+import GameCanvasVertical from 'components/room/draw/GameCanvasVertical';
 import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
 import GameLayout from 'components/room/GameLayout';
 import { useSessionContext } from 'hooks/SessionProvider';
@@ -30,7 +30,7 @@ export default function DrawMobileVertical() {
           justifyContent="center"
           flexDirection="column"
           gap={2}>
-          <GameCanvas />
+          <GameCanvasVertical />
         </Box>
       </Box>
     </GameLayout>

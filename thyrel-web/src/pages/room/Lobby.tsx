@@ -15,7 +15,7 @@ export default function Lobby() {
       width="100%"
       pb={2}>
       <Box mb={2} width="100%" display="flex" justifyContent="center">
-        <HolyDrawLogo width={20} />
+        <HolyDrawLogo width={22} />
       </Box>
       <Box
         display="flex"
