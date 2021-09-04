@@ -1,10 +1,10 @@
 import { Alert, Box } from '@material-ui/core';
 import DirectiveLabel from 'components/room/DirectiveLabel';
-import GameCanvasVertical from 'components/room/draw/GameCanvasVertical';
 import { useDisableBodyOverflow } from 'components/room/draw/useDisableBodyOverflow';
 import GameLayout from 'components/room/GameLayout';
 import { useSessionContext } from 'hooks/SessionProvider';
 import { useState } from 'react';
+import GameCanvasVertical from '../../GameCanvasVertical';
 
 export default function DrawMobileVertical() {
   useDisableBodyOverflow();

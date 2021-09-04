@@ -1,4 +1,4 @@
-import { alpha, Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -13,97 +13,56 @@ import {
 } from 'components/canvas/DrawingCanvasActions';
 import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
 import { useSessionContext } from 'hooks/SessionProvider';
-import { PropsWithChildren, useState } from 'react';
+import { useState } from 'react';
 import { colors } from 'utils/app-constant';
 import ActionButton from './ActionButton';
-import CanvasLineTypeButton from './CanvasLineTypeButtons';
 import { ColorPickerButton } from './ColorPickerButton';
+import SizePickerV2 from './desktop/SizePickerV2';
 
-export default function GameCanvasVertical() {
+export default function GameCanvas() {
   const { currentElement, onSave } = useSessionContext();
-
-  const [color, setColor] = useState(colors[5]);
-  // TODO: add size picker modal
-  // const [size, setSize] = useState(8);
-  const size = 4;
-
   const isFinish = Boolean(currentElement?.finishAt);
-  const sentence = currentElement?.parent?.text;
+  const [color, setColor] = useState(colors[5]);
+  const [size, setSize] = useState(8);
 
   return (
-    <DrawingCanvasProvider color={color} lineSize={size}>
-      <Box
-        sx={{
-          width: 1,
-          height: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'flex-end',
-          justifyContent: 'space-between',
-          gap: 2,
-          pb: 0.5,
-        }}>
-        <ActionsWrapper>
-          <CanvasLineTypeButton disabled={isFinish} spacing={0.65} />
-          <OnUndoAction>
-            <ActionButton ml={0} disabled={isFinish} title="CMD + Z">
-              <UndoIcon />
-            </ActionButton>
-          </OnUndoAction>
+    <DrawingCanvasProvider color={color} disabled={isFinish} lineSize={size}>
+      <Box display="flex" flexDirection="column" gap={4} alignItems="center">
+        <Box width="100%">
+          <DrawingCanvas disabled={isFinish} />
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="row"
+          flexWrap="wrap"
+          alignItems="center"
+          justifyContent="space-between"
+          width="100%">
           <OnClearAction>
             <ActionButton ml={0} disabled={isFinish} title="hotkey: C">
               <DeleteIcon />
             </ActionButton>
           </OnClearAction>
-        </ActionsWrapper>
-        <Box
-          sx={{
-            maxWidth: 460,
-            display: 'flex',
-            flexDirection: 'column',
-            height: 1,
-            pt: 1,
-            justifyContent: 'space-between',
-          }}>
-          <Box
-            sx={{
-              backgroundColor: theme => alpha(theme.palette.primary.main, 0.8),
-              boxShadow: theme => theme.shadows[2],
-              display: 'flex',
-              borderRadius: 32,
-              alignItems: 'center',
-              flexDirection: 'column',
-              padding: 0.5,
-            }}>
-            <Typography
-              sx={{ fontSize: 12 }}
-              variant="subtitle1"
-              color="textSecondary">
-              Time to draw
-            </Typography>
-            {sentence && (
-              <Typography
-                sx={{ fontSize: '20px !important' }}
-                variant="h4"
-                color="textPrimary">
-                {sentence}
-              </Typography>
-            )}
-          </Box>
-          <DrawingCanvas />
-        </Box>
-        <ActionsWrapper>
+          <OnUndoAction>
+            <ActionButton ml={0} disabled={isFinish} title="CMD + Z">
+              <UndoIcon />
+            </ActionButton>
+          </OnUndoAction>
           <OnRedoAction>
             <ActionButton ml={0} disabled={isFinish} title="CMD + SHIFT + Z">
               <RedoIcon />
             </ActionButton>
           </OnRedoAction>
           <ColorPickerButton
+            isFinish={isFinish}
             currentColor={color}
             onColorChange={setColor}
-            isFinish={isFinish}
           />
-          <OnSaveAction onSave={imageUrl => imageUrl && onSave(imageUrl)}>
+          <OnSaveAction
+            onSave={canvasImage => {
+              if (!canvasImage) return;
+              onSave(canvasImage);
+            }}>
             <ActionButton
               ml={0}
               color="primary"
@@ -111,16 +70,13 @@ export default function GameCanvasVertical() {
               {isFinish ? <EditIcon /> : <CheckIcon />}
             </ActionButton>
           </OnSaveAction>
-        </ActionsWrapper>
+        </Box>
+        <SizePickerV2
+          orientation="horizontal"
+          onSizeChange={setSize}
+          size={size}
+        />
       </Box>
     </DrawingCanvasProvider>
-  );
-}
-
-function ActionsWrapper({ children }: PropsWithChildren<{}>) {
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 1 }}>
-      {children}
-    </Box>
   );
 }
