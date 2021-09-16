@@ -1,4 +1,5 @@
 import WebsocketStateDebug from 'components/room/WebsocketStateDebug';
+import i18next from 'i18next';
 import React from 'react';
 import { WsStates } from 'types/websocket.types';
 import { useWebsocket } from './useWebsocket';
@@ -30,7 +31,9 @@ export function useWebsocketContext() {
   const context = React.useContext(WebsocketContext);
   if (!context)
     throw new Error(
-      'useRoomContext should be used within a RoomSocketContextProvider',
+      i18next.t('useContextError', {
+        contextName: 'Room',
+      }),
     );
   return context;
 }

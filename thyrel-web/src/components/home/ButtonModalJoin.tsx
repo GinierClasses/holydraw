@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { defaultColorSx } from 'utils/@material-ui-v5-migration';
 import BigButton from '../BigButton';
 
@@ -26,6 +27,7 @@ export default function ButtonModalJoin({
 }: ButtonModalJoinProps) {
   const [open, setOpen] = React.useState(false);
   const [identifier, setIdentifier] = React.useState('');
+  const { t } = useTranslation();
 
   function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     if (loading || event.key !== 'Enter') return;
@@ -55,7 +57,7 @@ export default function ButtonModalJoin({
         maxWidth="xs"
         open={open}
         onClose={() => setOpen(false)}>
-        <DialogTitle>Join a game 👨‍🎨</DialogTitle>
+        <DialogTitle>{t('lobby.joinGame')}</DialogTitle>
         <DialogContent>
           <TextField
             color="secondary"
@@ -71,7 +73,7 @@ export default function ButtonModalJoin({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)} color="secondary">
-            Cancel 👋
+            {t('lobby.cancel')}
           </Button>
           <Button
             onClick={() => {
@@ -79,7 +81,7 @@ export default function ButtonModalJoin({
               setOpen(false);
             }}
             color="secondary">
-            Join 🥳
+            {t('lobby.join')}
           </Button>
         </DialogActions>
       </Dialog>

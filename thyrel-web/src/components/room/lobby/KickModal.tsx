@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 type KickModalProps = {
   open: boolean;
@@ -8,15 +9,16 @@ type KickModalProps = {
 };
 
 export function KickModal({ open, username, onKick, onClose }: KickModalProps) {
+  const { t } = useTranslation();
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={() => onClose()}>
-      <DialogTitle>Do you really want to kick {username} ?</DialogTitle>
+      <DialogTitle>{t('lobby.kick', { username: username })}</DialogTitle>
       <DialogActions>
         <Button onClick={() => onClose()} color="secondary">
-          Cancel 👋
+          {t('lobby.cancelButton')}
         </Button>
         <Button onClick={() => onKick()} color="secondary">
-          Kick 🤫
+          {t('lobby.kickButton')}
         </Button>
       </DialogActions>
     </Dialog>
