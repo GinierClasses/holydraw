@@ -34,16 +34,17 @@ export default function RoomModeSettingsModal({
       </IconButton>
       <DialogContent>
         <Grid container wrap="wrap" justifyContent="center" spacing={2}>
-          {Object.keys(typeof RoomMode)
-            .filter(key => isNaN(Number(key)))
+          {Object.keys(RoomMode)
+            .filter((key: any) => !isNaN(Number(RoomMode[key])))
             .map((key: string) => {
-              const roomMode = Number(key) as RoomMode;
+              // @ts-ignore : We are sure the type will be find
+              const id = RoomMode[key] as number;
               return (
                 <Grid item key={key}>
                   <RoomModeCard
-                    onClick={() => onSelect(roomMode)}
-                    title={t(`roomMode.${roomMode}.title`)}
-                    description={t(`roomMode.${roomMode}.description`)}
+                    onClick={() => onSelect(id)}
+                    title={t(`roomMode.${key}.title`)}
+                    description={t(`roomMode.${key}.description`)}
                   />
                 </Grid>
               );

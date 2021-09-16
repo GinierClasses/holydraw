@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom';
+import i18n from 'i18n/i18n';
+import { initReactI18next } from 'react-i18next';
 import { server } from './test/server';
 
 const localStorageMockInit = function () {
@@ -55,6 +57,19 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   }),
+});
+
+i18n.use(initReactI18next).init({
+  resources: {
+    en: {
+      translation: {},
+    },
+  },
+  lng: 'en',
+
+  interpolation: {
+    escapeValue: false,
+  },
 });
 
 beforeAll(() => server.listen());
