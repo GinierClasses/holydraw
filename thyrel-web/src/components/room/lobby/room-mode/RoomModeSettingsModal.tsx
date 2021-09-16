@@ -2,7 +2,8 @@ import { DialogContent, DialogTitle, Grid } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { RoomMode, roomModeInformations } from 'types/Room.type';
+import { useTranslation } from 'react-i18next';
+import { RoomMode } from 'types/Room.type';
 import RoomModeCard from './RoomModeCard';
 
 type RoomModeSettingsModalProps = {
@@ -16,9 +17,10 @@ export default function RoomModeSettingsModal({
   onClose,
   onSelect,
 }: RoomModeSettingsModalProps) {
+  const { t } = useTranslation();
   return (
     <Dialog onClose={() => onClose()} open={open}>
-      <DialogTitle>Settings</DialogTitle>
+      <DialogTitle>{t('lobby.settings')}</DialogTitle>
       <IconButton
         sx={{
           position: 'absolute',
@@ -32,15 +34,20 @@ export default function RoomModeSettingsModal({
       </IconButton>
       <DialogContent>
         <Grid container wrap="wrap" justifyContent="center" spacing={2}>
-          {Object.keys(roomModeInformations).map((key: string) => {
-            const roomMode = Number(key) as RoomMode;
-            const mode = roomModeInformations[roomMode];
-            return (
-              <Grid item key={key}>
-                <RoomModeCard onClick={() => onSelect(roomMode)} {...mode} />
-              </Grid>
-            );
-          })}
+          {Object.keys(typeof RoomMode)
+            .filter(key => isNaN(Number(key)))
+            .map((key: string) => {
+              const roomMode = Number(key) as RoomMode;
+              return (
+                <Grid item key={key}>
+                  <RoomModeCard
+                    onClick={() => onSelect(roomMode)}
+                    title={t(`roomMode.${roomMode}.title`)}
+                    description={t(`roomMode.${roomMode}.description`)}
+                  />
+                </Grid>
+              );
+            })}
         </Grid>
       </DialogContent>
     </Dialog>
