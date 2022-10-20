@@ -17,6 +17,7 @@ export default function RoomModeCard({
       sx={{
         maxWidth: 192,
         borderRadius: 4,
+        backgroundColor: theme => theme.palette.background.default,
       }}
       onClick={onClick}>
       <CardActionArea>

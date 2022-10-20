@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import RoomModeSettingsModal from 'components/room/lobby/room-mode/RoomModeSettingsModal';
-import { RoomMode, roomModeInformations } from 'types/Room.type';
+import { RoomMode } from 'types/Room.type';
 
 describe('RoomModeSettingsModal', () => {
   test('title and desc. is show', () => {
@@ -36,9 +36,7 @@ describe('RoomModeSettingsModal', () => {
 
     const id = RoomMode.OneWord;
 
-    const info = roomModeInformations[id];
-
-    userEvent.click(screen.getByText(info.title));
+    userEvent.click(screen.getByText('roomMode.OneWord.title'));
 
     expect(onSelect).toBeCalledTimes(1);
     expect(onSelect).toBeCalledWith(id);

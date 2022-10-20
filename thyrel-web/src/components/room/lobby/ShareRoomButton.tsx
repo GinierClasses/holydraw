@@ -3,6 +3,7 @@ import VpnKeyIcon from '@material-ui/icons/VpnKeyRounded';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import 'styles/roboto-mono-font.css';
 import Player from 'types/Player.type';
 import { defaultColorSx } from 'utils/@material-ui-v5-migration';
@@ -19,6 +20,7 @@ export default function ShareRoomButton({
   player,
 }: ShareRoomButtonProps) {
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation();
 
   function onShared() {
     if (!identifier) return;
@@ -64,7 +66,7 @@ export default function ShareRoomButton({
           component="button"
           variant="body2"
           color="textSecondary">
-          Generate new code
+          {t('lobby.generateCode')}
         </Link>
       )}
     </Box>

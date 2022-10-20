@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 import { useSessionContext } from 'hooks/SessionProvider';
-import React from 'react';
+import { useTranslation } from 'react-i18next';
 import CurrentDrawImage from '../CurrentDrawImage';
 import DirectiveLabel from '../DirectiveLabel';
 import HorizontalGameBar from '../draw/mobile/horizontal/HorizontalGameBar';
@@ -8,6 +8,7 @@ import StartForm from '../start/SentenceForm';
 
 export default function WriteHorizontal() {
   const { currentElement } = useSessionContext();
+  const { t } = useTranslation();
   return (
     <Box
       sx={{
@@ -26,7 +27,7 @@ export default function WriteHorizontal() {
           gap: 2,
           my: 1,
         }}>
-        <DirectiveLabel directive="Describe the scene" />
+        <DirectiveLabel directive={t('game.describe')} />
         <CurrentDrawImage
           src={currentElement?.parent.drawImage}
           sx={{
