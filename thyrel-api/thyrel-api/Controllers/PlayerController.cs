@@ -37,7 +37,7 @@ namespace thyrel_api.Controllers
         public async Task<ActionResult<Player>> Kick(int id)
         {
             var playerKicker = await AuthorizationHandler.CheckAuthorization(HttpContext, _context);
-            if (playerKicker == null || !playerKicker.IsOwner) return Unauthorized();
+            if (playerKicker is not {IsOwner: true}) return Unauthorized();
 
             var playerDataProvider = new PlayerDataProvider(_context);
             var playerToKick = await playerDataProvider.GetPlayer(id);

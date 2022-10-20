@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { server } from './test/server';
 
-const localStorageMockStarter = function () {
+const localStorageMockInit = function () {
   let store: any = {};
   const items = {
     getItem: jest.fn(function (key: string): string {
@@ -40,7 +40,7 @@ jest.mock('notistack', () => ({
   }),
 }));
 
-const localStorageMock = localStorageMockStarter();
+const localStorageMock = localStorageMockInit();
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 Object.defineProperty(window, 'matchMedia', {

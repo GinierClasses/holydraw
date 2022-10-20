@@ -1,7 +1,11 @@
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
-import theme from 'theme';
-import Routes from 'Routes';
+import {
+  CssBaseline,
+  StyledEngineProvider,
+  ThemeProvider,
+} from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
+import Routes from 'Routes';
+import theme from 'theme';
 
 /*
  * Entry point for our App
@@ -16,10 +20,12 @@ function App() {
       }}
       preventDuplicate
       maxSnack={3}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Routes />
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Routes />
+        </ThemeProvider>
+      </StyledEngineProvider>
     </SnackbarProvider>
   );
 }

@@ -1,34 +1,26 @@
-import { Box, fade, makeStyles, Typography } from '@material-ui/core';
+import { alpha, Box, Typography } from '@material-ui/core';
 
 type DirectiveLabelProps = {
   directive: string;
   sentence?: string;
 };
 
-const useStyles = makeStyles(theme => ({
-  sentence: {
-    textAlign: 'center',
-  },
-  container: {
-    backgroundColor: fade(theme.palette.primary.main, 0.8),
-    boxShadow: theme.shadows[2],
-  },
-}));
-
 export default function DirectiveLabel({
   directive,
   sentence,
 }: DirectiveLabelProps) {
-  const classes = useStyles();
   return (
     <Box
-      width="100%"
-      display="flex"
-      padding={1}
-      borderRadius={32}
-      alignItems="center"
-      flexDirection="column"
-      className={classes.container}>
+      sx={{
+        backgroundColor: theme => alpha(theme.palette.primary.main, 0.8),
+        boxShadow: theme => theme.shadows[2],
+        flexDirection: 'column',
+        alignItems: 'center',
+        borderRadius: 32,
+        padding: 1,
+        display: 'flex',
+        width: 1,
+      }}>
       <Typography variant="subtitle1" color="textSecondary">
         {directive}
       </Typography>
@@ -36,7 +28,7 @@ export default function DirectiveLabel({
         <Typography
           variant="h4"
           color="textPrimary"
-          className={classes.sentence}>
+          sx={{ textAlign: 'center' }}>
           {sentence}
         </Typography>
       )}

@@ -14,7 +14,7 @@ describe('PlayerAvatar', () => {
       createdAt: 'string',
       roomId: 2,
     };
-    render(<StartButton player={player} onStart={() => void 0} />);
+    render(<StartButton player={player} onClick={() => void 0} />);
     expect(screen.getByLabelText('spinner icon')).toBeInTheDocument();
     expect(screen.getByText(/waiting/i)).toBeInTheDocument();
     expect(
@@ -32,7 +32,7 @@ describe('PlayerAvatar', () => {
       roomId: 2,
     };
     const onStart = jest.fn();
-    render(<StartButton player={player} onStart={onStart} />);
+    render(<StartButton player={player} onClick={onStart} />);
     expect(screen.queryByLabelText('spinner icon')).not.toBeInTheDocument();
     expect(screen.queryByText(/waiting/i)).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Start/i })).toBeInTheDocument();

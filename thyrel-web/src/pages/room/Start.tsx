@@ -1,10 +1,10 @@
-import GymGuy from 'images/gym-guy.svg';
 import { Grid, Typography } from '@material-ui/core';
-import SentenceForm from 'components/room/start/SentenceForm';
 import GameLayout from 'components/room/GameLayout';
+import SentenceForm from 'components/room/start/SentenceForm';
 import { useRoomContext } from 'hooks/RoomProvider';
-import { RoomMode } from 'types/Room.type';
 import useMobileHorizontal from 'hooks/useMobileHorizontal';
+import GymGuy from 'images/gym-guy.svg';
+import { RoomMode } from 'types/Room.type';
 
 export default function Start() {
   const isHorizontal = useMobileHorizontal();
@@ -17,7 +17,7 @@ export default function Start() {
         alignItems="center"
         className="full-height"
         wrap="nowrap"
-        justify="center">
+        justifyContent="center">
         {!isHorizontal && (
           <Grid item>
             <img src={GymGuy} alt="" width={256} />

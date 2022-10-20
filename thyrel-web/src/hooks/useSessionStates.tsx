@@ -18,7 +18,7 @@ function useSessionStates() {
         enqueueSnackbar('Sorry, an error occured 😕 [Session-GET]', {
           variant: 'error',
         });
-        history.push('/r/lobby');
+        history.push('/room/lobby');
       },
     );
 
@@ -33,16 +33,16 @@ function useSessionStates() {
     let newPathname = '';
     switch (session?.stepType) {
       case SessionStepType.Start:
-        newPathname = '/r/start';
+        newPathname = '/room/start';
         break;
       case SessionStepType.Write:
-        newPathname = '/r/write';
+        newPathname = '/room/write';
         break;
       case SessionStepType.Draw:
-        newPathname = '/r/draw';
+        newPathname = '/room/draw';
         break;
       case SessionStepType.Book:
-        newPathname = '/r/book';
+        newPathname = '/room/book';
         break;
     }
     // change only if pathname is different than before

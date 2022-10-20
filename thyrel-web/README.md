@@ -21,45 +21,13 @@ component for Button, Input and all element given for us.
 To style a `div` or `p` :
 
 ```js
-import { makeStyles } from '@material-ui/core';
-
-const useStyles = makeStyles(theme => ({
-  div: {
-    backgroundColor: 'red',
-  },
-}));
-
 function Test() {
-  const classes = useStyles();
   return (
-    // pass the props
-    <div className={classes.div} color="red">
+    // pass the sx props https://next.material-ui.com/system/the-sx-prop
+    // https://next.material-ui.com/system/basics/#responsive-values
+    <Box sx={{ display: 'flex', width: { xs: 10, sm: 20 } }} color="red">
       <p>My element</p>
-    </div>
-  );
-}
-```
-
-OR with propre
-
-```tsx
-import { makeStyles, Theme } from '@material-ui/core';
-
-const useStyles = makeStyles<Theme, { isSelected: boolean }>(theme => ({
-  div: {
-    backgroundColor: props => (props.isSelected ? 'red' : 'green'),
-    // theme has all style for the app stored on `theme.ts`
-    border: theme.palette.primary.main,
-  },
-}));
-
-function Test({ isSelected }) {
-  const classes = useStyles({ isSelected });
-  return (
-    // pass the props
-    <div className={classes.div} color="red">
-      <p>My element</p>
-    </div>
+    </Box>
   );
 }
 ```

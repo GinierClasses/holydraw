@@ -1,13 +1,13 @@
 import { Box, Typography, useTheme } from '@material-ui/core';
+import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import BigButton from 'components/BigButton';
 import SpinnerIcon from 'components/SpinnerIcon';
 import Player from 'types/Player.type';
-import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 
 type StartButtonProps = {
   player?: Player;
   startName?: string;
-  onStart: () => void;
+  onClick: () => void;
   isLoading?: boolean;
   label?: string;
 };
@@ -16,7 +16,7 @@ export default function StartButton({
   player,
   startName = 'game',
   isLoading,
-  onStart,
+  onClick,
   label = 'Start',
 }: StartButtonProps) {
   const theme = useTheme();
@@ -38,7 +38,7 @@ export default function StartButton({
         <Box mt={2}>
           <BigButton
             loading={isLoading}
-            onClick={onStart}
+            onClick={() => !isLoading && onClick()}
             color="primary"
             startIcon={<PlayArrowRoundedIcon style={{ fontSize: 48 }} />}>
             {label}

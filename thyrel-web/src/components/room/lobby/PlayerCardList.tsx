@@ -1,7 +1,7 @@
-import PlayerCard from './PlayerCard';
-import Player from 'types/Player.type';
-import profilesPictures from 'images/profiles/profiles-pictures';
 import { Box, Grid } from '@material-ui/core';
+import profilesPictures from 'images/profiles/profiles-pictures';
+import Player from 'types/Player.type';
+import PlayerCard from './PlayerCard';
 
 type PlayerCardListProps = {
   players?: Player[];

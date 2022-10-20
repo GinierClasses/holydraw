@@ -1,6 +1,6 @@
-import BookPlayerList from 'components/room/book/BookPlayerList';
-import { Container, Grid, Typography, Box } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@material-ui/core';
 import BookAlbums from 'components/room/book/BookAlbums';
+import BookPlayerList from 'components/room/book/BookPlayerList';
 import { AlbumContextProvider, useAlbumContext } from 'hooks/AlbumProvider';
 import { useSessionContext } from 'hooks/SessionProvider';
 
@@ -15,7 +15,7 @@ export default function Book() {
           alignItems="center"
           className="full-height"
           wrap="nowrap"
-          justify="space-between">
+          justifyContent="space-between">
           <Grid item>
             <Box
               mt={1}

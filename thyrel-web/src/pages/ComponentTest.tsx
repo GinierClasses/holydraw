@@ -1,47 +1,52 @@
-import React, { useState } from 'react';
-import BigButton from '../components/BigButton';
-import PlayerCount from '../components/room/PlayerCount';
-import HolyDrawLogo from '../components/HolyDrawLogo';
-import BigInput from '../components/BigInput';
-import PlayerCard from '../components/room/lobby/PlayerCard';
-import PlayerCardList from '../components/room/lobby/PlayerCardList';
-import StepTimer from '../components/room/StepTimer';
-import profilesPictures from '../images/profiles/profiles-pictures';
-import DirectiveLabel from '../components/room/DirectiveLabel';
-import PlayerAvatar from '../components/home/PlayerAvatar';
-import DesktopColorPicker from '../components/room/draw/desktop/DesktopColorPicker';
-import SizePicker from '../components/room/draw/desktop/SizePicker';
-import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
-import BookPlayerList from '../components/room/book/BookPlayerList';
-import ButtonModalJoin from '../components/home/ButtonModalJoin';
-import DrawingCanvas from 'components/canvas/DrawingCanvas';
-import testPlayerList from '__tests__/json/players.json';
+import {
+  Box,
+  FormControlLabel,
+  IconButton,
+  Slider,
+  Switch,
+} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
-import { Box, FormControlLabel, IconButton, Switch } from '@material-ui/core';
-import SpinnerIcon from 'components/SpinnerIcon';
-import StartButton from 'components/room/lobby/StartButton';
-import StepProgress from 'components/room/StepProgress';
-import { Slider } from '@material-ui/core';
-import BookSentenceElement from 'components/room/book/BookSentenceElement';
-import GymGuy from 'images/gym-guy.svg';
-import BookDrawingElement from 'components/room/book/BookDrawingElement';
-import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PaletteIcon from '@material-ui/icons/Palette';
+import RedoIcon from '@material-ui/icons/Redo';
+import UndoIcon from '@material-ui/icons/Undo';
+import DrawingCanvas from 'components/canvas/DrawingCanvas';
 import {
   OnClearAction,
-  OnUndoAction,
-  OnSaveAction,
   OnRedoAction,
+  OnSaveAction,
+  OnUndoAction,
 } from 'components/canvas/DrawingCanvasActions';
-import DeleteIcon from '@material-ui/icons/Delete';
-import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo';
-import { colors } from 'utils/app-constant';
+import { DrawingCanvasProvider } from 'components/canvas/DrawingCanvasProvider';
+import BookDrawingElement from 'components/room/book/BookDrawingElement';
+import BookSentenceElement from 'components/room/book/BookSentenceElement';
+import ReactionPicker from 'components/room/book/ReactionPicker';
+import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
 import SizePickerV2 from 'components/room/draw/desktop/SizePickerV2';
 import RoomModeSelector from 'components/room/lobby/room-mode/RoomModeSelector';
-import ColorPickerMobileModal from 'components/room/draw/ColorPickerMobileModal';
-import Button from '@material-ui/core/Button';
-import PaletteIcon from '@material-ui/icons/Palette';
-import ReactionPicker from 'components/room/book/ReactionPicker';
+import StartButton from 'components/room/lobby/StartButton';
+import StepProgress from 'components/room/StepProgress';
+import SpinnerIcon from 'components/SpinnerIcon';
+import GymGuy from 'images/gym-guy.svg';
+import React, { useState } from 'react';
+import { colors } from 'utils/app-constant';
+import testPlayerList from 'test/data/players.json';
+import BigButton from '../components/BigButton';
+import BigInput from '../components/BigInput';
+import HolyDrawLogo from '../components/HolyDrawLogo';
+import ButtonModalJoin from '../components/home/ButtonModalJoin';
+import PlayerAvatar from '../components/home/PlayerAvatar';
+import BookPlayerList from '../components/room/book/BookPlayerList';
+import DirectiveLabel from '../components/room/DirectiveLabel';
+import DesktopColorPicker from '../components/room/draw/desktop/DesktopColorPicker';
+import SizePicker from '../components/room/draw/desktop/SizePicker';
+import PlayerCard from '../components/room/lobby/PlayerCard';
+import PlayerCardList from '../components/room/lobby/PlayerCardList';
+import ShareRoomButton from '../components/room/lobby/ShareRoomButton';
+import PlayerCount from '../components/room/PlayerCount';
+import StepTimer from '../components/room/StepTimer';
+import profilesPictures from '../images/profiles/profiles-pictures';
 
 export default function ComponentTest() {
   const [ppIndex, setPpIndex] = useState(0);
@@ -82,7 +87,7 @@ export default function ComponentTest() {
         flexDirection="column"
         alignItems="center"
         width="100%"
-        gridGap={32}>
+        gap={4}>
         <HolyDrawLogo />
 
         <Box>
@@ -150,17 +155,17 @@ export default function ComponentTest() {
               </Box>
               <Box display="flex" flexDirection="column">
                 <OnClearAction>
-                  <IconButton>
+                  <IconButton size="large">
                     <DeleteIcon />
                   </IconButton>
                 </OnClearAction>
                 <OnUndoAction>
-                  <IconButton>
+                  <IconButton size="large">
                     <UndoIcon />
                   </IconButton>
                 </OnUndoAction>
                 <OnRedoAction>
-                  <IconButton>
+                  <IconButton size="large">
                     <RedoIcon />
                   </IconButton>
                 </OnRedoAction>
@@ -220,7 +225,7 @@ export default function ComponentTest() {
           Test
         </BigButton>
 
-        <StartButton player={testPlayerList[1]} onStart={() => void 0} />
+        <StartButton player={testPlayerList[1]} onClick={() => void 0} />
 
         <PlayerCardList
           players={testPlayerList}

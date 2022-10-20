@@ -1,11 +1,11 @@
-import React from 'react';
-import { HolyElement } from 'types/HolyElement.type';
-import { parseJson } from '../utils/json';
-import { WebsocketEvent, WebsocketMessage } from 'types/websocket.types';
-import { useWebsocketContext } from './WebsocketProvider';
 import { client } from 'api/client';
 import { getToken } from 'api/player-provider';
+import React from 'react';
+import { HolyElement } from 'types/HolyElement.type';
 import Player from 'types/Player.type';
+import { WebsocketEvent, WebsocketMessage } from 'types/websocket.types';
+import { parseJson } from '../utils/json';
+import { useWebsocketContext } from './WebsocketProvider';
 
 type AlbumContextProps = {
   albums?: Record<number, HolyElement[]>;

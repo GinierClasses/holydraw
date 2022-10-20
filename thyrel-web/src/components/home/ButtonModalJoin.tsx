@@ -1,14 +1,15 @@
-import React from 'react';
-import BigButton from '../BigButton';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
   TextField,
 } from '@material-ui/core';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import React from 'react';
+import { defaultColorSx } from 'utils/@material-ui-v5-migration';
+import BigButton from '../BigButton';
 
 type ButtonModalJoinProps = {
   identifier?: string;
@@ -25,6 +26,12 @@ export default function ButtonModalJoin({
 }: ButtonModalJoinProps) {
   const [open, setOpen] = React.useState(false);
   const [identifier, setIdentifier] = React.useState('');
+
+  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (loading || event.key !== 'Enter') return;
+    onClick(identifier);
+  }
+
   return (
     <>
       <BigButton
@@ -34,7 +41,9 @@ export default function ButtonModalJoin({
         fullWidth
         loading={loading}
         className={className}
-        color={urlIdentifier ? 'primary' : 'default'}
+        variant={urlIdentifier ? 'contained' : 'text'}
+        color={urlIdentifier ? 'primary' : 'inherit'}
+        sx={urlIdentifier ? undefined : defaultColorSx}
         onClick={() =>
           urlIdentifier ? onClick(urlIdentifier) : setOpen(true)
         }>
@@ -55,7 +64,8 @@ export default function ButtonModalJoin({
             id="name"
             label="Identifier"
             value={identifier}
-            onChange={event => setIdentifier(event.target.value)}
+            onKeyPress={handleKeyPress}
+            onChange={e => setIdentifier(e.target.value)}
             fullWidth
           />
         </DialogContent>

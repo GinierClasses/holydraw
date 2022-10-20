@@ -1,4 +1,4 @@
-# HolyDraw 👨‍🎨 - 9
+# HolyDraw 👨‍🎨 - 10
 
 *Draw! Guess! Don't Fail!*
 
@@ -25,7 +25,7 @@ Réalisée dans le cadre des modules : `i226b - Implémenter orienté objets (av
 * Visual Studio, Rider JetBrains *or any IDE that support C#*
 
 #### Clone the project :
-* `git clone https://github.com/GinierClasses/teamproject-thyrel-team.git`
+* `git clone https://github.com/GinierClasses/holydraw.git`
 
 #### Install :
 

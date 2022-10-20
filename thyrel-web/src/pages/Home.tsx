@@ -1,7 +1,7 @@
-import { RouteComponentProps } from 'react-router-dom';
+import { Grid } from '@material-ui/core';
 import HolyDrawLogo from 'components/HolyDrawLogo';
 import PlayerForm from 'components/home/PlayerForm';
-import { Grid } from '@material-ui/core';
+import { RouteComponentProps } from 'react-router-dom';
 
 export default function Home(
   props: RouteComponentProps<{ identifier?: string }>,
@@ -15,7 +15,7 @@ export default function Home(
       wrap="nowrap"
       alignItems="center"
       className="full-height"
-      justify="space-between">
+      justifyContent="space-between">
       <Grid item>
         <HolyDrawLogo width={32} />
       </Grid>

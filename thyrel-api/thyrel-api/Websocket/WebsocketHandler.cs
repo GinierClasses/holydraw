@@ -132,7 +132,7 @@ namespace thyrel_api.Websocket
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"Error : {e}");
+                        Console.WriteLine($"DEBUG server Error: {e}");
                     }
 
                     await Task.Delay(5000);

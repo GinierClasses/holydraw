@@ -64,7 +64,7 @@ namespace thyrel_api.Controllers
                 {
                     var stepState = await sessionDataProvider.GetPlayerStatus(session);
                     if (stepState.PlayerCount == stepState.PlayerFinished &&
-                        (remainingStepTime.TotalMilliseconds > 5000 || remainingStepTime.TotalMilliseconds < -2000))
+                        remainingStepTime.TotalMilliseconds is > 5000 or < -2000)
                     {
                         session = await sessionDataProvider.NextStep(session);
                         await session.RunNewTimeout(_context, _websocketHandler);

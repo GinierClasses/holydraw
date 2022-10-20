@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using thyrel_api.DataProvider;
 using thyrel_api.Models;
@@ -20,11 +21,11 @@ namespace test_thyrel_api
         [Test]
         public async Task Add()
         {
-            var username = "Tinting";
-            var avatarUrl = " ";
-            var isOwner = true;
-            var roomId = 1;
-            var tokenId = 1;
+            const string username = "Tinting";
+            const string avatarUrl = " ";
+            const bool isOwner = true;
+            const int roomId = 1;
+            const int tokenId = 1;
 
             var playerCount = Context.Player.Count();
             await _playerDataProvider.Add(username, avatarUrl, isOwner, roomId, tokenId);
@@ -46,7 +47,7 @@ namespace test_thyrel_api
         [Test]
         public async Task GetPlayerByToken()
         {
-            var playerId = 1;
+            const int playerId = 1;
             var player = Context.Player.First(p => p.Id == playerId);
             var token = new Token("xxxTokenKeyxxx");
             player.Token = token;
@@ -65,7 +66,7 @@ namespace test_thyrel_api
         [Test]
         public async Task TestDisablePlayer()
         {
-            var playerId = 1;
+            const int playerId = 1;
             var player = Context.Player.First(p => p.Id == playerId);
             var disabledPlayer = await _playerDataProvider.Disable(player.Id);
             Assert.IsNotNull(disabledPlayer.DisableAt);
@@ -98,6 +99,15 @@ namespace test_thyrel_api
             var firstPlayerRoomId = players.First().RoomId;
             Assert.AreEqual(firstPlayerRoomId, roomId);
             Assert.IsFalse(players.Any(p => p.Id == playerNotConnected.Id));
+        }
+        
+        [Test]
+        public async Task TestGetPlayersCountByRoom()
+        {
+            var roomId = 1;
+            var playerCount = await _playerDataProvider.GetPlayersCountByRoom(roomId);
+            var expected = await Context.Player.Where(p => p.RoomId == roomId && p.IsConnected).CountAsync();
+            Assert.AreEqual(expected, playerCount);
         }
 
         [Test]

@@ -1,5 +1,5 @@
-import Player from './Player.type';
 import HolyElement from './HolyElement.type';
+import Player from './Player.type';
 
 export const EmojiMapping = {
   0: '😓',
@@ -9,7 +9,7 @@ export const EmojiMapping = {
   4: '🤣',
 };
 
-type EmojiMappingKeyType = keyof typeof EmojiMapping;
+export type EmojiMappingKeyType = keyof typeof EmojiMapping;
 
 enum Emojis {
   Horrible = 0,

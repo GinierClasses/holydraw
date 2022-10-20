@@ -1,15 +1,15 @@
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import {
+  WebsocketEvent,
+  WebsocketMessage,
+  WsStates,
+} from 'types/websocket.types';
 import Player from '../types/Player.type';
 import Room from '../types/Room.type';
 import { parseJson } from '../utils/json';
 import { useRoomStates } from './useRoomStates';
-import {
-  WebsocketMessage,
-  WebsocketEvent,
-  WsStates,
-} from 'types/websocket.types';
 import { useWebsocketContext } from './WebsocketProvider';
 
 type RoomSocketContextProps = {
@@ -43,7 +43,9 @@ export function RoomContextProvider({
 
       switch (websocketMessage.websocketEvent) {
         case WebsocketEvent.Invalid:
-          enqueueSnackbar(websocketMessage.error, { variant: 'error' });
+          enqueueSnackbar(websocketMessage.error || 'Error from Websocket.', {
+            variant: 'error',
+          });
           history.push('/home');
           break;
         case WebsocketEvent.PlayerJoin:
@@ -56,13 +58,13 @@ export function RoomContextProvider({
           updatePlayer();
           break;
         case WebsocketEvent.SessionStart:
-          history?.push('/r/start');
+          history?.push('/room/start');
           break;
         case WebsocketEvent.PlayerKicked:
           removePlayer(websocketMessage.playerId);
           break;
         case WebsocketEvent.Restart:
-          history?.push('/r/lobby');
+          history?.push('/room/lobby');
           break;
         case WebsocketEvent.ReloadIdentifier:
           const roomReload = websocketMessage.room;
@@ -92,8 +94,11 @@ export function RoomContextProvider({
 
   React.useEffect(() => {
     const playingPlayers = players.filter(player => player.isPlaying);
-    if (history.location.pathname === '/r/lobby' && playingPlayers.length > 0) {
-      history?.push('/r/start');
+    if (
+      history.location.pathname === '/room/lobby' &&
+      playingPlayers.length > 0
+    ) {
+      history?.push('/room/start');
     }
   }, [players, history]);
 

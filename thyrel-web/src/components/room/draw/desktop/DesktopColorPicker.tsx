@@ -1,8 +1,8 @@
-import React from 'react';
 import { Box, useTheme } from '@material-ui/core';
+import React from 'react';
 import { colors } from 'utils/app-constant';
-import RandomColor from '../RandomColor';
 import PreciseColorPicker from '../PreciseColorPicker';
+import RandomColor from '../RandomColor';
 
 type DrawColorPickerProps = {
   currentColor: string;
@@ -21,7 +21,7 @@ export default function DesktopColorPicker({
     <Box
       display="flex"
       flexWrap="wrap"
-      borderRadius={30}
+      borderRadius="30px"
       maxWidth={116}
       justifyContent="center"
       bgcolor="#272B31"

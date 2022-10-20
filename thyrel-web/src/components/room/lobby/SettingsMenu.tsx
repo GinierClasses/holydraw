@@ -13,12 +13,12 @@ export default function SettingsMenu() {
       minWidth={288}
       pl={2}
       pb={1}
-      height="100%"
+      height={{ xs: 'auto', sm: '100%' }}
       display="flex"
       justifyContent="space-between"
       flexDirection="column"
       alignItems={{ xs: 'center', sm: 'flex-start' }}
-      gridGap={24}>
+      gap={3}>
       <ShareRoomButton identifier={room?.identifier} player={player} />
       <RoomModeSelector />
     </Box>
